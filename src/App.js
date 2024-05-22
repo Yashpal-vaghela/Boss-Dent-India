@@ -1,6 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
 import Nav from './component/Nav';
+import "./css/style.css"
 
 function App() {
   return (

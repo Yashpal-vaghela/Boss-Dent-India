@@ -1,0 +1,165 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar */
+
+.top-nav-sub {
+  margin: 20px;
+}
+
+.top-nav-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-nav-p1 {
+  display: flex;
+  list-style-type: none;
+}
+
+.top-nav-p1 li {
+  margin: 0 10px;
+}
+
+.top-nav-p1 li a {
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  color: #646464;
+}
+
+.top-nav-p1 li a:hover {
+  color: rgb(6, 74, 203);
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.top-nav-p2 {
+  display: flex;
+  align-items: center;
+}
+
+.top-p2-icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.top-p2-txt p {
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 500;
+  color: rgb(100, 100, 100);
+  font-family: Roboto, sans-serif;
+}
+
+.top-nav-p2 hr {
+  width: 10px;
+  height: 1px;
+  margin: 0 10px;
+  border: 0;
+  background-color: rgb(100, 100, 100);
+}
+
+.top-p2-icon a {
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  color: #646464;
+}
+
+.top-p2-icon a:hover {
+  color: rgb(6, 74, 203);
+  transition: all 0.3s ease-in-out 0s;
+}
+
+/* Main Navbar */
+
+.main-nav-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 20px;
+}
+
+.logo-sub {
+  width: 200px;
+  height: auto;
+}
+
+.logo-sub img {
+  width: 100%;
+  height: 100%;
+}
+
+.search-main {
+  width: 50%;
+}
+
+.search-sub {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-sub input {
+  padding: 15px 30px;
+  width: 100%;
+  border-radius: 30px;
+  border: 0;
+  background-color: rgba(191, 182, 182, 0.349);
+}
+
+.search-sub span {
+  position: relative;
+  right: 7%;
+  color: rgba(243, 169, 82, 1);
+}
+
+.main-nav-icon {
+  display: flex;
+  gap: 10px;
+}
+
+.main-nav-icon-sub a {
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 20px;
+  line-height: 20px;
+  font-weight: 900;
+  color: rgb(0, 0, 0);
+}
+
+.main-nav-icon-user {
+    margin: 0 20px !important;
+}
+
+.main-nav-icon-sub a span {
+  position: relative;
+  bottom: 50%;
+  right: 4%;
+  background-color: #bf8e22;
+  color: white;
+  font-weight: 500;
+  font-size: 8px;
+  padding: 8px 10px;
+  border-radius: 50px;
+}
+
+.main-nav-price-icon p {
+  font-size: 18px;
+  line-height: 27px;
+  font-weight: 700;
+  color: rgb(0, 0, 0);
+}
