@@ -2,7 +2,7 @@ import React from "react";
 import '../css/styles.css';
 import { FaFacebookF, FaInstagram } from 'react-icons/fa';
 import { FaLocationDot } from "react-icons/fa6";
-import logo from '../images/footer-logo-2.png';
+import logo from '../images/footer-logo.png';
 import { MdCall } from 'react-icons/md';
 import { IoMail } from 'react-icons/io5';
 
@@ -11,7 +11,10 @@ const Footer = () =>{
     <footer className="footer">
             <div className="footer-container">
             <div className="footer-section">
-                <img src={logo} alt="BossDent Logo" className="footer-logo" />
+                <div className="footer-section img">
+                    <img src={logo} alt="BossDent Logo" className="footer-logo" />
+                </div>
+                
                 <p>
                 Bossdentindia (Disposables & Consumables) is an online dental product selling store based in Surat Gujrat.
                 </p>
