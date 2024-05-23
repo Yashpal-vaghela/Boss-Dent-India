@@ -8,7 +8,7 @@ body {
   padding: 0;
 }
 
-/* Navbar */
+/* Top Navbar */
 
 .top-nav-sub {
   margin: 20px;
@@ -142,7 +142,7 @@ body {
 }
 
 .main-nav-icon-user {
-    margin: 0 20px !important;
+  margin: 0 20px !important;
 }
 
 .main-nav-icon-sub a span {
@@ -152,8 +152,8 @@ body {
   background-color: #bf8e22;
   color: white;
   font-weight: 500;
-  font-size: 8px;
-  padding: 8px 10px;
+  font-size: 10px;
+  padding: 3px 7px;
   border-radius: 50px;
 }
 
@@ -162,4 +162,69 @@ body {
   line-height: 27px;
   font-weight: 700;
   color: rgb(0, 0, 0);
+}
+
+/* Menubar */
+
+.menu-sub {
+  background-color: #064acb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menu-div ul {
+  display: flex;
+}
+
+.menu-div ul li {
+  list-style-type: none;
+  margin: 20px 10px;
+}
+
+.menu-div ul li a {
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: rgb(255, 255, 255);
+}
+
+.menu-num-sub {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 20px;
+}
+
+.menu-num-icon {
+  background-color: #bf8e22;
+  padding: 5px 7px;
+  border-radius: 30px;
+}
+
+.menu-num-icon span {
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 900;
+}
+
+.menu-num-txt p {
+  font-size: 15px;
+  line-height: 15px;
+  font-weight: 400;
+  color: rgb(255, 255, 255);
+  font-family: Roboto, sans-serif;
+  margin: 5px 0;
+}
+
+.menu-num-txt a {
+  text-decoration: none;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  font-family: Roboto, sans-serif;
+  margin: 5px 0;
 }
