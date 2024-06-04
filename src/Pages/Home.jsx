@@ -36,7 +36,7 @@ const Home = () => {
                   </ul>
                 </div>
                 <div className="banner-p1-txt-btn">
-                  <button>
+                  <button className="banner-btn">
                     SHOP NOW{" "}
                     <span>
                       <IoIosArrowDroprightCircle />
@@ -65,7 +65,7 @@ const Home = () => {
                       <p>DENTAL PRODUCT</p>
                     </div>
                     <div className="banner-p2-fbox-content-btn">
-                      <button>
+                      <button className="banner-btn">
                         SHOP NOW{" "}
                         <span>
                           <IoIosArrowDroprightCircle />
@@ -93,7 +93,7 @@ const Home = () => {
                       <p>QUALITY PRODUCT</p>
                     </div>
                     <div className="banner-p2-sbox-content-btn">
-                      <button>
+                      <button className="banner-btn">
                         SHOP NOW{" "}
                         <span>
                           <IoIosArrowDroprightCircle />
