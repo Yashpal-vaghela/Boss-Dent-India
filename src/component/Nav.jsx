@@ -49,7 +49,9 @@ const Nav = () => {
           <div className="main-nav-sub">
             <div className="logo-main">
               <div className="logo-sub">
-                <img src={logo} alt="" />
+                <Link>
+                  <img src={logo} alt="" />
+                </Link>
               </div>
             </div>
             <div className="search-main">

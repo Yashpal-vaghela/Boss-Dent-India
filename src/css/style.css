@@ -134,7 +134,6 @@ body {
 
 .main-nav-icon-sub a {
   text-decoration: none;
-  margin: 0 10px;
   font-size: 20px;
   line-height: 20px;
   font-weight: 900;
@@ -142,7 +141,7 @@ body {
 }
 
 .main-nav-icon-user {
-  margin: 0 20px !important;
+  margin: 0 10px !important;
 }
 
 .main-nav-icon-sub a span {
@@ -228,3 +227,278 @@ body {
   font-family: Roboto, sans-serif;
   margin: 5px 0;
 }
+
+/* Banner Section */
+
+.banner-sub {
+  display: flex;
+  gap: 30px;
+  margin: 20px 15px;
+}
+
+.banner-p1 {
+  background-image: url(../images/banner1-bg.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  border-radius: 10px;
+}
+
+.banner-p1-txt {
+  margin-left: 20px;
+  text-align: left;
+  position: absolute;
+  left: 0;
+}
+
+.banner-p1-txt-head {
+  margin-left: 20px;
+}
+
+.banner-p1-txt-head p {
+  font-size: 12px;
+  line-height: 21px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  font-family: Roboto, sans-serif;
+  background-color: #bf8e22;
+  width: fit-content;
+  padding: 3px 8px;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+.banner-p1-txt-head h1 {
+  font-size: 35px;
+  line-height: 59px;
+  font-weight: 700;
+  color: rgb(0, 0, 0);
+  font-family: "Source Sans Pro", sans-serif;
+  margin-bottom: 20px;
+}
+
+.banner-p1-txt-content {
+  margin-left: 20px;
+}
+
+.banner-p1-txt-content ul {
+  list-style-type: none;
+}
+
+.banner-p1-txt-content ul li p {
+  font-size: 15px;
+  line-height: 26px;
+  font-weight: 400;
+  color: rgb(100, 100, 100);
+  font-family: Roboto, sans-serif;
+  margin: 5px 0;
+}
+
+.banner-p1-txt-btn {
+  margin-left: 20px;
+}
+
+.banner-p1-txt-btn button {
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  font-family: Roboto, sans-serif;
+  margin: 20px 0;
+  border: 0;
+  background-color: #064acb;
+  padding: 10px 10px 10px 20px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.banner-p1-txt-btn button span {
+  color: white;
+  font-size: 25px;
+}
+
+.banner-p2 {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.banner-p2-fbox-sub {
+  background-image: url(../images/banner2-1-bg.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-top: 30px;
+  border-radius: 10px;
+}
+
+.banner-p2-fbox-img img {
+  transition: transform 0.3s ease;
+}
+
+.banner-p2-fbox:hover img {
+  transform: translateY(-10%);
+}
+
+.banner-p2-fbox-content {
+  text-align: left;
+}
+
+.banner-p2-fbox-content-txt h1 {
+  font-size: 20px;
+  line-height: 36px;
+  font-weight: 700;
+  color: rgb(0, 0, 0);
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.banner-p2-fbox-content-txt p {
+  font-size: 13px;
+  line-height: 24px;
+  font-weight: 400;
+  color: rgb(100, 100, 100);
+  font-family: Roboto, sans-serif;
+}
+
+.banner-p2-fbox-content-btn button {
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  font-family: Roboto, sans-serif;
+  margin: 20px 0;
+  border: 0;
+  background-color: #064acb;
+  padding: 10px 10px 10px 20px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.banner-p2-fbox-content-btn button span {
+  color: #fff;
+  font-size: 25px;
+}
+
+.banner-p2-sbox-sub {
+  background-image: url(../images/banner-2-2-bg.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-top: 25px;
+  border-radius: 10px;
+}
+
+.banner-p2-sbox-img img {
+  transition: transform 0.3s ease;
+}
+
+.banner-p2-sbox:hover img {
+  transform: translateY(-10%);
+}
+
+.banner-p2-sbox-content {
+  text-align: left;
+}
+
+.banner-p2-sbox-content-txt h1 {
+  font-size: 20px;
+  line-height: 36px;
+  font-weight: 700;
+  color: rgb(0, 0, 0);
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.banner-p2-sbox-content-txt p {
+  font-size: 13px;
+  line-height: 24px;
+  font-weight: 400;
+  color: rgb(100, 100, 100);
+  font-family: Roboto, sans-serif;
+}
+
+.banner-p2-sbox-content-btn button {
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  font-family: Roboto, sans-serif;
+  margin: 20px 0;
+  border: 0;
+  background-color: #064acb;
+  padding: 10px 10px 10px 20px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.banner-p2-sbox-content-btn button span {
+  color: #fff;
+  font-size: 25px;
+}
+
+/* Home Category */
+
+.home-cat-sub {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin: 50px 20px;
+}
+
+.home-cat-content-box a {
+  text-decoration: none;
+}
+
+.home-cat-content-box a:hover .home-cat-img-div img {
+  transform: scale(1.2);
+}
+
+.home-cat-content-box a:hover .home-cat-txt h1 {
+  color: #064acb;
+}
+
+.home-cat-img-div {
+  width: 80px;
+  height: 70px;
+  background-color: #ecf3f7;
+  padding: 20px;
+  border-radius: 100px;
+}
+
+.home-cat-img-div img {
+  width: 100%;
+  height: 100%;
+  transition: all 0.5s;
+}
+
+.home-cat-txt {
+  margin: 20px 0;
+}
+
+.home-cat-txt h1 {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 500;
+  color: black;
+  font-family: "Source Sans Pro", sans-serif;
+  transition: all 0.2s;
+}
+
+/* Product Page */
+
