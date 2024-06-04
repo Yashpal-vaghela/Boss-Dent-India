@@ -2,7 +2,7 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    color: rgb(181, 185, 190);
+    color: rgb(205, 205, 205);
     font-size: 16px;
     line-height: 24px;
   }
@@ -27,7 +27,6 @@ body {
   
   .footer-section {
     flex: 1;
-    padding-top: 10px;
   }
   
   .footer-section h3 {
@@ -43,21 +42,34 @@ body {
     text-decoration: none;
     margin-bottom: 10px;
     text-align: left;
+    padding-top: 10px;
   }
   
   .footer-section ul {
     list-style: none;
     padding: 0;
+    line-height: 24px;
   }
-  
+  .footer-section li{
+    padding-top: 10px;
+  }
+  .footer-section span{
+    display: flex;
+  }
   .footer-section ul li a:hover {
     color: #ffc107;
   }
-  
+
   .helpline {
-    font-size: 18px;
+    font-size: 15px;
     margin-top: 20px;
   }
+  .helpline-number{
+    font-size: 30px;
+    font-weight: 400;
+    color: #fff;
+  }
+
   
   .social-media {
     display: flex;
@@ -78,11 +90,6 @@ body {
     color: #ffc107;
   }
   
-  .footer-bottom {
-    text-align: center;
-    padding: 20px 0;
-    border-top: 1px solid #444;
-  }
   
   .logo {
     max-width: 250px;
@@ -98,7 +105,26 @@ body {
   .left-content img {
     margin-right: 20px;
   }
+
+  .footer-bottom {
+    padding-top: 20px;
+    border-top: 1px solid #303744;
+    display: flex;
+    justify-content: space-between;
+  }
   
-  .footer-text {
-    flex: 1;
+  .footer-bottom p {
+    margin: 0 10px;
+  }
+  .f-i-txt{
+    display: flex;
+    align-items: center;
+    
+  }
+
+  .f-icon{
+    border: 1px solid white;
+    border-radius: 50px;
+    padding: 5px;
+    margin-right: 5px;
   }

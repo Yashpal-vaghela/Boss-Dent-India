@@ -1,6 +1,9 @@
 import React from 'react'
 import '../css/styles.css'
 import flogo from "../images/flogo.png"
+import { FaLocationDot } from "react-icons/fa6";
+import { FaFacebook, FaLinkedin, FaPhoneAlt } from "react-icons/fa";
+import { IoMdMail } from "react-icons/io";
 
 const Footer = () => {
   return (
@@ -9,14 +12,14 @@ const Footer = () => {
         <div className="footer-section">
           <img src={flogo} alt="BossDent" className="logo" />
           <p>Bossdentindia (Disposables & Consumables) is an online dental product selling store based in Surat Gujrat.</p>
-          <p className="helpline">Our Help Line: <strong>+91 76988 28883</strong></p>
+          <p className="helpline">Our Help Line: <div className='helpline-number'>+91 76988 28883</div></p>
           <div className="social-media">
             <p>Follow Us On</p>
-            <a href="#"><i className="fab fa-facebook"></i></a>
-            <a href="#"><i className="fab fa-linkedin"></i></a>
+            <a href="#"><FaLinkedin /></a>
+            <a href="#"><FaFacebook /></a>
           </div>
         </div>
-        <div className="footer-section">
+        <div className="footer-section ">
           <h3>BOSSDENT</h3>
           <ul>
             <li><a href="#">Shop</a></li>
@@ -36,9 +39,20 @@ const Footer = () => {
         </div>
         <div className="footer-section">
           <h3>Contact Us</h3>
-          <p>Plot no.3-3/3-4/ Dhuna house, opp. Patel Nagar, A.k. Road, Varachha, Surat</p>
-          <p><strong>+91 76988 28883</strong></p>
-          <p><a href="mailto:zahndentaldepo@gmail.com">zahndentaldepo@gmail.com</a></p>
+          <p className='f-i-txt'> 
+            <span className='f-icon'><FaLocationDot /></span>
+            <span>Plot no.3-3/3-4/ Dhuna house, opp. Patel Nagar, A.k. Road, Varachha, Surat</span>
+          </p>
+          <p className='f-i-txt'>
+            <span className='f-icon'><FaPhoneAlt /></span>
+            <strong>+91 76988 28883</strong>
+          </p>
+          <p className='f-i-txt'>
+            <span className='f-icon'><IoMdMail /></span>
+            <a href="mailto:zahndentaldepo@gmailcom">
+                zahndentaldepo@gmail.com
+            </a>
+          </p>
         </div>
       </div>
       <div className="footer-bottom">
