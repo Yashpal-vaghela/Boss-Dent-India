@@ -40,9 +40,9 @@ const Home = () => {
                     {/* <li>
                       <p>Fast and Safe Delivery</p>
                     </li> */}
-                    <li>
+                    {/* <li>
                       <p>Cash on delivery available</p>
-                    </li>
+                    </li> */}
                     <li>
                       <p>Best Support & Services</p>
                     </li>
