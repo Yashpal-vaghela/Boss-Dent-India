@@ -205,6 +205,8 @@ const Home = () => {
           <img src={banner2_1} alt="" />
         </SwiperSlide>
         <SwiperSlide>Slide 3</SwiperSlide> 
+
+        
         <SwiperSlide>Slide 4</SwiperSlide>
       </Swiper>
       </section>
