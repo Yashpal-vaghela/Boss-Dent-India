@@ -59,6 +59,7 @@ body {
   .footer-section ul li a:hover {
     color: #ffc107;
     /* text-align: left; */
+    transition: all 0.3s ease-in-out;
     margin-left: 5px;
   }
 
