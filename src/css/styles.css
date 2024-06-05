@@ -58,6 +58,8 @@ body {
   }
   .footer-section ul li a:hover {
     color: #ffc107;
+    /* text-align: left; */
+    margin-left: 5px;
   }
 
   .helpline {
@@ -78,12 +80,23 @@ body {
   
   .social-media p {
     margin-right: 10px;
+    font-size: 14px;
+    line-height: 14px;
+    color: rgb(205, 205, 205);
+  }
+  .social-media .golden-line {
+    content: '';
+    display: inline-block;
+    width: 20px; /* Adjust width as needed */
+    height: 2px; /* Adjust height as needed */
+    background-color: #ffc107;
+    margin-left: 10px;
   }
   
   .social-media a {
     color: rgb(181, 185, 190);
-    margin: 0 10px;
-    font-size: 20px;
+    margin: 0 5px;
+    font-size: 18px;
   }
   
   .social-media a:hover {
@@ -128,3 +141,7 @@ body {
     padding: 5px;
     margin-right: 5px;
   }
+  /* .footer-section ul li a:hover {
+    text-align: left;
+    transition: text-align 0.3s ease-in-out;
+} */
