@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from 'react';
 import banner1 from "../images/banner1.png";
 import banner2_1 from "../images/banner2-1.png";
 import banner2_2 from "../images/banner-2-2.png";
@@ -8,6 +8,19 @@ import cat1 from "../images/hom_cat-1.png";
 import cat2 from "../images/home_cat-2.png";
 import cat3 from "../images/home_cat-3.webp";
 import cat4 from "../images/home_cat-4.png";
+
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
+// import './styles.css';
+
+// import required modules
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
 const Home = () => {
   return (
@@ -24,9 +37,9 @@ const Home = () => {
                 </div>
                 <div className="banner-p1-txt-content">
                   <ul>
-                    <li>
+                    {/* <li>
                       <p>Fast and Safe Delivery</p>
-                    </li>
+                    </li> */}
                     <li>
                       <p>Cash on delivery available</p>
                     </li>
@@ -169,6 +182,31 @@ const Home = () => {
             
           </div>
         </div>
+      </section>
+      <section>
+      <Swiper
+        spaceBetween={30}
+        centeredSlides={true}
+        autoplay={{
+          delay: 2000,
+          disableOnInteraction: false,
+        }}
+        pagination={{
+          clickable: true,
+        }}
+        navigation={true}
+        modules={[Autoplay, Pagination, Navigation]}
+        className="mySwiper"
+      >
+        <SwiperSlide>
+          <img src={banner1} alt="" />
+        </SwiperSlide>
+        <SwiperSlide>
+          <img src={banner2_1} alt="" />
+        </SwiperSlide>
+        <SwiperSlide>Slide 3</SwiperSlide>
+        <SwiperSlide>Slide 4</SwiperSlide>
+      </Swiper>
       </section>
     </div>
   );
