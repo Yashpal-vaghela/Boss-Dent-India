@@ -111,21 +111,21 @@ function scrollFunction() {
           <div className="menu-sub">
           <div className="logo-main">
               <div className="logo-sub">
-                <Link>
+               <Link>
                   <img src={logo} alt="" />
                 </Link>
-              </div>
+               </div>
             </div>
             <div className="menu-div">
               <ul>
                 <li>
-                  <Link className="menu-link">HOME</Link>
+                  <Link to='/' className="menu-link">HOME</Link>
                 </li>
                 <li>
                   <Link className="menu-link">SHOP</Link>
                 </li>
-                <li>
-                  <Link className="menu-link">ABOUT US</Link>
+                <li>          
+                  <Link to="/about" className="menu-link">ABOUT US</Link>
                 </li>
                 <li>
                   <Link className="menu-link">MY ACCOUNT</Link>

@@ -37,9 +37,9 @@ const Home = () => {
                 </div>
                 <div className="banner-p1-txt-content">
                   <ul>
-                    {/* <li>
+                    <li>
                       <p>Fast and Safe Delivery</p>
-                    </li> */}
+                    </li>
                     {/* <li>
                       <p>Cash on delivery available</p>
                     </li> */}
@@ -208,6 +208,21 @@ const Home = () => {
         <SwiperSlide>Slide 4</SwiperSlide>
       </Swiper>
       </section>
+
+        <section>
+          <div className='other-banner-main'>
+            <div className='other-banner'>
+              <div className='banner-txt'>
+                <p className='b-txt-1'>The Best Doctor Recommended</p>
+                <p className='b-txt-2'><span className='txt-2-name'>TopCEM Dual</span> <span className='txt-2-underline'>Cure Resin Cement</span> <span className='txt-2-discount'> 10%</span> <span className='txt-2-dicount-type'>Flat Discount</span></p>
+              </div>
+              <div className='other-banner-btn-main'>
+                <div className="other-banner-btn">SEE COLLECTION</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
     </div>
   );
 };
