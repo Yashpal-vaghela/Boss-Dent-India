@@ -10,22 +10,25 @@ import { FaSearch } from "react-icons/fa";
 import { FaPhoneAlt } from "react-icons/fa";
 
 const Nav = () => {
-  window.onscroll = function() {
+  window.onscroll = function () {
     scrollFunction();
-};
+  };
 
-function scrollFunction() {
+  function scrollFunction() {
     var menuSubElements = document.getElementsByClassName("menu-sub");
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-        for (var i = 0; i < menuSubElements.length; i++) {
-            menuSubElements[i].style.top = "0";
-        }
+    if (
+      document.body.scrollTop > 20 ||
+      document.documentElement.scrollTop > 20
+    ) {
+      for (var i = 0; i < menuSubElements.length; i++) {
+        menuSubElements[i].style.top = "0";
+      }
     } else {
-        for (var i = 0; i < menuSubElements.length; i++) {
-            menuSubElements[i].style.top = "70px";
-        }
+      for (var i = 0; i < menuSubElements.length; i++) {
+        menuSubElements[i].style.top = "70px";
+      }
     }
-}
+  }
 
   return (
     <div className="nav-main">
@@ -93,39 +96,43 @@ function scrollFunction() {
                 </span>
               </div>
             </div>
-           
+
             <div className="menu-num-sub">
-                <div className="menu-num-icon">
-                  <span>
-                    <FaPhoneAlt />
-                  </span>
-                </div>
-                <div className="menu-num-txt">
-                  <p className="menu-txt">Need any Help ?</p>
-                  <Link className="menu-txt">+91 76988 28883</Link>
-                </div>
+              <div className="menu-num-icon">
+                <span>
+                  <FaPhoneAlt />
+                </span>
               </div>
+              <div className="menu-num-txt">
+                <p className="menu-txt">Need any Help ?</p>
+                <Link className="menu-txt">+91 76988 28883</Link>
+              </div>
+            </div>
           </div>
         </div>
         <div className="menu-main">
           <div className="menu-sub">
-          <div className="logo-main">
+            <div className="logo-main">
               <div className="logo-sub">
-               <Link>
+                <Link>
                   <img src={logo} alt="" />
                 </Link>
-               </div>
+              </div>
             </div>
             <div className="menu-div">
               <ul>
                 <li>
-                  <Link to='/' className="menu-link">HOME</Link>
+                  <Link to="/" className="menu-link">
+                    HOME
+                  </Link>
                 </li>
                 <li>
                   <Link className="menu-link">SHOP</Link>
                 </li>
-                <li>          
-                  <Link to="/about" className="menu-link">ABOUT US</Link>
+                <li>
+                  <Link to="/about" className="menu-link">
+                    ABOUT US
+                  </Link>
                 </li>
                 <li>
                   <Link className="menu-link">MY ACCOUNT</Link>
@@ -143,28 +150,26 @@ function scrollFunction() {
                   </span>
                 </div>
                 <div className="menu-num-txt">
-                  <p>Need any Help ?</p>
-                  <Link>+91 76988 28883</Link>
                 </div>
               </div> */}
               <div className="main-nav-icon">
-              <div className="main-nav-icon-sub">
-                <Link className="main-nav-icon-user">
-                  <FaUserAlt />
-                </Link>
-                <Link>
-                  <FaHeart />
-                  <span>0</span>
-                </Link>
-                <Link>
-                  <FaCartPlus />
-                  <span>0</span>
-                </Link>
+                <div className="main-nav-icon-sub">
+                  <Link className="main-nav-icon-user">
+                    <FaUserAlt />
+                  </Link>
+                  <Link>
+                    <FaHeart />
+                    <span>0</span>
+                  </Link>
+                  <Link>
+                    <FaCartPlus />
+                    <span>0</span>
+                  </Link>
+                </div>
+                <div className="main-nav-price-icon">
+                  <p>$ 0.00</p>
+                </div>
               </div>
-              <div className="main-nav-price-icon">
-                <p>$ 0.00</p>
-              </div>
-            </div>
             </div>
           </div>
         </div>

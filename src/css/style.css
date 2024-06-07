@@ -508,10 +508,11 @@ body {
   background-size: cover;
   background-position: center;
   padding: 42px 60px;
-  width: 97%;
+  width: 98%;
   margin: 0 auto;
   margin-top: 20px;
   margin-bottom: 20px;
+  border-radius: 5px;
 }
 
 .other-banner {
@@ -565,6 +566,7 @@ body {
   font-size: 12px;
   background-color: #222;
   padding: 10px 30px;
+  color: #eff1f3;
   font-weight: bold;
   letter-spacing: 2px;
   height: 45px;
