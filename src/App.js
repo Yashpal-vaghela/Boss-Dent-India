@@ -2,7 +2,8 @@ import "./App.css";
 import Allroutes from "./component/Allroutes";
 import Footer from "./component/Footer";
 import Nav from "./component/Nav";
-import "./css/style.css";
+import "./css/style.css"; 
+import "./css/responsive.css";
 
 function App() {
   return (

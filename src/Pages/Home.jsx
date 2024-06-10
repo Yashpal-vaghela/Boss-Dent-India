@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from "react";
 import banner1 from "../images/banner1.png";
 import banner2_1 from "../images/banner2-1.png";
 import banner2_2 from "../images/banner-2-2.png";
@@ -10,17 +10,17 @@ import cat3 from "../images/home_cat-3.webp";
 import cat4 from "../images/home_cat-4.png";
 
 // Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 // import './styles.css';
 
 // import required modules
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
 const Home = () => {
   return (
@@ -79,7 +79,7 @@ const Home = () => {
                     </div>
                     <div className="banner-p2-fbox-content-btn">
                       <button className="banner-btn">
-                        SHOP NOW{" "}
+                        SHOP NOW            
                         <span>
                           <IoIosArrowDroprightCircle />
                         </span>
@@ -97,7 +97,8 @@ const Home = () => {
                 <div className="banner-p2-sbox-sub">
                   <div className="banner-p2-sbox-img">
                     <div className="banner-p2-sbox-img-sub">
-                      <img src={banner2_2} alt="" />
+                     
+                     <img src={banner2_2} alt="" />
                     </div>
                   </div>
                   <div className="banner-p2-sbox-content">
@@ -178,51 +179,53 @@ const Home = () => {
       {/* Product Section */}
       <section>
         <div className="home-product-main">
-          <div className="home-product-sub">
-            
-          </div>
+          <div className="home-product-sub"></div>
         </div>
       </section>
       <section>
-      <Swiper
-        spaceBetween={30}
-        centeredSlides={true}
-        autoplay={{
-          delay: 2000,
-          disableOnInteraction: false,
-        }}
-        pagination={{
-          clickable: true,
-        }}
-        navigation={true}
-        modules={[Autoplay, Pagination, Navigation]}
-        className="mySwiper"
-      >
-        <SwiperSlide>
-          <img src={banner1} alt="" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src={banner2_1} alt="" />
-        </SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-      </Swiper>
+        <Swiper
+          spaceBetween={30}
+          centeredSlides={true}
+          autoplay={{
+            delay: 2000,
+            disableOnInteraction: false,
+          }}
+          pagination={{
+            clickable: true,
+          }}
+          navigation={true}
+          modules={[Autoplay, Pagination, Navigation]}
+          className="mySwiper"
+        >
+          <SwiperSlide>
+            <img src={banner1} alt="" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src={banner2_1} alt="" />
+          </SwiperSlide>
+          <SwiperSlide>Slide 3</SwiperSlide>
+          <SwiperSlide>Slide 4</SwiperSlide>
+        </Swiper>
       </section>
 
-        <section>
-          <div className='other-banner-main'>
-            <div className='other-banner'>
-              <div className='banner-txt'>
-                <p className='b-txt-1'>The Best Doctor Recommended</p>
-                <p className='b-txt-2'><span className='txt-2-name'>TopCEM Dual</span> <span className='txt-2-underline'>Cure Resin Cement</span> <span className='txt-2-discount'> 10%</span> <span className='txt-2-dicount-type'>Flat Discount</span></p>
-              </div>
-              <div className='other-banner-btn-main'>
-                <div className="other-banner-btn">SEE COLLECTION</div>
-              </div>
+      <section>
+        <div className="other-banner-main">
+          <div className="other-banner">
+            <div className="banner-txt">
+              <p className="b-txt-1">The Best Doctor Recommended</p>
+              <p className="b-txt-2">
+                <span className="txt-2-name">TopCEM Dual</span>{" "}
+                <span className="txt-2-underline">Cure Resin Cement</span>{" "}
+                <span className="txt-2-discount"> 10%</span>{" "}
+                <span className="txt-2-dicount-type">Flat Discount</span>
+              </p>
+            </div>
+            <div className="other-banner-btn-main">
+              <div className="other-banner-btn">SEE COLLECTION</div>
             </div>
           </div>
-        </section>
-
+        </div>
+      </section>
     </div>
   );
 };

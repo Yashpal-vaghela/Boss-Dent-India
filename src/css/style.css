@@ -107,6 +107,10 @@ body {
   width: 50%;
 }
 
+.toggel-main{
+  visibility: hidden;
+}
+
 .search-sub {
   display: flex;
   align-items: center;
@@ -171,6 +175,8 @@ body {
 
 /* Menubar */
 
+
+
 .menu-sub {
   background-color: #222;
   display: flex;
@@ -180,6 +186,10 @@ body {
   z-index: 1000;
   width: 100%;
   transition: top 0.3s;
+}
+
+.menu-div{
+  display: flex;
 }
 
 .menu-div ul {
@@ -209,6 +219,12 @@ body {
   align-items: center;
   gap: 10px;
   margin-right: 20px;
+}
+
+.menu-num-main {
+  display: flex;
+  align-items: center;
+  justify-content: right;
 }
 
 .menu-num-icon {

@@ -1,0 +1,56 @@
+@media only screen and (max-width: 600px) {
+    .menu-sub{
+        flex-direction: column;
+    }
+    .menu-sub{
+        width: 78%;
+        margin-top: -70px;
+    }
+    .logo-main{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0px 30px;
+    }
+    .logo-sub{
+        width: 200px;
+    }
+    .toggel-menu{
+        font-size: 25px;
+    }
+    .main-nav-price-icon p{
+        display: none;
+    }
+    .menu-div ul{
+        flex-direction: column;
+        text-align: center;
+    }
+    .menu-div ul li{
+        margin: 10px 5px;
+    }
+    .main-nav-sub{
+        display: none;
+    }
+    .toggel-main{
+        visibility: visible;
+    }
+    .footer-bottom{
+        flex-direction: column;
+    }
+    .footer-container{
+        flex-direction: column;
+    }
+    .logo{
+        margin: 0 auto;
+    }
+    .footer-section p {
+        text-align: center;
+    }
+    .social-media{
+        justify-content: center;
+    }
+    .footer-section span{
+        text-align: left;
+    }
+}
