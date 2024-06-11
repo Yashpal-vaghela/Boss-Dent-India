@@ -1,9 +1,13 @@
 @media only screen and (max-width: 600px) {
+    body{
+        box-sizing: border-box;
+    }
+    /* nav bar */
     .menu-sub{
         flex-direction: column;
     }
     .menu-sub{
-        width: 78%;
+        width: 100%;
         margin-top: -70px;
     }
     .logo-main{
@@ -16,8 +20,11 @@
     .logo-sub{
         width: 200px;
     }
-    .toggel-menu{
-        font-size: 25px;
+    .menu-div{
+        flex-direction: column;
+    }
+    svg.toggle-icon {
+        font-size: 24px;
     }
     .main-nav-price-icon p{
         display: none;
@@ -32,9 +39,29 @@
     .main-nav-sub{
         display: none;
     }
+    .main-nav-icon {
+        margin-right: 51px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
     .toggel-main{
         visibility: visible;
     }
+
+    /* other banner */
+    .other-banner {
+        flex-direction: column;
+    }
+    .other-banner-btn {
+        width: max-content;
+        margin: 0 auto;
+    }
+    .home-cat-sub {
+        flex-direction: column;
+    }
+
+
+    /* footer  */
     .footer-bottom{
         flex-direction: column;
     }

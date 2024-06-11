@@ -29,7 +29,7 @@ const Home = () => {
       <section>
         <div className="banner-main">
           <div className="banner-sub">
-            <div className="banner-p1">
+            {/* <div className="banner-p1">
               <div className="banner-p1-txt">
                 <div className="banner-p1-txt-head">
                   <p>100% Premium Quality</p>
@@ -40,9 +40,9 @@ const Home = () => {
                     <li>
                       <p>Fast and Safe Delivery</p>
                     </li>
-                    {/* <li>
+                    <li>
                       <p>Cash on delivery available</p>
-                    </li> */}
+                    </li>
                     <li>
                       <p>Best Support & Services</p>
                     </li>
@@ -117,9 +117,34 @@ const Home = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
+      </section>
+      <section>
+        <Swiper
+          spaceBetween={30}
+          centeredSlides={true}
+          autoplay={{
+            delay: 2000,
+            disableOnInteraction: false,
+          }}
+          pagination={{
+            clickable: true,
+          }}
+          navigation={true}
+          modules={[Autoplay, Pagination, Navigation]}
+          className="mySwiper"
+        >
+          <SwiperSlide>
+            <img src={banner1} alt="" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src={banner2_1} alt="" />
+          </SwiperSlide>
+          <SwiperSlide>Slide 3</SwiperSlide>
+          <SwiperSlide>Slide 4</SwiperSlide>
+        </Swiper>
       </section>
       {/* Category Section */}
       <section>
@@ -176,37 +201,14 @@ const Home = () => {
           </div>
         </div>
       </section>
+      
       {/* Product Section */}
       <section>
         <div className="home-product-main">
           <div className="home-product-sub"></div>
         </div>
       </section>
-      <section>
-        <Swiper
-          spaceBetween={30}
-          centeredSlides={true}
-          autoplay={{
-            delay: 2000,
-            disableOnInteraction: false,
-          }}
-          pagination={{
-            clickable: true,
-          }}
-          navigation={true}
-          modules={[Autoplay, Pagination, Navigation]}
-          className="mySwiper"
-        >
-          <SwiperSlide>
-            <img src={banner1} alt="" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src={banner2_1} alt="" />
-          </SwiperSlide>
-          <SwiperSlide>Slide 3</SwiperSlide>
-          <SwiperSlide>Slide 4</SwiperSlide>
-        </Swiper>
-      </section>
+    
 
       <section>
         <div className="other-banner-main">

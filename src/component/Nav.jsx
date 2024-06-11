@@ -76,7 +76,6 @@ const Nav = () => {
                 </span>
               </div>
             </div>
-
             <div className="menu-num-sub">
               <div className="menu-num-icon">
                 <span>
