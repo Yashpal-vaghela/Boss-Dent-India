@@ -7,35 +7,7 @@ import { TiThMenu } from "react-icons/ti";
 
 const Nav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  
-  window.onscroll = function () {
-    scrollFunction();
-  };
-
-  function scrollFunction() {
-    var menuSubElements = document.getElementsByClassName("menu-sub");
-    if (
-      document.body.scrollTop > 20 ||
-      document.documentElement.scrollTop > 20
-    ) {
-      for (var i = 0; i < menuSubElements.length; i++) {
-        menuSubElements[i].style.top = "0";
-      }
-    } else {
-      for (var i = 0; i < menuSubElements.length; i++) {
-        menuSubElements[i].style.top = "70px";
-      }
-    }
-  }
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
     const handleResize = () => {
@@ -47,6 +19,29 @@ const Nav = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+  }, []);
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+  
+  useEffect(()=>{
+    const scrollFunction = () => {
+     const menuSubElements = document.getElementsByClassName("menu-sub");
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop> 20){
+        Array.from(menuSubElements).forEach(element =>{
+          element.style.top = "0";
+        });
+      }else {
+        Array.from(menuSubElements).forEach(element => {
+          element.style.top = "70px";
+        });
+      } 
+    };
+    window.onscroll = scrollFunction;
   }, []);
 
   return (
@@ -89,74 +84,98 @@ const Nav = () => {
             </div>
           </div>
         </div>
+        {/* Main nav strted here */}
         <div className="menu-main">
           <div className="menu-sub">
             <div className="logo-main">   
               <div className="logo-sub">
                 <Link>
-                  <img src={logo} alt="" />
+                  <img src={logo} alt="Logo" />
                 </Link>
               </div>
+                
               {/* Render toggle button for mobile view */}
               {isMobile ? (
-                <div className="toggle-main" onClick={toggleMenu}>
+                <>
+                <div className="menu-num-main">
+                    <div className="main-nav-icon2">
+                      <div className="main-nav-icon-sub">
+                        <Link className="main-nav-icon-user">
+                          <FaUserAlt />
+                        </Link>
+                        <Link>
+                          <FaHeart />
+                          <span>0</span>
+                        </Link>
+                        <Link>
+                          <FaCartPlus />
+                          <span>0</span>
+                        </Link>
+                      </div>
+                    </div>
+                </div>
+                <div className="toggle-main" onClick={toggleMenu} role="button" aria-label= "Toggle menu">
                   {menuOpen ? (
                     <IoMdCloseCircle className="toggle-icon" />
                   ) : (
                     <TiThMenu className="toggle-icon" />
                   )}
                 </div>
+                </>
               ) : (
                 // Render nothing for desktop view
                 null
               )}
-            </div>
-            {/* Render menu bar for desktop view and mobile open state */}
-            {(isMobile && menuOpen) || !isMobile ? (
-              <div className="menu-div">
-                <ul>
-                  <li onClick={closeMenu}>
-                    <Link to="/" className="menu-link">
-                      HOME
-                    </Link>
-                  </li>
-                  <li onClick={closeMenu}>
-                    <Link className="menu-link">SHOP</Link>
-                  </li>
-                  <li onClick={closeMenu}>
-                    <Link to="/about" className="menu-link">
-                      ABOUT US
-                    </Link>
-                  </li>
-                  <li onClick={closeMenu}>
-                    <Link className="menu-link">MY ACCOUNT</Link>
-                  </li>
-                  <li onClick={closeMenu}>
-                    <Link className="menu-link">CONTACT</Link>
-                  </li>
-                </ul>
-                <div className="menu-num-main">
-                  <div className="main-nav-icon">
-                    <div className="main-nav-icon-sub">
-                      <Link className="main-nav-icon-user">
-                        <FaUserAlt />
-                      </Link>
-                      <Link>
-                        <FaHeart />
-                        <span>0</span>
-                      </Link>
-                      <Link>
-                        <FaCartPlus />
-                        <span>0</span>
-                      </Link>
-                    </div>
-                    <div className="main-nav-price-icon">
-                      <p>₹ 0.00</p>
-                    </div>
+            
+              {/* Render menu bar for desktop view and mobile open state */}
+              {(isMobile && menuOpen) || !isMobile ? (
+                <div className="menu-main-div">
+                  <div className="menu-div">
+                    <ul>
+                      <li onClick={closeMenu}>
+                        <Link to="/" className="menu-link">
+                          HOME
+                        </Link>
+                      </li>
+                      <li onClick={closeMenu}>
+                        <Link className="menu-link">SHOP</Link>
+                      </li>
+                      <li onClick={closeMenu}>
+                        <Link to="/about" className="menu-link">
+                          ABOUT US
+                        </Link>
+                      </li>
+                      <li onClick={closeMenu}>
+                        <Link className="menu-link">MY ACCOUNT</Link>
+                      </li>
+                      <li onClick={closeMenu}>
+                        <Link className="menu-link">CONTACT</Link>
+                      </li>
+                      
+                    </ul>   
                   </div>
                 </div>
-              </div>
-            ) : null}
+                 ) : null}
+                {!isMobile &&(
+                  <div className="menu-num-main">
+                    <div className="main-nav-icon">
+                      <div className="main-nav-icon-sub">
+                        <Link className="main-nav-icon-user">
+                          <FaUserAlt />
+                        </Link>
+                        <Link>
+                          <FaHeart />
+                          <span>0</span>
+                        </Link>
+                        <Link>
+                          <FaCartPlus />
+                          <span>0</span>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                )}
+            </div>    
           </div>
         </div>
       </div>

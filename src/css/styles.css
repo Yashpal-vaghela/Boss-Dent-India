@@ -18,7 +18,9 @@ footer {
 }
 
 .footer-container {
-  display: flex;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4  , 1fr);
   justify-content: space-between;
   max-width: 1200px;
   margin: 0;
@@ -27,7 +29,8 @@ footer {
 
 .footer-section {
   margin-top: 40px;
-  flex: 1;
+  /* flex: 1; */
+  /* width: 25%; */
 }
 
 .footer-section h3 {

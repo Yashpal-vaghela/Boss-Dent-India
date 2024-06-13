@@ -6,18 +6,16 @@
 body {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 /* Top Navbar */
 
 .top-nav-sub {
-  margin: 20px;
-}
-
-.top-nav-sub {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 20px;
 }
 
 .top-nav-p1 {
@@ -34,7 +32,7 @@ body {
   font-size: 14px;
   line-height: 14px;
   font-weight: 400;
-  font-family: Roboto, sans-serif;
+  font-family: Source Sans pro, sans-serif;
   color: #646464;
 }
 
@@ -59,7 +57,7 @@ body {
   line-height: 14px;
   font-weight: 500;
   color: rgb(100, 100, 100);
-  font-family: Roboto, sans-serif;
+  font-family: Source Sans pro, sans-serif;
 }
 
 .top-nav-p2 hr {
@@ -75,7 +73,7 @@ body {
   font-size: 17px;
   line-height: 14px;
   font-weight: 400;
-  font-family: Roboto, sans-serif;
+  font-family: Source Sans pro, sans-serif;
   color: #646464;
 }
 
@@ -92,10 +90,19 @@ body {
   justify-content: space-between;
   margin: 10px 20px;
 }
+.logo-main{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 0 10px;
+    width: 100%; */
+    position: relative;
+}
 
 .logo-sub {
-  width: 145px;
+  width: 200px;
   height: auto;
+  margin-right: 100px;
 }
 
 .logo-sub img {
@@ -109,6 +116,15 @@ body {
 
 .toggel-main{
   visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+}
+.toggle-icon {
+  font-size: 24px;
 }
 
 .search-sub {
@@ -174,9 +190,6 @@ body {
 }
 
 /* Menubar */
-
-
-
 .menu-sub {
   background-color: #222;
   display: flex;
@@ -187,7 +200,12 @@ body {
   width: 100%;
   transition: top 0.3s;
 }
-
+.menu-main-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 .menu-div{
   display: flex;
 }
@@ -224,9 +242,8 @@ body {
 .menu-num-main {
   display: flex;
   align-items: center;
-  justify-content: right;
-  right: -20%;
-  position: relative;
+  justify-content: center;
+
 }
 
 .menu-num-icon {
@@ -250,7 +267,7 @@ body {
   line-height: 15px;
   font-weight: 400;
   color: #000;
-  font-family: Roboto, sans-serif;
+  font-family: Source Sans pro, sans-serif;
   margin: 5px 0 0 0;
 }
 
@@ -260,8 +277,31 @@ body {
   line-height: 16px;
   font-weight: 700;
   color: #000;
-  font-family: Roboto, sans-serif;
+  font-family: Source Sans pro, sans-serif;
   margin: 5px 0;
+}
+
+.main-nav-icon {
+  display: flex;
+  align-items: center;
+  margin-left: 100px;
+}
+.main-nav-icon2 {
+  display: flex;
+  align-items: center;
+}
+.main-nav-icon-sub {
+  display: flex;
+  gap: 5px;
+}
+.main-nav-icon-sub .main-nav-icon-user,
+.main-nav-icon-sub Link {
+  font-size: 1.2rem;
+}
+.main-nav-icon-sub a span {
+  margin-left: 0px;
+  font-size: 1rem;
+  color: #000;
 }
 
 /* Banner Section */
@@ -317,7 +357,7 @@ body {
   line-height: 59px;
   font-weight: 700;
   color: rgb(0, 0, 0);
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: Source Sans Pro, sans-serif;
   margin-bottom: 20px;
 }
 
@@ -409,7 +449,7 @@ body {
   line-height: 36px;
   font-weight: 700;
   color: rgb(0, 0, 0);
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: Source Sans Pro, sans-serif;
 }
 
 .banner-p2-fbox-content-txt p {
@@ -454,7 +494,7 @@ body {
   line-height: 36px;
   font-weight: 700;
   color: rgb(0, 0, 0);
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: Source Sans Pro, sans-serif;
 }
 
 .banner-p2-sbox-content-txt p {
@@ -514,7 +554,7 @@ body {
   line-height: 22px;
   font-weight: 500;
   color: black;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: Source Sans Pro, sans-serif;
   transition: all 0.2s;
 }
 
@@ -605,4 +645,71 @@ body {
   margin-top: 100px;
   margin-bottom: 40px;
 }
-/* Product Page */
+/* Login page.. */
+.login-container {
+  background-color: #fff;
+  width: 100%;
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  text-align: center;
+  font-family: Source Sans pro, sans-serif;
+}
+
+.login-title {
+  color: #000;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.login-form{
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-label{
+  color: #000;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-input{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+.forgot-password{
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #bf8e22;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: right;
+}
+.forgot-password:hover {
+  text-decoration: underline;
+}
+.login-button{
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+  width: auto;
+  border-radius: 1rem;
+  align-self: center;
+  text-align: center;
+}
+.login-button:hover{
+  background-color: #bf8e22;
+}
