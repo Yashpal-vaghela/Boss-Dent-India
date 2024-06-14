@@ -12,6 +12,12 @@ const Nav = () => {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
+<<<<<<< HEAD
+=======
+      if (window.innerWidth > 768) {
+        setMenuOpen(false);
+      }
+>>>>>>> fe9db94accd88d90444571e74501fa49c6b17539
     };
 
     window.addEventListener("resize", handleResize);
@@ -22,13 +28,17 @@ const Nav = () => {
   }, []);
 
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+    setMenuOpen(prevMenuOpen => !prevMenuOpen);
   };
 
   const closeMenu = () => {
     setMenuOpen(false);
   };
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> fe9db94accd88d90444571e74501fa49c6b17539
   useEffect(() => {
     const scrollFunction = () => {
       const menuSubElements = document.getElementsByClassName("menu-sub");
@@ -44,6 +54,7 @@ const Nav = () => {
     };
     window.onscroll = scrollFunction;
   }, []);
+  // console.log(menuOpen);
 
   return (
     <div className={`nav-main ${menuOpen ? 'nav-main-open' : ''}`}>
@@ -85,6 +96,10 @@ const Nav = () => {
             </div>
           </div>
         </div>
+<<<<<<< HEAD
+=======
+        {/* Main nav started here */}
+>>>>>>> fe9db94accd88d90444571e74501fa49c6b17539
         <div className="menu-main">
           <div className="menu-sub">
             <div className="logo-main">
@@ -111,6 +126,7 @@ const Nav = () => {
                         </Link>
                       </div>
                     </div>
+<<<<<<< HEAD
                   </div>
                   <div className="toggle-main" onClick={toggleMenu} role="button" aria-label="Toggle menu">
                     {menuOpen ? (
@@ -119,12 +135,28 @@ const Nav = () => {
                       <TiThMenu className="toggle-icon" />
                     )}
                   </div>
+=======
+                </div>
+                <div className="toggle-main" onClick={toggleMenu} role="button" aria-label="Toggle menu">
+                  {/* {menuOpen ? (
+                    <IoMdCloseCircle className="toggle-icon" />
+                  ) : (
+                    <TiThMenu className="toggle-icon" />
+                  )} */}
+                    <TiThMenu className="toggle-icon" />
+                </div>
+>>>>>>> fe9db94accd88d90444571e74501fa49c6b17539
                 </>
               ) : null}
               {(isMobile && menuOpen) || !isMobile ? (
-                <div className="menu-main-div">
+                <div className={`menu-main-div ${menuOpen ? 'open' : ''}`}>
                   <div className="menu-div">
                     <ul>
+                      {menuOpen && (
+                          <li onClick={toggleMenu} className="close">
+                            <IoMdCloseCircle className="toggle-icon" />
+                          </li>
+                      )}
                       <li onClick={closeMenu}>
                         <Link to="/" className="menu-link">
                           HOME
@@ -144,7 +176,11 @@ const Nav = () => {
                       <li onClick={closeMenu}>
                         <Link className="menu-link">CONTACT</Link>
                       </li>
+<<<<<<< HEAD
                     </ul>
+=======
+                    </ul>   
+>>>>>>> fe9db94accd88d90444571e74501fa49c6b17539
                   </div>
                 </div>
               ) : null}
@@ -167,7 +203,11 @@ const Nav = () => {
                   </div>
                 </div>
               )}
+<<<<<<< HEAD
             </div>
+=======
+            </div>    
+>>>>>>> fe9db94accd88d90444571e74501fa49c6b17539
           </div>
         </div>
       </div>
