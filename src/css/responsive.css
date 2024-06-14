@@ -95,6 +95,7 @@
         align-items: center;
         justify-content: space-between;
         padding: 0px 10px;
+        /* flex-direction: column; */
     }
     .logo-sub{
         width: 200px;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -51,7 +52,7 @@ const Signup = () => {
             <div className="form-group">
           <label className="form-label" htmlFor="password">Password</label>
           <input
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? "text" : "password"} 
             id="password"
             className="form-input"
             value={password}
@@ -59,7 +60,7 @@ const Signup = () => {
             required
           />
           <span className="password-toggle-icon" onClick={togglePasswordVisibility}>
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
+            {showPassword ? <FaEye /> :   <FaEyeSlash /> }
           </span>
         </div>
         <div className="form-group">
@@ -73,10 +74,11 @@ const Signup = () => {
             required
           />
           <span className="password-toggle-icon" onClick={toggleConfirmPasswordVisibility}>
-            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+            {showConfirmPassword ? <FaEye />  :  <FaEyeSlash />}
           </span>
         </div>
-        <button type="submit" className="signup-button">Sign Up</button>
+        <button type="submit" className="signup-button">Sign Up</button> 
+        <p className='login-text'>I have a already account?<a>Log in</a></p>
         </form>
     </div>
   )

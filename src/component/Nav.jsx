@@ -11,7 +11,7 @@ const Nav = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth <= 768);
     };
 
     window.addEventListener("resize", handleResize);
@@ -20,6 +20,7 @@ const Nav = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -27,19 +28,19 @@ const Nav = () => {
   const closeMenu = () => {
     setMenuOpen(false);
   };
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     const scrollFunction = () => {
-     const menuSubElements = document.getElementsByClassName("menu-sub");
-      if (document.body.scrollTop > 20 || document.documentElement.scrollTop> 20){
-        Array.from(menuSubElements).forEach(element =>{
+      const menuSubElements = document.getElementsByClassName("menu-sub");
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        Array.from(menuSubElements).forEach(element => {
           element.style.top = "0";
         });
-      }else {
+      } else {
         Array.from(menuSubElements).forEach(element => {
           element.style.top = "70px";
         });
-      } 
+      }
     };
     window.onscroll = scrollFunction;
   }, []);
@@ -84,20 +85,17 @@ const Nav = () => {
             </div>
           </div>
         </div>
-        {/* Main nav strted here */}
         <div className="menu-main">
           <div className="menu-sub">
-            <div className="logo-main">   
+            <div className="logo-main">
               <div className="logo-sub">
                 <Link>
                   <img src={logo} alt="Logo" />
                 </Link>
               </div>
-                
-              {/* Render toggle button for mobile view */}
               {isMobile ? (
                 <>
-                <div className="menu-num-main">
+                  <div className="menu-num-main">
                     <div className="main-nav-icon2">
                       <div className="main-nav-icon-sub">
                         <Link className="main-nav-icon-user">
@@ -113,21 +111,16 @@ const Nav = () => {
                         </Link>
                       </div>
                     </div>
-                </div>
-                <div className="toggle-main" onClick={toggleMenu} role="button" aria-label= "Toggle menu">
-                  {menuOpen ? (
-                    <IoMdCloseCircle className="toggle-icon" />
-                  ) : (
-                    <TiThMenu className="toggle-icon" />
-                  )}
-                </div>
+                  </div>
+                  <div className="toggle-main" onClick={toggleMenu} role="button" aria-label="Toggle menu">
+                    {menuOpen ? (
+                      <IoMdCloseCircle className="toggle-icon" />
+                    ) : (
+                      <TiThMenu className="toggle-icon" />
+                    )}
+                  </div>
                 </>
-              ) : (
-                // Render nothing for desktop view
-                null
-              )}
-            
-              {/* Render menu bar for desktop view and mobile open state */}
+              ) : null}
               {(isMobile && menuOpen) || !isMobile ? (
                 <div className="menu-main-div">
                   <div className="menu-div">
@@ -151,31 +144,30 @@ const Nav = () => {
                       <li onClick={closeMenu}>
                         <Link className="menu-link">CONTACT</Link>
                       </li>
-                      
-                    </ul>   
+                    </ul>
                   </div>
                 </div>
-                 ) : null}
-                {!isMobile &&(
-                  <div className="menu-num-main">
-                    <div className="main-nav-icon">
-                      <div className="main-nav-icon-sub">
-                        <Link className="main-nav-icon-user">
-                          <FaUserAlt />
-                        </Link>
-                        <Link>
-                          <FaHeart />
-                          <span>0</span>
-                        </Link>
-                        <Link>
-                          <FaCartPlus />
-                          <span>0</span>
-                        </Link>
-                      </div>
+              ) : null}
+              {!isMobile && (
+                <div className="menu-num-main">
+                  <div className="main-nav-icon">
+                    <div className="main-nav-icon-sub">
+                      <Link className="main-nav-icon-user">
+                        <FaUserAlt />
+                      </Link>
+                      <Link>
+                        <FaHeart />
+                        <span>0</span>
+                      </Link>
+                      <Link>
+                        <FaCartPlus />
+                        <span>0</span>
+                      </Link>
                     </div>
                   </div>
-                )}
-            </div>    
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
