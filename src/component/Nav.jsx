@@ -11,7 +11,10 @@ const Nav = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth <= 768);
+      if (window.innerWidth > 768) {
+        setMenuOpen(false);
+      }
     };
 
     window.addEventListener("resize", handleResize);
@@ -20,29 +23,31 @@ const Nav = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+    setMenuOpen(prevMenuOpen => !prevMenuOpen);
   };
 
   const closeMenu = () => {
     setMenuOpen(false);
   };
   
-  useEffect(()=>{
+  useEffect(() => {
     const scrollFunction = () => {
-     const menuSubElements = document.getElementsByClassName("menu-sub");
-      if (document.body.scrollTop > 20 || document.documentElement.scrollTop> 20){
-        Array.from(menuSubElements).forEach(element =>{
+      const menuSubElements = document.getElementsByClassName("menu-sub");
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        Array.from(menuSubElements).forEach(element => {
           element.style.top = "0";
         });
-      }else {
+      } else {
         Array.from(menuSubElements).forEach(element => {
           element.style.top = "70px";
         });
-      } 
+      }
     };
     window.onscroll = scrollFunction;
   }, []);
+  // console.log(menuOpen);
 
   return (
     <div className={`nav-main ${menuOpen ? 'nav-main-open' : ''}`}>
@@ -84,7 +89,7 @@ const Nav = () => {
             </div>
           </div>
         </div>
-        {/* Main nav strted here */}
+        {/* Main nav started here */}
         <div className="menu-main">
           <div className="menu-sub">
             <div className="logo-main">   
@@ -114,12 +119,13 @@ const Nav = () => {
                       </div>
                     </div>
                 </div>
-                <div className="toggle-main" onClick={toggleMenu} role="button" aria-label= "Toggle menu">
-                  {menuOpen ? (
+                <div className="toggle-main" onClick={toggleMenu} role="button" aria-label="Toggle menu">
+                  {/* {menuOpen ? (
                     <IoMdCloseCircle className="toggle-icon" />
                   ) : (
                     <TiThMenu className="toggle-icon" />
-                  )}
+                  )} */}
+                    <TiThMenu className="toggle-icon" />
                 </div>
                 </>
               ) : (
@@ -129,9 +135,14 @@ const Nav = () => {
             
               {/* Render menu bar for desktop view and mobile open state */}
               {(isMobile && menuOpen) || !isMobile ? (
-                <div className="menu-main-div">
+                <div className={`menu-main-div ${menuOpen ? 'open' : ''}`}>
                   <div className="menu-div">
                     <ul>
+                      {menuOpen && (
+                          <li onClick={toggleMenu} className="close">
+                            <IoMdCloseCircle className="toggle-icon" />
+                          </li>
+                      )}
                       <li onClick={closeMenu}>
                         <Link to="/" className="menu-link">
                           HOME
@@ -151,30 +162,29 @@ const Nav = () => {
                       <li onClick={closeMenu}>
                         <Link className="menu-link">CONTACT</Link>
                       </li>
-                      
                     </ul>   
                   </div>
                 </div>
-                 ) : null}
-                {!isMobile &&(
-                  <div className="menu-num-main">
-                    <div className="main-nav-icon">
-                      <div className="main-nav-icon-sub">
-                        <Link className="main-nav-icon-user">
-                          <FaUserAlt />
-                        </Link>
-                        <Link>
-                          <FaHeart />
-                          <span>0</span>
-                        </Link>
-                        <Link>
-                          <FaCartPlus />
-                          <span>0</span>
-                        </Link>
-                      </div>
+              ) : null}
+              {!isMobile && (
+                <div className="menu-num-main">
+                  <div className="main-nav-icon">
+                    <div className="main-nav-icon-sub">
+                      <Link className="main-nav-icon-user">
+                        <FaUserAlt />
+                      </Link>
+                      <Link>
+                        <FaHeart />
+                        <span>0</span>
+                      </Link>
+                      <Link>
+                        <FaCartPlus />
+                        <span>0</span>
+                      </Link>
                     </div>
                   </div>
-                )}
+                </div>
+              )}
             </div>    
           </div>
         </div>

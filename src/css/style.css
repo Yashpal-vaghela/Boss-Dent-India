@@ -10,6 +10,14 @@ body {
 }
 
 /* Top Navbar */
+.nav-main {
+  background-color: #fff;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
 
 .top-nav-sub {
   display: flex;
@@ -51,7 +59,9 @@ body {
   align-items: center;
   gap: 10px;
 }
-
+.top-p2-txt {
+  margin-right: 10px;
+}
 .top-p2-txt p {
   font-size: 14px;
   line-height: 14px;
@@ -88,7 +98,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 10px 20px;
+  margin: 10px;
 }
 .logo-main{
     display: flex;
@@ -114,7 +124,7 @@ body {
   width: 50%;
 }
 
-.toggel-main{
+.toggle-main {
   visibility: hidden;
   display: flex;
   align-items: center;
