@@ -317,7 +317,7 @@ body {
 /* Banner Section */
 
 .banner-main {
-  margin-top: 90px;
+  margin-top: 140px;
 }
 
 .banner-sub {
@@ -831,8 +831,95 @@ body {
 .signup-button:hover {
   box-shadow: inset 400px 0 0 0 #c89c31;
 }
+ /* Contact page */
+.container{
+  padding: 20px;
+  margin-top: 150px;
+}
+.breadcrumb {
+  margin-bottom: 20px;
+}
+.breadcrumb a{
+  text-decoration: none;
+  color: #007bff;
+}
+.breadcrumb span{
+  color: #6c757d;
+}
+.contact-info{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 40px;
+}
 
+.map{
+  flex: 1;
+  margin-right: 20px;
+}
+.details{
+  flex: 1;
+  max-width: 400px;
+  color: #000;
+}
+.details h2{
+  font-family: Source Sans Pro, "sans-serif";
+}
+.details p{ 
+   margin: 0 0 10px;
+   font-family: Roboto, "sans-serif";
+}
+.contact-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: max-content;
+}
+.contact-content{
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.contact-content h2{
+  font-family:Source Sans pro, sans-serif;
+  color:rgb(0, 0, 0);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 32px;
+}
 
+.contact-form input,
+.contact-form textarea {
+  margin-bottom: 15px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #c89c31;
+  border-radius: 4px;
+  width: 100%;
+}
 
+.contact-form button{
+  padding: 10px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.contact-form button:hover{
+  background-color: #0056b3;
+}
 
- 
+.form-image{
+  flex: 1;
+  width: 50%;
+  display: flex;
+  justify-content: right;
+  margin-top: 20px;
+}
+.form-image img{ 
+  max-width: 100%;
+  height: auto;
+}
