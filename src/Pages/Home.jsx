@@ -121,7 +121,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section>
+      <section className="banner-section">
         <Swiper
           spaceBetween={30}
           centeredSlides={true}
