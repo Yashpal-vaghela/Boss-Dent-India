@@ -838,6 +838,7 @@ body {
 }
 .breadcrumb {
   margin-bottom: 20px;
+  text-align: start;
 }
 .breadcrumb a{
   text-decoration: none;
@@ -867,19 +868,22 @@ body {
 }
 .details p{ 
    margin: 0 0 10px;
-   font-family: Roboto, "sans-serif";
+   text-align: left;
+}
+.contact-detail .detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 .contact-form {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  height: max-content;
+  height: auto;
 }
 .contact-content{
-  display: flex;
-  flex-direction: column;
-  max-width: 600px;
-  margin: 0 auto;
+  flex: 1;
+  max-width: 50%;
 }
 .contact-content h2{
   font-family:Source Sans pro, sans-serif;
@@ -888,13 +892,36 @@ body {
   font-size: 32px;
   line-height: 32px;
 }
-
-.contact-form input,
+.contact-content p{
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 10px 30px;
+}
+.contact-content form {
+  display: flex;
+  flex-direction: column;
+}
+.input-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  margin-left: 10px;
+  gap: 20px;                                                                               
+}
+.input-row input {
+  width: 48%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #c89c31;
+  border-radius: 4px;
+}
+.input-row input,
 .contact-form textarea {
   margin-bottom: 15px;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #c89c31;
+  border: 1px solid #000000;
   border-radius: 4px;
   width: 100%;
 }
@@ -903,23 +930,29 @@ body {
   padding: 10px;
   font-size: 16px;
   color: #fff;
-  background-color: #007bff;
+  background-color: #000;
   border: none;
-  border-radius: 4px;
+  border-radius: 100px;
   cursor: pointer;
+  box-shadow: inset 0 0 0 0 #c89c31;
+  -webkit-transition: ease-out 0.4s;
+  -moz-transition: ease-out 0.4s;
+  transition: ease-out 0.4s;
+  margin: 0 auto;
+  width: 150px;
 }
 .contact-form button:hover{
-  background-color: #0056b3;
+  box-shadow: inset 400px 0 0 0 #c89c31;
 }
 
 .form-image{
   flex: 1;
   width: 50%;
   display: flex;
-  justify-content: right;
+  justify-content: center;
   margin-top: 20px;
 }
 .form-image img{ 
   max-width: 100%;
-  height: auto;
+  height: 400px;
 }
