@@ -25,9 +25,9 @@ const Footer = () => {
           <h3>BOSSDENT</h3>
           <ul>
             <li><a href="#">Shop</a></li>
-            <li><a href="#">About Us</a></li>
+            <li><a href="/about">About Us</a></li>
             <li><a href="#">Wishlist</a></li>
-            <li><a href="#">My Account</a></li>
+            <li><a href="/my-account">My Account</a></li>
           </ul>
         </div>
         <div className="footer-section">
@@ -36,7 +36,7 @@ const Footer = () => {
             <li><a href="#">Refund & Returns Policy</a></li>
             <li><a href="#">Privacy Policy</a></li>
             <li><a href="#">Terms & Conditions</a></li>
-            <li><a href="#">Help Center</a></li>
+            <li><a href="/contact">Help Center</a></li>
           </ul>
         </div>
         <div className="footer-section">
@@ -59,7 +59,7 @@ const Footer = () => {
       </div>
       <div className="footer-bottom">
         <p>2024 © all right reserved by BossDentIndia</p>
-        <p>Powered By Web Best Solution</p>
+        {/* <p>Powered By Web Best Solution</p> */}
       </div>
     </footer>
   )

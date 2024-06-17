@@ -150,10 +150,10 @@ const Nav = () => {
                         </Link>
                       </li>
                       <li onClick={closeMenu}>
-                        <Link className="menu-link">MY ACCOUNT</Link>
+                        <Link to="/my-account"className="menu-link">MY ACCOUNT</Link>
                       </li>
                       <li onClick={closeMenu}>
-                        <Link className="menu-link">CONTACT</Link>
+                        <Link to="/contact"className="menu-link">CONTACT</Link>
                       </li>
                     </ul>   
                   </div>
