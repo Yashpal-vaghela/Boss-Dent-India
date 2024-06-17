@@ -857,17 +857,19 @@ body {
   flex: 1;
   margin-right: 20px;
 }
-.details{
+.details{  
+
   flex: 1;
   max-width: 400px;
   color: #000;
 }
-.details h2{
-  font-family: Source Sans Pro, "sans-serif";
+.details-title {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 32px;
 }
 .details p{ 
    margin: 0 0 10px;
-   font-family: Roboto, "sans-serif";
 }
 .contact-form {
   display: flex;
