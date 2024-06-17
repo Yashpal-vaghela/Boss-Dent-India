@@ -23,10 +23,14 @@ const Contact = () => {
         <div className="details">
           <h2>Contact Information</h2>
           <p>BossdentIndia (Disposables & Consumables) is an online dental product selling store based in Surat, Gujarat.</p>
-          <p><strong>Surat</strong></p>
-          <p>Plot no.3-3/3-4/ Dhuna house, opp. Patel Nagar, A.k. Road, Varachha, Surat</p>
-          <p>Email: <a href="mailto:zahndentaldepo@gmail.com">zahndentaldepo@gmail.com</a></p>
-          <p>Phone: <a href="tel:+917698828883">+91 76988 28883</a></p>
+          <div className='contact-detail'>
+            <h2>Surat</h2>
+            <div className='detail-row'>
+            <p>Plot no.3-3/3-4/ Dhuna house, opp. Patel Nagar, A.k. Road, Varachha, Surat</p>
+            <p>Email: <a href="mailto:zahndentaldepo@gmail.com">zahndentaldepo@gmail.com</a></p>
+            <p>Phone: <a href="tel:+917698828883">+91 76988 28883</a></p>
+            </div>
+          </div>
         </div>
       </div>
         <div className="contact-form">
