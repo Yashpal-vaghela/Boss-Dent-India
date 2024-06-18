@@ -124,6 +124,36 @@
   .form-image {
     width: 100%;
   }
+  /* help center and return policy */
+  .help-center, .refund-policy {
+    padding-top: 60px;
+    margin: 30px auto;
+  }
+
+  .help-center h1, .header h1 {
+    margin-left: 10px;
+  }
+
+  .help-center nav, .header nav {
+    margin-left: 10px;
+  }
+
+  .content h2 {
+    font-size: 22px;
+    margin-left: 20px;
+  }
+
+  .content h3 {
+    margin-left: 25px;
+  }
+
+  .content p {
+    margin: 20px;
+  }
+
+  .content ul {
+    margin-left: 40px;
+  }
 }
 
 @media only screen and (max-width: 600px) {
@@ -249,6 +279,37 @@
   .input-row input {
     font-size: 14px;
   }
+  /* help center and return policy */
+  .help-center, .refund-policy {
+    padding-top: 80px;
+    margin: 20px auto;
+  }
+
+  .help-center h1, .header h1 {
+    margin-left: 5px;
+    font-size: 24px;
+  }
+
+  .help-center nav, .header nav {
+    margin-left: 5px;
+  }
+
+  .content h2 {
+    font-size: 20px;
+    margin-left: 15px;
+  }
+
+  .content h3 {
+    margin-left: 20px;
+  }
+
+  .content p {
+    margin: 15px;
+  }
+
+  .content ul {
+    margin-left: 30px;
+  }
 }
 
 @media only screen and (max-width: 480px) {
@@ -292,4 +353,35 @@
   .contact-form button {
     width: 100%;
   }
+  /* help center and return policy */
+  .help-center, .refund-policy {
+    padding-top: 60px;
+    margin: 10px auto;
+  }
+
+  .help-center h1, .header h1 {
+    font-size: 20px;
+  }
+
+  .help-center nav, .header nav {
+    margin-left: 0;
+  }
+
+  .content h2 {
+    font-size: 18px;
+    margin-left: 10px;
+  }
+
+  .content h3 {
+    margin-left: 15px;
+  }
+
+  .content p {
+    margin: 10px;
+  }
+
+  .content ul {
+    margin-left: 20px;
+  }
 }
+
