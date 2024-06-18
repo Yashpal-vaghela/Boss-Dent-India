@@ -63,7 +63,7 @@ const Signup = () => {
             required
           />
           <span className="password-toggle-icon" onClick={togglePasswordVisibility}>
-            {showPassword ? <FaEye /> :   <FaEyeSlash /> }
+            {showPassword ? <FaEye /> : <FaEyeSlash /> }
           </span>
         </div>
         <div className="form-group">
