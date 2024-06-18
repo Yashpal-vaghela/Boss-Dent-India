@@ -5,6 +5,7 @@ const faqData = [
         question: "How to place an order?", 
         answer: [
           "For the product order follow the below instructions:",
+  
           "1. Select your product",
           "2. Select size and quantity",
           "3. Click on add to cart",
@@ -30,7 +31,7 @@ const faqData = [
     },
     { 
         question: "How can I contact the store?", 
-        answer: [
+          answer: [
         "Bossdentindia (Disposables & Consumables) is an online dental product selling store based in Surat Gujrat.", 
         "Address: Plot no.3-3/3-4/ Dhuna house, opp. Patel Nagar, A.k. Road, Varachha, Surat",
         "Email: zahndentaldepo@gmail.com",
@@ -46,17 +47,26 @@ const HelpCenter = () => {
       };
   return (
     <div className="help-center">
-      <h1>Help Center</h1>
-      <nav>
-        <a href="/">Home</a> &gt; <span>Help Center</span>
-      </nav>
+      <div className='detalis'>
+        <h1>Help Center</h1>
+        <nav>
+          <a href="/">Home</a> &gt; <span>Help Center</span>
+        </nav>
+      </div>
+      
       <div className="faq-list">
         {faqData.map((faq, index) => (
           <div key={index} className="faq-item">
             <div className="faq-question" onClick={() => toggleFAQ(index)}>
               <span>+</span> {faq.question}
             </div>
-            {activeIndex === index && <div className="faq-answer">{faq.answer}</div>}
+            {activeIndex === index && 
+              <div className="faq-answer">
+                {Array.isArray(faq.answer) ? faq.answer.map((line, idx) => (
+                  <p key={idx}>{line}</p>
+                )) : <p>{faq.answer}</p>}
+              </div>
+            }
           </div>
         ))}
       </div>

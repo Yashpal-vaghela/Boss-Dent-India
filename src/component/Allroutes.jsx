@@ -6,6 +6,7 @@ import Login from '../Pages/Login'
 import Signup from '../Pages/Signup'
 import Contact from '../css/Contact'
 import HelpCenter from '../Pages/HelpCenter'
+import RefundPolicy from '../Pages/RefundPolicy'
 
 const Allroutes = () => {
   return (
@@ -17,6 +18,7 @@ const Allroutes = () => {
             <Route path='/sign-up' element={<Signup />}/>
             <Route path='/contact' element={<Contact />}/>
             <Route path='/help-center' element={<HelpCenter />}/>
+            <Route path='/refund-and-returns-policy' element={<RefundPolicy />} />
         </Routes>
     </div>
   )

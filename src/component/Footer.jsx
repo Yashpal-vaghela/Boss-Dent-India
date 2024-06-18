@@ -36,7 +36,7 @@ const Footer = () => {
             <li><a href="#">Refund & Returns Policy</a></li>
             <li><a href="#">Privacy Policy</a></li>
             <li><a href="#">Terms & Conditions</a></li>
-            <li><a href="/contact">Help Center</a></li>
+            <li><a href="/help-center">Help Center</a></li>
           </ul>
         </div>
         <div className="footer-section">
