@@ -1062,3 +1062,58 @@ body {
   padding: 15px;
   background: #fff;
 }
+/* RefundPolicy.css */
+.refund-policy {
+  font-family: Roboto, sans-serif;
+  padding-top: 120px;
+  margin: 20px;
+  color: rgb(100, 100, 100);
+  text-align: left;
+}
+
+.header h1 {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.header nav {
+  margin: 20px 0px;
+  text-align: left;
+}
+
+.header nav a {
+  text-decoration: none;
+  color: #000;
+}
+
+.header nav span {
+  color: #888;
+}
+.content{
+  padding-top: 4%;
+}
+.content h2 {
+  font-family: Source Sans Pro, sans-serif;
+  font-size: 26px;
+  color: #000;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  margin-left: 25px;
+}
+
+.content h3 {
+  font-size: 16px;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  margin-left: 30px;
+}
+
+.content p, .content ul {
+  margin: 10px;
+}
+
+.content ul {
+  list-style: disc;
+  margin-left: 50px;
+}
