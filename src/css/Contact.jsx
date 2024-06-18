@@ -62,7 +62,7 @@ const Contact = () => {
               <input type="email" name="email" placeholder="E-mail" required />
             </div>
             <div className="input-row">
-              <input type="text" name="phone" placeholder="Phone" required />
+              <input type="number" name="phone" placeholder="Phone" required />
               <input
                 type="text"
                 name="subject"

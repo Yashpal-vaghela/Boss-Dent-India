@@ -32,6 +32,7 @@ const Signup = () => {
                 <input 
                     type='text'
                     id='username'
+                    placeholder='Enter Your Username'
                     className='form-input'
                     value={username}
                     onchnage={(e)=> setUsername(e.target.value)}
@@ -43,6 +44,7 @@ const Signup = () => {
                 <input
                     type="email"
                     id="email"
+                    placeholder='Enter Your E-mail'
                     className="form-input"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -54,6 +56,7 @@ const Signup = () => {
           <input
             type={showPassword ? "text" : "password"} 
             id="password"
+            placeholder='Entern Your Password'
             className="form-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -68,6 +71,7 @@ const Signup = () => {
           <input
             type={showConfirmPassword ? "text" : "password"}
             id="confirm-password"
+            placeholder='Re-Enter Your Password'
             className="form-input"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -78,7 +82,7 @@ const Signup = () => {
           </span>
         </div>
         <button type="submit" className="signup-button">Sign Up</button> 
-        <p className='login-text'>I have a already account?<a>Log in</a></p>
+        <p className='login-text'>I have a already account?<a href='/my-account'>Log in</a></p>
         </form>
     </div>
   )
