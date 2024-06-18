@@ -1007,19 +1007,22 @@ body {
 
 .help-center {
   font-family: Roboto, sans-serif;
-  padding: 20px;
-  max-width: 600px;
+  padding-top: 150px;
   margin: 50px auto;
   color: rgb(100, 100, 100);
+  text-align: left;
 }
 
 .help-center h1 {
-  text-align: center;
+  text-align: left;
   margin-bottom: 20px;
+  margin-left: 20px;
 }
 
 .help-center nav {
   margin-bottom: 20px;
+  margin-left: 20px;
+  text-align: left;
 }
 
 .help-center nav a {
@@ -1034,6 +1037,8 @@ body {
 .faq-list {
   border: 1px solid #ddd;
   border-radius: 5px;
+  margin: 0 auto;
+  width: fit-content;
 }
 
 .faq-item {
@@ -1062,10 +1067,10 @@ body {
   padding: 15px;
   background: #fff;
 }
-/* RefundPolicy.css */
+/* RefundPolicy*/
 .refund-policy {
   font-family: Roboto, sans-serif;
-  padding-top: 120px;
+  padding-top: 150px;
   margin: 20px;
   color: rgb(100, 100, 100);
   text-align: left;
@@ -1109,8 +1114,11 @@ body {
   margin-left: 30px;
 }
 
-.content p, .content ul {
-  margin: 10px;
+.content p {
+  margin: 25px;
+}
+.content ul{
+  margin: 15px;
 }
 
 .content ul {
