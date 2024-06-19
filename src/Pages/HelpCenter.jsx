@@ -58,7 +58,8 @@ const HelpCenter = () => {
         {faqData.map((faq, index) => (
           <div key={index} className="faq-item">
             <div className="faq-question" onClick={() => toggleFAQ(index)}>
-              <span>+</span> {faq.question}
+              <span>+</span> 
+               {faq.question}
             </div>
             {activeIndex === index && 
               <div className="faq-answer">
