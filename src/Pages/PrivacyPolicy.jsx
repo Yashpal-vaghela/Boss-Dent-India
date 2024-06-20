@@ -99,7 +99,6 @@ const PrivacyPolicy = () => {
                     If you have any questions, concerns, or requests regarding this Privacy Policy or the handling of your personal.
                     </li>
                 </ul>
-                {/* <p style={{marginLeft: "25px", marginTop:"20px"}}>8. Subject to Surat Jurisdiction only</p> */}
                 <h3>Subject to Surat Jurisdiction only</h3>
         </div>
     </div>

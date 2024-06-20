@@ -663,7 +663,7 @@ body {
   padding: 20px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  text-align: center;
+  text-align: left;
   font-family: Source Sans pro, sans-serif;
 }
 
@@ -846,6 +846,7 @@ body {
 .container {
   padding: 20px 20px 0px 20px;
   margin-top: 150px;
+  text-align: left;
 }
 .breadcrumb {
   margin-bottom: 20px;
@@ -863,6 +864,7 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
+  margin-top: 40px;
   width: 100%;
 }
 
@@ -1037,7 +1039,7 @@ body {
 .faq-list {
   border: 1px solid #ddd;
   border-radius: 5px;
-  margin: 0 auto;
+  margin: 30px auto;
   width: fit-content;
 }
 
@@ -1133,6 +1135,16 @@ body {
   margin: 20px;
   color: rgb(100, 100, 100);
   text-align: left;
+}
+.header {
+  background-image: url('../images/element_22.png');
+  background-size: cover;
+  opacity: 0.5;
+  background-position: right;
+  padding: 50px 20px;
+  color: #000;
+  background-color: aliceblue;
+  border-radius: 10px;
 }
 .policy-info{
   margin-top: 5%;

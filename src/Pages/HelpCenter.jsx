@@ -47,7 +47,7 @@ const HelpCenter = () => {
       };
   return (
     <div className="help-center">
-      <div className='detalis'>
+      <div className='header'>
         <h1>Help Center</h1>
         <nav>
           <a href="/">Home</a> &gt; <span>Help Center</span>

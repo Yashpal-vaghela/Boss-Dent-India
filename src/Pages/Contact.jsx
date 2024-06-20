@@ -4,7 +4,8 @@ import contact from "../images/contact.png";
 const Contact = () => {
   return (
     <div className="container">
-      <div className="breadcrumb">
+      <div className="header">
+        <h1>Contact</h1>
         <a href="/">Home</a> <span>&gt; Contact</span>
       </div>
       <div className="contact-info">
