@@ -878,6 +878,11 @@ body {
   max-width: 400px;
   color: #000;
   margin-right: 20px;
+  /* padding: 30px; */
+  background-image: url("../images/element_26.png");
+  background-size: cover;
+  background-position: right;
+  border-radius: 10px;
 }
 .details-title {
   font-size: 32px;
