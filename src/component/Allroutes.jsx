@@ -7,6 +7,7 @@ import Signup from '../Pages/Signup'
 import Contact from '../css/Contact'
 import HelpCenter from '../Pages/HelpCenter'
 import RefundPolicy from '../Pages/RefundPolicy'
+import PrivacyPolicy from '../Pages/PrivacyPolicy'
 
 const Allroutes = () => {
   return (
@@ -19,6 +20,7 @@ const Allroutes = () => {
             <Route path='/contact' element={<Contact />}/>
             <Route path='/help-center' element={<HelpCenter />}/>
             <Route path='/refund-and-returns-policy' element={<RefundPolicy />} />
+            <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
         </Routes>
     </div>
   )

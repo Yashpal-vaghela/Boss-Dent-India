@@ -1114,7 +1114,7 @@ body {
   margin-left: 30px;
 }
 
-.content p {
+ .content p {
   margin: 25px;
 }
 .content ul{
@@ -1124,4 +1124,34 @@ body {
 .content ul {
   list-style: disc;
   margin-left: 50px;
+}
+/* privacy policy */
+
+.privacy-policy {
+  font-family: Lato, sans-serif;
+  padding-top: 150px;
+  margin: 20px;
+  color: rgb(100, 100, 100);
+  text-align: left;
+}
+.policy-info{
+  margin-top: 5%;
+}
+.policy-info h2{
+  font-size: 20px;
+  margin-left: 30px;
+  margin-top: 20px;
+}
+.policy-info h3{
+  font-size: 18px;
+  margin-left: 30px;
+  margin-top: 20px;
+}
+.policy-info ul{
+  margin-left: 30px;
+  margin-top: 10px;
+}
+.policy-info li{
+  margin-left: 40px;
+  margin-top: 10px;
 }

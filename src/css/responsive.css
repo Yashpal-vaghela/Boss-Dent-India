@@ -154,6 +154,27 @@
   .content ul {
     margin-left: 40px;
   }
+  /* pravicy policy */
+  .privacy-policy {
+    padding-top: 100px;
+    margin: 15px;
+  }
+
+  .policy-info h2, .policy-info h3 {
+    font-size: 18px;
+    margin-left: 20px;
+    margin-top: 15px;
+  }
+
+  .policy-info ul {
+    margin-left: 20px;
+    margin-top: 5px;
+  }
+
+  .policy-info li {
+    margin-left: 35px;
+    margin-top: 5px;
+  }
 }
 
 @media only screen and (max-width: 600px) {
@@ -310,6 +331,32 @@
   .content ul {
     margin-left: 30px;
   }
+  /* pravicy policy */
+  .privacy-policy {
+    padding-top: 80px;
+    margin: 10px;
+  }
+
+  .policy-info p{
+    margin-left: 10px;
+  }
+
+  .policy-info h2, .policy-info h3 {
+    font-size: 16px;
+    margin-left: 15px;
+    margin-top: 10px;
+  }
+
+  .policy-info ul {
+    margin-left: 15px;
+    margin-top: 5px;
+  }
+
+  .policy-info li {
+    margin-left: 25px;
+    margin-top: 5px;
+  }
+  
 }
 
 @media only screen and (max-width: 480px) {
@@ -382,6 +429,27 @@
 
   .content ul {
     margin-left: 20px;
+  }
+  /* pravicy policy */
+  .privacy-policy {
+    padding-top: 60px;
+    margin: 5px;
+  }
+
+  .policy-info h2, .policy-info h3 {
+    font-size: 14px;
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+
+  .policy-info ul {
+    margin-left: 10px;
+    margin-top: 5px;
+  }
+
+  .policy-info li {
+    margin-left: 20px;
+    margin-top: 5px;
   }
 }
 
