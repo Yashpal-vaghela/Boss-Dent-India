@@ -3,7 +3,7 @@ import about1 from "../images/about-img_1.jpg"
 import about2 from "../images/about-img_2.jpg"
 import "../css/about.css"
 
-const About = () => {
+const About = () => { 
   return (
     <div className='container'>
       <div className='about-main'>
