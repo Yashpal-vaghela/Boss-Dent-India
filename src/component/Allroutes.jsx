@@ -8,6 +8,7 @@ import Contact from '../Pages/Contact'
 import HelpCenter from '../Pages/HelpCenter'
 import RefundPolicy from '../Pages/RefundPolicy'
 import PrivacyPolicy from '../Pages/PrivacyPolicy'
+import TermAndCondition from '../Pages/TermAndCondition'
 
 const Allroutes = () => {
   return (
@@ -21,6 +22,7 @@ const Allroutes = () => {
             <Route path='/help-center' element={<HelpCenter />}/>
             <Route path='/refund-and-returns-policy' element={<RefundPolicy />} />
             <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
+            <Route path='/terms-and-conditions' element={ <TermAndCondition />}/>
         </Routes>
     </div>
   )
