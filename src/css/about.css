@@ -27,14 +27,15 @@ body{
 }
 
 
-.img-item-2{
+.img-item-2 {
+    width: -moz-fit-content;
     width: fit-content;
     position: relative;
     bottom: 150px;
-    left: -220px;
+    left: -127px;
     border: 12px solid #ffffff;
     border-radius: 50px;
-    box-shadow: 10.87px 40.569px 57px 0px ;
+    box-shadow: 10.87px 40.569px 57px 0px;
 }
 
 .about-txt-main{
@@ -67,11 +68,12 @@ body{
     padding-top: 20px;
 }
 
-.quality-assurance-main{
+.quality-assurance-main {
     width: 100%;
     background-color: #F9F9F9;
     padding: 80px 0;
-}
+    text-align: center;
+}   
 
 .q-sub-title{
     color: #A3A3A3;
