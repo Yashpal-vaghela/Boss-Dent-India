@@ -7,12 +7,12 @@ import { TiThMenu } from "react-icons/ti";
 
 const Nav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 991);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-      if (window.innerWidth > 768) {
+      setIsMobile(window.innerWidth <= 991);
+      if (window.innerWidth > 991) {
         setMenuOpen(false);
       }
     };

@@ -2,7 +2,7 @@ import React from 'react'
 import '../css/styles.css'
 import flogo from "../images/flogo.png"
 import { FaLocationDot } from "react-icons/fa6";
-import { FaFacebook, FaLinkedin, FaPhoneAlt } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaLinkedin, FaPhoneAlt } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 
 const Footer = () => {
@@ -17,8 +17,9 @@ const Footer = () => {
             <p>Follow Us On
                 <span className="golden-line"></span>
             </p>
-            <a href="#"><FaLinkedin /></a>
+            {/* <a href="#"><FaLinkedin /></a> */}
             <a href="#"><FaFacebook /></a>
+            <a href="#"><FaInstagram /></a>
           </div>
         </div>
         <div className="footer-section ">
