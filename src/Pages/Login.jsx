@@ -1,16 +1,31 @@
 import React, { useState } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
+  const [userIdentifier, setUserIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log("email", email, "password", password);
-    setEmail("");
-    setPassword("");
+    try{
+    const response = await axios.post('https://bossdentindia.com/wp-json/jwt-auth/v1/token',{
+      username: userIdentifier,
+      password
+    });
+    const token = response.data.token;
+    localStorage.setItem('token', token);
+    alert('Login successful!');
+    // console.log("email", email, "password", password);
+    window.location.href = '/';
+    }catch(error) {
+      console.error('Error logging in:', error);
+      alert('Login failed. Please check your username and password.');
+    }
+    setUserIdentifier("");
+    setPassword(""); 
   };
 
   const handleShowPassword = () => {
@@ -25,12 +40,12 @@ const Login = () => {
             Username or Email
           </label>
           <input
-            type="email"
-            id="email"
+            type="text"
+            id="userIdentifier"
             className="form-input"
             placeholder="Enter Username / Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={userIdentifier}
+            onChange={(e) => setUserIdentifier(e.target.value)}
             required
           />
         </div>

@@ -1,26 +1,33 @@
 import React, { useState } from 'react'
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Signup = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = async (e) =>{
         e.preventDefault()
-        console.log("username",username, "email",email, "password",password, "confirmPassword",confirmPassword)
+        try{
+          const response = await axios.post("https://bossdentindia.com/wp-json/custom/v1/register",{
+            username,
+            email,
+            password
+          });
+          alert('Registration successful!');
+        } catch (error){
+          console.error('Error signing up:', error);
+          alert('Registration failed.');
+        }
+        // console.log("username",username, "email",email, "password",password )
     }
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
       };
-    
-    const toggleConfirmPasswordVisibility = () => {
-        setShowConfirmPassword(!showConfirmPassword);
-      }
 
   return (
     <div className='signup-container'>
@@ -51,37 +58,20 @@ const Signup = () => {
                 />
             </div>
             <div className="form-group">
-          <label className="form-label" htmlFor="password">Password</label>
-          <input
-            type={showPassword ? "text" : "password"} 
-            id="password"
-            placeholder='Entern Your Password'
-            className="form-input"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+              <label className="form-label" htmlFor="password">Password</label>
+              <input
+                type={showPassword ? "text" : "password"} 
+                id="password"
+                placeholder='Entern Your Password'
+                className="form-input"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
           <span className="password-toggle-icon" onClick={togglePasswordVisibility}>
             {showPassword ? <FaEye /> : <FaEyeSlash /> }
           </span>
         </div>
-        <div className="form-group">
-          <label className="form-label" htmlFor="confirm-password">Re-enter Password</label>
-          <input
-            type={showConfirmPassword ? "text" : "password"}
-            id="confirm-password"
-            placeholder='Re-Enter Your Password'
-            className="form-input"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-          <span className="password-toggle-icon" onClick={toggleConfirmPasswordVisibility}>
-            {showConfirmPassword ? <FaEye />  :  <FaEyeSlash />}
-          </span>
-        </div>
-
-        
         <button type="submit" className="signup-button">Sign Up</button> 
         <p className='login-text'>I have a already account?<a href='/my-account'>Log in</a></p>
         </form>
