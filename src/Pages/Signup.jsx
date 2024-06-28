@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2'
+
+
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -17,7 +20,21 @@ const Signup = () => {
             email,
             password
           });
-          alert('Registration successful!');
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "center",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Signed in successfully"
+          });
         } catch (error){
           console.error('Error signing up:', error);
           alert('Registration failed.');
