@@ -1,54 +1,70 @@
-// ProductPage.js
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Import Axios for making HTTP requests
-
-const Product = ({ name, price, description, image }) => {
-  return (
-    <div className="product">
-      <div className="product-image">
-        <img src={image} alt={name} />
-      </div>
-      <div className="product-details">
-        <h2 className="product-name">{name}</h2>
-        <p className="product-price">{price}</p>
-        <p className="product-description">{description}</p>
-        <button className="add-to-cart-btn">Add to Cart</button>
-      </div>
-    </div>
-  );
-};
-
-const ProductPage = () => {
+const Product = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  
-  useEffect(() => {
-    // Function to fetch data from API
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get('1');
-        setProducts(response.data); // Assuming the API returns an array of products
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-      }
-    };
+  useEffect(()=>{
+      const fetchProducts = async () =>{
+          try{
+              const response = await axios.get('https://bossdentindia.com/wp-json/wp/v2/product');
+              console.log('Fetched products:', response.data);
+              setProducts(response.data);
+          }catch (error){
+              console.error('Error fetching products:', error);
+          } finally{
+              setLoading(false);
+          }
+      };
+      fetchProducts();
 
-    fetchProducts(); // Call the fetch function
-  }, []); // Empty dependency array ensures this runs only once on component mount
+  },[]);
 
-  return (
-    <div className="product-page">
-      {products.map((product) => (
-        <Product
-          key={product.id}
-          name={product.title}
-          price={product.price}
-          image={product.image}
-        />
-      ))}
-    </div>
-  );
-};
+  if (loading){
+      return <div>Loading...</div>;
+  }
+return (
+  <div className='shop-container'>
+      <div className='header'>
+        <h1 className='shop-title'>Shop</h1>
+          <nav>
+            <a href='/'>Home</a> &gt; <span>Shop</span>
+          </nav>
+      </div>  
+      <div className='shop-header'>
+          <span>Showing 1-{products.lenght} of {products.length} result</span>
+          <select className='sorting-select'>
+              <option value = "default">Default sorting</option>
+          </select>
+      </div>
+      <div className='shop-content'>
+          <div className='shop-sidebar'>
+              <h3>Shop by Category</h3>
+              <ul>
+                  <li>Accessories</li>
+                  <li>General dentist</li>
+                  <li>LAB Material</li>
+                  <li>Prosthodontist</li>
+              </ul>
+          </div>
+          <div className='products-grid'>
+              {products.map(product => {
+            // Extract the image URL from the og_image property
+            const imageUrl = product.yoast_head_json?.og_image?.[0]?.url;
 
-export default ProductPage;
+            return (
+              <div key={product.id} className='product-card'>
+                {imageUrl && <img src={imageUrl} alt={product.title.rendered} className="product-image" />}
+                <h3 className='product-title'>{product.title.rendered}</h3>
+                {/* <div className='product-description' dangerouslySetInnerHTML={{ __html: product.content.rendered }}></div> */}
+              </div>
+            );
+          })}
+          </div>
+      </div>
+  </div>
+);
+}
+
+export default Product
