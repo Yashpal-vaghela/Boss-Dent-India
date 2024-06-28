@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -27,15 +26,15 @@ const Signup = () => {
     <div className='signup-container'>
         <h2 className='signup-title'>Sign Up</h2>
         <form className='signup-form' onSubmit={handleSubmit}>
-            <div  className='form-group'>
-                <label className='form-label' htmlFor='usernamee'>Username</label>
+            <div className='form-group'>
+                <label className='form-label' htmlFor='username'>Username</label>
                 <input 
                     type='text'
                     id='username'
                     placeholder='Enter Your Username'
                     className='form-input'
                     value={username}
-                    onchnage={(e)=> setUsername(e.target.value)}
+                    onChange={(e)=> setUsername(e.target.value)}
                     required
                 />
             </div>
@@ -81,6 +80,8 @@ const Signup = () => {
             {showConfirmPassword ? <FaEye />  :  <FaEyeSlash />}
           </span>
         </div>
+
+        
         <button type="submit" className="signup-button">Sign Up</button> 
         <p className='login-text'>I have a already account?<a href='/my-account'>Log in</a></p>
         </form>

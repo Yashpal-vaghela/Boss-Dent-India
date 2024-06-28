@@ -50,7 +50,7 @@ const Nav = () => {
   // console.log(menuOpen);
 
   return (
-    <div className={`nav-main ${menuOpen ? 'nav-main-open' : ''}`}>
+    <div className={`nav-main ${menuOpen && isMobile ? 'nav-main-open' : ''}`}>
       <div className="nav-sub">
         <div className="main-nav">
           <div className="main-nav-sub">
@@ -142,7 +142,7 @@ const Nav = () => {
                         </Link>
                       </li>
                       <li onClick={closeMenu}>
-                        <Link className="menu-link">SHOP</Link>
+                        <Link className="menu-link" to="/products">SHOP</Link>
                       </li>
                       <li onClick={closeMenu}>
                         <Link to="/about" className="menu-link">

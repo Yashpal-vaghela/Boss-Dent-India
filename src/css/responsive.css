@@ -1,4 +1,8 @@
 @media (max-width: 991px) {
+  .main-nav-sub {
+    z-index: 1;
+    position: fixed;
+  }
   .menu- sub {
     flex-direction: column;
     width: 100%;
@@ -22,6 +26,7 @@
   }
   .main-nav-sub {
     visibility: visible;
+    width: 100%;
   }
   .main-nav-price-icon p {
     display: none;
@@ -40,7 +45,7 @@
   .search-main {
     width: 40%;
   }
-  .toggle-main{
+  .toggle-main {
     visibility: visible;
     cursor: pointer;
     margin-left: 20px;
@@ -89,8 +94,8 @@
   .menu-div ul {
     background-color: #222;
     padding: 20px;
+    margin-top: 394px;
   }
-
 }
 
 @media only screen and (max-width: 768px) {
@@ -100,12 +105,16 @@
     padding: 0;
   }
   /* Navbar */
+  .main-nav-sub {
+    z-index: 1;
+    position: fixed;
+  }
   .menu-sub {
     flex-direction: column;
     width: 100%;
     margin-top: -70px;
   }
-  
+
   .menu-div {
     flex-direction: column;
     width: 100%;
@@ -214,16 +223,19 @@
     width: 100%;
   }
   /* help center and return policy */
-  .help-center, .refund-policy {
+  .help-center,
+  .refund-policy {
     padding-top: 60px;
     margin: 30px auto;
   }
 
-  .help-center h1, .header h1 {
+  .help-center h1,
+  .header h1 {
     margin-left: 10px;
   }
 
-  .help-center nav, .header nav {
+  .help-center nav,
+  .header nav {
     margin-left: 10px;
   }
 
@@ -249,7 +261,8 @@
     margin: 15px;
   }
 
-  .policy-info h2, .policy-info h3 {
+  .policy-info h2,
+  .policy-info h3 {
     font-size: 18px;
     margin-left: 20px;
     margin-top: 15px;
@@ -291,6 +304,10 @@
     box-sizing: border-box;
   }
   /* nav bar */
+  .main-nav-sub {
+    z-index: 1;
+    position: fixed;
+  }
   .menu-sub {
     flex-direction: column;
     width: 100%;
@@ -410,17 +427,20 @@
     font-size: 14px;
   }
   /* help center and return policy */
-  .help-center, .refund-policy {
+  .help-center,
+  .refund-policy {
     padding-top: 80px;
     margin: 20px auto;
   }
 
-  .help-center h1, .header h1 {
+  .help-center h1,
+  .header h1 {
     margin-left: 5px;
     font-size: 24px;
   }
 
-  .help-center nav, .header nav {
+  .help-center nav,
+  .header nav {
     margin-left: 5px;
   }
 
@@ -446,11 +466,12 @@
     margin: 10px;
   }
 
-  .policy-info p{
+  .policy-info p {
     margin-left: 10px;
   }
 
-  .policy-info h2, .policy-info h3 {
+  .policy-info h2,
+  .policy-info h3 {
     font-size: 16px;
     margin-left: 15px;
     margin-top: 10px;
@@ -487,6 +508,10 @@
 }
 
 @media only screen and (max-width: 480px) {
+  .main-nav-sub {
+    z-index: 1;
+    position: fixed;
+  }
   .menu-div ul {
     margin-top: -300px;
   }
@@ -528,16 +553,19 @@
     width: 100%;
   }
   /* help center and return policy */
-  .help-center, .refund-policy {
+  .help-center,
+  .refund-policy {
     padding-top: 60px;
     margin: 10px auto;
   }
 
-  .help-center h1, .header h1 {
+  .help-center h1,
+  .header h1 {
     font-size: 20px;
   }
 
-  .help-center nav, .header nav {
+  .help-center nav,
+  .header nav {
     margin-left: 0;
   }
 
@@ -563,7 +591,8 @@
     margin: 5px;
   }
 
-  .policy-info h2, .policy-info h3 {
+  .policy-info h2,
+  .policy-info h3 {
     font-size: 14px;
     margin-left: 10px;
     margin-top: 10px;
@@ -597,4 +626,3 @@
     margin-left: 20px;
   }
 }
-
