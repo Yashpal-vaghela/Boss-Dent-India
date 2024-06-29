@@ -1270,7 +1270,7 @@ body {
 .add-to-cart-btn {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #007bff;
+  background-color: #c89c31;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -1278,7 +1278,7 @@ body {
 }
 
 .add-to-cart-btn:hover {
-  background-color: #0056b3;
+  background-color: #c89c31;
 }
 /* products page */
 .shop-container {
@@ -1334,7 +1334,7 @@ body {
 .products-grid {
   width: 80%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
@@ -1351,9 +1351,57 @@ body {
 
 .product-title {
   font-size: 18px;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 
 .product-description {
   font-size: 14px;
+}
+
+/* pagination css */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  background-color: #f0f0f0;
+}
+
+.pagination-list {
+  display: flex;
+  align-items: center;
+}
+
+.paginate_button {
+  margin: 0 5px;
+}
+
+.page-item.active {
+  background-color: #c89c31;
+  color: white;
+}
+
+.page-link {
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.ellipsis {
+  margin: 0 5px;
+  padding: 10px 15px;
 }
