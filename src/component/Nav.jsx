@@ -70,7 +70,7 @@ const Nav = () => {
             </div>
             <div className="search-main">
               <div className="search-sub">
-                <input type="text" placeholder="Search For Products ..." />
+                <input type="text" placeholder="Search For Products ..."  />
                 <span>
                   <FaSearch />
                 </span>
