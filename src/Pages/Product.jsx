@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Link from 'react-router-dom'
-// import { OutlinedInput } from '@mui/material';
-// import '../css/product.css'; // Make sure to import your CSS file
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -102,19 +99,11 @@ const Product = () => {
           {filteredProducts.map(product => {
             const imageUrl = product.yoast_head_json?.og_image?.[0]?.url;
             return (
-              <Link className="product-card-main" to={`./${product.id}`}>
-                <div key={product.id} className="product-card">
-                  {imageUrl && (
-                    <img
-                      src={imageUrl}
-                      alt={product.title.rendered}
-                      className="product-image"
-                    />
-                  )}
-                  <h3 className="product-title">{product.title.rendered}</h3>
-                  {/* <div className='product-description' dangerouslySetInnerHTML={{ __html: product.content.rendered }}></div> */}
-                </div>
-              </Link>
+              <div key={product.id} className='product-card'>
+                {imageUrl && <img src={imageUrl} alt={product.title.rendered} className="product-image" />}
+                <h3 className='product-title'>{product.title.rendered}</h3>
+                {/* <div className='product-description' dangerouslySetInnerHTML={{ __html: product.content.rendered }}></div> */}
+              </div>
             );
           })}
         </div>
