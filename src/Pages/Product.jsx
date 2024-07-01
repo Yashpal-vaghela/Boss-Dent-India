@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -8,7 +9,13 @@ const Product = () => {
   const [productsPerPage, setProductsPerPage] = useState(9);
   const [totalProducts, setTotalProducts] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+  const location = useLocation();
 
+  useEffect(()=>{
+    const params = new URLSearchParams(location.search);
+    const query = params.get('search') || "";
+    setSearchQuery(query);
+  },[location.search]);
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
