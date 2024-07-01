@@ -107,7 +107,7 @@ const Product = () => {
           {filteredProducts.map(product => {
             const imageUrl = product.yoast_head_json?.og_image?.[0]?.url;
             return (
-              <Link key={product.id} className='product-card'>
+              <Link key={product.id} to={`/products/${product.id}`} className='product-card'>
                 {imageUrl && <img src={imageUrl} alt={product.title.rendered} className="product-image" />}
                 <h3 className='product-title'>{product.title.rendered}</h3>
                 {/* <div className='product-description' dangerouslySetInnerHTML={{ __html: product.content.rendered }}></div> */}

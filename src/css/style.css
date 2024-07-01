@@ -21,6 +21,74 @@ body {
   transition: all 0.3s ease;
 }
 
+.search-main{
+  position: relative;
+  width: 50%;
+}
+
+.search-sub{
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.search-sub button[type="submit"]{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 100%;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-sub .clear-icon{
+  position: absolute;
+  top: 0;
+  right: 40px;
+  width: 40px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+search-sub button[type="submit"] svg:hover,
+.search-sub .clear-icon svg:hover {
+  color: #c39428; 
+}
+.suggestions{
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  border-radius: 5px;
+  color: #000;
+  z-index: 1002;
+  max-height: 200px;
+  overflow-y: auto;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.suggestions li{
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.suggestions li:hover {
+  background-color: #f0f0f0;
+}
+
 .top-nav-sub {
   display: flex;
   align-items: center;
@@ -122,9 +190,6 @@ body {
   height: 100%;
 }
 
-.search-main {
-  width: 50%;
-}
 
 .toggle-main {
   visibility: hidden;
@@ -208,10 +273,21 @@ body {
   align-items: center;
   justify-content: space-evenly;
   position: fixed;
-  z-index: 1000;
+  z-index: 999;
   width: 100%;
   transition: top 0.3s;
 }
+
+.menu-sub i{
+  background-color: #222;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  position: fixed;
+  width: 100%;
+  transition: top 0.3s;
+}
+
 .menu-main-div {
   display: flex;
   flex-direction: column;
@@ -1281,6 +1357,12 @@ body {
   background-color: #c89c31;
 }
 /* products page */
+
+/* .product-card-main{
+  text-decoration: none;
+  color: #333;
+} */
+
 .shop-container {
   padding-top: 150px;
   margin: 20px;
@@ -1342,6 +1424,8 @@ body {
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
+  text-decoration: none;
+  color: #222;
 }
 
 .product-image {
@@ -1404,4 +1488,139 @@ body {
 .ellipsis {
   margin: 0 5px;
   padding: 10px 15px;
+}
+
+/* single product */
+
+.single-product-main{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 20px;
+  width: 100%;
+  margin-top: 200px;
+}
+
+.single-product-img{
+  width: 50%;
+}
+
+.single-product-img img{
+  /* width: 100%; */
+  max-width: 600px;
+}
+
+.single-product-details{
+  text-align: left;
+}
+
+.single-product-title{
+  font-size: 32px;
+  color: #222;
+  font-weight: 700;
+}
+
+.single-product-price{
+  font-size: 24px;
+  color: #c89c31;
+  font-weight: 700;
+  margin-top: 15px;
+}
+
+.single-product-cat{
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 700;
+  color: #111111;
+  margin-top: 10px;
+}
+
+.single-product-cat span{
+  color: #646464;
+  font-weight: 400;
+}
+
+.single-product-pcs{
+  font-size: 16px;
+  font-weight: 500;
+  color: #646464;
+  margin-top: 10px;
+}
+
+.other-detail-main{
+  margin-top: 0px;
+}
+
+.ind-btn {
+  padding: 8px 15px;
+  border-radius: 100%;
+  font-size: 20px;
+  border: none;
+  background-color: #bf8e22;
+}
+
+.ind-btn:hover{
+  background-color: #d69b1a;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.quantity-controls {
+  margin-top: 20px;
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+
+.quantity{
+  font-size: 20px;
+  color: #222;
+  font-weight: 500;
+}
+
+.add-to-cart-button {
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  font-family: Roboto, sans-serif;
+  margin: 20px 0;
+  width: -moz-fit-content;
+  /* width: fit-content; */
+  border: 0;
+  background-color: #222;
+  padding: 10px 10px 10px 20px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 0 #c89c31;
+  transition: ease-out 0.4s;
+}
+.add-to-cart-button:hover {
+box-shadow: inset 400px 0 0 0 #c89c31;
+}
+
+.des-main{
+  text-align: left;
+  margin-left: 30px;
+  margin-bottom: 10px;
+}
+
+.des-title{
+  display: block;
+  font-size: 24px;
+  color: #222;
+  font-weight: 500;
+  border-bottom: 2px solid #c89c31;
+  width: fit-content;
+  padding: 10px 0px;
+}
+
+.single-product-des{
+  font-size: 16px;
+  color: #111111;
+  margin-top: 20px;
+  font-weight: 300;
 }

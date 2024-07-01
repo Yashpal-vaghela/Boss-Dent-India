@@ -22,7 +22,7 @@ const Allroutes = () => {
             <Route path='/sign-up' element={<Signup />}/>
             <Route path='/contact' element={<Contact />}/>
             <Route path='/products' element={<Product/>}/>
-            <Route path='/product/:id' element={<SingleProduct/>}/>
+            <Route path='/products/:id' element={<SingleProduct/>}/>
             <Route path='/help-center' element={<HelpCenter />}/>
             <Route path='/refund-and-returns-policy' element={<RefundPolicy />} />
             <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>

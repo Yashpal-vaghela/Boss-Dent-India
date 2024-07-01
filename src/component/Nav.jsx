@@ -222,7 +222,7 @@ const Nav = () => {
                         </Link>
                       </li>
                       <li onClick={closeMenu}>
-                        <Link className="menu-link" to="/product">SHOP</Link>
+                        <Link className="menu-link" to="/products">SHOP</Link>
                       </li>
                       <li onClick={closeMenu}>
                         <Link to="/about" className="menu-link">
