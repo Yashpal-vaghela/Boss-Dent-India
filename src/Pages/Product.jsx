@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -16,6 +16,7 @@ const Product = () => {
     const query = params.get('search') || "";
     setSearchQuery(query);
   },[location.search]);
+
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -106,11 +107,11 @@ const Product = () => {
           {filteredProducts.map(product => {
             const imageUrl = product.yoast_head_json?.og_image?.[0]?.url;
             return (
-              <div key={product.id} className='product-card'>
+              <Link key={product.id} className='product-card'>
                 {imageUrl && <img src={imageUrl} alt={product.title.rendered} className="product-image" />}
                 <h3 className='product-title'>{product.title.rendered}</h3>
                 {/* <div className='product-description' dangerouslySetInnerHTML={{ __html: product.content.rendered }}></div> */}
-              </div>
+              </Link>
             );
           })}
         </div>
