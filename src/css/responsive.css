@@ -625,4 +625,23 @@
   .term-info ul li {
     margin-left: 20px;
   }
+
+  /* single page */
+
+  .single-product-main {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .single-product-img img {
+    margin-left: 0px;
+  }
+  .single-product-details {
+    text-align: center;
+}
+.quantity-controls {
+  justify-content: center;
+}
+.add-to-cart-button {
+  margin: 0 auto;
+  margin-top: 15px;
+}
 }

@@ -1,6 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
+import { FaRegHeart } from "react-icons/fa";
 
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
@@ -59,10 +62,13 @@ const SingleProduct = () => {
     <div className="single-product">
       <div className="single-product-main">
         <div className="single-product-img">
-          <img
-            src={product.yoast_head_json?.og_image?.[0]?.url}
-            alt={product.title?.rendered}
-          />
+          <Zoom>
+            <img
+              src={product.yoast_head_json?.og_image?.[0]?.url}
+              alt={product.title?.rendered}
+              // style={{ width: '100%' }}
+            />
+          </Zoom>
         </div>
         <div className="single-product-details">
           <h2 className="single-product-title"> {product.title?.rendered}</h2>
@@ -80,25 +86,39 @@ const SingleProduct = () => {
             className="single-product-pcs"
           />
           <div className="quantity-controls">
-            <button onClick={handleIncrease} className="ind-btn">+</button>
+            <button onClick={handleIncrease} className="ind-btn">
+              +
+            </button>
             <span className="quantity">{quantity}</span>
-            <button onClick={handleDecrease} className="ind-btn">-</button>
+            <button onClick={handleDecrease} className="ind-btn">
+              -
+            </button>
           </div>
-          <button className="add-to-cart-button"
-            onClick={() => alert("Where to buy functionality goes here!")}
-          >
-            ADD TO CART
-          </button>
+          <div className="btn-icon-main">
+            <div>
+              <button
+                className="add-to-cart-button"
+                onClick={() => alert("Where to buy functionality goes here!")}
+              >
+                ADD TO CART
+              </button>
+            </div>
+            <div>
+              <span className="like-icon">
+                <FaRegHeart />
+              </span>
+            </div>
+          </div>
         </div>
       </div>
       <div className="other-detail-main">
-       <div className="des-main">
-        <span className="des-title">Description</span>
-       <div
-          dangerouslySetInnerHTML={{ __html: product.content?.rendered }}
-          className="single-product-des"
-        />
-       </div>
+        <div className="des-main">
+          <span className="des-title">Description</span>
+          <div
+            dangerouslySetInnerHTML={{ __html: product.content?.rendered }}
+            className="single-product-des"
+          />
+        </div>
       </div>
     </div>
   );
