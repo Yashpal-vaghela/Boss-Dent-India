@@ -8,6 +8,7 @@ const SingleProduct = () => {
   const [error, setError] = useState(null);
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [salePrice, setSalePrice] = useState(null);
   const { id } = useParams();
 
   useEffect(() => {
@@ -28,6 +29,12 @@ const SingleProduct = () => {
           );
           setCategory(categoryResponse.data.name);
         }
+        // Determine sale price
+        if (response.data.sale_price) {
+          setSalePrice(response.data.sale_price);
+        } else {
+          setSalePrice(response.data.price);
+        }
       } catch (error) {
         console.error("Error fetching product:", error);
         setError("Failed to fetch product details. Please try again later.");
@@ -38,6 +45,7 @@ const SingleProduct = () => {
 
     fetchProduct();
   }, [id]);
+
 
   const handleIncrease = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
@@ -67,7 +75,7 @@ const SingleProduct = () => {
         <div className="single-product-details">
           <h2 className="single-product-title"> {product.title?.rendered}</h2>
           <h3 className="single-product-price">
-            Price: {product.acf?.price}
+          {salePrice ? `Sale Price: ${salePrice}` : `Price: ${product.acf?.price}`}
           </h3>{" "}
           {/* Update this if the field path differs */}
           {product.acf?.prese && <h4>Prese: {product.acf}</h4>}
