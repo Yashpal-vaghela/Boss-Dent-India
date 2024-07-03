@@ -246,7 +246,7 @@ const Nav = () => {
                       <Link className="main-nav-icon-user">
                         <FaUserAlt />
                       </Link>
-                      <Link>
+                      <Link to="/watchlist">
                         <FaHeart />
                         <span>0</span>
                       </Link>

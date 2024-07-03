@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, Link } from 'react-router-dom';
+import Loader from '../component/Loader';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -35,7 +36,9 @@ const Product = () => {
   }, [currentPage, productsPerPage]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>
+      <Loader/>
+    </div>;
   }
 
   const totalPages = Math.ceil(totalProducts / productsPerPage);
