@@ -1513,7 +1513,30 @@ search-sub button[type="submit"] svg:hover,
 .single-product-details{
   text-align: left;
 }
-
+.variation-main{
+  display: flex;
+  color: #000;
+  margin-top: 2%;
+}
+.variation-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.variation-button{
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.variation-button.selected{
+  background-color: #c89c31;
+  color: #fff;
+}
+.variation-button span{
+  margin-right: 5px;
+}
 .single-product-title{
   font-size: 32px;
   color: #222;
