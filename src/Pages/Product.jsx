@@ -114,6 +114,9 @@ const Product = () => {
                 {imageUrl && <img src={imageUrl} alt={product.title.rendered} className="product-image" />}
                 <h3 className='product-title'>{product.title.rendered}</h3>
                 {/* <div className='product-description' dangerouslySetInnerHTML={{ __html: product.content.rendered }}></div> */}
+                <Link to={`/products/${product.id}`} className='product-button-main'>
+                 <button className='product-button'>Learn more</button>
+                </Link>
               </Link>
             );
           })}
