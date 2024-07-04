@@ -1,9 +1,13 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+// SingleProduct.js
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { useWatchlist } from "./WatchlistContext";
+import axios from "axios";
+import { useCart } from "./AddCartContext";
+import Loader from "../component/Loader";
 
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
@@ -12,9 +16,10 @@ const SingleProduct = () => {
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [salePrice, setSalePrice] = useState(null);
-  const [watchlist, setWatchlist] = useState([]);
   const [variations, setVariations] = useState([]);
-  const [selectedVariation, setSelectedVariation] = useState(null);
+  const [selectedAttributes, setSelectedAttributes] = useState({});
+  const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
+  const { addToCart } = useCart();
   const { id } = useParams();
 
   useEffect(() => {
@@ -70,24 +75,46 @@ const SingleProduct = () => {
     setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
   };
 
-  const handleVariationSelect = (variation) => {
-    setSelectedVariation(variation);
-    // Ensure variation and its attributes are defined before setting salePrice
-    if (variation && variation.attributes) {
-      setSalePrice(variation.price);
+  const handleAttributeSelect = (attribute, value) => {
+    const newSelectedAttributes = {
+      ...selectedAttributes,
+      [attribute]: value,
+    };
+
+    setSelectedAttributes(newSelectedAttributes);
+
+    const selectedVariation = variations.find((variation) => {
+      return Object.keys(variation.attributes).every((key) => {
+        return newSelectedAttributes[key] === variation.attributes[key];
+      });
+    });
+
+    if (selectedVariation) {
+      setSalePrice(selectedVariation.price);
     }
   };
 
   const handleWatchlistToggle = () => {
     if (watchlist.includes(product.id)) {
-      setWatchlist(watchlist.filter((itemId) => itemId !== product.id));
+      removeFromWatchlist(product.id);
     } else {
-      setWatchlist([...watchlist, product.id]);
+      addToWatchlist(product.id);
     }
   };
 
+  const handleAddToCart = () => {
+    addToCart && addToCart({ ...product, quantity });
+    alert("Product added to cart!");
+    // alert("Product added to cart!");
+  };
+
   if (loading) {
-    return <div>Loading...</div>;
+    return 
+    <div>
+      <div>
+          <Loader/>
+      </div>
+    </div>;
   }
 
   if (error) {
@@ -102,7 +129,6 @@ const SingleProduct = () => {
             <img
               src={product.yoast_head_json?.og_image?.[0]?.url}
               alt={product.title?.rendered}
-              // style={{ width: '100%' }}
             />
           </Zoom>
         </div>
@@ -112,48 +138,43 @@ const SingleProduct = () => {
             {salePrice
               ? `Sale Price: ${salePrice}`
               : `Price: ${product.acf?.price}`}
-          </h3>{" "}
-          {/* Update this if the field path differs */}
-          {product.acf?.prese && <h4>Prese: {product.acf}</h4>}
+          </h3>
+          {product.acf?.prese && <h4>Prese: {product.acf.preset}</h4>}
           <h4 className="single-product-cat">
-            {" "}
-            Category: <span> {category} </span>{" "}
+            Category: <span>{category}</span>
           </h4>
-          <div className="variation-main">
-            {variations.length > 0 &&
-              Object.keys(variations[0]?.attributes || {}).map(
-                (attributekey) => (
-                  <h4 key={attributekey}>
-                    {attributekey.replace(
-                      /attribute_pa_|attribute_/,
-                      ""
-                    )}
-                    :
-                  </h4>
-                )
-              )}
-            <div className="variation-buttons">
-              {variations.map((variation, index) => (
-                <button
-                  key={index}
-                  className={`variation-button ${
-                    selectedVariation === variation ? "selected" : ""
-                  }`}
-                  onClick={() => handleVariationSelect(variation)}
-                >
-                  {variation &&
-                    variation.attributes &&
-                    Object.keys(variation.attributes).map(
-                      (attributekey) => (
-                        <span key={attributekey}>
-                          {variation.attributes[attributekey]}
-                        </span>
-                      )
-                    )}
-                </button>
-              ))}
-            </div>
-          </div>
+          {variations.length > 0 &&
+            Object.keys(variations[0]?.attributes || {}).map((attribute) => (
+              <div key={attribute} className="variation-main">
+                <h4>{attribute.replace(/attribute_pa_|attribute_/, "")}:</h4>
+                <div className="variation-buttons">
+                  {variations
+                    .filter(
+                      (variation) =>
+                        variation.attributes[attribute] !== undefined
+                    )
+                    .map((variation, index) => (
+                      <button
+                        key={index}
+                        className={`variation-button ${selectedAttributes[attribute] ===
+                            variation.attributes[attribute]
+                            ? "selected"
+                            : ""
+                          }`}
+                        onClick={() =>
+                          handleAttributeSelect(
+                            attribute,
+                            variation.attributes[attribute]
+                          )
+                        }
+                      >
+                        {variation.attributes[attribute]}
+                      </button>
+                    ))}
+                </div>
+              </div>
+            ))}
+
           <div
             dangerouslySetInnerHTML={{
               __html: product.excerpt?.rendered,
@@ -173,10 +194,7 @@ const SingleProduct = () => {
             <div>
               <button
                 className="add-to-cart-button"
-                onClick={() =>
-                  alert("Where to buy functionality goes here!")
-                }
-                disabled={!selectedVariation}
+                onClick={handleAddToCart}
               >
                 ADD TO CART
               </button>

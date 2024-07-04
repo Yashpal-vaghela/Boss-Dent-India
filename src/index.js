@@ -4,12 +4,18 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import { WatchlistProvider } from "./Pages/WatchlistContext";
+import { AddCartProvider } from "./Pages/AddCartContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <WatchlistProvider>
+         <AddCartProvider>
+             <App />
+         </AddCartProvider>
+      </WatchlistProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
