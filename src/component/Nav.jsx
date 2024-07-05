@@ -5,6 +5,9 @@ import logo from "../images/flogo.png";
 import { IoMdCloseCircle } from "react-icons/io";
 import { TiThMenu } from "react-icons/ti";
 import axios from "axios";
+import { useWatchlist } from "../Pages/WatchlistContext";
+import { useCart } from "../Pages/AddCartContext";
+
 
 const Nav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,6 +16,8 @@ const Nav = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [showAltMenu, setShowAltMenu] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { watchlist } = useWatchlist();
+  const { cart} = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -73,22 +78,46 @@ const Nav = () => {
   };
 
   useEffect(() => {
-    const scrollFunction = () => {
+    const handleScroll = () => {
       const topNav = document.querySelector(".top-nav-p2");
       const menuSubElements = document.getElementsByClassName("menu-sub");
-      if (document.body.scrollTop >= 20 || document.documentElement.scrollTop >= 20) {
-        topNav.style.display = "none";
-        Array.from(menuSubElements).forEach(element => {
-          element.style.top = "0";
-        });
+
+      if (window.innerWidth > 991) {
+        if (window.scrollY >= 20) {
+          topNav.style.display = "none";
+          Array.from(menuSubElements).forEach(element => {
+            element.style.top = "0";
+          });
+        } else {
+          topNav.style.display = "flex";
+          Array.from(menuSubElements).forEach(element => {
+            element.style.top = "70px";
+          });
+        }
       } else {
+        // Ensure the menus are correctly positioned and visible for smaller widths
         topNav.style.display = "flex";
         Array.from(menuSubElements).forEach(element => {
           element.style.top = "70px";
         });
       }
     };
-    window.onscroll = scrollFunction;
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Ensure the nav is visible on initial render for smaller screens
+    if (window.innerWidth <= 991) {
+      const topNav = document.querySelector(".top-nav-p2");
+      const menuSubElements = document.getElementsByClassName("menu-sub");
+      topNav.style.display = "flex";
+      Array.from(menuSubElements).forEach(element => {
+        element.style.top = "70px";
+      });
+    }
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
   // console.log(menuOpen);
   useEffect(() => {
@@ -248,11 +277,11 @@ const Nav = () => {
                       </Link>
                       <Link to="/watchlist">
                         <FaHeart />
-                        <span>0</span>
+                        <span className="watchlist-count">{watchlist.length}</span>
                       </Link>
                       <Link>
                         <FaCartPlus />
-                        <span>0</span>
+                        <span>{cart.length}</span>
                       </Link>
                     </div>
                   </div>
