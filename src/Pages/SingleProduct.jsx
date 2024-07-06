@@ -39,10 +39,7 @@ const SingleProduct = () => {
         }
 
         // Fetch category name if product_cat is available
-        if (
-          response.data.product_cat &&
-          response.data.product_cat.length > 0
-        ) {
+        if (response.data.product_cat && response.data.product_cat.length > 0) {
           const categoryId = response.data.product_cat[0];
           const categoryResponse = await axios.get(
             `https://bossdentindia.com/wp-json/wp/v2/product_cat/${categoryId}`
@@ -103,13 +100,13 @@ const SingleProduct = () => {
   };
 
   const handleAddToCart = () => {
-    addToCart && addToCart({ ...product, quantity });
+    addToCart && addToCart({ ...product, quantity }); 
     alert("Product added to cart!");
     // alert("Product added to cart!");
   };
 
   if (loading) {
-    return <Loader/>;
+    return <Loader />;
   }
 
   if (error) {
@@ -118,10 +115,12 @@ const SingleProduct = () => {
 
   return (
     <div className="single-product">
-      <div className='header'>
-        <h1 className='shop-title'>Shop</h1>
+      <div className="header">
+        <h1 className="shop-title">Shop</h1>
         <nav>
-        <a href='/'>Home</a> &gt; <a href='/products'>Shop</a> &gt; <a href={`/category/${category}`}>{category}</a> &gt; <span>{product.title?.rendered}</span>
+          <a href="/">Home</a> &gt; <a href="/products">Shop</a> &gt;{" "}
+          <a href={`/category/${category}`}>{category}</a> &gt;{" "}
+          <span>{product.title?.rendered}</span>
         </nav>
       </div>
       <div className="single-product-main">
@@ -157,11 +156,12 @@ const SingleProduct = () => {
                     .map((variation, index) => (
                       <button
                         key={index}
-                        className={`variation-button ${selectedAttributes[attribute] ===
-                            variation.attributes[attribute]
+                        className={`variation-button ${
+                          selectedAttributes[attribute] ===
+                          variation.attributes[attribute]
                             ? "selected"
                             : ""
-                          }`}
+                        }`}
                         onClick={() =>
                           handleAttributeSelect(
                             attribute,
@@ -193,10 +193,7 @@ const SingleProduct = () => {
           </div>
           <div className="btn-icon-main">
             <div>
-              <button
-                className="add-to-cart-button"
-                onClick={handleAddToCart}
-              >
+              <button className="add-to-cart-button" onClick={handleAddToCart}>
                 ADD TO CART
               </button>
             </div>
