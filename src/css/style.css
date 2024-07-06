@@ -1392,11 +1392,24 @@ search-sub button[type="submit"] svg:hover,
 
 .shop-content {
   display: flex;
+  /* width: 100%; */
+}
+
+.shop-sidebar-menu {
+  width: 30%;
+  height: fit-content;
+  margin-bottom: 20px;
+  margin-right: 10px;
 }
 
 .shop-sidebar {
-  width: 20%;
-  padding-right: 20px;
+  width: 100%;
+  padding: 20px;
+  background-color: #f2f2f2; 
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .shop-sidebar h3 {
@@ -1404,13 +1417,66 @@ search-sub button[type="submit"] svg:hover,
   margin-bottom: 10px;
 }
 
+.shop-sidebar hr {
+  margin: 10px 0;
+}
+
 .shop-sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.shop-sidebar li {
-  margin-bottom: 10px;
+.shop-sidebar ul li {
+  cursor: pointer;
+  padding: 8px 16px;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.shop-sidebar ul li:last-child {
+  border-bottom: none;
+}
+
+.shop-sidebar ul li:hover {
+  background-color: #ddd;
+  color: #c89c31;
+}
+
+.price-range {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.price-range input[type="range"] {
+  margin: 5px 0;
+}
+
+.price-range-values {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.price-range button {
+  padding: 8px 16px;
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.price-range button:hover {
+  background-color: #0056b3;
 }
 
 .products-grid {
@@ -1438,7 +1504,12 @@ search-sub button[type="submit"] svg:hover,
   margin-top: 10px;
   margin-bottom: 10px;
 }
-
+.product-price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #c89c31;
+  margin-bottom: 10px;
+}
 .product-button-main{
   text-decoration: none;
   list-style-type: none;
@@ -1517,13 +1588,20 @@ search-sub button[type="submit"] svg:hover,
 }
 
 /* single product */
+.single-product{
+  padding-top: 150px;
+  margin: 20px;
+  color: rgb(0, 0, 0);
+  text-align: left;
+  font-family: Source Sans Pro, sans-serif;
+}
 
 .single-product-main {
   display: grid;
   grid-template-columns: repeat(2,1fr);
   gap: 100px;
   width: 100%;
-  margin-top: 200px;
+  margin-top: 50px;
 }
 
 .single-product-img{
@@ -1548,6 +1626,7 @@ search-sub button[type="submit"] svg:hover,
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  margin-left: 10px;
 }
 .variation-button{
   padding: 5px 10px;

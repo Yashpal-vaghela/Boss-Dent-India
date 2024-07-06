@@ -109,12 +109,7 @@ const SingleProduct = () => {
   };
 
   if (loading) {
-    return 
-    <div>
-      <div>
-          <Loader/>
-      </div>
-    </div>;
+    return <Loader/>;
   }
 
   if (error) {
@@ -123,6 +118,12 @@ const SingleProduct = () => {
 
   return (
     <div className="single-product">
+      <div className='header'>
+        <h1 className='shop-title'>Shop</h1>
+        <nav>
+        <a href='/'>Home</a> &gt; <a href='/products'>Shop</a> &gt; <a href={`/category/${category}`}>{category}</a> &gt; <span>{product.title?.rendered}</span>
+        </nav>
+      </div>
       <div className="single-product-main">
         <div className="single-product-img">
           <Zoom>
