@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, Link } from 'react-router-dom';
 import Loader from '../component/Loader';
+import { useCart } from './AddCartContext';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -14,12 +15,13 @@ const Product = () => {
   const [minPrice, setMinPrice] = useState(40);
   const [maxPrice, setMaxPrice] = useState(12500);
   const location = useLocation();
+  const { addToCart } = useCart();
 
-  useEffect(()=>{
+  useEffect(() => {
     const params = new URLSearchParams(location.search);
     const query = params.get('search') || "";
     setSearchQuery(query);
-  },[location.search]);
+  }, [location.search]);
 
   useEffect(() => {
     fetchProducts();
@@ -53,8 +55,8 @@ const Product = () => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-  
-  const handleCategoryClick = (category) =>{
+
+  const handleCategoryClick = (category) => {
     // console.log("selected Category:", category);
     setSelectedCategory(category);
     setCurrentPage(1);
@@ -63,6 +65,10 @@ const Product = () => {
     fetchProducts();
   };
 
+  const handleAddToCart = (product) => {
+    addToCart && addToCart({ ...product, quantity: 1 }); // Assuming quantity is 1 by default
+    alert("Product added to cart!");
+  };
   const filteredProducts = products.filter(
     product =>
       product.title.rendered.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -95,7 +101,7 @@ const Product = () => {
   }
   if (loading) {
     return <div>
-      <Loader/>
+      <Loader />
     </div>;
   }
   return (
@@ -124,7 +130,7 @@ const Product = () => {
             <h3>Shop by Category</h3>
             <hr />
             <ul>
-            <li onClick={() => handleCategoryClick(null)}>All</li>
+              <li onClick={() => handleCategoryClick(null)}>All</li>
               <li onClick={() => handleCategoryClick(46)}>Accessories</li>
               <li onClick={() => handleCategoryClick(75)}>General dentist</li>
               <li onClick={() => handleCategoryClick(76)}>LAB Material</li>
@@ -132,42 +138,51 @@ const Product = () => {
           </div>
           <div className='price-range'>
             <h3>Price Range</h3>
-              <input 
-                type='range'
-                min="40"
-                max="12500"
-                value={minPrice}
-                onChange={(e) => setMinPrice(parseInt(e.target.value))}
-                step="1"
-              />
-              <input 
-                type='range'
-                min="41"
-                max="12500"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(parseInt(e.target.value))}
-                step="1"
-              />          
-              <button onClick={handlePriceRangeChange}>Apply</button>
-              <div className='price-range-values'>
-                <span>Min: {minPrice} Rs</span>
-                <span>Max: {maxPrice} Rs</span>
-              </div>
+            <input
+              type='range'
+              min="40"
+              max="12500"
+              value={minPrice}
+              onChange={(e) => setMinPrice(parseInt(e.target.value))}
+              step="1"
+            />
+            <input
+              type='range'
+              min="41"
+              max="12500"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(parseInt(e.target.value))}
+              step="1"
+            />
+            <button onClick={handlePriceRangeChange}>Apply</button>
+            <div className='price-range-values'>
+              <span>Min: {minPrice} Rs</span>
+              <span>Max: {maxPrice} Rs</span>
             </div>
+          </div>
         </div>
         <div className='products-grid'>
           {filteredProducts.map(product => {
             const imageUrl = product.yoast_head_json?.og_image?.[0]?.url;
             return (
-              <Link key={product.id} to={`/products/${product.id}`} className='product-card'>
-                {imageUrl && <img src={imageUrl} alt={product.title.rendered} className="product-image" />}
-                <h3 className='product-title'>{product.title.rendered}</h3>
-                <h3 className='product-price'>Price: {product.price}</h3>
-                {/* <div className='product-description' dangerouslySetInnerHTML={{ __html: product.content.rendered }}></div> */}
-                <Link to={`/products/${product.id}`} className='product-button-main'>
-                 <button className='product-button'>Learn more</button>
+              <div className='product-card'>
+                <Link key={product.id} to={`/products/${product.id}`} >
+                  {imageUrl && <img src={imageUrl} alt={product.title.rendered} className="product-image" />}
+                  <h3 className='product-title'>{product.title.rendered}</h3>
+                  <h3 className='product-price'>Price: {product.price}</h3>
+                  {/* <div className='product-description' dangerouslySetInnerHTML={{ __html: product.content.rendered }}></div> */}
+                  <Link to={`/products/${product.id}`} className='product-button-main'>
+                    <button className='product-button'>Learn more</button>
+                  </Link>
                 </Link>
-              </Link>
+                <button
+                  className="add-to-cart-button"
+                  onClick={() => handleAddToCart(product)}
+                >
+                  ADD TO CART
+                </button>
+              </div>
+
             );
           })}
         </div>
