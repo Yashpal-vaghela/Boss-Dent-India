@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaUserAlt, FaHeart, FaCartPlus, FaSearch, FaPhoneAlt, FaTimes } from "react-icons/fa";
 import logo from "../images/flogo.png";
@@ -19,6 +19,7 @@ const Nav = () => {
   const { watchlist } = useWatchlist();
   const { cart} = useCart();
   const navigate = useNavigate();
+  const cartIconRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -279,7 +280,7 @@ const Nav = () => {
                         <FaHeart />
                         <span className="watchlist-count">{watchlist.length}</span>
                       </Link>
-                      <Link>
+                      <Link className="cart-icon" ref={cartIconRef}>
                         <FaCartPlus />
                         <span>{cart.length}</span>
                       </Link>

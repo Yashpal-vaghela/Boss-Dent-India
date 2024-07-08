@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useLocation, Link } from 'react-router-dom';
 import Loader from '../component/Loader';
@@ -14,6 +14,9 @@ const Product = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [minPrice, setMinPrice] = useState(40);
   const [maxPrice, setMaxPrice] = useState(12500);
+  // const [cartAnimation, setCartAnimation] = useState(false);
+  // const [animationImage, setAnimationImage] = useState(null);
+  // const [imagePosition, setImagePosition] = useState({ top: 0, left: 0 }); // Define imagePosition here
   const location = useLocation();
   const { addToCart } = useCart();
 
@@ -32,14 +35,11 @@ const Product = () => {
     try {
       let apiUrl = `https://bossdentindia.com/wp-json/wp/v2/product?per_page=${productsPerPage}&page=${currentPage}`;
 
-      // Append category filter to API URL if a category is selected
       if (selectedCategory) {
         apiUrl += `&product_cat=${selectedCategory}`;
       }
-      // console.log("Fetching products from URL:", apiUrl);
 
       const response = await axios.get(apiUrl);
-      // console.log("Products fetched:", response.data);
       setProducts(response.data);
       const total = parseInt(response.headers['x-wp-total']);
       setTotalProducts(total);
@@ -57,18 +57,18 @@ const Product = () => {
   };
 
   const handleCategoryClick = (category) => {
-    // console.log("selected Category:", category);
     setSelectedCategory(category);
     setCurrentPage(1);
-  }
+  };
+
   const handlePriceRangeChange = () => {
     fetchProducts();
   };
 
   const handleAddToCart = (product) => {
-    addToCart && addToCart({ ...product, quantity: 1 }); // Assuming quantity is 1 by default
-    alert("Product added to cart!");
+    addToCart && addToCart({ ...product, quantity: 1 });
   };
+
   const filteredProducts = products.filter(
     product =>
       product.title.rendered.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -99,11 +99,13 @@ const Product = () => {
       );
     }
   }
+
   if (loading) {
     return <div>
       <Loader />
     </div>;
   }
+
   return (
     <div className='shop-container'>
       <div className='header'>
@@ -112,18 +114,7 @@ const Product = () => {
           <a href='/'>Home</a> &gt; <span>Shop</span>
         </nav>
       </div>
-      <div className='shop-header'>
-        {/* <div className="rows-per-page">
-          <span style={{margin:"0 20px",fontWeight:"600"}}>Rows per page :</span>
-          <input
-            type="number"
-            style={{width:"100px"}}
-            min="1"
-            value={productsPerPage}
-            onChange={(e) => setProductsPerPage(e.target.value)}
-          />
-        </div> */}
-      </div>
+      <div className='shop-header'></div>
       <div className='shop-content'>
         <div className='shop-sidebar-menu'>
           <div className='shop-sidebar'>
@@ -163,17 +154,24 @@ const Product = () => {
         </div>
         <div className='products-grid'>
           {filteredProducts.map(product => {
-            const imageUrl = product.yoast_head_json?.og_image?.[0]?.url;
+            let imageUrl = null;
+            if (product.better_featured_image) {
+              imageUrl = product.better_featured_image.source_url;
+            } else if (product.yoast_head_json && product.yoast_head_json.og_image && product.yoast_head_json.og_image.length > 0) {
+              imageUrl = product.yoast_head_json.og_image[0].url;
+            }
+
             return (
-              <div className='product-card'>
-                <Link key={product.id} to={`/products/${product.id}`} >
-                  {imageUrl && <img src={imageUrl} alt={product.title.rendered} className="product-image" />}
-                  <h3 className='product-title'>{product.title.rendered}</h3>
-                  <h3 className='product-price'>Price: {product.price}</h3>
-                  {/* <div className='product-description' dangerouslySetInnerHTML={{ __html: product.content.rendered }}></div> */}
-                  <Link to={`/products/${product.id}`} className='product-button-main'>
-                    <button className='product-button'>Learn more</button>
+              <div className='product-card' key={product.id}>
+                <div className='product-card-link'>
+                  <Link to={`/products/${product.id}`} className='product-link'>
+                    {imageUrl && <img src={imageUrl} alt={product.title.rendered} className="product-image" />}
+                    <h3 className='product-title'>{product.title.rendered}</h3>
                   </Link>
+                </div>
+                <h3 className='product-price'>Price: {product.price}</h3>
+                <Link to={`/products/${product.id}`} className='product-button-main'>
+                  <button className='product-button'>Learn more</button>
                 </Link>
                 <button
                   className="add-to-cart-button"
@@ -182,13 +180,11 @@ const Product = () => {
                   ADD TO CART
                 </button>
               </div>
-
             );
           })}
         </div>
       </div>
       <div className="pagination">
-        {/* <span>Showing {filteredProducts.length} of {totalProducts} results</span> */}
         <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
         <div className="pagination-list">
           {paginationButtons}
