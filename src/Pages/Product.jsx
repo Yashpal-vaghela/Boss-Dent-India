@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useLocation, Link } from 'react-router-dom';
 import Loader from '../component/Loader';
 import { useCart } from './AddCartContext';
+import { FaCartPlus } from "react-icons/fa";
+
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -19,6 +21,7 @@ const Product = () => {
   // const [imagePosition, setImagePosition] = useState({ top: 0, left: 0 }); // Define imagePosition here
   const location = useLocation();
   const { addToCart } = useCart();
+ 
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -66,6 +69,7 @@ const Product = () => {
   };
 
   const handleAddToCart = (product) => {
+    // console.log("Handle add to cart:", product);
     addToCart && addToCart({ ...product, quantity: 1 });
   };
 
@@ -177,7 +181,7 @@ const Product = () => {
                   className="add-to-cart-button"
                   onClick={() => handleAddToCart(product)}
                 >
-                  ADD TO CART
+                   <FaCartPlus />
                 </button>
               </div>
             );
