@@ -281,7 +281,7 @@ const Nav = () => {
                         <FaHeart />
                         <span className="watchlist-count">{watchlist.length}</span>
                       </Link>
-                      <Link className="cart-icon" ref={cartIconRef}>
+                      <Link className="cart-icon" ref={cartIconRef} to="/cart">
                         <FaCartPlus />
                         <span>{cart.length}</span>
                       </Link>
