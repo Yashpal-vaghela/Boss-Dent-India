@@ -11,6 +11,8 @@ import PrivacyPolicy from '../Pages/PrivacyPolicy'
 import TermAndCondition from '../Pages/TermAndCondition'
 import Product from '../Pages/Product'
 import SingleProduct from '../Pages/SingleProduct'
+import Cart from '../Pages/Cart'
+import WatchList from '../Pages/WatchList'
 
 const Allroutes = () => {
   return (
@@ -23,6 +25,8 @@ const Allroutes = () => {
             <Route path='/contact' element={<Contact />}/>
             <Route path='/products' element={<Product/>}/>
             <Route path='/products/:id' element={<SingleProduct/>}/>
+            <Route path= '/cart' element={<Cart />}/>
+            <Route path='/watchlist' element={<WatchList/>} />
             <Route path='/help-center' element={<HelpCenter />}/>
             <Route path='/refund-and-returns-policy' element={<RefundPolicy />} />
             <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>

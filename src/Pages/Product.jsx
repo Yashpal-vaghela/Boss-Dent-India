@@ -69,8 +69,8 @@ const Product = () => {
   };
 
   const handleAddToCart = (product) => {
-    // console.log("Handle add to cart:", product);
-    addToCart && addToCart({ ...product, quantity: 1 });
+    const quantity = 1; // Set the default quantity to 1 or as required
+    addToCart(product, quantity);
   };
 
   const filteredProducts = products.filter(
