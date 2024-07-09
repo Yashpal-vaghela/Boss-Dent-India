@@ -1967,6 +1967,8 @@ td.watchlist-price {
 .cart-item-details {
   flex: 2;
   margin-right: 20px;
+  text-decoration: none;
+  color: #222;
 }
 
 .cart-item-details h3 {
@@ -2019,7 +2021,23 @@ td.watchlist-price {
   color: #222;
   margin-top: 30px;
 }
+.clear-cart {
+  display: block;
+  padding: 10px;
+  background-color: #080808;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+  margin: 10px 0;
+  width: 100%;
+}
 
+.clear-cart:hover {
+  background-color: #c39428;
+  transition: all 0.3s ease-in-out;
+}
 .cart-summary h2 {
   margin-top: 0;
 }
@@ -2039,6 +2057,10 @@ td.watchlist-price {
   cursor: pointer;
   border-radius: 5px;
   margin-bottom: 20px;
+}
+.checkout-button:hover{
+  background-color: #080808;
+  transition: all 0.3s ease-in-out;
 }
 
 .cart-payment-methods {

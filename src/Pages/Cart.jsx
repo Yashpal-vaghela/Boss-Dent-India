@@ -1,10 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom"
 import { useCart } from "./AddCartContext";
 import { FaTrashAlt } from "react-icons/fa";
 
 const Cart = () => {
-  const { cart, addToCart, removeFromCart, updateQuantity, getCartCount } =
-    useCart();
+  const { cart, removeFromCart, updateQuantity} = useCart();
 
   const handleAddQuantity = (product) => {
     updateQuantity(product.id, product.quantity + 1);
@@ -32,11 +32,7 @@ const Cart = () => {
 
   return (
     <div className="cart-page">
-      {/* <div className="header">
-                <Link to="/" className="go-back">Go Back</Link>
-                <h1 className="cart-title">Cart</h1>
-                <p className="breadcrumb">Home / Cart</p>
-            </div> */}
+      
       <div className="header">
         <h1 className="cart-title">Cart</h1>
         <nav>
@@ -55,9 +51,9 @@ const Cart = () => {
                   alt={product.title.rendered}
                   className="cart-item-image"
                 />
-                <div className="cart-item-details">
+                <Link to="/products/${product.id}" className="cart-item-details">
                   <h3>{product.title.rendered}</h3>
-                </div>
+                </Link>
                 <div className="cart-item-quantity">
                   <button onClick={() => handleSubtractQuantity(product)}>
                     -
@@ -79,6 +75,7 @@ const Cart = () => {
             ))}
           </div>
           <div className="cart-summary">
+            <button className="clear-cart" onClick={handleEmptyCart}>Clear Cart</button>
             <h2>Total</h2>
             <span>₹{total}.00</span>
             <div className="cart-summary-item">
