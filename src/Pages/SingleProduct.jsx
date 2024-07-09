@@ -100,9 +100,9 @@ const SingleProduct = () => {
   };
 
   const handleAddToCart = () => {
-    addToCart && addToCart({ ...product, quantity }); 
-    alert("Product added to cart!");
-    // alert("Product added to cart!");
+     addToCart({ ...product, quantity }); 
+     alert("Product added to cart!");
+    
   };
 
   if (loading) {
