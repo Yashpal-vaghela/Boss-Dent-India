@@ -18,8 +18,9 @@ const Nav = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { watchlist } = useWatchlist();
   const { cart} = useCart();
-  const navigate = useNavigate();
+  const navigate1 = useNavigate();
   const cartIconRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
@@ -178,7 +179,7 @@ const Nav = () => {
                   <div className="suggestion-main">
                     <ul className="suggestions">
                     {suggestions.map(product =>(
-                      <li key={product.id} onClick={() => navigate(`/products/${product.slug}`)}>
+                      <li key={product.id} onClick={() => navigate(`/products/${product.id}`)}>
                         {product.title}
                       </li>
                     ))}
@@ -216,11 +217,11 @@ const Nav = () => {
                         <Link className="main-nav-icon-user">
                           <FaUserAlt />
                         </Link>
-                        <Link>
+                        <Link onClick={() => navigate1('/watchlist')}>
                           <FaHeart />
                           <span>0</span>
                         </Link>
-                        <Link>
+                        <Link className="cart-icon" ref={cartIconRef} to="/cart">
                           <FaCartPlus />
                           <span>0</span>
                         </Link>
