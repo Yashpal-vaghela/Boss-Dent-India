@@ -345,12 +345,39 @@
   .contact-form {
     flex-direction: row;
   }
+  .details h2 {
+    text-align: left;
+  }
+  .detail-row {
+    padding: 20px 20px;
+    flex-direction: column;
+  }
 
+  .detail-row-2 {
+    text-align: left;
+    width: 100%;
+  }
+  iframe {
+    max-width: 100%;
+    width: 100%;
+  }
+  .contact-content {
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .form-image {
+    content-visibility: hidden;
+  }
   .map,
   .details,
   .contact-content,
   .form-image {
     width: 100%;
+    margin: 0 auto;
   }
   /* help center and return policy */
   .help-center,
@@ -558,6 +585,9 @@
   .contact-content {
     text-align: center;
     margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
   }
   .details {
     padding-top: 20px;
@@ -567,9 +597,16 @@
   .contact-content h2 {
     font-size: 28px;
   }
+  .form-image {
+    content-visibility: hidden;
+  }
 
   .detail-row {
     padding: 20px 20px;
+    flex-direction: column;
+  }
+  .detail-row-2 {
+    text-align: left;
   }
   .input-row {
     display: block;
@@ -776,8 +813,18 @@
     font-size: 14px;
   }
 
+  .contact-content {
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
   .contact-form button {
     width: 100%;
+  }
+  .form-image {
+    content-visibility: hidden;
   }
   /* help center and return policy */
   .help-center,

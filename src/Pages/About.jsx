@@ -6,6 +6,12 @@ import "../css/about.css"
 const About = () => { 
   return (
     <div className='container'>
+      <div className="header">
+        <h1 className="cart-title">About us</h1>
+        <nav>
+          <a href="/">Home</a> &gt; <span>About us</span>
+        </nav>
+      </div>
       <div className='about-main'>
         <div className='about-img-main'>
           <div className='about-img-1'>
