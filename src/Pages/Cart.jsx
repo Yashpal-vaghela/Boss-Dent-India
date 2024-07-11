@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "./AddCartContext";
-import { FaGooglePay, FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
 import googlepay from "../images/Google-pay.png";
 import phonepe from"../images/Phone-pe.png";
 import banktransfer from "../images/bank-transfer.png"
+import '../css/cartresponsive.css'
 
 
 const Cart = () => {
@@ -86,9 +87,49 @@ const Cart = () => {
                   alt={product.title.rendered}
                   className="cart-item-image"
                 />
-                <Link to={`/products/${product.id}`} className="cart-item-details">
-                  <h3>{product.title.rendered}</h3>
-                </Link>
+                <div className="cart-item-details">
+                  <Link to={`/products/${product.id}`} className="cart-item-link">
+                    <h3>{product.title.rendered}</h3>
+                  </Link>
+                  {product.variations && (
+                    <div className="cart-item-attributes">
+                      {Object.keys(product.variations[0].attributes || {}).map((attribute) => (
+                        <div key={attribute} className="variation-main">
+                          <h4>{attribute.replace(/attribute_pa_|attribute_/, "")}:</h4>
+                          <div className="variation-buttons">
+                            {product.variations
+                              .filter(
+                                (variation) =>
+                                  variation.attributes[attribute] !== undefined
+                              )
+                              .map((variation, index) => (
+                                <button
+                                  key={index}
+                                  className={`variation-button ${
+                                    product.selectedAttributes &&
+                                    product.selectedAttributes[attribute] ===
+                                    variation.attributes[attribute]
+                                      ? "selected"
+                                      : ""
+                                  }`}
+                                  onClick={() =>
+                                    handleAttributeSelect(
+                                      product,
+                                      attribute,
+                                      variation.attributes[attribute]
+                                    )
+                                  }
+                                >
+                                  {variation.attributes[attribute]}
+                                </button>
+                              ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                
                 <div className="cart-item-quantity">
                   <button onClick={() => handleSubtractQuantity(product)}>
                     -
@@ -96,47 +137,13 @@ const Cart = () => {
                   <span>{product.quantity}</span>
                   <button onClick={() => handleAddQuantity(product)}>+</button>
                 </div>
-                {product.variations && (
-                  <div className="cart-item-attributes">
-                    {Object.keys(product.variations[0].attributes || {}).map((attribute) => (
-                      <div key={attribute} className="variation-main">
-                        <h4>{attribute.replace(/attribute_pa_|attribute_/, "")}:</h4>
-                        <div className="variation-buttons">
-                          {product.variations
-                            .filter(
-                              (variation) =>
-                                variation.attributes[attribute] !== undefined
-                            )
-                            .map((variation, index) => (
-                              <button
-                                key={index}
-                                className={`variation-button ${
-                                  product.selectedAttributes &&
-                                  product.selectedAttributes[attribute] ===
-                                  variation.attributes[attribute]
-                                    ? "selected"
-                                    : ""
-                                }`}
-                                onClick={() =>
-                                  handleAttributeSelect(
-                                    product,
-                                    attribute,
-                                    variation.attributes[attribute]
-                                  )
-                                }
-                              >
-                                {variation.attributes[attribute]}
-                              </button>
-                            ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <p className="cart-item-price">₹{product.price}.00</p>
-                <p className="cart-item-total">
-                  ₹{product.price * product.quantity}.00
-                </p>
+                <div className="cart-price">
+                  <p className="cart-item-price">₹{product.price}.00</p>
+                  <p className="cart-item-total">
+                    ₹{product.price * product.quantity}.00
+                  </p>
+                </div>
+                
                 <button
                   className="cart-item-remove"
                   onClick={() => handleRemoveItem(product)}

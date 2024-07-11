@@ -219,11 +219,11 @@ const Nav = () => {
                         </Link>
                         <Link onClick={() => navigate1('/watchlist')}>
                           <FaHeart />
-                          <span>0</span>
+                          <span>{watchlist.length}</span>
                         </Link>
                         <Link className="cart-icon" ref={cartIconRef} to="/cart">
                           <FaCartPlus />
-                          <span>0</span>
+                          <span>{cart.length}</span>
                         </Link>
                       </div>
                     </div>

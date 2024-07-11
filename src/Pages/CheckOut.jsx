@@ -142,9 +142,18 @@ const CheckOut = () => {
           <div className="order-summary">
             <h2>Order Summary</h2>
             <ul>
-              {cart.map((product) => (
+            {cart.map((product) => (
                 <li key={product.id}>
                   {product.title.rendered} - ₹{product.price} x {product.quantity}
+                  {product.selectedAttributes && (
+                    <ul>
+                      {Object.entries(product.selectedAttributes).map(([key, value]) => (
+                        <li key={key}>
+                          {key.replace(/attribute_pa_|attribute_/, "")}: {value}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>
