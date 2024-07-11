@@ -1662,6 +1662,7 @@ box-shadow: inset 400px 0 0 0 #c89c31;
   /* width: 100%; */
   max-width: 600px;
   margin-left: 20px;
+  border-radius: 40px;
 }
 
 .single-product-details{
@@ -2020,6 +2021,9 @@ td.watchlist-price {
   border-radius: 5px;
   color: #222;
   margin-top: 30px;
+  height: fit-content;
+  position: sticky;
+  top: 93px;
 }
 .clear-cart {
   display: block;
@@ -2069,4 +2073,123 @@ td.watchlist-price {
 
 .cart-payment-methods p {
   margin-bottom: 10px;
+}
+.payment-logos {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+  align-items: center;
+  justify-content: center;
+}
+.payment-logos img {
+  width: 50px;
+  height: 50px;
+}
+
+/* check out page */
+.checkout-page {
+  padding-top: 150px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1, h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.checkout-content {
+  display: flex;
+  justify-content: space-between;
+  color: #333;
+}
+
+.contact-details, .order-summary {
+  width: 45%;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  text-align: left;
+}
+
+.order-summary p{
+  text-align: right;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+input {
+  padding: 8px;
+  font-size: 1rem;
+  margin-top: 5px;
+}
+
+.coupon {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.coupon input {
+  padding: 8px;
+  font-size: 1rem;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+.payment-methods {
+  margin-top: 20px;
+}
+
+.payment-logos img {
+  width: 50px;
+  margin-right: 10px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 5px;
+}
+
+.payment-logos img.selected {
+  border: 2px solid #4caf50;
+}
+
+.checkout-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 20px;
+}
+.ap-btn {
+  width: 50%;
+  padding: 10px;
+  background-color: #c39428;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  margin: auto;
+}
+.ap-btn:hover{
+  background-color: #080808;
+  transition: all 0.3s ease-in-out;
 }

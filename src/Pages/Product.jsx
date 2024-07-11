@@ -16,9 +16,6 @@ const Product = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [minPrice, setMinPrice] = useState(40);
   const [maxPrice, setMaxPrice] = useState(12500);
-  // const [cartAnimation, setCartAnimation] = useState(false);
-  // const [animationImage, setAnimationImage] = useState(null);
-  // const [imagePosition, setImagePosition] = useState({ top: 0, left: 0 }); // Define imagePosition here
   const location = useLocation();
   const { addToCart } = useCart();
  

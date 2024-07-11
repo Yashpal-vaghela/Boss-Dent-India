@@ -1,10 +1,27 @@
-import React from "react";
-import { Link } from "react-router-dom"
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useCart } from "./AddCartContext";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaGooglePay, FaTrashAlt } from "react-icons/fa";
+import googlepay from "../images/Google-pay.png";
+import phonepe from"../images/Phone-pe.png";
+import banktransfer from "../images/bank-transfer.png"
+
 
 const Cart = () => {
-  const { cart, removeFromCart, updateQuantity} = useCart();
+  const { cart, removeFromCart, updateQuantity, updateAttributes, updatePrice } = useCart();
+  const [canCheckout, setCanCheckout] = useState(false);
+
+  useEffect(() => {
+    const allAttributesSelected = cart.every((product) => {
+      if (product.variations && product.variations.length > 0) {
+        return Object.keys(product.variations[0].attributes).every((key) => 
+          product.selectedAttributes && product.selectedAttributes[key]
+        );
+      }
+      return true;
+    });
+    setCanCheckout(allAttributesSelected);
+  }, [cart]);
 
   const handleAddQuantity = (product) => {
     updateQuantity(product.id, product.quantity + 1);
@@ -15,6 +32,7 @@ const Cart = () => {
       updateQuantity(product.id, product.quantity - 1);
     }
   };
+
   const handleRemoveItem = (product) => {
     removeFromCart(product.id);
   };
@@ -22,6 +40,24 @@ const Cart = () => {
   const handleEmptyCart = () => {
     cart.forEach((product) => removeFromCart(product.id));
   };
+
+  const handleAttributeSelect = (product, attribute, value) => {
+    const updatedAttributes = {
+      ...product.selectedAttributes,
+      [attribute]: value,
+    };
+    updateAttributes(product.id, updatedAttributes);
+
+    const selectedVariation = product.variations.find(variation => (
+      variation.attributes[attribute] === value
+    ));
+  
+    if (selectedVariation) {
+      const newPrice = selectedVariation.price;
+      updatePrice(product.id, newPrice); 
+    }
+  };
+  
 
   const total = cart.reduce(
     (total, product) => total + product.price * product.quantity,
@@ -32,7 +68,6 @@ const Cart = () => {
 
   return (
     <div className="cart-page">
-      
       <div className="header">
         <h1 className="cart-title">Cart</h1>
         <nav>
@@ -51,7 +86,7 @@ const Cart = () => {
                   alt={product.title.rendered}
                   className="cart-item-image"
                 />
-                <Link to="/products/${product.id}" className="cart-item-details">
+                <Link to={`/products/${product.id}`} className="cart-item-details">
                   <h3>{product.title.rendered}</h3>
                 </Link>
                 <div className="cart-item-quantity">
@@ -61,6 +96,43 @@ const Cart = () => {
                   <span>{product.quantity}</span>
                   <button onClick={() => handleAddQuantity(product)}>+</button>
                 </div>
+                {product.variations && (
+                  <div className="cart-item-attributes">
+                    {Object.keys(product.variations[0].attributes || {}).map((attribute) => (
+                      <div key={attribute} className="variation-main">
+                        <h4>{attribute.replace(/attribute_pa_|attribute_/, "")}:</h4>
+                        <div className="variation-buttons">
+                          {product.variations
+                            .filter(
+                              (variation) =>
+                                variation.attributes[attribute] !== undefined
+                            )
+                            .map((variation, index) => (
+                              <button
+                                key={index}
+                                className={`variation-button ${
+                                  product.selectedAttributes &&
+                                  product.selectedAttributes[attribute] ===
+                                  variation.attributes[attribute]
+                                    ? "selected"
+                                    : ""
+                                }`}
+                                onClick={() =>
+                                  handleAttributeSelect(
+                                    product,
+                                    attribute,
+                                    variation.attributes[attribute]
+                                  )
+                                }
+                              >
+                                {variation.attributes[attribute]}
+                              </button>
+                            ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <p className="cart-item-price">₹{product.price}.00</p>
                 <p className="cart-item-total">
                   ₹{product.price * product.quantity}.00
@@ -75,7 +147,9 @@ const Cart = () => {
             ))}
           </div>
           <div className="cart-summary">
-            <button className="clear-cart" onClick={handleEmptyCart}>Clear Cart</button>
+            <button className="clear-cart" onClick={handleEmptyCart}>
+              Clear Cart
+            </button>
             <h2>Total</h2>
             <span>₹{total}.00</span>
             <div className="cart-summary-item">
@@ -88,9 +162,19 @@ const Cart = () => {
               <span>Grand Total</span>
               <span>₹{grandTotal}.00</span>
             </div>
-            <button className="checkout-button">Check Out</button>
+            <Link to="/checkout">
+              <button className="checkout-button" disabled={!canCheckout}>
+                Check Out
+              </button>
+            </Link>
+            
             <div className="cart-payment-methods">
               <p>We Accept</p>
+              <div className="payment-logos">
+                <img src={googlepay} alt="googlepay"/>
+                <img src={phonepe} alt="phone-pe"/>
+                <img src={banktransfer} alt="banktransfer"/>
+              </div>
             </div>
           </div>
         </div>
