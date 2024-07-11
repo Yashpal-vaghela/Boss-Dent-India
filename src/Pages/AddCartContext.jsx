@@ -51,14 +51,25 @@ export const AddCartProvider = ({ children }) => {
         prevCart.map((product)=>
             product.id === productId ? { ...product, quantity } : product
         ));
-    }  
+    } 
+    const updateAttributes = (productId, attributes) => {
+      setCart(cart.map(item => item.id === productId ? { ...item, selectedAttributes: attributes } : item));
+    }; 
+    const updatePrice = (productId, newPrice) => {
+      setCart(prevCart => (
+        prevCart.map(product => (
+          product.id === productId ? { ...product, price: newPrice } : product
+        ))
+      ));
+    };
     
       const getCartCount = () => {
         return cart.reduce((count, product) => count + product.quantity, 0);
       };
+      const total = cart.reduce((total, product) => total + product.price * product.quantity, 0);
       getCartCount();
     return (
-        <AddCartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, getCartCount }}>
+        <AddCartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, getCartCount, updateAttributes, updatePrice, total }}>
             {children}
         </AddCartContext.Provider>
     )

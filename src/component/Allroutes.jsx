@@ -13,6 +13,7 @@ import Product from '../Pages/Product'
 import SingleProduct from '../Pages/SingleProduct'
 import Cart from '../Pages/Cart'
 import WatchList from '../Pages/WatchList'
+import CheckOut from '../Pages/CheckOut'
 
 const Allroutes = () => {
   return (
@@ -28,6 +29,7 @@ const Allroutes = () => {
             <Route path= '/cart' element={<Cart />}/>
             <Route path='/watchlist' element={<WatchList/>} />
             <Route path='/help-center' element={<HelpCenter />}/>
+            <Route path='/checkout' element={<CheckOut />}/>
             <Route path='/refund-and-returns-policy' element={<RefundPolicy />} />
             <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
             <Route path='/terms-and-conditions' element={ <TermAndCondition />}/>
