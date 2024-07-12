@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useWatchlist } from "./WatchlistContext";
 import axios from "axios";
 import Loader from "../component/Loader";
 import { MdDelete } from "react-icons/md";
 import { useCart } from "./AddCartContext";
+import '../css/wishlistresponsive.css';
 
 const WatchList = () => {
   const { watchlist, removeFromWatchlist } = useWatchlist();
@@ -30,7 +32,6 @@ const WatchList = () => {
         setLoading(false);
       }
     };
-   
 
     if (watchlist.length > 0) {
       fetchProducts();
@@ -48,7 +49,6 @@ const WatchList = () => {
     addToCart && addToCart({ ...product, quantity: 1 });
   };
 
-
   if (loading) {
     return <Loader />;
   }
@@ -62,46 +62,49 @@ const WatchList = () => {
   }
 
   return (
-    <div className="watchlist-page-main">
+    <div className="watchlist-page">
       <div className="header">
         <h1 className="wishlist-title">Wishlist</h1>
         <nav>
-          <a href="/">Home</a> &gt; <a href="/products">Wishlist</a> 
+          <a href="/">Home</a> &gt; <span>Wishlist</span>
         </nav>
       </div>
-      <table className="watchlist-table">
-        <thead>
-          <tr>
-            <th>Remove</th>
-            <th>Image</th>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Add to Cart</th>
-          </tr>
-        </thead>
-        <tbody className="watchlist-product-main">
+      <div className="watchlist-content">
+        <div className="watchlist-items">
           {products.map((product) => (
-            <tr key={product.id} className="watchlist-product">
-              <td className="watchlist-remove" onClick={() => handleRemove(product.id)}> <i className="remove-icon"><MdDelete /></i> </td>
-              <td className="watchlist-img">
-                <img
-                  src={product.yoast_head_json?.og_image?.[0]?.url}
-                  alt={product.title?.rendered}
-                />
-              </td>
-              <td className="watchlist-title">
-               <h1 className="w-title"> {product.title?.rendered} </h1>
-              </td>
-              <td className="watchlist-price">
-                {product.price}
-              </td>
-              <td className="watchlist-btn-main">
-                <button className="w-btn"  onClick={() => handleAddToCart(product)}>Add to Cart</button>
-              </td>
-            </tr>
+            <div key={product.id} className="watchlist-item">
+              <img
+                src={product.yoast_head_json?.og_image?.[0]?.url}
+                alt={product.title.rendered}
+                className="watchlist-item-image"
+              />
+              <div className="watchlist-item-details">
+                <div className="watchlist-item-info">
+                  <Link to={`/products/${product.id}`} className="watchlist-item-link">
+                    <h3>{product.title.rendered}</h3>
+                  </Link>
+                  <p className="watchlist-item-price">Price :- ₹{product.price}</p>
+                </div>
+                
+                <div className="actions">
+                  <button
+                      className="watchlist-add-to-cart"
+                      onClick={() => handleAddToCart(product)}
+                    >
+                      Add to Cart
+                  </button>
+                  <button
+                    className="watchlist-item-remove"
+                    onClick={() => handleRemove(product.id)}
+                  >
+                    <MdDelete />
+                  </button>
+                </div>
+              </div>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     </div>
   );
 };
