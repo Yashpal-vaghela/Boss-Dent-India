@@ -50,11 +50,12 @@ body{
     padding-bottom: 10px;
 }
 
-.about-title{
+.about-title {
     font-size: 32px;
     font-weight: 700;
     line-height: 1.4em;
     color: #000;
+    text-align: left;
 }
 
 .about-txt-p{
@@ -88,6 +89,7 @@ body{
     font-weight: 600;
     color: #000;
     margin-bottom: 20px;
+    
 }
 
 .q-txt-main{
