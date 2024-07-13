@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import Loader from '../component/Loader';
 import { useCart } from './AddCartContext';
 import { FaCartPlus } from "react-icons/fa";
+import { useWatchlist } from './WatchlistContext';
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 
 
 const Product = () => {
@@ -16,7 +18,10 @@ const Product = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [minPrice, setMinPrice] = useState(40);
   const [maxPrice, setMaxPrice] = useState(12500);
+  const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { addToCart } = useCart();
  
 
@@ -26,9 +31,15 @@ const Product = () => {
     setSearchQuery(query);
   }, [location.search]);
 
+
   useEffect(() => {
     fetchProducts();
   }, [currentPage, productsPerPage, selectedCategory]);
+
+  useEffect(()=>{
+    const userLoggedIn = localStorage.getItem('token')? true : false;
+    setIsLoggedIn(userLoggedIn);
+  },[]);
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -66,9 +77,25 @@ const Product = () => {
   };
 
   const handleAddToCart = (product) => {
-    const quantity = 1; // Set the default quantity to 1 or as required
-    addToCart(product, quantity);
+   if(isLoggedIn){
+      const quantity = 1;
+      addToCart(product, quantity);
+   } else {
+    window.alert('Please log In! Thank you.');
+    navigate("/login");
+   }
   };
+
+  const handleAddToWatchlist = (product) => {
+    if (watchlist.includes(product.id)) {
+      removeFromWatchlist(product.id);
+    } else {
+      addToWatchlist(product.id);
+    }
+    // Logic to add the product to the watchlist
+    console.log(`Product ${product.id} added to watchlist`);
+  };
+
 
   const filteredProducts = products.filter(
     product =>
@@ -180,6 +207,16 @@ const Product = () => {
                 >
                    <FaCartPlus />
                 </button>
+                <span className="watchlist-icon" onClick={() => handleAddToWatchlist(product)}>
+                  {watchlist.includes(product.id) ? 
+                    (
+                      <FaHeart />
+                    ) 
+                    : (
+                        <FaRegHeart />
+                      )
+                  }
+              </span>
               </div>
             );
           })}

@@ -1371,12 +1371,6 @@ a{
 .add-to-cart-btn:hover {
   background-color: #c89c31;
 }
-/* products page */
-
-/* .product-card-main{
-  text-decoration: none;
-  color: #333;
-} */
 
 .shop-container {
   padding-top: 150px;
@@ -1511,10 +1505,17 @@ a{
   border-radius: 8px;
   text-decoration: none;
   color: #222;
+  transition: transform 0.3s ease-in-out;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .product-card-link{
   text-decoration: none;
   color: #222;
+  position: relative;
+  display: block;
 }
 .product-link{
   text-decoration: none;
@@ -1523,6 +1524,10 @@ a{
 .product-image {
   width: 100%;
   height: auto;
+  transition: transform 0.3s ease-in-out;
+}
+.product-card:hover .product-image {
+  transform: scale(1.1);
 }
 
 .product-title {
@@ -1574,8 +1579,8 @@ a{
   color: rgb(255, 255, 255);
   font-family: Roboto, sans-serif;
   margin: 20px 0;
-  width: -moz-fit-content;
-  /* width: fit-content; */
+  /* width: -moz-fit-content; */
+  width: fit-content;
   border: 0;
   background-color: #222;
   padding: 10px 20px;
@@ -1594,6 +1599,40 @@ a{
 .add-to-cart-button:hover {
 box-shadow: inset 400px 0 0 0 #c89c31;
 }
+.product-card-heart {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: #ccc;
+  transition: color 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.product-card-heart:hover {
+  color: #c89c31;
+}
+
+.watchlist-icon {
+  cursor: pointer;
+  color: #222;
+  border: none;
+  font-size: 18px;
+  padding: 10px 10px;
+  border-radius: 50%;
+}
+
+.watchlist-icon .FaHeart{
+  background: #c39428;
+}
+.watchlist-icon .FaRegHeart{
+  background: #f50000;
+}
+
+/* .watchlist-icon:hover{
+  background-color: #c39428;
+  transition: all 0.3s ease-in-out;
+} */
 
 /* pagination css */
 .pagination {
