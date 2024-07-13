@@ -1707,6 +1707,7 @@ box-shadow: inset 400px 0 0 0 #c89c31;
   max-width: 600px;
   margin-left: 20px;
   border-radius: 40px;
+  text-align: start;
 }
 
 .single-product-details{

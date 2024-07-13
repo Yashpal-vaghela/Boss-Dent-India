@@ -82,7 +82,7 @@ const Product = () => {
       addToCart(product, quantity);
    } else {
     window.alert('Please log In! Thank you.');
-    navigate("/login");
+    navigate("/my-account");
    }
   };
 
