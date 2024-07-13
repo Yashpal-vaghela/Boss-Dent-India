@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddCartContext = createContext();
 
@@ -13,7 +14,7 @@ export const AddCartProvider = ({ children }) => {
         return [];
       }
     });
-
+    const navigate = useNavigate();
     useEffect(()=> {
       localStorage.setItem('cart', JSON.stringify(cart));
     },[cart]);
@@ -28,8 +29,21 @@ export const AddCartProvider = ({ children }) => {
         return null;
       } 
     }
+    const isAuhtenticated = () => {
+      return !! localStorage.getItem('token')
+    }
+
+    const ensureAuthenticated = () =>{
+      if (!isAuhtenticated()){
+        window.alert("Please Log In!! Thank you..");
+        navigate('/my-account');
+        return false;
+      } 
+      return true;
+    }
 
     const addToCart = async (product, quantity= 1 ) =>{
+      if (!ensureAuthenticated()) return;
        const existingProduct = cart.find((item)=> item.id === product.id);
        if (existingProduct){
           setCart((prevCart)=>
@@ -44,9 +58,11 @@ export const AddCartProvider = ({ children }) => {
        }
     };
     const removeFromCart = (productId) => {
+      if(!ensureAuthenticated()) return;
       setCart((prevCart) => prevCart.filter((product) => product.id !== productId));
     };
     const updateQuantity = (productId, quantity) =>{
+        if(!ensureAuthenticated()) return;
         setCart((prevCart)=>
         prevCart.map((product)=>
             product.id === productId ? { ...product, quantity } : product
@@ -56,6 +72,7 @@ export const AddCartProvider = ({ children }) => {
       setCart(cart.map(item => item.id === productId ? { ...item, selectedAttributes: attributes } : item));
     }; 
     const updatePrice = (productId, newPrice) => {
+      if (!ensureAuthenticated()) return;
       setCart(prevCart => (
         prevCart.map(product => (
           product.id === productId ? { ...product, price: newPrice } : product

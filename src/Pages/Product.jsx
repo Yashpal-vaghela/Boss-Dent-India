@@ -87,13 +87,16 @@ const Product = () => {
   };
 
   const handleAddToWatchlist = (product) => {
-    if (watchlist.includes(product.id)) {
-      removeFromWatchlist(product.id);
+    if (isLoggedIn) {
+      if (watchlist.includes(product.id)) {
+        removeFromWatchlist(product.id);
+      } else {
+        addToWatchlist(product.id);
+      }
     } else {
-      addToWatchlist(product.id);
+      window.alert('Please log in! Thank you.');
+      navigate("/my-account");
     }
-    // Logic to add the product to the watchlist
-    console.log(`Product ${product.id} added to watchlist`);
   };
 
 
