@@ -14,6 +14,7 @@ import SingleProduct from '../Pages/SingleProduct'
 import Cart from '../Pages/Cart'
 import WatchList from '../Pages/WatchList'
 import CheckOut from '../Pages/CheckOut'
+import UserData from '../Pages/Userdata'
 
 const Allroutes = () => {
   return (
@@ -28,6 +29,7 @@ const Allroutes = () => {
             <Route path='/products/:id' element={<SingleProduct/>}/>
             <Route path= '/cart' element={<Cart />}/>
             <Route path='/watchlist' element={<WatchList/>} />
+            <Route path='/your-data' element={<UserData/>} />
             <Route path='/help-center' element={<HelpCenter />}/>
             <Route path='/checkout' element={<CheckOut />}/>
             <Route path='/refund-and-returns-policy' element={<RefundPolicy />} />

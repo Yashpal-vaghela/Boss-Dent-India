@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2'
+import { register } from 'swiper/element';
 
 
 
@@ -20,6 +20,7 @@ const Signup = () => {
             email,
             password
           });
+          console.log("signup", username , email, password);
           const Toast = Swal.mixin({
             toast: true,
             position: "center",

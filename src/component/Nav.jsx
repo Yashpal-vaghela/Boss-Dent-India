@@ -19,6 +19,7 @@ const Nav = () => {
   const { watchlist } = useWatchlist();
   const { cart} = useCart();
   const navigate1 = useNavigate();
+  const navigate2 = useNavigate();
   const cartIconRef = useRef(null);
   const navigate = useNavigate();
 
@@ -214,7 +215,7 @@ const Nav = () => {
                   <div className="menu-num-main">
                     <div className="main-nav-icon2">
                       <div className="main-nav-icon-sub">
-                        <Link className="main-nav-icon-user">
+                        <Link className="main-nav-icon-user" to="/your-data">
                           <FaUserAlt />
                         </Link>
                         <Link onClick={() => navigate1('/watchlist')}>
@@ -267,14 +268,14 @@ const Nav = () => {
                         <Link to="/contact"className="menu-link">CONTACT</Link>
                       </li>
                     </ul>   
-                  </div>
+                  </div>   
                 </div>
               ) : null}
               {!isMobile && (
                 <div className="menu-num-main">
                   <div className="main-nav-icon">
                     <div className="main-nav-icon-sub">
-                      <Link className="main-nav-icon-user">
+                      <Link to="/your-data" className="main-nav-icon-user">
                         <FaUserAlt />
                       </Link>
                       <Link to="/watchlist">
