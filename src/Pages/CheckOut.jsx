@@ -18,11 +18,14 @@ const CheckOut = () => {
   const [appliedCoupon, setAppliedCoupon] = useState('');
   const [finalTotal, setFinalTotal] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
+  const [orderId, setOrderId] = useState('');
+  
 
   useEffect(() => {
     const deliveryCharge = total < 2500 ? 103 : 0;
     setFinalTotal(total + deliveryCharge);
   }, [total]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setContactDetails({ ...contactDetails, [name]: value });
@@ -33,29 +36,93 @@ const CheckOut = () => {
   };
 
   const applyCoupon = () => {
-    // For demonstration, assume a fixed discount if the coupon code is "DISCOUNT10"
     if (coupon === 'DISCOUNT10') {
       setAppliedCoupon(coupon);
-      setFinalTotal(total - 10); // Applying a $10 discount
+      setFinalTotal(total - 10);
     }
   };
 
   const handlePaymentSelect = (method) => {
     setPaymentMethod(method);
   };
+  const createOrder = async () => {
+    const authToken = localStorage.getItem('token');
+    console.log(authToken);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic
-    console.log('Order submitted:', {
-      contactDetails,
-      appliedCoupon,
-      paymentMethod,
-      cart,
-      finalTotal,
-    });
+    if (!authToken) {
+      alert('User not authenticated. Please log in.');
+      return;
+    }
+
+    try {
+      const response = await fetch('https://bossdentindia.com/wp-json/custom/v1/order/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          contactDetails,
+          cart,
+        }),
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! Status: ${response.status}, ${errorText}`);
+      }
+
+      const data = await response.json();
+      setOrderId(data.order_id);
+      return data;
+    } catch (error) {
+      console.error('Error creating order:', error);
+      alert('Error creating order. Please try again.');
+    }
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const orderData = await createOrder();
+      console.log('Order created:', orderData);
+
+      if (paymentMethod === 'PhonePe') {
+        const paymentResponse = await fetch('https://bossdentindia.com/wp-json/phone/v1/initiate-payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+          body: JSON.stringify({
+            orderId: orderData.order_id,
+            amount: finalTotal,
+            customerDetails: contactDetails,
+          }),
+        });
+
+        console.log('Payment response status:', paymentResponse.status);
+        if (!paymentResponse.ok) {
+          const paymentErrorText = await paymentResponse.text();
+          console.error('Payment response error text:', paymentErrorText);
+          throw new Error(`HTTP error! Status: ${paymentResponse.status}`);
+        }
+
+        const paymentData = await paymentResponse.json();
+        if (paymentData.paymentUrl) {
+          window.location.href = paymentData.paymentUrl;
+        }
+      }
+    } catch (error) {
+      console.error('Error handling checkout:', error);
+      alert('Error processing payment. Please try again.');
+    }
+  };
+
+
   const deliveryCharge = total < 2500 ? 103 : 0;
+
   return (
     <div className="checkout-page">
       <div className="header">
@@ -142,7 +209,7 @@ const CheckOut = () => {
           <div className="order-summary">
             <h2>Order Summary</h2>
             <ul>
-            {cart.map((product) => (
+              {cart.map((product) => (
                 <li key={product.id}>
                   {product.title.rendered} - ₹{product.price} x {product.quantity}
                   {product.selectedAttributes && (

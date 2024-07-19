@@ -3,7 +3,6 @@ import { FaEyeSlash, FaEye } from "react-icons/fa";
 import axios from "axios";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
   const [userIdentifier, setUserIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);

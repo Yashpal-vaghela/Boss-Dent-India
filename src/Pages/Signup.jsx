@@ -2,46 +2,91 @@ import React, { useState } from 'react'
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import axios from 'axios';
 import Swal from 'sweetalert2'
-import { register } from 'swiper/element';
-
-
 
 const Signup = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [showOTPInput, setShowOTPInput] = useState(false);
+    const [otp, setOTP] = useState('');
+    const [otpSentTime, setOTPSentTime] = useState(null);
 
-    const handleSubmit = async (e) =>{
-        e.preventDefault()
-        try{
-          const response = await axios.post("https://bossdentindia.com/wp-json/custom/v1/register",{
-            username,
-            email,
-            password
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+          const response = await axios.post("https://bossdentindia.com/wp-json/custom/v1/register", {
+              username,
+              email,
+              password
           });
-          console.log("signup", username , email, password);
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "center",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.onmouseenter = Swal.stopTimer;
-              toast.onmouseleave = Swal.resumeTimer;
-            }
-          });
-          Toast.fire({
-            icon: "success",
-            title: "Signed in successfully"
-          });
-        } catch (error){
+
+          if (response.status === 200) {
+              setShowOTPInput(true);
+              Swal.fire({
+                  icon: "success",
+                  title: response.data,
+                  showConfirmButton: false,
+                  timer: 3000
+              });
+          }
+      } catch (error) {
           console.error('Error signing up:', error);
-          alert('Registration failed.');
+          let errorMessage = 'Registration failed.';
+          if (error.response && error.response.data) {
+              const serverError = error.response.data;
+              if (serverError.code === 'missing_fields') {
+                  errorMessage = 'Please fill in all required fields.';
+              } else if (serverError.code === 'user_exists') {
+                  errorMessage = 'Username or Email already exists.';
+              } else if (serverError.code === 'registration_failed') {
+                  errorMessage = 'Registration failed.';
+              }
+          }
+          Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: errorMessage,
+              showConfirmButton: true,
+          });
+      }
+  };
+  const handleVerifyOTP = async (e) => {
+    e.preventDefault();
+    try {
+        const response = await axios.post("https://bossdentindia.com/wp-json/custom/v1/verify-otp", {
+            email,
+            otp
+        });
+
+        if (response.status === 200) {
+            Swal.fire({
+                icon: "success",
+                title: "OTP verified successfully. Registration completed.",
+                showConfirmButton: false,
+                timer: 3000
+            });
+            // Optionally, navigate to login page or show success message
         }
-        // console.log("username",username, "email",email, "password",password )
+    } catch (error) {
+        console.error('Error verifying OTP:', error);
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: 'OTP verification failed.',
+            showConfirmButton: true,
+        });
     }
+};
+
+  // const otpExpired = (otpSentTime) => {
+  //     // Check if OTP is expired (valid for 3 minutes)
+  //     const currentTime = new Date();
+  //     const timeDiffSeconds = (currentTime - otpSentTime) / 1000;
+  //     const otpValiditySeconds = 3 * 60; // 3 minutes validity
+  //     return timeDiffSeconds > otpValiditySeconds;
+  // };
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -93,6 +138,23 @@ const Signup = () => {
         <button type="submit" className="signup-button">Sign Up</button> 
         <p className='login-text'>I have a already account?<a href='/my-account'>Log in</a></p>
         </form>
+        {showOTPInput && (
+          <form className='otp-form' onSubmit={handleVerifyOTP}>
+            <div className='form-group'>
+              <label className='form-label' htmlFor='otp'>Enter OTP</label>
+              <input
+                type='text'
+                id='otp'
+                placeholder='Enter OTP'
+                className='form-input'
+                value={otp}
+                onChange={(e) => setOTP(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="verify-otp-button">Verify OTP</button>
+          </form>
+        )}  
     </div>
   )
 }
