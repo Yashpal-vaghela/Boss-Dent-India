@@ -4,6 +4,7 @@ import flogo from "../images/flogo.png"
 import { FaLocationDot } from "react-icons/fa6";
 import { FaFacebook, FaInstagram, FaLinkedin, FaPhoneAlt } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
+// import '../css/footerresponsive.css'
 
 const Footer = () => {
   return (
