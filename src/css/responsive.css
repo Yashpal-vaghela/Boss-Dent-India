@@ -787,9 +787,20 @@
   .footer-section {
     margin-top: 20px;
   }
+  .main-nav-icon-sub {
+    padding-right: 29px;
+    padding-top: 10px;
+}
+.main-nav-icon-sub a span {
+  font-size: 10px;
+}
+.main-nav-icon-sub a span {
+  bottom: 74%;
+  right: -37%;
+}
 
   .social-media {
-    justify-content: center;
+    justify-content: left;
   }
 
   .footer-bottom {

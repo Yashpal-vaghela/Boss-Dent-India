@@ -7,7 +7,6 @@ import { FaCartPlus } from "react-icons/fa";
 import { useWatchlist } from './WatchlistContext';
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 
-
 const Product = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +22,6 @@ const Product = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { addToCart } = useCart();
- 
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -31,29 +29,34 @@ const Product = () => {
     setSearchQuery(query);
   }, [location.search]);
 
-
   useEffect(() => {
     fetchProducts();
-  }, [currentPage, productsPerPage, selectedCategory]);
+  }, [currentPage, productsPerPage, selectedCategory, minPrice, maxPrice]);
 
-  useEffect(()=>{
-    const userLoggedIn = localStorage.getItem('token')? true : false;
+  useEffect(() => {
+    const userLoggedIn = localStorage.getItem('token') ? true : false;
     setIsLoggedIn(userLoggedIn);
-  },[]);
+  }, []);
 
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      let apiUrl = `https://bossdentindia.com/wp-json/wp/v2/product?per_page=${productsPerPage}&page=${currentPage}`;
+      let apiUrl = `https://bossdentindia.com/wp-json/wp/v2/product?per_page=100`; // Fetch all products initially
 
       if (selectedCategory) {
         apiUrl += `&product_cat=${selectedCategory}`;
       }
 
       const response = await axios.get(apiUrl);
-      setProducts(response.data);
-      const total = parseInt(response.headers['x-wp-total']);
-      setTotalProducts(total);
+      const filteredProducts = response.data.filter(
+        product => parseFloat(product.price) >= minPrice && parseFloat(product.price) <= maxPrice
+      );
+
+      setTotalProducts(filteredProducts.length);
+      const startIndex = (currentPage - 1) * productsPerPage;
+      const paginatedProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
+
+      setProducts(paginatedProducts);
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {
@@ -73,17 +76,18 @@ const Product = () => {
   };
 
   const handlePriceRangeChange = () => {
+    setCurrentPage(1);
     fetchProducts();
   };
 
   const handleAddToCart = (product) => {
-   if(isLoggedIn){
+    if (isLoggedIn) {
       const quantity = 1;
       addToCart(product, quantity);
-   } else {
-    window.alert('Please log In! Thank you.');
-    navigate("/my-account");
-   }
+    } else {
+      window.alert('Please log In! Thank you.');
+      navigate("/my-account");
+    }
   };
 
   const handleAddToWatchlist = (product) => {
@@ -98,14 +102,6 @@ const Product = () => {
       navigate("/my-account");
     }
   };
-
-
-  const filteredProducts = products.filter(
-    product =>
-      product.title.rendered.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      parseFloat(product.price) >= minPrice &&
-      parseFloat(product.price) <= maxPrice
-  );
 
   const paginationButtons = [];
   for (let i = 1; i <= totalPages; i++) {
@@ -132,9 +128,7 @@ const Product = () => {
   }
 
   if (loading) {
-    return <div>
-      <Loader />
-    </div>;
+    return <div><Loader /></div>;
   }
 
   return (
@@ -184,7 +178,7 @@ const Product = () => {
           </div>
         </div>
         <div className='products-grid'>
-          {filteredProducts.map(product => {
+          {products.map(product => {
             let imageUrl = null;
             if (product.better_featured_image) {
               imageUrl = product.better_featured_image.source_url;
@@ -208,18 +202,11 @@ const Product = () => {
                   className="add-to-cart-button"
                   onClick={() => handleAddToCart(product)}
                 >
-                   <FaCartPlus />
+                  <FaCartPlus />
                 </button>
                 <span className="watchlist-icon" onClick={() => handleAddToWatchlist(product)}>
-                  {watchlist.includes(product.id) ? 
-                    (
-                      <FaHeart />
-                    ) 
-                    : (
-                        <FaRegHeart />
-                      )
-                  }
-              </span>
+                  {watchlist.includes(product.id) ? <FaHeart /> : <FaRegHeart />}
+                </span>
               </div>
             );
           })}

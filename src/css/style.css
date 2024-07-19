@@ -2026,6 +2026,7 @@ box-shadow: inset 400px 0 0 0 #c89c31;
 }
 .cart-price{
   display: flex;
+  gap: 10px;
 }
 
 .cart-item-price, .cart-item-total {
@@ -2234,3 +2235,4 @@ input {
   margin: 150px auto;
   text-align: center;
 }
+

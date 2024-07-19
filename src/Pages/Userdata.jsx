@@ -28,7 +28,6 @@ const UserData = () => {
 
                 const userData = await response.json();
                 console.log('User Data:', userData); // Debugging line to log entire user data
-                console.log('User Email:', userData.email)
                 setUser(userData);
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -52,9 +51,9 @@ const UserData = () => {
 
     return (
         <div className="user-data">
-            <h2>User Data</h2>
+            <h2 className=''>User Data</h2>
             <p>Name: {user.name}</p>
-            <p>Email: {user.data?.email || 'Email not available'}</p> {/* Fallback text if email is not available */}
+            <p>Email: {user.email || 'Email not available'}</p> {/* Corrected email path */}
             <p>Description: {user.description}</p>
             <button className="logout-button" onClick={logout}>Logout</button>
         </div>
