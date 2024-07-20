@@ -2234,11 +2234,13 @@ input {
   max-width: 800px;
   margin: 150px auto;
   text-align: center;
+  border-radius: 20px;
 }
 
 .user-data-sidebar {
   width: 25%;
   padding: 20px;
+  color:#222;
   background-color: #fff;
   border-right: 1px solid #ccc;
   text-align: center;
@@ -2263,14 +2265,38 @@ input {
 .user-data-sidebar ul li {
   margin: 10px 0;
   cursor: pointer;
-  color: #007bff;
-  text-decoration: underline;
+  color: #222;
+  text-decoration: none;
 }
 
 .user-data-sidebar ul li:hover {
-  color: #0056b3;
+  color: #c39428;
 }
-
+.shop-button{
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #c39428;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.user-section {
+  padding: 30px;
+  color: #222;
+  text-align: left;
+}
+.user-section h2{
+  text-align: center;
+}
+.user-section button{
+  display: block;
+  text-align: center;
+  margin: 20px auto;
+}
+.user-section span{
+  color: #c39428;           
+}
 .user-data-sidebar .logout-button {
   margin-top: 20px;
   padding: 10px 20px;
@@ -2322,9 +2348,57 @@ input {
 .user-details-form button {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #c39428;
   color: #fff;
   border: none;
   cursor: pointer;
   border-radius: 5px;
+}
+/* Address form */
+.address-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.address-form div {
+  margin-bottom: 15px;
+}
+
+.address-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.address-form input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.address-form button {
+  background-color: #222;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.address-form button:hover {
+  background-color: #c39428;
+}
+
+.address-form p {
+  margin-top: 10px;
+  color: green;
+}
+
+.address-form p.error {
+  color: red;
 }

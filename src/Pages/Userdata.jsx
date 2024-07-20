@@ -1,49 +1,76 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import avtar from '../images/avtar.png';
+import Loader from '../component/Loader';
+import AddressForm from '../component/AddressForm'; // Import the AddressForm component
 
 const UserData = () => {
     const [user, setUser] = useState(null);
     const [selectedSection, setSelectedSection] = useState('welcome');
     const [contactNumber, setContactNumber] = useState('');
     const [gender, setGender] = useState('');
+    const [address, setAddress] = useState([]);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        async function fetchUserData() {
-            const token = localStorage.getItem('token');
-        
-            if (!token) {
-                alert('Not logged in!');
-                navigate('/my-account');
-                return;
-            }
-        
-            try {
-                const response = await fetch('https://bossdentindia.com/wp-json/wp/v2/users/me', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Failed to fetch user data');
-                }
-
-                const userData = await response.json();
-                console.log('User Data:', userData); // Debugging line to log entire user data
-                setUser(userData);
-                setContactNumber(userData.contactNumber || '');
-                setGender(userData.gender || '');
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-                alert('Error fetching user data');
-                navigate('/login');
-            }
+    const fetchUserData = async () => {
+        const token = localStorage.getItem('token');
+    
+        if (!token) {
+            alert('Not logged in!');
+            navigate('/my-account');
+            return;
         }
+    
+        try {
+            const response = await fetch('https://bossdentindia.com/wp-json/wp/v2/users/me', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch user data');
+            }
 
+            const userData = await response.json();
+    
+            // Fetch detailed user info
+            const userDetailResponse = await fetch(`https://bossdentindia.com/wp-json/custom/v1/user-data`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!userDetailResponse.ok) {
+                throw new Error('Failed to fetch user details');
+            }
+    
+            const userDetailData = await userDetailResponse.json();
+            
+            setUser(userDetailData);
+            setContactNumber(userDetailData.contactNumber || '');
+            setGender(userDetailData.gender || '');
+
+            const addressResponse = await fetch('https://bossdentindia.com/wp-json/custom/v1/settings',{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!addressResponse.ok) {
+                throw new Error('Failed to fetch address Data');
+            }
+
+            const addressData = await addressResponse.json();
+            setAddress(addressData.pickup_locations || []);
+
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            alert('Error fetching user data');
+            navigate('/login');
+        }
+    };
+
+    useEffect(() => {
         fetchUserData();
-    }, [navigate]); // Added navigate to dependency array
+    }, [navigate]);
 
     const handleSave = async () => {
         const token = localStorage.getItem('token');
@@ -54,7 +81,7 @@ const UserData = () => {
         }
 
         try {
-            const response = await fetch('https://bossdentindia.com/wp-json/wp/v2/users/me', {
+            const response = await fetch('https://bossdentindia.com/wp-json/custom/v1/user', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -79,6 +106,10 @@ const UserData = () => {
         }
     };
 
+    const linkToProduct = () =>{
+        navigate("/products")
+    }
+
     const logout = () => {
         localStorage.removeItem('token');
         alert('Logged out!');
@@ -86,15 +117,19 @@ const UserData = () => {
     };
 
     if (!user) {
-        return <div>Loading...</div>;
+        return <div><Loader /></div>;
     }
 
     return (
         <div className="user-data">
             <div className='user-data-container'>
                 <div className='user-data-sidebar'>
-                    <img className='avatar' src={avtar} alt='User Avatar'/>
-                    <h3>{user.name}</h3>
+                    <img className='avatar' 
+                         src={avtar} 
+                         alt='User Avatar'
+                         onClick={()=> setSelectedSection('welcome')}
+                         />
+                    <h3>{user.username}</h3>
                     <ul>
                         <li onClick={() => setSelectedSection('contactDetails')}>Contact Details</li>
                         <li onClick={() => setSelectedSection('orders')}>Orders</li>
@@ -105,10 +140,13 @@ const UserData = () => {
                 <div className="user-data-main">
                     {selectedSection === 'welcome' && (
                         <>
-                            <h2>Welcome, {user.name}!</h2>
-                            <p>We're glad to see you here. Enjoy shopping with us!</p>
-                            <p>Find the best deals on dental products and materials.</p>
-                            <p>Feel free to reach out to our support team for any assistance.</p>
+                            <div className='user-section'>
+                                <h2>Welcome, <span>{user.username}!</span></h2>
+                                <p>We're glad to see you here. Enjoy shopping with us!</p>
+                                <p>Find the best deals on dental products and materials.</p>
+                                <p>Feel free to reach out to our support team for any assistance.</p>  
+                                <button className='shop-button' onClick={linkToProduct}>Shop Now!</button>
+                            </div>   
                         </>
                     )}
                     {selectedSection === 'contactDetails' && (
@@ -116,7 +154,7 @@ const UserData = () => {
                             <h2>Contact Details</h2>
                             <div>
                                 <label>Name:</label>
-                                <input type="text" value={user.name} readOnly />
+                                <input type="text" value={user.username} readOnly />
                             </div>
                             <div>
                                 <label>Email:</label>
@@ -145,7 +183,24 @@ const UserData = () => {
                         <p>Orders section coming soon...</p>
                     )}
                     {selectedSection === 'address' && (
-                        <p>Address section coming soon...</p>
+                        <div className='address-section'>
+                            <h2>Address Information</h2>
+                            {address.length > 0 ? (
+                               address.map((loc, index) => (
+                                <div key={index} className="address-item">
+                                    <h3>{loc.name}</h3>
+                                    <p>{loc.address.address_1}</p>
+                                    <p>{loc.address.city}, {loc.address.state} {loc.address.postcode}</p>
+                                    <p>{loc.address.country}</p>
+                                </div>
+                            )) 
+                            ):(
+                                <>
+                                    {/* <p>No address information available.</p> */}
+                                    <AddressForm token={localStorage.getItem('token')} fetchUserData={fetchUserData} /> {/* Add the form here */}
+                                </>
+                            )}
+                        </div>
                     )}
                 </div>
             </div>
