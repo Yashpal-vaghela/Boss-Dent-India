@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import avtar from '../images/avtar.png';
 import Loader from '../component/Loader';
-import AddressForm from '../component/AddressForm'; // Import the AddressForm component
+import AddressForm from '../component/AddressForm';
 
 const UserData = () => {
     const [user, setUser] = useState(null);
@@ -14,50 +14,42 @@ const UserData = () => {
 
     const fetchUserData = async () => {
         const token = localStorage.getItem('token');
-    
         if (!token) {
             alert('Not logged in!');
             navigate('/my-account');
             return;
         }
-    
+
         try {
+            // Fetch user data
             const response = await fetch('https://bossdentindia.com/wp-json/wp/v2/users/me', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            if (!response.ok) {
-                throw new Error('Failed to fetch user data');
-            }
-
+            if (!response.ok) throw new Error('Failed to fetch user data');
             const userData = await response.json();
-    
+
             // Fetch detailed user info
-            const userDetailResponse = await fetch(`https://bossdentindia.com/wp-json/custom/v1/user-data`, {
+            const userDetailResponse = await fetch('https://bossdentindia.com/wp-json/custom/v1/user-data', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            if (!userDetailResponse.ok) {
-                throw new Error('Failed to fetch user details');
-            }
-    
+            if (!userDetailResponse.ok) throw new Error('Failed to fetch user details');
             const userDetailData = await userDetailResponse.json();
-            
+
             setUser(userDetailData);
             setContactNumber(userDetailData.contactNumber || '');
             setGender(userDetailData.gender || '');
 
-            const addressResponse = await fetch('https://bossdentindia.com/wp-json/custom/v1/settings',{
+            // Fetch address data
+            const addressResponse = await fetch('https://bossdentindia.com/wp-json/custom/v1/settings', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            if (!addressResponse.ok) {
-                throw new Error('Failed to fetch address Data');
-            }
-
+            if (!addressResponse.ok) throw new Error('Failed to fetch address data');
             const addressData = await addressResponse.json();
             setAddress(addressData.pickup_locations || []);
 
@@ -93,10 +85,7 @@ const UserData = () => {
                 }),
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to update user data');
-            }
-
+            if (!response.ok) throw new Error('Failed to update user data');
             const updatedUserData = await response.json();
             setUser(updatedUserData);
             alert('User data updated successfully!');
@@ -106,9 +95,9 @@ const UserData = () => {
         }
     };
 
-    const linkToProduct = () =>{
-        navigate("/products")
-    }
+    const linkToProduct = () => {
+        navigate("/products");
+    };
 
     const logout = () => {
         localStorage.removeItem('token');
@@ -117,7 +106,7 @@ const UserData = () => {
     };
 
     if (!user) {
-        return <div><Loader /></div>;
+        return <Loader />;
     }
 
     return (
@@ -127,8 +116,8 @@ const UserData = () => {
                     <img className='avatar' 
                          src={avtar} 
                          alt='User Avatar'
-                         onClick={()=> setSelectedSection('welcome')}
-                         />
+                         onClick={() => setSelectedSection('welcome')}
+                    />
                     <h3>{user.username}</h3>
                     <ul>
                         <li onClick={() => setSelectedSection('contactDetails')}>Contact Details</li>
@@ -139,15 +128,13 @@ const UserData = () => {
                 </div>
                 <div className="user-data-main">
                     {selectedSection === 'welcome' && (
-                        <>
-                            <div className='user-section'>
-                                <h2>Welcome, <span>{user.username}!</span></h2>
-                                <p>We're glad to see you here. Enjoy shopping with us!</p>
-                                <p>Find the best deals on dental products and materials.</p>
-                                <p>Feel free to reach out to our support team for any assistance.</p>  
-                                <button className='shop-button' onClick={linkToProduct}>Shop Now!</button>
-                            </div>   
-                        </>
+                        <div className='user-section'>
+                            <h2>Welcome, <span>{user.username}!</span></h2>
+                            <p>We're glad to see you here. Enjoy shopping with us!</p>
+                            <p>Find the best deals on dental products and materials.</p>
+                            <p>Feel free to reach out to our support team for any assistance.</p>  
+                            <button className='shop-button' onClick={linkToProduct}>Shop Now!</button>
+                        </div>
                     )}
                     {selectedSection === 'contactDetails' && (
                         <form className="user-details-form">
@@ -186,18 +173,18 @@ const UserData = () => {
                         <div className='address-section'>
                             <h2>Address Information</h2>
                             {address.length > 0 ? (
-                               address.map((loc, index) => (
-                                <div key={index} className="address-item">
-                                    <h3>{loc.name}</h3>
-                                    <p>{loc.address.address_1}</p>
-                                    <p>{loc.address.city}, {loc.address.state} {loc.address.postcode}</p>
-                                    <p>{loc.address.country}</p>
-                                </div>
-                            )) 
-                            ):(
+                                address.map((loc, index) => (
+                                    <div key={index} className="address-item">
+                                        <h3>{loc.name}</h3>
+                                        <p>{loc.address.address_1}</p>
+                                        <p>{loc.address.city}, {loc.address.state} {loc.address.postcode}</p>
+                                        <p>{loc.address.country}</p>
+                                    </div>
+                                )) 
+                            ) : (
                                 <>
-                                    {/* <p>No address information available.</p> */}
-                                    <AddressForm token={localStorage.getItem('token')} fetchUserData={fetchUserData} /> {/* Add the form here */}
+                                    <p>No address information available.</p>
+                                    <AddressForm token={localStorage.getItem('token')} fetchUserData={fetchUserData} />
                                 </>
                             )}
                         </div>
