@@ -71,21 +71,28 @@ const UserData = () => {
             navigate('/my-account');
             return;
         }
-
+    
+        const userData = {
+            contactNumber,
+            gender,
+        };
+    
         try {
-            const response = await fetch('https://bossdentindia.com/wp-json/custom/v1/user', {
+            const response = await fetch('https://bossdentindia.com/wp-json/custom/v1/user-details', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    contactNumber,
-                    gender,
-                }),
+                body: JSON.stringify(userData),
             });
-
-            if (!response.ok) throw new Error('Failed to update user data');
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error data:', errorData);
+                throw new Error('Failed to update user data');
+            }
+    
             const updatedUserData = await response.json();
             setUser(updatedUserData);
             alert('User data updated successfully!');
@@ -94,6 +101,7 @@ const UserData = () => {
             alert('Error updating user data');
         }
     };
+      
 
     const linkToProduct = () => {
         navigate("/products");
@@ -150,18 +158,42 @@ const UserData = () => {
                             <div>
                                 <label>Contact Number:</label>
                                 <input
-                                    type="text"
+                                    type="number"
                                     value={contactNumber}
                                     onChange={(e) => setContactNumber(e.target.value)}
                                 />
                             </div>
                             <div>
                                 <label>Gender:</label>
-                                <input
-                                    type="text"
-                                    value={gender}
-                                    onChange={(e) => setGender(e.target.value)}
-                                />
+                                <div className="radio-group">
+                                    <label>
+                                        <input 
+                                            type='radio'
+                                            value='male'
+                                            checked={gender === 'male'}
+                                            onChange={(e) =>setGender(e.target.value)}
+                                        />
+                                        Male
+                                    </label>
+                                    <label>
+                                        <input 
+                                            type='radio'
+                                            value='female'
+                                            checked={gender === 'female'}
+                                            onChange={(e) =>setGender(e.target.value)}
+                                        />
+                                        Female
+                                    </label>
+                                    <label>
+                                        <input 
+                                            type='radio'
+                                            value='other'
+                                            checked={gender === 'other'}
+                                            onChange={(e) =>setGender(e.target.value)}
+                                        />
+                                        Other
+                                    </label>
+                                </div>
                             </div>
                             <button type="button" onClick={handleSave}>Save</button>
                         </form>
@@ -183,7 +215,7 @@ const UserData = () => {
                                 )) 
                             ) : (
                                 <>
-                                    <p>No address information available.</p>
+                                    {/* <p>No address information available.</p> */}
                                     <AddressForm token={localStorage.getItem('token')} fetchUserData={fetchUserData} />
                                 </>
                             )}
