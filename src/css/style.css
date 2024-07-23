@@ -517,6 +517,7 @@ search-sub button[type="submit"] svg:hover,
   justify-content: space-between;
 }
 
+
 .banner-p2-fbox-sub {
   background-image: url(../images/banner2-1-bg.jpg);
   background-position: center center;
@@ -931,6 +932,56 @@ search-sub button[type="submit"] svg:hover,
 .signup-button:hover {
   box-shadow: inset 400px 0 0 0 #c89c31;
 }
+
+.form-text{
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+}
+
+.from-txt-otp{
+  color: #c39428;
+  border-bottom: 1px solid #c39428;
+  cursor: pointer;
+}
+
+.from-txt-otp:hover{
+  color: #bf8e22;
+  transition: all 0.5s ease;
+}
+
+.resend-otp-button {
+  font-size: 16px;
+  background: transparent;
+  border: none;
+  text-align: end;
+  width: -webkit-fill-available;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.resend-txt{
+  color: #c39428;
+  border-bottom: 1px solid #c39428;
+}
+
+.resend-txt:hover{
+  color: #bf8e22;
+}
+
+.verify-otp-button{
+  background-color: #333;
+  color: #fff;
+  font-size: 17px;
+  border-radius: 6px;
+  padding: 10px 0px;
+  border:none;
+}
+.verify-otp-button:hover{
+  background-color: #bf8e22;
+  transition: all 0.5s ease-in-out;
+}
+
 /* Contact page */
 .container {
   padding: 20px 20px 0px 20px;
@@ -2267,6 +2318,23 @@ input {
   cursor: pointer;
   color: #222;
   text-decoration: none;
+}
+
+.radio-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+  margin-right: 205px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.radio-group input {
+  margin-right: 5px;
 }
 
 .user-data-sidebar ul li:hover {

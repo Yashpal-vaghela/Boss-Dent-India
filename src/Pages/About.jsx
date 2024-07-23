@@ -2,6 +2,8 @@ import React from 'react'
 import about1 from "../images/about-img_1.jpg"
 import about2 from "../images/about-img_2.jpg"
 import "../css/about.css"
+import { Link } from 'react-router-dom'
+import { IoIosArrowForward } from "react-icons/io";
 
 const About = () => { 
   return (
@@ -28,6 +30,9 @@ const About = () => {
           <p className='about-txt'>BossDentIndia is a leading online retailer specializing in dental products and equipment. We offer a wide range of high-quality dental supplies, instruments, and accessories to dental professionals, students, and individuals seeking dental care products. Our mission is to provide exceptional products and excellent customer service to support the dental community’s needs.</p>
           <p className='about-txt'>At BossDentIndia, we are committed to delivering superior dental products and ensuring customer satisfaction. We strive to maintain the highest standards of quality, reliability, and affordability in all our offerings. We continuously work towards expanding our product selection, staying up-to-date with the latest advancements in dental technology, and fostering strong relationships with dental manufacturers to provide the best solutions to our customers.</p>
           </div>
+          <Link to="/contact" className='about-btn-main'>
+            <button className='about-btn'>Contact With Us <span className='about-icon'><IoIosArrowForward /></span>  </button>
+          </Link>
         </div>
       </div>
       <div className='quality-assurance-main'>
