@@ -66,7 +66,7 @@ const Login = () => {
           </span>
         </div>
         <div>
-          <a href="#" className="forgot-password">
+          <a href="/forgot-password" className="forgot-password-l">
             Forgot Password?
           </a>
         </div>

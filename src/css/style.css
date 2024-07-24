@@ -808,7 +808,7 @@ search-sub button[type="submit"] svg:hover,
   font-size: 1.2rem;
   color: #000;
 }
-.forgot-password {
+.forgot-password-l {
   display: block;
   margin-top: 5px;
   font-size: 14px;
@@ -817,7 +817,7 @@ search-sub button[type="submit"] svg:hover,
   cursor: pointer;
   text-align: right;
 }
-.forgot-password:hover {
+.forgot-password-l:hover {
   text-decoration: underline;
 }
 .login-button {
@@ -2469,4 +2469,53 @@ input {
 
 .address-form p.error {
   color: red;
+}
+
+/* Forget password  */
+.forgot-password {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 200px;
+  margin-bottom: 100px;
+}
+
+.forgot-password h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.forgot-password label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
+}
+
+.forgot-password input[type="email"] {
+  width: calc(100% - 16px);
+  padding: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.forgot-password button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.forgot-password button:hover {
+  background-color: #0056b3;
 }

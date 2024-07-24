@@ -151,6 +151,10 @@ const UserData = () => {
         }
     };
 
+    const handleForgotPassword = () => {
+        navigate('/forgot-password');
+    };
+
     const linkToProduct = () => {
         navigate("/products");
     };
@@ -264,7 +268,6 @@ const UserData = () => {
                                 )) 
                             ) : (
                                 <>
-                                    {/* <p>No address information available.</p> */}
                                     <AddressForm token={localStorage.getItem('token')} fetchUserData={fetchUserData} />
                                 </>
                             )}
@@ -290,6 +293,7 @@ const UserData = () => {
                                 />
                             </div>
                             <button type="button" onClick={handleChangePassword}>Change Password</button>
+                            <button type="button" onClick={handleForgotPassword}>Forgot Password?</button>
                         </form>
                     )}
                 </div>
