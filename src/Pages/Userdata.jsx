@@ -29,6 +29,13 @@ const UserData = () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
+
+            if (response.status === 401) {
+                alert('Please log in!');
+                navigate('/my-account');
+                return;
+            }
+    
             if (!response.ok) throw new Error('Failed to fetch user data');
             const userData = await response.json();
 
@@ -136,6 +143,8 @@ const UserData = () => {
             alert('Password changed successfully!');
             setOldPassword('');
             setNewPassword('');
+            navigate('/my-account');
+
         } catch (error) {
             console.error('Error changing password:', error);
             alert('Error changing password');
