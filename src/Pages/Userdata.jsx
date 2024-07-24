@@ -10,6 +10,8 @@ const UserData = () => {
     const [contactNumber, setContactNumber] = useState('');
     const [gender, setGender] = useState('');
     const [address, setAddress] = useState([]);
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
     const navigate = useNavigate();
 
     const fetchUserData = async () => {
@@ -71,12 +73,12 @@ const UserData = () => {
             navigate('/my-account');
             return;
         }
-    
+
         const userData = {
             contactNumber,
             gender,
         };
-    
+
         try {
             const response = await fetch('https://bossdentindia.com/wp-json/custom/v1/user-details', {
                 method: 'POST',
@@ -86,13 +88,13 @@ const UserData = () => {
                 },
                 body: JSON.stringify(userData),
             });
-    
+
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error('Error data:', errorData);
                 throw new Error('Failed to update user data');
             }
-    
+
             const updatedUserData = await response.json();
             setUser(updatedUserData);
             alert('User data updated successfully!');
@@ -101,7 +103,44 @@ const UserData = () => {
             alert('Error updating user data');
         }
     };
-      
+
+    const handleChangePassword = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Not logged in!');
+            navigate('/my-account');
+            return;
+        }
+
+        const passwordData = {
+            oldPassword,
+            newPassword,
+        };
+
+        try {
+            const response = await fetch('https://bossdentindia.com/wp-json/custom/v1/change-password', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(passwordData),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error data:', errorData);
+                throw new Error('Failed to change password');
+            }
+
+            alert('Password changed successfully!');
+            setOldPassword('');
+            setNewPassword('');
+        } catch (error) {
+            console.error('Error changing password:', error);
+            alert('Error changing password');
+        }
+    };
 
     const linkToProduct = () => {
         navigate("/products");
@@ -131,13 +170,14 @@ const UserData = () => {
                         <li onClick={() => setSelectedSection('contactDetails')}>Contact Details</li>
                         <li onClick={() => setSelectedSection('orders')}>Orders</li>
                         <li onClick={() => setSelectedSection('address')}>Address</li>
+                        <li onClick={() => setSelectedSection('changePassword')}>Change Password</li>
                     </ul>
                     <button className='logout-button' onClick={logout}>Log Out</button>
                 </div>
                 <div className="user-data-main">
                     {selectedSection === 'welcome' && (
                         <div className='user-section'>
-                            <h2>Welcome, <span>{user.username}!</span></h2>
+                            <h2>Welcome, <span>{user.username} !</span></h2>
                             <p>We're glad to see you here. Enjoy shopping with us!</p>
                             <p>Find the best deals on dental products and materials.</p>
                             <p>Feel free to reach out to our support team for any assistance.</p>  
@@ -220,6 +260,28 @@ const UserData = () => {
                                 </>
                             )}
                         </div>
+                    )}
+                    {selectedSection === 'changePassword' && (
+                        <form className="change-password-form">
+                            <h2>Change Password</h2>
+                            <div>
+                                <label>Old Password:</label>
+                                <input
+                                    type="password"
+                                    value={oldPassword}
+                                    onChange={(e) => setOldPassword(e.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <label>New Password:</label>
+                                <input
+                                    type="password"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                />
+                            </div>
+                            <button type="button" onClick={handleChangePassword}>Change Password</button>
+                        </form>
                     )}
                 </div>
             </div>
