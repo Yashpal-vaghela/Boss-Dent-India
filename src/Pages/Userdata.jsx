@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import avtar from '../images/avtar.png';
 import Loader from '../component/Loader';
 import AddressForm from '../component/AddressForm';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const UserData = () => {
     const [user, setUser] = useState(null);
@@ -12,6 +13,8 @@ const UserData = () => {
     const [address, setAddress] = useState([]);
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
     const navigate = useNavigate();
 
     const fetchUserData = async () => {
@@ -151,10 +154,6 @@ const UserData = () => {
         }
     };
 
-    const handleForgotPassword = () => {
-        navigate('/forgot-password');
-    };
-
     const linkToProduct = () => {
         navigate("/products");
     };
@@ -164,6 +163,13 @@ const UserData = () => {
         alert('Logged out!');
         navigate('/my-account');
     };
+    const togglePasswordVisibility = () =>{
+        setShowPassword(!showPassword);
+        
+    }
+    const togglePasswordVisibility1 = () =>{
+        setShowNewPassword(!showNewPassword);
+    }
 
     if (!user) {
         return <Loader />;
@@ -279,21 +285,34 @@ const UserData = () => {
                             <div>
                                 <label>Old Password:</label>
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     value={oldPassword}
+                                    placeholder='Enter Old password'
                                     onChange={(e) => setOldPassword(e.target.value)}
+                                    required
                                 />
+                                <span onClick={togglePasswordVisibility} className="password-icon">
+                                    {showPassword ? <FaEye /> : <FaEyeSlash />}
+                                </span>
                             </div>
                             <div>
                                 <label>New Password:</label>
                                 <input
-                                    type="password"
+                                    type={showNewPassword ? "text" : "password"}
                                     value={newPassword}
+                                    placeholder='Enter New password'
                                     onChange={(e) => setNewPassword(e.target.value)}
                                 />
+                                <span onClick={togglePasswordVisibility1} className="password-icon">
+                                    {showNewPassword ? <FaEye /> : <FaEyeSlash />}
+                                </span>
+                            </div>
+                            <div>
+                                <a href="/forgot-password" className="forgot-password-link">
+                                    Forgot Password?
+                                </a>
                             </div>
                             <button type="button" onClick={handleChangePassword}>Change Password</button>
-                            <button type="button" onClick={handleForgotPassword}>Forgot Password?</button>
                         </form>
                     )}
                 </div>

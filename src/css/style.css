@@ -963,6 +963,7 @@ search-sub button[type="submit"] svg:hover,
 .resend-txt{
   color: #c39428;
   border-bottom: 1px solid #c39428;
+  cursor: pointer;
 }
 
 .resend-txt:hover{
@@ -2470,6 +2471,80 @@ input {
 .address-form p.error {
   color: red;
 }
+
+/* Change Password */
+.change-password-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: #222;
+    background-color: #f9f9f9;
+}
+
+.change-password-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.change-password-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.change-password-form input {
+    width: calc(100% - 40px); /* Adjusted for the icon */
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.change-password-form .password-input {
+    position: relative;
+}
+
+.change-password-form .password-input .password-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.change-password-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.change-password-form button:hover {
+    background-color: #0056b3;
+}
+.forgot-password-link {
+  display: inline-block;
+  text-align: right;
+  width: -webkit-fill-available;
+  margin-right: 30px;
+  color: #c39428;
+  margin-bottom: 10px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+.change-password-form a:hover {
+  text-decoration: underline;
+}
+
+
 
 /* Forget password  */
 .forgot-password-container {

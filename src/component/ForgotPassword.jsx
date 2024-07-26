@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [otp, setOtp] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [step, setStep] = useState(1);
     const [error, setError] = useState('');
     const navigate = useNavigate();
@@ -65,6 +67,9 @@ const ForgotPassword = () => {
             setError(error.response?.data?.message || 'Failed to change password');
         }
     };
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     return (
         <div className="forgot-password-container">
@@ -78,21 +83,22 @@ const ForgotPassword = () => {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Enter your registered email address"
                             required
                         />
                     </div>
-                    <button type="button" onClick={handleForgotPassword}>Send Reset Link</button>
+                    <button type="button" onClick={handleForgotPassword}>Request For OTP</button>
                 </div>
             )}
             {step === 2 && (
                 <div className="step-2">
-                    <h2>Enter OTP</h2>
+                    <label>Enter the OTP sent to your registered email address:</label>
                     <div>
-                        <label>OTP:</label>
                         <input
                             type="text"
                             value={otp}
                             onChange={(e) => setOtp(e.target.value)}
+                            placeholder="Enter your OTP"
                             required
                         />
                     </div>
@@ -105,11 +111,15 @@ const ForgotPassword = () => {
                     <div>
                         <label>New Password:</label>
                         <input
-                            type="password"
+                            type={showPassword ? "text" :"password"}
                             value={newPassword}
+                            placeholder='Enter Your Password'
                             onChange={(e) => setNewPassword(e.target.value)}
                             required
                         />
+                        <span className='password-toggle-icon' onClick={togglePasswordVisibility}>
+                            {showPassword ? <FaEye /> : <FaEyeSlash />}
+                        </span>
                     </div>
                     <button type="button" onClick={handleChangePassword}>Change Password</button>
                 </div>
