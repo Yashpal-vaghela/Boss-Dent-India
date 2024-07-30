@@ -16,10 +16,10 @@ const CheckOut = () => {
   });
   const [coupon, setCoupon] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState('');
-  const [finalTotal, setFinalTotal] = useState('');
+  const [finalTotal, setFinalTotal] = useState(total);
   const [paymentMethod, setPaymentMethod] = useState('');
   const [orderId, setOrderId] = useState('');
-  
+  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
   useEffect(() => {
     const deliveryCharge = total < 2500 ? 103 : 0;
@@ -38,56 +38,45 @@ const CheckOut = () => {
   const applyCoupon = () => {
     if (coupon === 'DISCOUNT10') {
       setAppliedCoupon(coupon);
-      setFinalTotal(total - 10);
+      setFinalTotal(finalTotal - 10);
     }
   };
 
   const handlePaymentSelect = (method) => {
     setPaymentMethod(method);
   };
-  const createOrder = async () => {
-    const authToken = localStorage.getItem('token');
-    console.log(authToken);
-
-    if (!authToken) {
-      alert('User not authenticated. Please log in.');
-      return;
-    }
-
-    try {
-      const response = await fetch('https://bossdentindia.com/wp-json/custom/v1/order/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`,
-        },
-        body: JSON.stringify({
-          contactDetails,
-          cart,
-        }),
-        credentials: 'include',
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! Status: ${response.status}, ${errorText}`);
-      }
-
-      const data = await response.json();
-      setOrderId(data.order_id);
-      return data;
-    } catch (error) {
-      console.error('Error creating order:', error);
-      alert('Error creating order. Please try again.');
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const orderData = await createOrder();
-      console.log('Order created:', orderData);
+      // Create the order and retrieve the order ID
+      const orderResponse = await fetch('https://bossdentindia.com/wp-json/custom/v1/order_create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add authorization if needed
+        },
+        body: JSON.stringify({
+          amount: finalTotal,
+          customerDetails: contactDetails,
+          items: cart.map((item)=>({
+            product_id: item.id,
+            quantity: item.quantity,
+          }))
+        }),
+      });
 
+      if (!orderResponse.ok) {
+        const errorText = await orderResponse.text();
+        console.error('Order creation error:', errorText);
+        throw new Error('Failed to create order.');
+      }
+
+      const orderData = await orderResponse.json();
+      const newOrderId = orderData.orderId; // Extract the order ID from the response
+      setOrderId(newOrderId); // Set the order ID state
+
+      // Proceed to payment
       if (paymentMethod === 'PhonePe') {
         const paymentResponse = await fetch('https://bossdentindia.com/wp-json/phone/v1/initiate-payment', {
           method: 'POST',
@@ -96,17 +85,16 @@ const CheckOut = () => {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
           body: JSON.stringify({
-            orderId: orderData.order_id,
             amount: finalTotal,
             customerDetails: contactDetails,
+            orderId: newOrderId, // Pass the order ID to the payment initiation
           }),
         });
 
-        console.log('Payment response status:', paymentResponse.status);
         if (!paymentResponse.ok) {
           const paymentErrorText = await paymentResponse.text();
           console.error('Payment response error text:', paymentErrorText);
-          throw new Error(`HTTP error! Status: ${paymentResponse.status}`);
+          throw new Error('Failed to initiate payment.');
         }
 
         const paymentData = await paymentResponse.json();
@@ -120,13 +108,25 @@ const CheckOut = () => {
     }
   };
 
+  const groupedCart = cart.reduce((acc, item) =>{
+    const parentId = item.parent_id || item.id;
+    if (!acc[parentId]){
+      acc[parentId] = {
+        ...item,
+        variations: []
+      };
+    }else {
+      acc[parentId].variations.push(item);
+    }
+    return acc;
+  }, {});
 
   const deliveryCharge = total < 2500 ? 103 : 0;
 
   return (
     <div className="checkout-page">
       <div className="header">
-        <h1 className="cart-title">Check out</h1>
+        <h1 className="checkout-title">Check out</h1>
         <nav>
           <a href="/">Home</a> &gt; <span>Check out</span>
         </nav>
@@ -209,14 +209,32 @@ const CheckOut = () => {
           <div className="order-summary">
             <h2>Order Summary</h2>
             <ul>
-              {cart.map((product) => (
+              {Object.values(groupedCart).map((product) => (
                 <li key={product.id}>
                   {product.title.rendered} - ₹{product.price} x {product.quantity}
                   {product.selectedAttributes && (
-                    <ul>
+                    <ul className='product-variations'>
                       {Object.entries(product.selectedAttributes).map(([key, value]) => (
                         <li key={key}>
                           {key.replace(/attribute_pa_|attribute_/, "")}: {value}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {product.variations.length > 0 && (
+                    <ul className='product-variations'>
+                      {product.variations.map((variation) => (
+                        <li key={variation.id}>
+                          {variation.title.rendered} - ₹{variation.price} x {variation.quantity}
+                          {variation.selectedAttributes && (
+                            <ul>
+                              {Object.enetries(variation.selectedAttributes).map(([key, value]) =>(
+                                <li key={key}>
+                                    {key.replace(/attribute_pa_|attribute_/, "")}: {value}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                         </li>
                       ))}
                     </ul>

@@ -2177,13 +2177,16 @@ box-shadow: inset 400px 0 0 0 #c89c31;
   max-width: 1200px;
   margin: 0 auto;
 }
-
-h1, h2 {
-  text-align: center;
+.checkout-page h1{
+  text-align: left;
   margin-bottom: 20px;
 }
+ .checkout-page h2{
+    text-align: center;
+    margin-bottom: 20px;
+ }
 
-form {
+.checkout-page form {
   display: flex;
   flex-direction: column;
 }
@@ -2192,6 +2195,7 @@ form {
   display: flex;
   justify-content: space-between;
   color: #333;
+  margin-top: 25px;
 }
 
 .contact-details, .order-summary {
@@ -2225,6 +2229,27 @@ input {
   flex-direction: column;
   margin-top: 20px;
 }
+.product-variations {
+  margin-top: 5px;
+  padding-left: 20px;
+}
+
+.product-variations li {
+  margin-top: 5px;
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.product-variations li ul {
+  margin-top: 5px;
+  padding-left: 20px;
+  border-left: none;
+}
+
+.product-variations li ul li {
+  list-style-type: circle;
+}
+
 
 .coupon input {
   padding: 8px;
