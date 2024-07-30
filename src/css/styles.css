@@ -151,9 +151,12 @@ footer {
 /* 1440px */
 @media (max-width: 1440px) {
   .footer-container {
-    max-width: 1000px;
+    max-width: 100%;
     grid-template-columns: repeat(4, 1fr);
-  }
+    justify-content: space-between;
+    gap: 20px;
+    align-items: normal;
+}
 }
 
 /* 1024px */
