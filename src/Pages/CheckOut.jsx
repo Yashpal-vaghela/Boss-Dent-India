@@ -73,7 +73,7 @@ const CheckOut = () => {
       }
 
       const orderData = await orderResponse.json();
-      const newOrderId = orderData.orderId; // Extract the order ID from the response
+      const newOrderId =  orderData.orderId.toString();; // Extract the order ID from the response
       setOrderId(newOrderId); // Set the order ID state
 
       // Proceed to payment
@@ -98,8 +98,15 @@ const CheckOut = () => {
         }
 
         const paymentData = await paymentResponse.json();
-        if (paymentData.paymentUrl) {
-          window.location.href = paymentData.paymentUrl;
+        if (
+          paymentData.success &&
+          paymentData.data &&
+          paymentData.data.instrumentResponse &&
+          paymentData.data.instrumentResponse.redirectInfo &&
+          paymentData.data.instrumentResponse.redirectInfo.url
+        ) {
+          const paymentUrl = paymentData.data.instrumentResponse.redirectInfo.url;
+          window.location.href = paymentUrl;
         }
       }
     } catch (error) {
