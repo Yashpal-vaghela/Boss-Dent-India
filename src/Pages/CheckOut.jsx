@@ -18,8 +18,6 @@ const CheckOut = () => {
   const [appliedCoupon, setAppliedCoupon] = useState('');
   const [finalTotal, setFinalTotal] = useState(total);
   const [paymentMethod, setPaymentMethod] = useState('');
-  const [orderId, setOrderId] = useState('');
-  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
   useEffect(() => {
     const deliveryCharge = total < 2500 ? 103 : 0;
@@ -74,7 +72,6 @@ const CheckOut = () => {
 
       const orderData = await orderResponse.json();
       const newOrderId =  orderData.orderId.toString();; // Extract the order ID from the response
-      setOrderId(newOrderId); // Set the order ID state
 
       // Proceed to payment
       if (paymentMethod === 'PhonePe') {
