@@ -404,7 +404,7 @@ search-sub button[type="submit"] svg:hover,
 /* Banner Section */
 
 .banner-main {
-  margin-top: 140px;
+  margin-top: 138px;
 }
 
 .banner-sub {
@@ -575,6 +575,15 @@ search-sub button[type="submit"] svg:hover,
   border-radius: 10px;
 }
 
+.banner-3-main{
+  background-image: url(../images/6380ad4dd75bf6ffaf1687363362a4de.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 80vh;
+}
+
 .banner-p2-sbox-img img {
   transition: transform 0.3s ease;
 }
@@ -609,6 +618,7 @@ search-sub button[type="submit"] svg:hover,
 }
 
 /* Home Category */
+
 
 .home-cat-sub {
   display: flex;

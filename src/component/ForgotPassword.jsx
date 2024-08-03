@@ -116,8 +116,9 @@ const ForgotPassword = () => {
                             placeholder='Enter Your Password'
                             onChange={(e) => setNewPassword(e.target.value)}
                             required
+                            
                         />
-                        <span className='password-toggle-icon' onClick={togglePasswordVisibility}>
+                        <span className='password-icon' onClick={togglePasswordVisibility}>
                             {showPassword ? <FaEye /> : <FaEyeSlash />}
                         </span>
                     </div>

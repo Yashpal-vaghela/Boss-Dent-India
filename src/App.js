@@ -4,6 +4,7 @@ import Footer from "./component/Footer";
 import Nav from "./component/Nav";
 import "./css/style.css"; 
 import "./css/responsive.css";
+import BackToTopButton from "./component/BackToTopButton";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
        <Nav />
       <Allroutes/>
       <Footer />  
+      <BackToTopButton/>
     </div>
   );
 }
