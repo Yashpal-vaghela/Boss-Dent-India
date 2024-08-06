@@ -19,7 +19,6 @@ const Nav = () => {
   const { watchlist } = useWatchlist();
   const { cart} = useCart();
   const navigate1 = useNavigate();
-  const navigate2 = useNavigate();
   const cartIconRef = useRef(null);
   const navigate = useNavigate();
 
@@ -48,7 +47,7 @@ const Nav = () => {
   const handleSearchInputChange = async (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-  
+    setShowAltMenu(query.trim().length> 0);
     try {
       const response = await axios.get(`https://bossdentindia.com/wp-json/wp/v2/product?search=${query}`);
       const products = response.data.map(product => ({
@@ -57,7 +56,7 @@ const Nav = () => {
         slug: product.slug
       }));
       setSuggestions(products);
-      setShowAltMenu(query.trim().length> 0);
+      
     } catch (error) {
       console.error('Error fetching search suggestions:', error);
       setSuggestions([]);

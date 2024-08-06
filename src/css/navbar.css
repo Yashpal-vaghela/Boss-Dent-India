@@ -1,0 +1,457 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+  
+  
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Top Navbar */
+.nav-main {
+    background-color: #fff;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    transition: all 0.3s ease;
+  }
+  .top-nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 60px;
+    background-color: #f6f6f6;
+    position: relative;
+  }
+  .top-nav-sub {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px;
+    width: 100%;
+  }
+  .top-nav-p2 {
+    display: flex;
+    align-items: center;
+  }
+  .top-p2-txt,  
+  .top-p2-icon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 10px;
+  }
+  /* .top-p2-txt {
+    margin-right: 10px;
+  } */
+  .top-p2-txt p {
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 500;
+    color: rgb(100, 100, 100);
+    font-family: Source Sans pro, sans-serif;
+  }
+  
+  .top-nav-p2 hr {
+    width: 10px;
+    height: 2px;
+    margin: 0 10px;
+    border: 0;
+    background-color: rgb(100, 100, 100);
+  }
+  .top-p2-icon a:hover {
+    color: #c39428;
+    transition: all 0.3s ease-in-out 0s;
+  }
+
+  .search-main{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 50%;
+  }
+  
+  .search-sub{
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .search-sub button[type="submit"]{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 100%;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .search-sub .clear-icon{
+    position: absolute;
+    top: 0;
+    right: 40px;
+    width: 40px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  search-sub button[type="submit"] svg:hover,
+  .search-sub .clear-icon svg:hover {
+    color: #c39428; 
+  }
+  .suggestions{
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    color: #000;
+    z-index: 1002;
+    max-height: 200px;
+    overflow-y: auto;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+  }
+  
+  .suggestions li{
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .suggestions li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  
+  /* Main Navbar */
+  .logo-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    width: 100%;
+  }
+  
+  .logo-sub {
+    width: 200px;
+    height: auto;
+    margin: 0px 15px;
+  }
+  
+  .logo-sub img {
+    width: 100%;
+    height: 100%;
+  }
+  
+  
+  .toggle-main {
+    visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    z-index: 20;
+  }
+  .toggle-icon {
+    font-size: 24px;
+  }
+  
+  .search-sub {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .search-sub input {
+    padding: 15px 30px;
+    width: 100%;
+    border-radius: 30px;
+    border: 0;
+    background-color: rgba(191, 182, 182, 0.349);
+  }
+  
+  .search-sub span {
+    position: relative;
+    right: 7%;
+    color: rgba(243, 169, 82, 1);
+  }
+  
+  .main-nav-icon {
+    display: flex;
+    gap: 10px;
+    font-size: 1.2rem;
+  }
+  
+  .main-nav-icon-sub a {
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: 900;
+    color: #eff1f3;
+  }
+  
+  .main-nav-icon-sub a:hover {
+    color: #c39428;
+    transition: all 0.3s linear;
+  }
+  
+  .user-icon {
+    /* margin: 0 10px !important; */
+    cursor: pointer;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 50%;
+  }
+  .watchlisticon{
+    cursor: pointer;
+    border: none;
+    padding: 10px 0px;
+    border-radius: 50%;
+  }
+  .search-icon{
+    position: relative;
+    cursor: pointer;
+    padding: 10px 10px;
+    border-radius: 50%;
+  }
+  .cart-icon{
+    position: relative;
+    cursor: pointer;
+    padding: 10px 10px;
+    border-radius: 50%;
+  }
+  .main-nav-icon-sub a span {
+    position: relative;
+    bottom: 50%;
+    right: 4%;
+    background-color: #bf8e22;
+    color: white;
+    font-weight: 500;
+    font-size: 10px;
+    padding: 3px 7px;
+    border-radius: 50px;
+  }
+  
+  .main-nav-price-icon p {
+    font-size: 17px;
+    line-height: 27px;
+    font-weight: 700;
+    color: #fff;
+    padding-right: 10px;
+  }
+  
+  /* Menubar */
+  .menu-sub {
+    background-color: #222;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    transition: top 0.3s ease-in-out;
+  }
+  
+  .menu-sub i{
+    background-color: #222;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    position: fixed;
+    width: 100%;
+    transition: top 0.3s ease-in-out;
+  }
+  
+  .menu-main-div {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease-in-out;
+  }
+  .menu-div {
+    display: flex;
+  }
+  
+  .menu-div ul {
+    display: flex;
+  }
+  
+  .menu-div ul li {
+    list-style-type: none;
+    margin: 20px 10px;
+  }
+  
+  .menu-div ul li a {
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+    color: rgb(255, 255, 255);
+  }
+  
+  .menu-link:hover {
+    color: #c39428;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .menu-nav-sub {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: 20px;
+  }
+  
+  .menu-nav-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 15px;
+  }
+  
+  .menu-nav-icon {
+    background-color: #bf8e22;
+    padding: 7px 7px;
+    border-radius: 30px;
+  }
+  
+  .menu-nav-icon span {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: 900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .menu-num-txt p {
+    font-size: 15px;
+    line-height: 15px;
+    font-weight: 400;
+    color: #000;
+    font-family: Source Sans pro, sans-serif;
+    margin: 5px 0 0 0;
+  }
+  
+  .menu-num-txt a {
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 700;
+    color: #000;
+    font-family: Source Sans pro, sans-serif;
+    margin: 5px 0;
+  }
+  
+  .main-nav-icon {
+    display: flex;
+    align-items: center;
+  }
+  .main-nav-icon2 {
+    display: flex;
+    align-items: center;
+  }
+  .main-nav-icon-sub {
+    display: flex;
+    gap: 5px;
+  }
+  .main-nav-icon-sub,
+  .main-nav-icon-sub Link {
+    font-size: 1.2rem;
+  }
+  .main-nav-icon-sub a span {
+    margin-left: 0px;
+    font-size: 1rem;
+    color: #000;
+  }
+  /* Add this CSS to your existing navbar.css */
+  
+.search-input {
+    position: absolute;
+    color: #ccc;
+    top: -10px;
+    right: 20px;
+    width: 200px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: #c39428;
+    z-index: 10;
+  }
+.search-input::placeholder{
+    color: #fff;;
+}
+@media (max-width: 991px) {
+    .search-input {
+        top: 0px;
+        width: 150px;
+        margin-right: 20px;
+    }
+  }
+#toggle {
+    width: 28px;
+    height: 30px;
+    margin: 10px auto;
+    cursor: pointer;
+    top: 10px;
+    right: 20px;
+    position: absolute;
+    z-index: 1000;
+}  
+  
+#toggle.on .one {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  
+#toggle.on .two {
+    opacity: 0;
+  }
+  
+#toggle.on .three {
+    transform: rotate(-45deg) translate(7px, -8px);
+  }  
+  
+  #toggle div {
+    width: 100%;
+    height: 5px;
+    background: white;
+    margin: 4px auto;
+    transition: all 0.4s ease-in-out;
+  }
+  
+  #toggle.on .one {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  
+  #toggle.on .two {
+    opacity: 0;
+  }
+  
+  #toggle.on .three {
+    transform: rotate(-45deg) translate(7px, -8px);
+  }
+  
+  

@@ -5,11 +5,13 @@ import Nav from "./component/Nav";
 import "./css/style.css"; 
 import "./css/responsive.css";
 import BackToTopButton from "./component/BackToTopButton";
+import NewNav from "./component/NewNav";
 
 function App() {
   return (
     <div className="App">
-       <Nav />
+       {/* <Nav /> */}
+       <NewNav />
       <Allroutes/>
       <Footer />  
       <BackToTopButton/>

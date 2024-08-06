@@ -12,7 +12,7 @@ body {
 
 
 /* Top Navbar */
-.nav-main {
+/* .nav-main {
   background-color: #fff;
   width: 100%;
   position: fixed;
@@ -103,14 +103,14 @@ search-sub button[type="submit"] svg:hover,
 
 .top-nav-p1 li {
   margin: 0 10px;
-}
+} */
 
 /* Add this to your CSS file or in a <style> tag */
-[type='range']::-moz-range-thumb {
+/* [type='range']::-moz-range-thumb {
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background: #4CAF50; /* Change this to your desired color */
+  background: #4CAF50;
   cursor: pointer;
 }
 
@@ -170,11 +170,11 @@ search-sub button[type="submit"] svg:hover,
 .top-p2-icon a:hover {
   color: #c39428;
   transition: all 0.3s ease-in-out 0s;
-}
+} */
 
 /* Main Navbar */
 
-.main-nav-sub {
+/* .main-nav-sub {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -184,8 +184,6 @@ search-sub button[type="submit"] svg:hover,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* padding: 0 10px;
-    width: 100%; */
   position: relative;
 }
 
@@ -274,10 +272,10 @@ search-sub button[type="submit"] svg:hover,
   font-weight: 700;
   color: #fff;
   padding-right: 10px;
-}
+} */
 
 /* Menubar */
-.menu-sub {
+/* .menu-sub {
   background-color: #222;
   display: flex;
   align-items: center;
@@ -382,8 +380,8 @@ search-sub button[type="submit"] svg:hover,
   display: flex;
   align-items: center;
   margin-left: 100px;
-}
-.main-nav-icon2 {
+} */
+/* .main-nav-icon2 {
   display: flex;
   align-items: center;
 }
@@ -399,7 +397,7 @@ search-sub button[type="submit"] svg:hover,
   margin-left: 0px;
   font-size: 1rem;
   color: #000;
-}
+} */
 
 /* Banner Section */
 
@@ -1686,9 +1684,6 @@ box-shadow: inset 400px 0 0 0 #c89c31;
 
 .watchlist-icon .FaHeart{
   background: #c39428;
-}
-.watchlist-icon .FaRegHeart{
-  background: #f50000;
 }
 
 /* .watchlist-icon:hover{

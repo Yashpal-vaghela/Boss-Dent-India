@@ -16,7 +16,7 @@ import WatchList from '../Pages/WatchList'
 import CheckOut from '../Pages/CheckOut'
 import UserData from '../Pages/Userdata'
 import ForgotPassword from './ForgotPassword'
-
+import NewNav from './NewNav'
 const Allroutes = () => {
   return (
     <div>
@@ -37,6 +37,7 @@ const Allroutes = () => {
             <Route path='/refund-and-returns-policy' element={<RefundPolicy />} />
             <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
             <Route path='/terms-and-conditions' element={ <TermAndCondition />}/>
+            <Route pathn= '/new-nav' element={ <NewNav />} />
         </Routes>
     </div>
   )

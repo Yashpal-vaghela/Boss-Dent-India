@@ -53,17 +53,20 @@
     width: 100%;
     margin-top: -70px;
   }
-  .menu-div {
-    flex-direction: column;
-    width: 100%;
-    margin-top: -43px;
-  }
   .menu-div ul {
     flex-direction: column;
     text-align: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
   .menu-div ul li {
-    margin: 10px 5px;
+    margin: 10px 0px;
+  }
+  .menu-div ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
   }
   .close {
     position: relative;
@@ -100,7 +103,6 @@
     margin-right: auto;
   }
   .menu-num-main {
-    visibility: visible;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -119,27 +121,59 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 40%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     z-index: 1000;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0.3s, opacity 0.3s;
+    transform: translateX(-100%);
+    transition: visibility 0s, opacity 0.3s ease, transform 0.3s ease;
   }
-
   .menu-main-div.open {
     visibility: visible;
     opacity: 1;
+    transform: translateX(0);
+    transition: visibility 0s 0.3s, opacity 0.3s ease, transform 0.3s ease;
+  }
+  .menu-main-div .close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+  }
+  .menu-div ul li {
+    margin: 10px 0;
   }
 
-  .menu-div ul {
-    background-color: #222;
-    padding: 20px;
-    margin-top: 394px;
+  .menu-div ul li a {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 700;
+  }
+
+  .search-sub input {
+    padding: 10px;
+  }
+
+  .search-sub span {
+    right: 10%;
+  }
+  .menu-toggle {
+    visibility: visible;
+    cursor: pointer;
+    margin-left: 20px;
+  }
+
+  .menu-toggle #toggle {
+    font-size: 30px;
+    margin-right: auto;
   }
   /* other banner */
   .about-main {
@@ -240,15 +274,12 @@
     width: 100%;
     margin-top: -70px;
   }
-
-  .menu-div {
-    flex-direction: column;
-    width: 100%;
-    margin-top: -43px;
-  }
   .menu-div ul {
     flex-direction: column;
     text-align: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
   .menu-div ul li {
     margin: 10px 5px;
