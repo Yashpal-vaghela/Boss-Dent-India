@@ -177,14 +177,13 @@ const Signup = () => {
                         />
                         <button type="button" className="resend-otp-button" onClick={handleResendOTP}>
                        Valid for 3 minutes? <span className='resend-txt'>Resend OTP</span> 
-                    </button>
+                    </button> 
                     </div>
-                    <button type="submit" className="verify-otp-button">Verify OTP</button>
-                    
-                </form>
+                    <button type="submit" className="verify-otp-button">Verify OTP</button> 
+                 </form>
             )}
         </div>
-    );
+    );  
 }
 
 export default Signup;

@@ -59,7 +59,6 @@ const ForgotPassword = () => {
             if (response.status !== 200) {
                 throw new Error('Failed to change password');
             }
-
             alert('Password changed successfully!');
             navigate('/my-account');
         } catch (error) {

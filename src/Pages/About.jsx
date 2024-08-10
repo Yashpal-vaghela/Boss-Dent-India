@@ -14,13 +14,13 @@ const About = () => {
           <a href="/">Home</a> &gt; <span>About us</span>
         </nav>
       </div>
-      <div className='about-main'>
+      <div className='about-main-page'>
         <div className='about-img-main'>
           <div className='about-img-1'>
-            <img src={about1}  alt="" className='img-item-1'/>
+            <img src={about1}  alt="" className='about-img-item-1'/>
           </div>
           <div className='about-img-2'>
-            <img src={about2} alt="" className='img-item-2' />
+            <img src={about2} alt="" className='about-img-item-2' />
           </div>
         </div>
         <div className='about-txt-main'>
