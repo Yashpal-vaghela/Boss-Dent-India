@@ -373,10 +373,11 @@
     color: #c39428;
     transition: all 0.3s ease-in-out;
   }
-.menu-nav-main {
+  .menu-nav-main {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    z-index: 10;
   }
   .menu-nav-sub {
     display: flex;
@@ -934,8 +935,8 @@
     .toggle-icon {
       font-size: 24px;
     }
-    .menu-num-main {
-      margin-top: 25px;
+    .menu-num-txt{
+      display: none;
     }
     .main-nav-icon-sub {
       gap: 20px;
@@ -943,7 +944,7 @@
     }
     .main-nav-icon-user,
     .main-nav-icon-sub Link {
-      font-size: 0.9rem; /* Smaller font size */
+      font-size: 0.9rem; 
     }
     .menu-main-div {
       position: fixed;

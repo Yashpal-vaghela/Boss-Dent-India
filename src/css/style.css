@@ -728,7 +728,7 @@ search-sub button[type="submit"] svg:hover,
 }
 
 .other-banner-btn {
-  font-size: 12px;
+  font-size: 11px;
   background-color: #222;
   padding: 10px 30px;
   color: #eff1f3;
@@ -758,7 +758,7 @@ search-sub button[type="submit"] svg:hover,
   max-width: 400px;
   margin: 150px auto;
   padding: 20px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
   border-radius: 10px;
   text-align: left;
   font-family: Source Sans pro, sans-serif;
@@ -868,7 +868,7 @@ search-sub button[type="submit"] svg:hover,
   max-width: 400px;
   margin: 150px auto;
   padding: 20px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
   border-radius: 10px;
   text-align: center;
   font-family: "Source Sans Pro", sans-serif;

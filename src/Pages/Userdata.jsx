@@ -13,6 +13,7 @@ const UserData = () => {
     const [address, setAddress] = useState([]);
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const [passwordError, setPasswordError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const navigate = useNavigate();
@@ -76,6 +77,20 @@ const UserData = () => {
         fetchUserData();
     }, [navigate]);
 
+    const validatePassword = (value) => {
+        const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!strongPasswordRegex.test(value)) {
+            setPasswordError('Create a strong password with 8 characters,  uppercase, lowercase, number, and special character');
+        } else {
+            setPasswordError('');
+        }
+    };
+    const handlePasswordChange = (e) =>{
+        const value = e.target.value
+        setNewPassword(value);
+        validatePassword(value)
+    }
+
     const handleSave = async () => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -113,7 +128,7 @@ const UserData = () => {
             alert('Error updating user data');
         }
     };
-
+   
     const handleChangePassword = async () => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -282,30 +297,40 @@ const UserData = () => {
                     {selectedSection === 'changePassword' && (
                         <form className="change-password-form">
                             <h2>Change Password</h2>
-                            <div>
+                            <div className='input-group'>
                                 <label>Old Password:</label>
-                                <input
-                                    type={showPassword ? "text" : "password"}
-                                    value={oldPassword}
-                                    placeholder='Enter Old password'
-                                    onChange={(e) => setOldPassword(e.target.value)}
-                                    required
-                                />
-                                <span onClick={togglePasswordVisibility} className="password-icon">
-                                    {showPassword ? <FaEye /> : <FaEyeSlash />}
-                                </span>
+                                <div className="password-input-container">
+                                    <input
+                                        type={showPassword ? 'text' : 'password'}
+                                        value={oldPassword}
+                                        placeholder='Enter Your Old Password'
+                                        onChange={(e) => setOldPassword(e.target.value)}
+                                        required
+                                    />
+                                    <span
+                                        className="password-toggle"
+                                        onClick={togglePasswordVisibility}>
+                                        {showPassword ? <FaEye /> : <FaEyeSlash />}
+                                    </span>
+                                </div>
                             </div>
-                            <div>
+                            <div className='input-group'>
                                 <label>New Password:</label>
-                                <input
-                                    type={showNewPassword ? "text" : "password"}
-                                    value={newPassword}
-                                    placeholder='Enter New password'
-                                    onChange={(e) => setNewPassword(e.target.value)}
-                                />
-                                <span onClick={togglePasswordVisibility1} className="password-icon">
-                                    {showNewPassword ? <FaEye /> : <FaEyeSlash />}
-                                </span>
+                                <div className="password-input-container">
+                                    <input
+                                        type={showNewPassword ? 'text' : 'password'}
+                                        value={newPassword}
+                                        placeholder='Enter Your New Password'
+                                        onChange={handlePasswordChange}
+                                        required
+                                    />
+                                    <span
+                                        className="password-toggle"
+                                        onClick={togglePasswordVisibility1}>
+                                        {showNewPassword ? <FaEye /> : <FaEyeSlash />}
+                                    </span>
+                                </div>
+                                {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
                             </div>
                             <div>
                                 <a href="/forgot-password" className="forgot-password-link">

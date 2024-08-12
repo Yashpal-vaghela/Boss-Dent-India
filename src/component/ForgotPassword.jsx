@@ -8,9 +8,19 @@ const ForgotPassword = () => {
     const [otp, setOtp] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [passwordError, setPasswordError] = useState('');
     const [step, setStep] = useState(1);
     const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    const validatePassword = (value) => {
+        const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!strongPasswordRegex.test(value)) {
+            setPasswordError('Create a strong password: min 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character');
+        } else {
+            setPasswordError('');
+        }
+    };
 
     const handleForgotPassword = async () => {
         try {
@@ -69,6 +79,11 @@ const ForgotPassword = () => {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+    const handlePasswordChange = (e) => {
+        const value = e.target.value;
+        setNewPassword(value);
+        validatePassword(value);
+    };
 
     return (
         <div className="forgot-password-container">
@@ -113,13 +128,13 @@ const ForgotPassword = () => {
                             type={showPassword ? "text" :"password"}
                             value={newPassword}
                             placeholder='Enter Your Password'
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            required
-                            
+                            onChange={handlePasswordChange}
+                            required    
                         />
                         <span className='password-icon' onClick={togglePasswordVisibility}>
                             {showPassword ? <FaEye /> : <FaEyeSlash />}
                         </span>
+                        {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
                     </div>
                     <button type="button" onClick={handleChangePassword}>Change Password</button>
                 </div>

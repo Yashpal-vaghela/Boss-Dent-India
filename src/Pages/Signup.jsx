@@ -5,18 +5,43 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
-    const [step, setStep] = useState(1); // 1: Registration, 2: OTP Verification
+    const [step, setStep] = useState(1); 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState('');
     const [otp, setOTP] = useState('');
-    const [otpSent, setOTPSent] = useState(false); // To track if OTP has been sent
+    const [otpSent, setOTPSent] = useState(false); 
 
     const navigate = useNavigate();
 
+    const validatePassword = (value) => {
+        const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!strongPasswordRegex.test(value)) {
+            setError('Create a strong password: min 8 characters, uppercase, lowercase, number, special character');
+        } else {
+            setError('');
+        }
+    };
+
+    const handlePasswordChange = (e) =>{
+        const value = e.target.value;
+        setPassword(value);
+        validatePassword(value);
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: error,
+                showConfirmButton: true,
+            });
+            return;
+        }
         try {
             const response = await axios.post("https://bossdentindia.com/wp-json/custom/v1/register", {
                 username,
@@ -26,7 +51,7 @@ const Signup = () => {
 
             if (response.status === 200) {
                 setStep(2);
-                setOTPSent(true); // Mark OTP as sent
+                setOTPSent(true); 
                 Swal.fire({
                     icon: "success",
                     title: response.data,
@@ -144,19 +169,20 @@ const Signup = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label className="form-label" htmlFor="password">Password</label>
+                        <label className="form-label" htmlFor="password"> Create Your Password</label>
                         <input
                             type={showPassword ? "text" : "password"} 
                             id="password"
-                            placeholder='Enter Your Password'
+                            placeholder='Create Your Password'
                             className="form-input"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={handlePasswordChange}
                             required
                         />
                         <span className="password-toggle-icon" onClick={togglePasswordVisibility}>
                             {showPassword ? <FaEye /> : <FaEyeSlash /> }
                         </span>
+                        {error && <p style={{ color: 'red' }}>{error}</p>}
                     </div>
                     <button type="submit" className="signup-button">Sign Up</button> 
                     <p className='login-text'>I already have an account? <a href='/my-account'>Log in</a></p>
@@ -176,7 +202,7 @@ const Signup = () => {
                             required
                         />
                         <button type="button" className="resend-otp-button" onClick={handleResendOTP}>
-                       Valid for 3 minutes? <span className='resend-txt'>Resend OTP</span> 
+                       Valid for 5 minutes only? <span className='resend-txt'>Resend OTP</span> 
                     </button> 
                     </div>
                     <button type="submit" className="verify-otp-button">Verify OTP</button> 
