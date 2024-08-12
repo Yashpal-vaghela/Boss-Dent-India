@@ -1,0 +1,129 @@
+@media (max-width: 991px) {
+    .user-data-container {
+      width: 90%;
+      margin: 100px auto; /* Adjusted for smaller screens */
+    }
+  
+    .user-data-sidebar {
+      width: 50%;
+      border-bottom: 1px solid #ccc;
+      border-right: none;
+    }
+  
+    .user-data-main {
+      width: 100%;
+    }
+  
+    .user-details-form label,
+    .user-details-form input {
+      width: 100%;
+      text-align: left;
+    }
+  
+    .radio-group {
+      margin-right: 0;
+    }
+  }
+  
+  /* For screens less than 768px */
+  @media (max-width: 768px) {
+    .user-data-container {
+      flex-direction: column;
+      width: 100%;
+      padding: 15px;
+    }
+    .user-data-sidebar {
+      width: 100%;
+      border-bottom: 1px solid #ccc;
+      border-right: none;
+    }
+    .user-section {
+      padding: 15px;
+    }
+  
+    .address-form {
+      padding: 15px;
+    }
+  
+    .change-password-form {
+      padding: 15px;
+    }
+  
+    .forgot-password-container {
+      padding: 15px;
+      margin-top: 150px;
+    }
+  }
+  
+  /* For screens less than 600px */
+  @media (max-width: 600px) {
+    .user-data-container {
+      flex-direction: column;
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .user-data-sidebar {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .user-data-main {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .address-form {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .change-password-form {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .forgot-password-container {
+      width: 100%;
+      padding: 10px;
+      margin-top: 100px;
+    }
+  
+    .radio-group {
+      flex-direction: column;
+      margin-right: 0;
+    }
+  }
+  
+  /* For screens less than 480px */
+  @media (max-width: 480px) {
+    .user-data-container {
+      margin: 50px auto;
+    }
+  
+    .user-data-sidebar {
+      padding: 5px;
+    }
+  
+    .user-data-main {
+      padding: 5px;
+    }
+  
+    .user-details-form label,
+    .user-details-form input {
+      width: 100%;
+    }
+  
+    .address-form {
+      padding: 5px;
+    }
+  
+    .change-password-form {
+      padding: 5px;
+    }
+  
+    .forgot-password-container {
+      padding: 5px;
+      margin-top: 50px;
+    }
+  }

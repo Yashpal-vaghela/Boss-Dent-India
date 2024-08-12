@@ -4,6 +4,7 @@ import avtar from '../images/avtar.png';
 import Loader from '../component/Loader';
 import AddressForm from '../component/AddressForm';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import "../css/responsiveuserdata.css"
 
 const UserData = () => {
     const [user, setUser] = useState(null);
