@@ -1,9 +1,3 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import avtar from "../images/avtar.png";
-import Loader from "../component/Loader";
-import AddressForm from "../component/AddressForm";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import avtar from '../images/avtar.png';
