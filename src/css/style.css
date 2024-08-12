@@ -2629,3 +2629,34 @@ input {
 .forgot-password-container button:hover {
   background-color: #c39428;
 }
+
+
+/* user pasworde change loader */
+.loader {
+  /* Add your loader styling here */
+  border: 4px solid #333;
+  border-radius: 50%;
+  border-top: 4px solid #c39428;
+  width: 100%;
+  max-width: 24px;
+  height: 24px;
+  animation: spin 2s linear infinite;
+  display: grid;
+  justify-content: center;
+}
+
+.s-password-text{
+  font-size: 18px;
+  font-weight: 600;
+  color: #c39428;
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+
+}
+
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
