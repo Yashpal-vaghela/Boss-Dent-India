@@ -166,9 +166,9 @@ const NewNav = () => {
 // console.log(!(tabletScreen || smallScreen || isMobile));
 
   return (
-    <div className="nav-main" data-aos="fade">
+    <div className="nav-main">
       <div className="nav-sub">
-        <div className="top-nav">
+        <div className="top-nav" >
           <div className="top-nav-sub">
             <div className="top-nav-p2">
               <div className="top-p2-txt">
