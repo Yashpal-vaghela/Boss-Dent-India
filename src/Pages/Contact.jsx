@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import contact from "../images/contact.png";
+import Aos from "aos";
 
 const Contact = () => {
+  useEffect(() => {
+    Aos.init({
+      duration: 1000, // Animation duration in milliseconds
+      once: false,    // Allow animations to trigger multiple times
+      mirror: true,   // Trigger animations on scroll up
+    });
+  }, []);
+
   return (
     <div className="container">
-      <div className="header">
+      <div className="header" data-aos="fade-up">
         <h1>Contact</h1>
         <a href="/">Home</a> <span>&gt; Contact</span>
       </div>
-      <div className="contact-info">
-        <div className="map">
+      <div className="contact-info" >
+        <div className="map" data-aos="fade-left">
           <iframe
             src="https://maps.google.com/maps?q=Plot%20no.3-3%2F3-4%2F%20Dhuna%20house%2C%20opp.patel%20nagar%2C%20A.k.%20Road%2Cvarachha%2CSurat&t=m&z=12&output=embed&iwloc=near"
             width="80%"
@@ -21,13 +30,13 @@ const Contact = () => {
             title="Google Maps"
           ></iframe>
         </div>
-        <div className="details">
+        <div className="details" data-aos="fade-right">
           <h2>Contact Information</h2>
           <p>
             BossdentIndia (Disposables & Consumables) is an online dental
             product selling store based in Surat, Gujarat.
           </p>
-          <div className="contact-detail">
+          <div className="contact-detail" >
             <div className="detail-row">
               <div className="detail-row-1">
                 <p className="detail-row-1-txt">Surat</p>
@@ -50,15 +59,15 @@ const Contact = () => {
           </div>
         </div>
       </div>
-      <div className="contact-form">
-        <div className="contact-content">
+      <div className="contact-form" >
+        <div className="contact-content" data-aos="fade-left">
           <h2>Have You any Suggestion or Queries?</h2>
           <p>
             Fill in the below form and we will get in touch with you as soon as
             possible.
           </p>
           <form>
-            <div className="input-row">
+            <div className="input-row" >
               <input type="text" name="name" placeholder="Name" required />
               <input type="email" name="email" placeholder="E-mail" required />
             </div>
@@ -80,7 +89,7 @@ const Contact = () => {
             <button type="submit">SUBMIT NOW</button>
           </form>
         </div>
-        <div className="form-image">
+        <div className="form-image" data-aos="fade-right">
           <img src={contact} alt="Contact" />
         </div>
       </div>

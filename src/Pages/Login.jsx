@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import axios from "axios";
+import Aos from "aos";
 
 const Login = () => {
   const [userIdentifier, setUserIdentifier] = useState("");
@@ -30,8 +31,17 @@ const Login = () => {
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
+  useEffect(() => {
+    Aos.init({
+      duration: 1000, // Animation duration in milliseconds
+      once: false,    // Allow animations to trigger multiple times
+      mirror: true,   // Trigger animations on scroll up
+    });
+  }, []);
+
   return (
-    <div className="login-container">
+    <div className="login-container" data-aos="fade">
       <h2 className="login-title">Login</h2>
       <form className="login-form" onSubmit={handleSubmit}>
         <div className="form-group">

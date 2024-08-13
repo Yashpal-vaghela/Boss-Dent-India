@@ -3,26 +3,39 @@ import { Link } from "react-router-dom";
 import { useCart } from "./AddCartContext";
 import { FaTrashAlt } from "react-icons/fa";
 import googlepay from "../images/Google-pay.png";
-import phonepe from"../images/Phone-pe.png";
-import banktransfer from "../images/bank-transfer.png"
-import '../css/cartresponsive.css'
-
+import phonepe from "../images/Phone-pe.png";
+import banktransfer from "../images/bank-transfer.png";
+import "../css/cartresponsive.css";
+import Aos from "aos";
 
 const Cart = () => {
-  const { cart, removeFromCart, updateQuantity, updateAttributes, updatePrice } = useCart();
+  const {
+    cart,
+    removeFromCart,
+    updateQuantity,
+    updateAttributes,
+    updatePrice,
+  } = useCart();
   const [canCheckout, setCanCheckout] = useState(false);
 
   useEffect(() => {
     const allAttributesSelected = cart.every((product) => {
       if (product.variations && product.variations.length > 0) {
-        return Object.keys(product.variations[0].attributes).every((key) => 
-          product.selectedAttributes && product.selectedAttributes[key]
+        return Object.keys(product.variations[0].attributes).every(
+          (key) => product.selectedAttributes && product.selectedAttributes[key]
         );
       }
       return true;
     });
     setCanCheckout(allAttributesSelected);
   }, [cart]);
+  useEffect(() => {
+    Aos.init({
+      duration: 1000, // Animation duration in milliseconds
+      once: false,    // Allow animations to trigger multiple times
+      mirror: true,   // Trigger animations on scroll up
+    });
+  }, []);
 
   const handleAddQuantity = (product) => {
     updateQuantity(product.id, product.quantity + 1);
@@ -35,7 +48,7 @@ const Cart = () => {
   };
 
   const handleRemoveItem = (product) => {
-    removeFromCart(product.id)
+    removeFromCart(product.id);
   };
 
   const handleEmptyCart = () => {
@@ -49,16 +62,15 @@ const Cart = () => {
     };
     updateAttributes(product.id, updatedAttributes);
 
-    const selectedVariation = product.variations.find(variation => (
-      variation.attributes[attribute] === value
-    ));
-  
+    const selectedVariation = product.variations.find(
+      (variation) => variation.attributes[attribute] === value
+    );
+
     if (selectedVariation) {
       const newPrice = selectedVariation.price;
-      updatePrice(product.id, newPrice); 
+      updatePrice(product.id, newPrice);
     }
   };
-  
 
   const total = cart.reduce(
     (total, product) => total + product.price * product.quantity,
@@ -69,7 +81,7 @@ const Cart = () => {
 
   return (
     <div className="cart-page">
-      <div className="header">
+      <div className="header" data-aos="fade-up">
         <h1 className="cart-title">Cart</h1>
         <nav>
           <a href="/">Home</a> &gt; <span>Cart</span>
@@ -77,7 +89,7 @@ const Cart = () => {
       </div>
       {cart.length === 0 ? (
         <p>Your Cart is Empty</p>
-            ) : (   
+      ) : (
         <div className="cart-content">
           <div className="cart-items">
             {cart.map((product) => (
@@ -88,48 +100,60 @@ const Cart = () => {
                   className="cart-item-image"
                 />
                 <div className="cart-item-details">
-                  <Link to={`/products/${product.id}`} className="cart-item-link">
+                  <Link
+                    to={`/products/${product.id}`}
+                    className="cart-item-link"
+                  >
                     <h3>{product.title.rendered}</h3>
                   </Link>
                   {product.variations && (
                     <div className="cart-item-attributes">
-                      {Object.keys(product.variations[0].attributes || {}).map((attribute) => (
-                        <div key={attribute} className="variation-main">
-                          <h4>{attribute.replace(/attribute_pa_|attribute_/, "")}:</h4>
-                          <div className="variation-buttons">
-                            {product.variations
-                              .filter(
-                                (variation) =>
-                                  variation.attributes[attribute] !== undefined
-                              )
-                              .map((variation, index) => (
-                                <button
-                                  key={index}
-                                  className={`variation-button ${
-                                    product.selectedAttributes &&
-                                    product.selectedAttributes[attribute] ===
-                                    variation.attributes[attribute]
-                                      ? "selected"
-                                      : ""
-                                  }`}
-                                  onClick={() =>
-                                    handleAttributeSelect(
-                                      product,
-                                      attribute,
-                                      variation.attributes[attribute]
-                                    )
-                                  }
-                                >
-                                  {variation.attributes[attribute]}
-                                </button>
-                              ))}
+                      {Object.keys(product.variations[0].attributes || {}).map(
+                        (attribute) => (
+                          <div key={attribute} className="variation-main">
+                            <h4>
+                              {attribute.replace(
+                                /attribute_pa_|attribute_/,
+                                ""
+                              )}
+                              :
+                            </h4>
+                            <div className="variation-buttons">
+                              {product.variations
+                                .filter(
+                                  (variation) =>
+                                    variation.attributes[attribute] !==
+                                    undefined
+                                )
+                                .map((variation, index) => (
+                                  <button
+                                    key={index}
+                                    className={`variation-button ${
+                                      product.selectedAttributes &&
+                                      product.selectedAttributes[attribute] ===
+                                        variation.attributes[attribute]
+                                        ? "selected"
+                                        : ""
+                                    }`}
+                                    onClick={() =>
+                                      handleAttributeSelect(
+                                        product,
+                                        attribute,
+                                        variation.attributes[attribute]
+                                      )
+                                    }
+                                  >
+                                    {variation.attributes[attribute]}
+                                  </button>
+                                ))}
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        )
+                      )}
                     </div>
                   )}
                 </div>
-                
+
                 <div className="cart-item-quantity">
                   <button onClick={() => handleSubtractQuantity(product)}>
                     -
@@ -143,7 +167,7 @@ const Cart = () => {
                     ₹{product.price * product.quantity}.00
                   </p>
                 </div>
-                
+
                 <button
                   className="cart-item-remove"
                   onClick={() => handleRemoveItem(product)}
@@ -174,13 +198,13 @@ const Cart = () => {
                 Check Out
               </button>
             </Link>
-            
+
             <div className="cart-payment-methods">
               <p>We Accept</p>
               <div className="payment-logos">
-                <img src={googlepay} alt="googlepay"/>
-                <img src={phonepe} alt="phone-pe"/>
-                <img src={banktransfer} alt="banktransfer"/>
+                <img src={googlepay} alt="googlepay" />
+                <img src={phonepe} alt="phone-pe" />
+                <img src={banktransfer} alt="banktransfer" />
               </div>
             </div>
           </div>

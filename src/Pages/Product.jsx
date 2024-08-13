@@ -6,6 +6,7 @@ import { useCart } from './AddCartContext';
 import { FaCartPlus } from "react-icons/fa";
 import { useWatchlist } from './WatchlistContext';
 import { FaRegHeart, FaHeart } from "react-icons/fa";
+import Aos from 'aos';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -36,6 +37,13 @@ const Product = () => {
   useEffect(() => {
     const userLoggedIn = localStorage.getItem('token') ? true : false;
     setIsLoggedIn(userLoggedIn);
+  }, []);
+  useEffect(() => {
+    Aos.init({
+      duration: 1000, // Animation duration in milliseconds
+      once: false,    // Allow animations to trigger multiple times
+      mirror: true,   // Trigger animations on scroll up
+    });
   }, []);
 
   const fetchProducts = async () => {
@@ -133,7 +141,7 @@ const Product = () => {
 
   return (
     <div className='shop-container'>
-      <div className='header'>
+      <div className='header' data-aos="fade-up">
         <h1 className='shop-title'>Shop</h1>
         <nav>
           <a href='/'>Home</a> &gt; <span>Shop</span>
@@ -194,7 +202,7 @@ const Product = () => {
                     <h3 className='product-title'>{product.title.rendered}</h3>
                   </Link>
                 </div>
-                <h3 className='product-price'>Price: {product.price}</h3>
+                <h3 className='product-price'>Price: {product.price}₹</h3>
                 <Link to={`/products/${product.id}`} className='product-button-main'>
                   <button className='product-button'>Learn more</button>
                 </Link>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import banner1 from "../images/banner1.png";
 import banner2_1 from "../images/banner2-1.png";
 import banner2_2 from "../images/banner-2-2.png";
@@ -22,8 +22,16 @@ import "swiper/css/navigation";
 
 // import required modules
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import Aos from "aos";
 
 const Home = () => {
+  useEffect(() => {
+    Aos.init({
+      duration: 1000, // Animation duration in milliseconds
+      once: false,    // Allow animations to trigger multiple times
+      mirror: true,   // Trigger animations on scroll up
+    });
+  }, []);
   return (
     <div>
       {/* Banner Section */}
@@ -122,7 +130,7 @@ const Home = () => {
           </div> */}
         </div>
       </section>
-      <section className="banner-section">
+      <section className="banner-section" data-aos="fade-down">
         <Swiper
           spaceBetween={30}
           centeredSlides={true}
@@ -153,7 +161,7 @@ const Home = () => {
       </section>
       {/* Category Section */}
       <section>
-        <div className="home-cat-main">
+        <div className="home-cat-main" data-aos="fade-down">
           <div className="home-cat-sub">
             <div className="home-cat-content-box">
               <Link>
@@ -209,12 +217,12 @@ const Home = () => {
       
       {/* Product Section */}
       <section>
-        <div className="home-product-main">
+        <div className="home-product-main" >
           <div className="home-product-sub"></div>
         </div>
       </section>
       <section>
-        <div className="other-banner-main">
+        <div className="other-banner-main" data-aos="fade-down">
           <div className="other-banner">
             <div className="banner-txt">
               <p className="b-txt-1">The Best Doctor Recommended</p>

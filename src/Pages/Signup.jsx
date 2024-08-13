@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import Aos from 'aos';
 
 const Signup = () => {
     const [step, setStep] = useState(1); 
@@ -139,8 +140,17 @@ const Signup = () => {
         setShowPassword(!showPassword);
     };
 
+    useEffect(() => {
+        Aos.init({
+          duration: 1000, // Animation duration in milliseconds
+          once: false,    // Allow animations to trigger multiple times
+          mirror: true,   // Trigger animations on scroll up
+        });
+      }, []);
+    
+
     return (
-        <div className='signup-container'>
+        <div className='signup-container' data-aos="fade" >
             <h2 className='signup-title'>Sign Up</h2>
             {step === 1 ? (
                 <form className='signup-form' onSubmit={handleSubmit}>

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
+import Aos from 'aos';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -38,7 +39,7 @@ const ForgotPassword = () => {
             console.error('Error sending reset password email:', error);
             alert(error.response?.data?.message || 'Error sending reset password email');
         }
-    };
+    };  
 
     const handleVerifyOtp = async () => {
         try {
@@ -85,8 +86,17 @@ const ForgotPassword = () => {
         validatePassword(value);
     };
 
+    useEffect(() => {
+        Aos.init({
+          duration: 1000, // Animation duration in milliseconds
+          once: false,    // Allow animations to trigger multiple times
+          mirror: true,   // Trigger animations on scroll up
+        });
+      }, []);
+    
+
     return (
-        <div className="forgot-password-container">
+        <div className="forgot-password-container" data-aos="fade">
             {error && <div className="error-message">{error}</div>}
             {step === 1 && (
                 <div className="step-1">
@@ -105,7 +115,7 @@ const ForgotPassword = () => {
                 </div>
             )}
             {step === 2 && (
-                <div className="step-2">
+                <div className="step-2" data-aos="fade">
                     <label>Enter the OTP sent to your registered email address:</label>
                     <div>
                         <input
@@ -120,7 +130,7 @@ const ForgotPassword = () => {
                 </div>
             )}
             {step === 3 && (
-                <div className="step-3">
+                <div className="step-3" data-aos="fade">
                     <h2>Set New Password</h2>
                     <div>
                         <label>New Password:</label>

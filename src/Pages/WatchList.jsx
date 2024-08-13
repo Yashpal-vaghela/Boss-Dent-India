@@ -6,6 +6,7 @@ import Loader from "../component/Loader";
 import { MdDelete } from "react-icons/md";
 import { useCart } from "./AddCartContext";
 import '../css/wishlistresponsive.css';
+import Aos from "aos";
 
 const WatchList = () => {
   const { watchlist, removeFromWatchlist } = useWatchlist();
@@ -40,6 +41,15 @@ const WatchList = () => {
     }
   }, [watchlist]);
 
+
+  useEffect(() => {
+    Aos.init({
+      duration: 1000, // Animation duration in milliseconds
+      once: false,    // Allow animations to trigger multiple times
+      mirror: true,   // Trigger animations on scroll up
+    });
+  }, []);
+
   const handleRemove = (id) => {
     removeFromWatchlist(id);
     setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
@@ -63,14 +73,14 @@ const WatchList = () => {
 
   return (
     <div className="watchlist-page">
-      <div className="header">
+      <div className="header" data-aos="fade-up">
         <h1 className="wishlist-title">Wishlist</h1>
         <nav>
           <a href="/">Home</a> &gt; <span>Wishlist</span>
         </nav>
       </div>
       <div className="watchlist-content">
-        <div className="watchlist-items">
+        <div className="watchlist-items" data-aos="fade">
           {products.map((product) => (
             <div key={product.id} className="watchlist-item">
               <img

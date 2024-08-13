@@ -6,6 +6,7 @@ import axios from "axios";
 import { useWatchlist } from "../Pages/WatchlistContext";
 import { useCart } from "../Pages/AddCartContext";
 import "../css/navbar.css";
+import Aos from "aos";
 
 const NewNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -150,6 +151,11 @@ const NewNav = () => {
     const scrollFunction = () => {
       setIsScrolled(window.scrollY > 20);
     };
+      Aos.init({
+        duration: 1000, // Animation duration in milliseconds
+        once: false,    // Allow animations to trigger multiple times
+        mirror: true,   // Trigger animations on scroll up
+      });
 
     window.addEventListener("scroll", scrollFunction);
 
@@ -160,7 +166,7 @@ const NewNav = () => {
 // console.log(!(tabletScreen || smallScreen || isMobile));
 
   return (
-    <div className="nav-main">
+    <div className="nav-main" data-aos="fade">
       <div className="nav-sub">
         <div className="top-nav">
           <div className="top-nav-sub">
