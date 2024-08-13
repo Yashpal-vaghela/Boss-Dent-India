@@ -50,9 +50,12 @@
       margin-right: 0;
     }
     .cart-item-details h3 {
-        font-size: 18px;
-        text-align: left;
-      }
+      font-size: 18px;
+      text-align: left;
+    }
+    .variation-main{
+      justify-content: flex-start;
+    }
     .cart-summary {
       margin-top: 20px;
     }
@@ -81,6 +84,9 @@
       height: 50px;
       border-radius: 10px;
   }
+    .variation-main{
+      justify-content: flex-start;
+    }
     .cart-item-details h3 {
       font-size: 16px;
     }

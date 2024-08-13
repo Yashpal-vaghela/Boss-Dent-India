@@ -1,4 +1,3 @@
-// SingleProduct.js
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Zoom from "react-medium-image-zoom";
@@ -8,6 +7,7 @@ import { useWatchlist } from "./WatchlistContext";
 import axios from "axios";
 import { useCart } from "./AddCartContext";
 import Loader from "../component/Loader";
+import "../css/productview.css";
 
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
