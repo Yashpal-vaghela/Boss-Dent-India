@@ -80,7 +80,7 @@ body{
 
   /* Contact page */
   .container {
-    margin-top: 140px;
+    margin-top: 130px;
 }
 }
 
@@ -137,7 +137,7 @@ body{
   }
 
   .shop-container {
-    padding-top: 90px;
+    padding-top: 75px;
     margin: 20px;
 }
 
@@ -164,11 +164,11 @@ body{
 
   .products-grid {
     width: 70%;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
 }
    /* Contact page */
    .container {
-    margin-top: 80px;
+    margin-top: 75px;
 }
   .contact-info,
   .contact-form {
@@ -212,7 +212,7 @@ body{
 
   /* Contact page */
   .container {
-    margin-top: 80px;
+    margin-top: 75px;
 }
   .contact-info,
   .contact-form {
@@ -344,8 +344,11 @@ body{
     flex-direction: column;
   }
   /* Product page */
-  .shop-content {
-    flex-direction: column;
+.shop-content {
+  flex-direction: column;
+}
+.shop-container{
+  padding-top: 75px;
 }
 .shop-sidebar-menu {
   width: 100%;
@@ -381,7 +384,7 @@ body{
 
   /* contact page   */
   .container {
-    margin-top: 85px;
+    margin-top: 75px;
 }
   .contact-info,
   .contact-form {
@@ -545,8 +548,7 @@ body{
   }
 
   .shop-container {
-    padding-top: 100px;
-    margin: 10px;
+    padding-top: 75px;
   }
 
   .shop-title {
@@ -589,9 +591,16 @@ body{
   .social-media {
     justify-content: left;
   }
+   /* Product page */
+  .shop-content {
+    flex-direction: column;
+  }
+  .shop-container{
+    padding-top: 75px;
+  }
   /* contact page */
   .container {
-    margin-top: 100px;
+    margin-top: 75px;
 }
   .details-title,
   .contact-content h2 {

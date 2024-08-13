@@ -499,9 +499,10 @@
         position: fixed;
       }
       .menu-sub {
-        flex-direction: column;
+        flex-direction: row;
         width: 100%;
         margin-top: -70px;
+        justify-content: flex-start;
       }
       .menu-div ul {
         flex-direction: column;
@@ -680,9 +681,10 @@
       position: fixed;
     }
     .menu-sub {
-      flex-direction: column;
+      flex-direction: row;
       width: 100%;
       margin-top: -70px;
+      justify-content: flex-start;
     }
     .menu-div ul {
       flex-direction: column;

@@ -221,190 +221,196 @@ const UserData = () => {
 
   return (
     <div className="user-data">
-      <div className="user-data-container">
-        <div className="user-data-sidebar">
-          <img
-            className="avatar"
-            src={avtar}
-            alt="User Avatar"
-            onClick={() => setSelectedSection("welcome")}
-          />
-          <h3>{user.username}</h3>
-          <ul>
-            <li onClick={() => setSelectedSection("contactDetails")}>
-              Contact Details
-            </li>
-            <li onClick={() => setSelectedSection("orders")}>Orders</li>
-            <li onClick={() => setSelectedSection("address")}>Address</li>
-            <li onClick={() => setSelectedSection("changePassword")}>
-              Change Password
-            </li>
-          </ul>
-          <button className="logout-button" onClick={logout}>
-            Log Out
-          </button>
-        </div>
-        <div className="user-data-main">
-          {selectedSection === "welcome" && (
-            <div className="user-section">
-              <h2>
-                Welcome, <span>{user.username} !</span>
-              </h2>
-              <p>We're glad to see you here. Enjoy shopping with us!</p>
-              <p>Find the best deals on dental products and materials.</p>
-              <p>
-                Feel free to reach out to our support team for any assistance.
-              </p>
-              <button className="shop-button" onClick={linkToProduct}>
-                Shop Now!
-              </button>
-            </div>
-          )}
-          {selectedSection === "contactDetails" && (
-            <form className="user-details-form">
-              <h2>Contact Details</h2>
-              <div>
-                <label>Name:</label>
-                <input type="text" value={user.username} readOnly />
+      <div className='header'>
+        <h1>User Data</h1>
+        <nav>
+          <a href='/'>Home</a> &gt; <span>User Data</span>
+        </nav>
+      </div>
+        <div className="user-data-container">
+          <div className="user-data-sidebar">
+            <img
+              className="avatar"
+              src={avtar}
+              alt="User Avatar"
+              onClick={() => setSelectedSection("welcome")}
+            />
+            <h3>{user.username}</h3>
+            <ul>
+              <li onClick={() => setSelectedSection("contactDetails")}>
+                Contact Details
+              </li>
+              <li onClick={() => setSelectedSection("orders")}>Orders</li>
+              <li onClick={() => setSelectedSection("address")}>Address</li>
+              <li onClick={() => setSelectedSection("changePassword")}>
+                Change Password
+              </li>
+            </ul>
+            <button className="logout-button" onClick={logout}>
+              Log Out
+            </button>
+          </div>
+          <div className="user-data-main">
+            {selectedSection === "welcome" && (
+              <div className="user-section">
+                <h2>
+                  Welcome, <span>{user.username} !</span>
+                </h2>
+                <p>We're glad to see you here. Enjoy shopping with us!</p>
+                <p>Find the best deals on dental products and materials.</p>
+                <p>
+                  Feel free to reach out to our support team for any assistance.
+                </p>
+                <button className="shop-button" onClick={linkToProduct}>
+                  Shop Now!
+                </button>
               </div>
-              <div>
-                <label>Email:</label>
-                <input
-                  type="email"
-                  value={user.email || "Email not available"}
-                  readOnly
-                />
-              </div>
-              <div>
-                <label>Contact Number:</label>
-                <input
-                  type="number"
-                  value={contactNumber}
-                  onChange={(e) => setContactNumber(e.target.value)}
-                />
-              </div>
-              <div>
-                <label>Gender:</label>
-                <div className="radio-group">
-                  <label>
-                    <input
-                      type="radio"
-                      value="male"
-                      checked={gender === "male"}
-                      onChange={(e) => setGender(e.target.value)}
-                    />
-                    Male
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      value="female"
-                      checked={gender === "female"}
-                      onChange={(e) => setGender(e.target.value)}
-                    />
-                    Female
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      value="other"
-                      checked={gender === "other"}
-                      onChange={(e) => setGender(e.target.value)}
-                    />
-                    Other
-                  </label>
+            )}
+            {selectedSection === "contactDetails" && (
+              <form className="user-details-form">
+                <h2>Contact Details</h2>
+                <div>
+                  <label>Name:</label>
+                  <input type="text" value={user.username} readOnly />
                 </div>
-              </div>
-              <button type="button" onClick={handleSave}>
-                Save
-              </button>
-            </form>
-          )}
-          {selectedSection === "orders" && <p>Orders section coming soon...</p>}
-          {selectedSection === "address" && (
-            <div className="address-section">
-              <h2>Address Information</h2>
-              {address.length > 0 ? (
-                address.map((loc, index) => (
-                  <div key={index} className="address-item">
-                    <h3>{loc.name}</h3>
-                    <p>{loc.address.address_1}</p>
-                    <p>
-                      {loc.address.city}, {loc.address.state}{" "}
-                      {loc.address.postcode}
-                    </p>
-                    <p>{loc.address.country}</p>
+                <div>
+                  <label>Email:</label>
+                  <input
+                    type="email"
+                    value={user.email || "Email not available"}
+                    readOnly
+                  />
+                </div>
+                <div>
+                  <label>Contact Number:</label>
+                  <input
+                    type="number"
+                    value={contactNumber}
+                    onChange={(e) => setContactNumber(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label>Gender:</label>
+                  <div className="radio-group">
+                    <label>
+                      <input
+                        type="radio"
+                        value="male"
+                        checked={gender === "male"}
+                        onChange={(e) => setGender(e.target.value)}
+                      />
+                      Male
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="female"
+                        checked={gender === "female"}
+                        onChange={(e) => setGender(e.target.value)}
+                      />
+                      Female
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="other"
+                        checked={gender === "other"}
+                        onChange={(e) => setGender(e.target.value)}
+                      />
+                      Other
+                    </label>
                   </div>
-                ))
-              ) : (
-                <>
-                  <AddressForm
-                    token={localStorage.getItem("token")}
-                    fetchUserData={fetchUserData}
-                  />
-                </>
-              )}
-            </div>
-          )}
-          {selectedSection === "changePassword" && (
-            <form className="change-password-form">
-              <h2>Change Password</h2>
-              <div className="input-group">
-                <label>Old Password:</label>
-                <div className="password-input-container">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={oldPassword}
-                    placeholder="Enter Your Old Password"
-                    onChange={(e) => setOldPassword(e.target.value)}
-                    required
-                  />
-                  <span
-                    className="password-toggle"
-                    onClick={togglePasswordVisibility}
-                  >
-                    {showPassword ? <FaEye /> : <FaEyeSlash />}
-                  </span>
                 </div>
-              </div>
-              <div className="input-group">
-                <label>New Password:</label>
-                <div className="password-input-container">
-                  <input
-                    type={showNewPassword ? "text" : "password"}
-                    value={newPassword}
-                    placeholder="Enter Your New Password"
-                    onChange={handlePasswordChange}
-                    required
-                  />
-                  <span
-                    className="password-toggle"
-                    onClick={togglePasswordVisibility1}
-                  >
-                    {showNewPassword ? <FaEye /> : <FaEyeSlash />}
-                  </span>
-                </div>
-                {passwordError && (
-                  <p style={{ color: "red" }}>{passwordError}</p>
+                <button type="button" onClick={handleSave}>
+                  Save
+                </button>
+              </form>
+            )}
+            {selectedSection === "orders" && <p>Orders section coming soon...</p>}
+            {selectedSection === "address" && (
+              <div className="address-section">
+                <h2>Address Information</h2>
+                {address.length > 0 ? (
+                  address.map((loc, index) => (
+                    <div key={index} className="address-item">
+                      <h3>{loc.name}</h3>
+                      <p>{loc.address.address_1}</p>
+                      <p>
+                        {loc.address.city}, {loc.address.state}{" "}
+                        {loc.address.postcode}
+                      </p>
+                      <p>{loc.address.country}</p>
+                    </div>
+                  ))
+                ) : (
+                  <>
+                    <AddressForm
+                      token={localStorage.getItem("token")}
+                      fetchUserData={fetchUserData}
+                    />
+                  </>
                 )}
               </div>
-              <div>
-                <a href="/forgot-password" className="forgot-password-link">
-                  Forgot Password?
-                </a>
-              </div>
-              <div>
-                {isLoading ? <div className="loader"> </div>  : null }
-                <button onClick={handleChangePassword} disabled={isLoading}>
-                    Change Password
-                </button>
-                {isLoading && <p>Changing Password...</p>}
-            {!isLoading && isSuccess && <p>Your password has been successfully changed.</p>}
-              </div>
-            </form>
-          )}
+            )}
+            {selectedSection === "changePassword" && (
+              <form className="change-password-form">
+                <h2>Change Password</h2>
+                <div className="input-group">
+                  <label>Old Password:</label>
+                  <div className="password-input-container">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={oldPassword}
+                      placeholder="Enter Your Old Password"
+                      onChange={(e) => setOldPassword(e.target.value)}
+                      required
+                    />
+                    <span
+                      className="password-toggle"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? <FaEye /> : <FaEyeSlash />}
+                    </span>
+                  </div>
+                </div>
+                <div className="input-group">
+                  <label>New Password:</label>
+                  <div className="password-input-container">
+                    <input
+                      type={showNewPassword ? "text" : "password"}
+                      value={newPassword}
+                      placeholder="Enter Your New Password"
+                      onChange={handlePasswordChange}
+                      required
+                    />
+                    <span
+                      className="password-toggle"
+                      onClick={togglePasswordVisibility1}
+                    >
+                      {showNewPassword ? <FaEye /> : <FaEyeSlash />}
+                    </span>
+                  </div>
+                  {passwordError && (
+                    <p style={{ color: "red" }}>{passwordError}</p>
+                  )}
+                </div>
+                <div>
+                  <a href="/forgot-password" className="forgot-password-link">
+                    Forgot Password?
+                  </a>
+                </div>
+                <div>
+                  {isLoading ? <div className="loader"> </div>  : null }
+                  <button onClick={handleChangePassword} disabled={isLoading}>
+                      Change Password
+                  </button>
+                  {isLoading && <p>Changing Password...</p>}
+              {!isLoading && isSuccess && <p>Your password has been successfully changed.</p>}
+                </div>
+              </form>
+            )}
+          </div>
         </div>
-      </div>
     </div>
   );
 };
