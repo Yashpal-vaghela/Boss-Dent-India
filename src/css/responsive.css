@@ -85,7 +85,6 @@ body{
 }
 
 @media only screen and (max-width: 991px) {
-
   /* other banner */
   .about-main {
     margin-top: 0px;
@@ -692,46 +691,8 @@ body{
   .term-info ul li {
     margin-left: 20px;
   }
-
-  /* single page */
-  .single-product {
-    padding-top: 85px;
-}
-
-  .single-product-main {
-    grid-template-columns: repeat(1, 1fr);
-  }
-  .single-product-img img {
-    margin-left: 0px;
-    max-width: 323px;
-    border-radius: 28px;
-}
-  .single-product-details {
-    text-align: center;
-  }
-  .variation-main {
-    justify-content: center;
-}
-.des-main {
-  margin-left: 0px;
-  margin-top: 20px;
-}
-.btn-icon-main {
-  align-items: end;
-  justify-content: center;
-  margin-top: 20px;
-}
-  .quantity-controls {
-    justify-content: center;
-  }
-  .add-to-cart-button {
-    margin: 0 auto;
-    margin-top: 15px;
-  }
-
   /* Product page */
-  .products-grid {
-    grid-template-columns: repeat(1, 1fr);
+  .shop-sidebar-menu{
+    grid-template-columns: 1fr;
   }
-
 }

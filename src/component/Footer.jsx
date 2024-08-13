@@ -4,7 +4,6 @@ import flogo from "../images/flogo.png"
 import { FaLocationDot } from "react-icons/fa6";
 import { FaFacebook, FaInstagram, FaLinkedin, FaPhoneAlt } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
-// import '../css/footerresponsive.css'
 
 const Footer = () => {
   return (
@@ -24,11 +23,11 @@ const Footer = () => {
           </div>
         </div>
         <div className="footer-section ">
-          <h3>BOSSDENT</h3>
+          <h3>Quick Links</h3>
           <ul>
-            <li><a href="#">Shop</a></li>
+            <li><a href="/products">Shop</a></li>
             <li><a href="/about">About Us</a></li>
-            <li><a href="#">Wishlist</a></li>
+            <li><a href="/watchlist">Wishlist</a></li>
             <li><a href="/my-account">My Account</a></li>
           </ul>
         </div>
@@ -37,7 +36,7 @@ const Footer = () => {
           <ul>
             <li><a href="/refund-and-returns-policy">Refund & Returns Policy</a></li>
             <li><a href="/privacy-policy">Privacy Policy</a></li>
-            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="/terms-and-conditions">Terms & Conditions</a></li>
             <li><a href="/help-center">Help Center</a></li>
           </ul>
         </div>
@@ -61,7 +60,6 @@ const Footer = () => {
       </div>
       <div className="footer-bottom">
         <p>2024 © all right reserved by BossDentIndia</p>
-        {/* <p>Powered By Web Best Solution</p> */}
       </div>
     </footer>
   )

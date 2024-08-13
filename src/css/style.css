@@ -1738,172 +1738,6 @@ box-shadow: inset 400px 0 0 0 #c89c31;
   padding: 10px 15px;
 }
 
-/* single product */
-.single-product{
-  padding-top: 150px;
-  margin: 20px;
-  color: rgb(0, 0, 0);
-  text-align: left;
-  font-family: Source Sans Pro, sans-serif;
-}
-
-.single-product-main {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 100px;
-  width: 100%;
-  margin-top: 50px;
-}
-
-.single-product-img{
-  width: 50%;
-}
-
-.single-product-img img {
-  /* width: 100%; */
-  max-width: 600px;
-  margin-left: 20px;
-  border-radius: 40px;
-  text-align: start;
-}
-
-.single-product-details{
-  text-align: left;
-}
-.variation-main{
-  display: flex;
-  color: #000;
-  margin-top: 2%;
-}
-.variation-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-left: 10px;
-}
-.variation-button{
-  padding: 5px 10px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.variation-button.selected{
-  background-color: #c89c31;
-  color: #fff;
-}
-.variation-button span{
-  margin-right: 5px;
-}
-.single-product-title{
-  font-size: 32px;
-  color: #222;
-  font-weight: 700;
-  line-height: 40px;
-}
-
-.single-product-price{
-  font-size: 24px;
-  color: #c89c31;
-  font-weight: 700;
-  margin-top: 15px;
-}
-
-.single-product-cat{
-  font-size: 16px;
-  line-height: 1.5;
-  font-weight: 700;
-  color: #111111;
-  margin-top: 10px;
-}
-
-.single-product-cat span{
-  color: #646464;
-  font-weight: 400;
-}
-
-.single-product-pcs{
-  font-size: 16px;
-  font-weight: 500;
-  color: #646464;
-  margin-top: 10px;
-}
-
-.other-detail-main{
-  margin-top: 0px;
-}
-
-.ind-btn {
-  padding: 8px 15px;
-  border-radius: 100%;
-  font-size: 20px;
-  border: none;
-  background-color: #bf8e22;
-}
-
-.ind-btn:hover{
-  background-color: #d69b1a;
-  transition: all 0.3s ease-in-out;
-  cursor: pointer;
-}
-
-.quantity-controls {
-  margin-top: 20px;
-  display: flex;
-  align-items: baseline;
-  gap: 20px;
-}
-
-.quantity{
-  font-size: 20px;
-  color: #222;
-  font-weight: 500;
-}
-
-
-.btn-icon-main{
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
-
-.like-icon {
-  background-color: #222;
-  padding: 10px 10px;
-  border-radius: 100%;
-  display: grid;
-  color: #ecf3f7;
-  cursor: pointer;
-}
-
-.like-icon:hover{
-  background-color: #c39428;
-  transition: all 0.3s ease-in-out;
-}
-
-.des-main{
-  text-align: left;
-  margin-left: 30px;
-  margin-bottom: 10px;
-}
-
-.des-title{
-  display: block;
-  font-size: 24px;
-  color: #222;
-  font-weight: 500;
-  border-bottom: 2px solid #c89c31;
-  width: fit-content;
-  padding: 10px 0px;
-}
-
-.single-product-des{
-  font-size: 16px;
-  color: #111111;
-  margin-top: 20px;
-  font-weight: 300;
-}
-
 /* Watchlist css */
 .watchlist-page {
   padding: 20px;
@@ -2320,7 +2154,6 @@ input {
 }
 
 .user-data-sidebar {
-  width: 25%;
   padding: 20px;
   color:#222;
   background-color: #fff;
@@ -2547,7 +2380,7 @@ input {
 .change-password-form button {
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    background-color: #333;
     border: none;
     color: white;
     font-size: 16px;
@@ -2557,7 +2390,7 @@ input {
 }
 
 .change-password-form button:hover {
-    background-color: #0056b3;
+    background-color: #c39428;
 }
 .forgot-password-link {
   display: inline-block;
@@ -2637,6 +2470,7 @@ input {
   border: 4px solid #333;
   border-radius: 50%;
   border-top: 4px solid #c39428;
+  border-bottom: 4px solid #c39428;
   width: 100%;
   max-width: 24px;
   height: 24px;
