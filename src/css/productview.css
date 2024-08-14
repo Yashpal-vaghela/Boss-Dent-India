@@ -154,8 +154,8 @@
     text-align: left;
     margin-left: 30px;
     margin-bottom: 10px;
+    margin-top: 20px;
 }
-
 .des-title {
     display: block;
     font-size: 24px;
@@ -190,6 +190,15 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     padding: 15px;
     text-align: center;
+}
+
+.related-title {
+    font-size: 30px;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #c39428;
+    width: fit-content;
+    padding-bottom: 15px;
+    margin-left: 30px;
 }
 
 .related-product-card img {

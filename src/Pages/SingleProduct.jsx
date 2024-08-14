@@ -8,6 +8,9 @@ import axios from "axios";
 import { useCart } from "./AddCartContext";
 import Loader from "../component/Loader";
 import "../css/productview.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay,  Navigation } from "swiper/modules";
+
 
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
@@ -144,7 +147,7 @@ const SingleProduct = () => {
       </div>
       <div className="single-product-main">
         <div className="single-product-img">
-        {imageLoading ? (
+          {imageLoading ? (
             <Loader />
           ) : (
             <Zoom>
@@ -240,22 +243,45 @@ const SingleProduct = () => {
         </div>
       </div>
       <div className="related-products">
-      <h3>Related Products</h3>
-      <div className="related-products-grid">
-        {relatedProducts.map((relatedProduct) => (
-          <div key={relatedProduct.id} className="related-product-card">
-            <a href={`/products/${relatedProduct.id}`}>
-              <img
-                src={relatedProduct.yoast_head_json?.og_image?.[0]?.url}
-                alt={relatedProduct.title?.rendered}
-              />
-              <h4>{relatedProduct.title?.rendered}</h4>
-              <p>{relatedProduct.price ? `Price: ${relatedProduct.price}` : "Price not available"}</p>
-            </a>
-          </div>
-        ))}
+        <h3 className="related-title">Related Products</h3>
+        <Swiper
+          modules={[Navigation,Autoplay]}
+          spaceBetween={10}
+          slidesPerView={1}
+          navigation
+          autoplay={{
+            delay: 1000, // Delay between slides in ms
+            disableOnInteraction: false, // Continue autoplay after user interactions
+          }}
+          loop={true}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            1024: {
+              slidesPerView: 4,
+            },
+          }}
+        >
+          {relatedProducts.map((relatedProduct) => (
+            <SwiperSlide key={relatedProduct.id}>
+              <div className="related-product-card">
+                <a href={`/products/${relatedProduct.id}`}>
+                  <img
+                    src={relatedProduct.yoast_head_json?.og_image?.[0]?.url}
+                    alt={relatedProduct.title?.rendered}
+                  />
+                  <h4>{relatedProduct.title?.rendered}</h4>
+                  <p>{relatedProduct.price ? `Price: ${relatedProduct.price}` : "Price not available"}</p>
+                </a>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
-    </div>
     </div>
   );
 };
