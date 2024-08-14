@@ -110,7 +110,7 @@ const Cart = () => {
                     <div className="cart-item-attributes">
                       {Object.keys(product.variations[0].attributes || {}).map(
                         (attribute) => (
-                          <div key={attribute} className="variation-main">
+                          <div key={attribute} className="variation-cart-main">
                             <h4>
                               {attribute.replace(
                                 /attribute_pa_|attribute_/,

@@ -12,6 +12,7 @@ import "../css/productview.css";
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
+  const [imageLoading, setImageLoading] = useState(true);
   const [error, setError] = useState(null);
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -32,7 +33,21 @@ const SingleProduct = () => {
           `https://bossdentindia.com/wp-json/wp/v2/product/${id}`
         );
         setProduct(response.data);
-  
+
+        // preload the main product image
+        if (response.data.yoast_head_json?.og_image?.[0]?.url) {
+          const img = new Image();
+          img.src = response.data.yoast_head_json.og_image[0].url;
+          img.onload = () => setImageLoading(false);
+        } else {
+          setImageLoading(false);
+        }
+
+        // Extract and set variations if available
+        if (response.data.variations) {
+          setVariations(response.data.variations);
+        }
+
         // Fetch related products based on category
         if (response.data.product_cat && response.data.product_cat.length > 0) {
           const categoryId = response.data.product_cat[0];
@@ -43,9 +58,12 @@ const SingleProduct = () => {
   
           // Fetch related products in the same category
           const relatedProductsResponse = await axios.get(
-            `https://bossdentindia.com/wp-json/wp/v2/product?product_cat=${categoryId}&exclude=${id}&per_page=4`
+            `https://bossdentindia.com/wp-json/wp/v2/product?exclude=${id}&per_page=20`
           );
-          setRelatedProducts(relatedProductsResponse.data);
+          const shuffledProducts = relatedProductsResponse.data.sort(
+            () => 0.5 - Math.random()
+          );
+          setRelatedProducts(shuffledProducts.slice(0,10));
         }
 
         // Determine sale price
@@ -126,19 +144,23 @@ const SingleProduct = () => {
       </div>
       <div className="single-product-main">
         <div className="single-product-img">
-          <Zoom>
-            <img
-              src={product.yoast_head_json?.og_image?.[0]?.url}
-              alt={product.title?.rendered}
-            />
-          </Zoom>
+        {imageLoading ? (
+            <Loader />
+          ) : (
+            <Zoom>
+              <img
+                src={product.yoast_head_json?.og_image?.[0]?.url}
+                alt={product.title?.rendered}
+              />
+            </Zoom>
+          )}
         </div>
         <div className="single-product-details">
           <h2 className="single-product-title">{product.title?.rendered}</h2>
           <h3 className="single-product-price">
             {salePrice
-              ? `Sale Price: ${salePrice}`
-              : `Price: ${product.acf?.price}`}
+              ? `Sale Price: ${salePrice} ₹`
+              : `Price: ${product.acf?.price} ₹`}
           </h3>
           {product.acf?.prese && <h4>Prese: {product.acf.preset}</h4>}
           <h4 className="single-product-cat">

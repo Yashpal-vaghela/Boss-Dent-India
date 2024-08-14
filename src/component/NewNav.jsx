@@ -151,11 +151,11 @@ const NewNav = () => {
     const scrollFunction = () => {
       setIsScrolled(window.scrollY > 20);
     };
-      Aos.init({
-        duration: 1000, // Animation duration in milliseconds
-        once: false,    // Allow animations to trigger multiple times
-        mirror: true,   // Trigger animations on scroll up
-      });
+    Aos.init({
+      duration: 1000, // Animation duration in milliseconds
+      once: false,    // Allow animations to trigger multiple times
+      mirror: true,   // Trigger animations on scroll up
+    });
 
     window.addEventListener("scroll", scrollFunction);
 
@@ -163,7 +163,6 @@ const NewNav = () => {
       window.removeEventListener("scroll", scrollFunction);
     };
   }, []);
-// console.log(!(tabletScreen || smallScreen || isMobile));
 
   return (
     <div className="nav-main">
@@ -277,7 +276,13 @@ const NewNav = () => {
                 <div className="main-nav-icon-sub">
                   {(isScrolled || tabletScreen) && (
                     <div className="search-icon">
-                      <FaSearch onClick={toggleSearchInput} />
+                      {searchQuery ? (
+                        <span className="clear-icon" onClick={clearSearch}>
+                          <FaTimes />
+                        </span>
+                      ) : (
+                        <FaSearch onClick={toggleSearchInput} />
+                      )}
                       {showSearchInput && (
                         <>
                           <input
@@ -391,7 +396,13 @@ const NewNav = () => {
                   </div>
                 </div>
                 <div className="search-icon">
-                  <FaSearch onClick={toggleSearchInput} />
+                  {searchQuery ? (
+                    <span className="clear-icon" onClick={clearSearch}>
+                      <FaTimes />
+                    </span>
+                  ) : (
+                    <FaSearch onClick={toggleSearchInput} />
+                  )}
                   {showSearchInput && (
                     <>
                       <input

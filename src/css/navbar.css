@@ -112,6 +112,8 @@
   }
   .suggestion-main{
     position: absolute;
+    top: 50px;
+    z-index: 1001;
   }
   .suggestions{
     top: 100%;
@@ -197,6 +199,7 @@
   }
   .suggestion-sub{
     position: absolute;
+    right: 20px;
   }
   .suggested{
     top: 100%;
