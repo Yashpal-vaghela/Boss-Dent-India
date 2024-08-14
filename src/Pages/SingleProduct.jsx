@@ -19,6 +19,7 @@ const SingleProduct = () => {
   const [variations, setVariations] = useState([]);
   const [selectedAttributes, setSelectedAttributes] = useState({});
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const { addToCart } = useCart();
   const { id } = useParams();
 
@@ -30,21 +31,21 @@ const SingleProduct = () => {
         const response = await axios.get(
           `https://bossdentindia.com/wp-json/wp/v2/product/${id}`
         );
-        console.log(response.data);
         setProduct(response.data);
-
-        // Extract and set variations if available
-        if (response.data.variations) {
-          setVariations(response.data.variations);
-        }
-
-        // Fetch category name if product_cat is available
+  
+        // Fetch related products based on category
         if (response.data.product_cat && response.data.product_cat.length > 0) {
           const categoryId = response.data.product_cat[0];
           const categoryResponse = await axios.get(
             `https://bossdentindia.com/wp-json/wp/v2/product_cat/${categoryId}`
           );
           setCategory(categoryResponse.data.name);
+  
+          // Fetch related products in the same category
+          const relatedProductsResponse = await axios.get(
+            `https://bossdentindia.com/wp-json/wp/v2/product?product_cat=${categoryId}&exclude=${id}&per_page=4`
+          );
+          setRelatedProducts(relatedProductsResponse.data);
         }
 
         // Determine sale price
@@ -60,7 +61,7 @@ const SingleProduct = () => {
         setLoading(false);
       }
     };
-
+  
     fetchProduct();
   }, [id]);
 
@@ -216,6 +217,23 @@ const SingleProduct = () => {
           />
         </div>
       </div>
+      <div className="related-products">
+      <h3>Related Products</h3>
+      <div className="related-products-grid">
+        {relatedProducts.map((relatedProduct) => (
+          <div key={relatedProduct.id} className="related-product-card">
+            <a href={`/products/${relatedProduct.id}`}>
+              <img
+                src={relatedProduct.yoast_head_json?.og_image?.[0]?.url}
+                alt={relatedProduct.title?.rendered}
+              />
+              <h4>{relatedProduct.title?.rendered}</h4>
+              <p>{relatedProduct.price ? `Price: ${relatedProduct.price}` : "Price not available"}</p>
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
     </div>
   );
 };

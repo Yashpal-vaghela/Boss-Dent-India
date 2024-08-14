@@ -149,7 +149,7 @@ const Product = () => {
       </div>
       <div className='shop-header'></div>
       <div className='shop-content'>
-        <div className='shop-sidebar-menu'>
+        <div className='shop-sidebar-menu' data-aos="fade">
           <div className='shop-sidebar'>
             <h3>Shop by Category</h3>
             <hr />
@@ -185,7 +185,7 @@ const Product = () => {
             </div>
           </div>
         </div>
-        <div className='products-grid'>
+        <div className='products-grid' data-aos="fade">
           {products.map(product => {
             let imageUrl = null;
             if (product.better_featured_image) {
@@ -202,7 +202,7 @@ const Product = () => {
                     <h3 className='product-title'>{product.title.rendered}</h3>
                   </Link>
                 </div>
-                <h3 className='product-price'>Price: {product.price}₹</h3>
+                <h3 className='product-price'>Price: {product.price} ₹</h3>
                 <Link to={`/products/${product.id}`} className='product-button-main'>
                   <button className='product-button'>Learn more</button>
                 </Link>

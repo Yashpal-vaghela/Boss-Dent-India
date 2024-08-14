@@ -5,6 +5,7 @@ import Loader from '../component/Loader';
 import AddressForm from '../component/AddressForm';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import "../css/responsiveuserdata.css"
+import Aos from 'aos';
 
 const UserData = () => {
   const [user, setUser] = useState(null);
@@ -214,6 +215,13 @@ const UserData = () => {
   const togglePasswordVisibility1 = () => {
     setShowNewPassword(!showNewPassword);
   };
+  useEffect(() => {
+    Aos.init({
+      duration: 1000, // Animation duration in milliseconds
+      once: false,    // Allow animations to trigger multiple times
+      mirror: true,   // Trigger animations on scroll up
+    });
+  }, []);
 
   if (!user) {
     return <Loader />;
@@ -221,13 +229,13 @@ const UserData = () => {
 
   return (
     <div className="user-data">
-      <div className='header'>
+      <div className='header' data-aos="fade-up">
         <h1>User Data</h1>
         <nav>
           <a href='/'>Home</a> &gt; <span>User Data</span>
         </nav>
       </div>
-        <div className="user-data-container">
+        <div className="user-data-container" data-aos="fade">
           <div className="user-data-sidebar">
             <img
               className="avatar"
@@ -252,7 +260,7 @@ const UserData = () => {
           </div>
           <div className="user-data-main">
             {selectedSection === "welcome" && (
-              <div className="user-section">
+              <div className="user-section" data-aos="fade-left">
                 <h2>
                   Welcome, <span>{user.username} !</span>
                 </h2>
