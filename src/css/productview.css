@@ -90,7 +90,17 @@
     color: #646464;
     font-weight: 400;
 }
-
+.single-product-stock-status{
+    font-size: 16px;
+    line-height: 1.5;
+    font-size: 700;
+    color: #111111;
+    margin-top: 10px;
+}
+.single-product-stock-status span{
+    color: #646464;
+    font-weight: 400;
+}
 .single-product-pcs {
     font-size: 16px;
     font-weight: 500;
@@ -140,12 +150,9 @@
     color: #ecf3f7;
     cursor: pointer;
 }
-
-.like-icon:hover {
+.like-icon.inactive-heart {
     background-color: #c39428;
-    transition: all 0.3s ease-in-out;
 }
-
 .other-detail-main {
     margin-top: 0px;
 }
@@ -173,7 +180,35 @@
     font-weight: 400;
     line-height: 24px;
 }
-
+.add-to-cart-btn {
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 700;
+    color: rgb(255, 255, 255);
+    font-family: Roboto, sans-serif;
+    margin: 20px 0;
+    width: fit-content;
+    border: 0;
+    background-color: #222;
+    padding: 10px 20px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 0 #c89c31;
+    transition: ease-out 0.4s;
+    display: flex;
+  }
+  .add-to-cart-btn:hover {
+    box-shadow: inset 400px 0 0 0 #c89c31;
+  }
+  .add-to-cart-btn.disable-button {
+    background-color: grey; 
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 /* Related Products Section */
 .related-products {
     margin-top: 40px;

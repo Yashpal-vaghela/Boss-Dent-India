@@ -22,6 +22,7 @@ const SingleProduct = () => {
   const [salePrice, setSalePrice] = useState(null);
   const [variations, setVariations] = useState([]);
   const [selectedAttributes, setSelectedAttributes] = useState({});
+  const [stockStatus, setStockStatus] = useState('unknown');
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
   const [relatedProducts, setRelatedProducts] = useState([]);
   const { addToCart } = useCart();
@@ -75,6 +76,15 @@ const SingleProduct = () => {
         } else {
           setSalePrice(response.data.price);
         }
+        try {
+          const stockResponse = await axios.get(
+            `https://bossdentindia.com/wp-json/custom/v1/stock-status/${id}`
+          );
+          setStockStatus(stockResponse.data.stock_status);
+        } catch (stockError) {
+          console.error("Error fetching stock status:", stockError);
+          setStockStatus("Error fetching stock status");
+        }
       } catch (error) {
         console.error("Error fetching product:", error);
         setError("Failed to fetch product details. Please try again later.");
@@ -126,7 +136,7 @@ const SingleProduct = () => {
      alert("Product added to cart!");
     
   };
-
+  console.log(stockStatus);
   if (loading) {
     return <Loader />;
   }
@@ -168,6 +178,10 @@ const SingleProduct = () => {
           {product.acf?.prese && <h4>Prese: {product.acf.preset}</h4>}
           <h4 className="single-product-cat">
             Category: <span>{category}</span>
+          </h4>
+          <h4 className="single-product-stock-status">
+            Stock Status:{" "}
+            {stockStatus === "in_stock" || stockStatus === "instock" ? "In Stock" : "Out of Stock"}
           </h4>
           {variations.length > 0 &&
             Object.keys(variations[0]?.attributes || {}).map((attribute) => (
@@ -219,12 +233,17 @@ const SingleProduct = () => {
           </div>
           <div className="btn-icon-main">
             <div>
-              <button className="add-to-cart-button" onClick={handleAddToCart}>
+              <button className={`add-to-cart-btn ${stockStatus === "outofstock" ? "disable-button" : ""}`}
+                disabled={stockStatus !== 'instock'}
+                onClick={handleAddToCart}
+              >
                 ADD TO CART
               </button>
             </div>
             <div>
-              <span className="like-icon" onClick={handleWatchlistToggle}>
+              <span className={`like-icon ${!watchlist.includes(product.id) ? "" : "inactive-heart"}`} 
+                onClick={handleWatchlistToggle}
+              >
                 {watchlist.includes(product.id) ? <FaHeart /> : <FaRegHeart />}
               </span>
             </div>
@@ -250,7 +269,7 @@ const SingleProduct = () => {
           slidesPerView={1}
           navigation
           autoplay={{
-            delay: 1000, // Delay between slides in ms
+            delay: 2000, // Delay between slides in ms
             disableOnInteraction: false, // Continue autoplay after user interactions
           }}
           loop={true}

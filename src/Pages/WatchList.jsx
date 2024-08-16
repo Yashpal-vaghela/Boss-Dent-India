@@ -13,6 +13,7 @@ const WatchList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [stockStatuses, setStockStatuses] = useState({});
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -25,7 +26,24 @@ const WatchList = () => {
             axios.get(`https://bossdentindia.com/wp-json/wp/v2/product/${id}`)
           )
         );
-        setProducts(responses.map((response) => response.data));
+        const productsData = responses.map((response) => response.data);
+        setProducts(productsData);
+  
+        const stockStatusPromises = productsData.map(async (product) => {
+          try {
+            const stockResponse = await axios.get(
+              `https://bossdentindia.com/wp-json/custom/v1/stock-status/${product.id}`
+            );
+            return { [product.id]: stockResponse.data.stock_status };
+          } catch (error) {
+            console.error('Error fetching stock status:', error);
+            return { [product.id]: 'unknown' };
+          }
+        });
+  
+        const stockStatusesResults = await Promise.all(stockStatusPromises);
+        const combinedStockStatuses = Object.assign({}, ...stockStatusesResults);
+        setStockStatuses(combinedStockStatuses);
       } catch (error) {
         console.error("Error fetching products:", error);
         setError("Failed to fetch watchlist products. Please try again later.");
@@ -33,14 +51,13 @@ const WatchList = () => {
         setLoading(false);
       }
     };
-
+  
     if (watchlist.length > 0) {
       fetchProducts();
     } else {
       setLoading(false);
     }
-  }, [watchlist]);
-
+  }, [watchlist]);  
 
   useEffect(() => {
     Aos.init({
@@ -56,7 +73,12 @@ const WatchList = () => {
   };
 
   const handleAddToCart = (product) => {
-    addToCart && addToCart({ ...product, quantity: 1 });
+    const stockStatus = stockStatuses[product.id];
+    if (stockStatus === 'instock'){
+      addToCart && addToCart({ ...product, quantity: 1 });
+    } else {
+      alert('This product is Out of stock.')
+    }
   };
 
   if (loading) {
@@ -98,7 +120,8 @@ const WatchList = () => {
                 
                 <div className="actions">
                   <button
-                      className="watchlist-add-to-cart"
+                      className={`watchlist-add-to-cart ${stockStatuses[product.id] !== 'instock'? 'disable-button':''}`}
+                      disabled={stockStatuses[product.id] !== 'instock'}
                       onClick={() => handleAddToCart(product)}
                     >
                       Add to Cart

@@ -18,6 +18,7 @@ const Product = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [minPrice, setMinPrice] = useState(40);
   const [maxPrice, setMaxPrice] = useState(12500);
+  const [stockStatuses, setStockStatuses] = useState({});
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
@@ -49,20 +50,36 @@ const Product = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      let apiUrl = `https://bossdentindia.com/wp-json/wp/v2/product?per_page=100`; // Fetch all products initially
+      let apiUrl = `https://bossdentindia.com/wp-json/wp/v2/product?per_page=100`; 
 
       if (selectedCategory) {
         apiUrl += `&product_cat=${selectedCategory}`;
       }
 
       const response = await axios.get(apiUrl);
+      // console.log('Full Product Response:', response.data);
       const filteredProducts = response.data.filter(
         product => parseFloat(product.price) >= minPrice && parseFloat(product.price) <= maxPrice
       );
-
+      
       setTotalProducts(filteredProducts.length);
       const startIndex = (currentPage - 1) * productsPerPage;
       const paginatedProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
+      const stockStatusPromises = paginatedProducts.map(async (product) =>{
+        try{
+          const stockResponse = await axios.get(
+            `https://bossdentindia.com/wp-json/custom/v1/stock-status/${product.id}`
+          );
+          return{ [product.id]: stockResponse.data.stock_status};
+        } catch(error){
+          console.error('Error fetching stock status:', error);
+          return {[product.id]: 'unknown'};
+        }
+      });
+
+      const stockStatusesResults = await Promise.all(stockStatusPromises);
+      const combinedStockStatuses = Object.assign({}, ...stockStatusesResults);
+      setStockStatuses(combinedStockStatuses);
 
       setProducts(paginatedProducts);
     } catch (error) {
@@ -71,7 +88,8 @@ const Product = () => {
       setLoading(false);
     }
   };
-
+  // console.log(response.data);
+  
   const totalPages = Math.ceil(totalProducts / productsPerPage);
 
   const handlePageChange = (page) => {
@@ -89,12 +107,17 @@ const Product = () => {
   };
 
   const handleAddToCart = (product) => {
-    if (isLoggedIn) {
-      const quantity = 1;
-      addToCart(product, quantity);
+    const stockStatus = stockStatuses[product.id];
+    if (stockStatus === 'instock'){
+      if (isLoggedIn) {
+        const quantity = 1;
+        addToCart(product, quantity);
+      } else {
+        window.alert('Please log In! Thank you.');
+        navigate("/my-account");
+      }
     } else {
-      window.alert('Please log In! Thank you.');
-      navigate("/my-account");
+      alert('This product is out of stock and cannot be added to the cart.');
     }
   };
 
@@ -207,12 +230,15 @@ const Product = () => {
                   <button className='product-button'>Learn more</button>
                 </Link>
                 <button
-                  className="add-to-cart-button"
+                  className={`add-to-cart-button ${stockStatuses[product.id] !== 'instock' ? 'disable-button': ''}`}
+                  disabled={stockStatuses[product.id] !== 'instock'}
                   onClick={() => handleAddToCart(product)}
                 >
                   <FaCartPlus />
                 </button>
-                <span className="watchlist-icon" onClick={() => handleAddToWatchlist(product)}>
+                <span className={`watchlist-icon ${!watchlist.includes(product.id) ? "" : "inactive-heart"}`} 
+                  onClick={() => handleAddToWatchlist(product)}    
+                >
                   {watchlist.includes(product.id) ? <FaHeart /> : <FaRegHeart />}
                 </span>
               </div>
