@@ -71,7 +71,7 @@ const CheckOut = () => {
       }
 
       const orderData = await orderResponse.json();
-      const newOrderId =  orderData.orderId.toString();; // Extract the order ID from the response
+      const newOrderId =  orderData.orderId.toString();
 
       // Proceed to payment
       if (paymentMethod === 'PhonePe') {

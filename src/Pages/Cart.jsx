@@ -17,7 +17,8 @@ const Cart = () => {
     updatePrice,
   } = useCart();
   const [canCheckout, setCanCheckout] = useState(false);
-
+  // console.log(cart);
+  
   useEffect(() => {
     const allAttributesSelected = cart.every((product) => {
       if (product.variations && product.variations.length > 0) {
@@ -36,7 +37,7 @@ const Cart = () => {
       mirror: true,   // Trigger animations on scroll up
     });
   }, []);
-
+  
   const handleAddQuantity = (product) => {
     updateQuantity(product.id, product.quantity + 1);
   };
@@ -109,7 +110,7 @@ const Cart = () => {
                   {product.variations && (
                     <div className="cart-item-attributes">
                       {Object.keys(product.variations[0].attributes || {}).map(
-                        (attribute) => (
+                        (attribute, index) => (
                           <div key={attribute} className="variation-cart-main">
                             <h4>
                               {attribute.replace(
@@ -147,6 +148,11 @@ const Cart = () => {
                                   </button>
                                 ))}
                             </div>
+                            {!canCheckout && index === 0 && !product.selectedAttributes?.[attribute] &&(
+                              <p className="checkout-warning">
+                                * Please select above attribute values to proceed to checkout.
+                              </p>
+                            )}
                           </div>
                         )
                       )}

@@ -19,8 +19,8 @@ const NewNav = () => {
   const [showAltMenu, setShowAltMenu] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
-  const { watchlist } = useWatchlist(); // Using useWatchlist hook
-  const { cart } = useCart(); // Using useCart hook
+  const { watchlist } = useWatchlist(); 
+  const { cart } = useCart(); 
   const navigate = useNavigate();
 
   const toggleMenu = () => {
@@ -206,7 +206,7 @@ const NewNav = () => {
                     {suggestions.map((product) => (
                       <li
                         key={product.id}
-                        onClick={() => navigate(`/products/${product.id}`)}
+                        onClick={() => handleClick(product.id)}
                       >
                         {product.title}
                       </li>
