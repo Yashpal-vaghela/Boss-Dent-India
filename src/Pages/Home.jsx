@@ -1,8 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import banner1 from "../images/banner1.png";
-import banner2_1 from "../images/banner2-1.png";
-import banner2_2 from "../images/banner-2-2.png";
-import banner3 from "../images/6380ad4dd75bf6ffaf1687363362a4de.jpg"
 import { IoIosArrowDroprightCircle } from "react-icons/io";
 import { Link } from "react-router-dom";
 import cat1 from "../images/hom_cat-1.png";
@@ -24,7 +20,7 @@ import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import Aos from "aos";
 
-const Home = () => {
+const Home = () => {  
   useEffect(() => {
     Aos.init({
       duration: 1000, // Animation duration in milliseconds
@@ -131,33 +127,39 @@ const Home = () => {
         </div>
       </section>
       <section className="banner-section" data-aos="fade-down">
-        <Swiper
-          spaceBetween={30}
-          centeredSlides={true}
-          autoplay={{
-            delay: 2000,
-            disableOnInteraction: false,
-          }}
-          loop={true}  
-          pagination={{
-            clickable: true,
-          }}
-          navigation={true}
-          modules={[Autoplay, Pagination, Navigation]}
-          className="mySwiper"
-        >
+      <Swiper
+      spaceBetween={30}
+      centeredSlides={true}
+      autoplay={{
+        delay: 2000,
+        disableOnInteraction: false,
+      }}
+      loop={true}
+      pagination={{
+        clickable: true,
+      }}
+      navigation={true}
+      modules={[Autoplay, Pagination, Navigation]}
+      className="mySwiper"
+    >
           <SwiperSlide>
-            <img src={banner1} alt="" />
+            <div className="banner-1-main">
+
+            </div>
           </SwiperSlide>
           <SwiperSlide>
-            <img src={banner2_1} alt="" />
+            <div className="banner-2-main">
+
+            </div>
           </SwiperSlide>
           <SwiperSlide>
             <div className="banner-3-main">
 
             </div>
           </SwiperSlide>
-          <SwiperSlide>Slide 4</SwiperSlide>
+          <SwiperSlide>
+            <div className="banner-4-main"></div>
+          </SwiperSlide>
         </Swiper>
       </section>
       {/* Category Section */}
@@ -235,7 +237,7 @@ const Home = () => {
               </p>
             </div>
             <div className="other-banner-btn-main">
-              <div className="other-banner-btn">SEE COLLECTION</div>
+              <Link to="/products" className="other-banner-btn-0"><button className="other-banner-btn">SEE COLLECTION</button></Link>
             </div>
           </div>
         </div>
