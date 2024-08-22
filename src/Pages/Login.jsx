@@ -2,25 +2,29 @@ import React, { useEffect, useState } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import axios from "axios";
 import Aos from "aos";
+import AlertSuccess from "../component/AlertSuccess"; // Import the AlertSuccess component
 
 const Login = () => {
   const [userIdentifier, setUserIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showAlert, setShowAlert] = useState(false); // Add state for alert visibility
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-    const response = await axios.post('https://bossdentindia.com/wp-json/jwt-auth/v1/token',{
-      username: userIdentifier,
-      password
-    });
-    const token = response.data.token;
-    localStorage.setItem('token', token);
-    alert('Login successful!');
-    // console.log("email", email, "password", password);
-    window.location.href = '/';
-    }catch(error) {
+    try {
+      const response = await axios.post('https://bossdentindia.com/wp-json/jwt-auth/v1/token', {
+        username: userIdentifier,
+        password
+      });
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      setShowAlert(true); // Show alert on successful login
+      setTimeout(() => {
+        setShowAlert(false);
+        window.location.href = '/'; // Redirect after hiding alert
+      }, 3000); // Adjust the duration as needed
+    } catch (error) {
       console.error('Error logging in:', error);
       alert('Login failed. Please check your username and password.');
     }
@@ -34,9 +38,9 @@ const Login = () => {
 
   useEffect(() => {
     Aos.init({
-      duration: 1000, // Animation duration in milliseconds
-      once: false,    // Allow animations to trigger multiple times
-      mirror: true,   // Trigger animations on scroll up
+      duration: 1000,
+      once: false,
+      mirror: true,
     });
   }, []);
 
@@ -87,6 +91,7 @@ const Login = () => {
           Don't have an account? <a href="/sign-up">Sign Up</a>
         </p>
       </form>
+      {showAlert && <AlertSuccess message="You are login successfully." />} 
     </div>
   );
 };

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { FaArrowUp } from "react-icons/fa";
 
 const BackToTopButton = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleScroll = () => {
     if (window.scrollY > 50) {
@@ -28,12 +30,14 @@ const BackToTopButton = () => {
       {isVisible && (
         <button
           onClick={scrollToTop}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           style={{
             position: 'fixed',
             bottom: '20px',
             right: '20px',
             backgroundColor: '#c39428',
-            fontSize: '18px',
+            fontSize: '14px',
             fontWeight: 'bold',
             fontFamily: 'Poppins',
             letterSpacing: '1px',
@@ -41,11 +45,20 @@ const BackToTopButton = () => {
             color: '#fff',
             border: 'none',
             borderRadius: '50%',
-            padding: '10px 15px',
+            padding: '13px 15px',
             cursor: 'pointer',
+            transition: 'background-color 0.5s ease', 
           }}
         >
-          ↑
+          <span
+            style={{
+              display: 'inline-block',
+              transition: 'transform 0.3s ease', 
+              transform: isHovered ? 'rotate(360deg)' : 'rotate(0deg)', 
+            }}
+          >
+            <FaArrowUp />
+          </span>
         </button>
       )}
     </>

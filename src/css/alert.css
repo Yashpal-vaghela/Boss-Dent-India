@@ -1,0 +1,29 @@
+.success-alert {
+    background-color: #c39428;
+    color: #fff;
+    padding: 15px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 100%;
+    z-index: 1000;
+    border-radius: 5px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: fadeInOut 3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .alert-icon {
+    font-size: 24px;
+  }
+  
+  @keyframes fadeInOut {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  

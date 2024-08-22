@@ -5,6 +5,12 @@ import cat1 from "../images/hom_cat-1.png";
 import cat2 from "../images/home_cat-2.png";
 import cat3 from "../images/home_cat-3.webp";
 import cat4 from "../images/home_cat-4.png";
+import banner1 from "../images/banner-01.jpg";
+import banner2 from "../images/banner-02.jpg";
+import banner3 from "../images/banner-03.jpg";
+import banner4 from "../images/banner-04.jpg";
+import { IoMdArrowDropright } from "react-icons/io";
+import { FaPlay, FaPause } from "react-icons/fa";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -14,22 +20,39 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-// import './styles.css';
-
 // import required modules
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import Aos from "aos";
 
-const Home = () => {  
+const Home = () => {
+  const [isAutoplay, setIsAutoplay] = useState(true);
+  const swiperRef = useRef(null);
+  const toggleAutoplay = () => {
+    if (isAutoplay) {
+      swiperRef.current.swiper.autoplay.stop();
+    } else {
+      swiperRef.current.swiper.autoplay.start();
+    }
+    setIsAutoplay(!isAutoplay);
+  };
+    // Stop autoplay on hold (MouseDown or TouchStart)
+    const handleHoldStart = () => {
+      swiperRef.current.swiper.autoplay.stop();
+    };
+  
+    // Resume autoplay on release (MouseUp or TouchEnd)
+    const handleHoldEnd = () => {
+      swiperRef.current.swiper.autoplay.start();
+    };
   useEffect(() => {
     Aos.init({
       duration: 1000, // Animation duration in milliseconds
-      once: false,    // Allow animations to trigger multiple times
-      mirror: true,   // Trigger animations on scroll up
+      once: false, // Allow animations to trigger multiple times
+      mirror: true, // Trigger animations on scroll up
     });
   }, []);
   return (
-    <div>
+    <div className="home-main">
       {/* Banner Section */}
       <section>
         <div className="banner-main">
@@ -126,41 +149,122 @@ const Home = () => {
           </div> */}
         </div>
       </section>
-      <section className="banner-section" data-aos="fade-down">
-      <Swiper
-      spaceBetween={30}
-      centeredSlides={true}
-      autoplay={{
-        delay: 2000,
-        disableOnInteraction: false,
-      }}
-      loop={true}
-      pagination={{
-        clickable: true,
-      }}
-      navigation={true}
-      modules={[Autoplay, Pagination, Navigation]}
-      className="mySwiper"
-    >
+      <section  style={{ position: "relative" }} className="banner-section" data-aos="fade-down">
+        <Swiper
+          ref={swiperRef}
+          spaceBetween={30}
+          centeredSlides={true}
+          autoplay={{
+            delay: 2000,
+            disableOnInteraction: false,
+          }}
+          loop={true}
+          pagination={{
+            clickable: true,
+          }}
+          navigation={true}
+          modules={[Autoplay, Pagination, Navigation]}
+          className="mySwiper"
+        >
           <SwiperSlide>
-            <div className="banner-1-main">
-
+            <div className="banner-1-main" onMouseDown={handleHoldStart}
+          onMouseUp={handleHoldEnd}
+          onTouchStart={handleHoldStart}
+          onTouchEnd={handleHoldEnd}>
+              <div className="banneer-img-main">
+                <img src={banner1} alt="" className="banner-img" />
+              </div>
+              <div className="banner-btn-main">
+                <Link to="/products" className="banner-btn-link">
+                  <button className="banner-btn-shop">
+                    Shop Now{" "}
+                    <span className="banner-btn-icon">
+                      <IoMdArrowDropright />
+                    </span>{" "}
+                  </button>
+                </Link>
+              </div>
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="banner-2-main">
-
+            <div className="banner-2-main" onMouseDown={handleHoldStart}
+          onMouseUp={handleHoldEnd}
+          onTouchStart={handleHoldStart}
+          onTouchEnd={handleHoldEnd}>
+              <div className="banneer-img-main">
+                <img src={banner2} alt="" className="banner-img" />
+              </div>
+              <div className="banner-btn-main-2">
+                <Link to="/products" className="banner-btn-link">
+                  <button className="banner-btn-shop">
+                    Shop Now{" "}
+                    <span className="banner-btn-icon">
+                      <IoMdArrowDropright />
+                    </span>{" "}
+                  </button>
+                </Link>
+              </div>
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="banner-3-main">
-
+            <div className="banner-3-main" onMouseDown={handleHoldStart}
+          onMouseUp={handleHoldEnd}
+          onTouchStart={handleHoldStart}
+          onTouchEnd={handleHoldEnd}>
+            <div className="banneer-img-main">
+                <img src={banner3} alt="" className="banner-img" />
+              </div>
+              <div className="banner-btn-main-3">
+                <Link to="/products" className="banner-btn-link">
+                  <button className="banner-btn-shop">
+                    Shop Now{" "}
+                    <span className="banner-btn-icon">
+                      <IoMdArrowDropright />
+                    </span>{" "}
+                  </button>
+                </Link>
+              </div>
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="banner-4-main"></div>
+            <div className="banner-4-main" onMouseDown={handleHoldStart}
+          onMouseUp={handleHoldEnd}
+          onTouchStart={handleHoldStart}
+          onTouchEnd={handleHoldEnd}>
+            <div className="banneer-img-main">
+                <img src={banner4} alt="" className="banner-img" />
+              </div>
+              <div className="banner-btn-main-4">
+                <Link to="/products" className="banner-btn-link">
+                  <button className="banner-btn-shop">
+                    Shop Now{" "}
+                    <span className="banner-btn-icon">
+                      <IoMdArrowDropright />
+                    </span>{" "}
+                  </button>
+                </Link>
+              </div>
+            </div>
           </SwiperSlide>
         </Swiper>
+        <button
+        onClick={toggleAutoplay}
+        style={{
+          position: "absolute",
+          top: "10px",
+          fontSize: "10px",
+          right: "10px",
+          zIndex: 10,
+          padding: "10px",
+          backgroundColor: "transparent",
+          color: "#c89c31",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        {isAutoplay ? <FaPause /> : <FaPlay />}
+      </button>
       </section>
       {/* Category Section */}
       <section>
@@ -217,10 +321,10 @@ const Home = () => {
           </div>
         </div>
       </section>
-      
+
       {/* Product Section */}
       <section>
-        <div className="home-product-main" >
+        <div className="home-product-main">
           <div className="home-product-sub"></div>
         </div>
       </section>
@@ -237,7 +341,9 @@ const Home = () => {
               </p>
             </div>
             <div className="other-banner-btn-main">
-              <Link to="/products" className="other-banner-btn-0"><button className="other-banner-btn">SEE COLLECTION</button></Link>
+              <Link to="/products" className="other-banner-btn-0">
+                <button className="other-banner-btn">SEE COLLECTION</button>
+              </Link>
             </div>
           </div>
         </div>

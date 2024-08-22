@@ -3,13 +3,11 @@
   padding: 0;
 }
 
-
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 
 /* Banner Section */
 
@@ -23,7 +21,7 @@ body {
   margin: 20px 15px;
 }
 
-.banner-p1 {
+/* .banner-p1 {
   background-image: url(../images/banner1-bg.jpg);
   background-position: center;
   background-repeat: no-repeat;
@@ -33,7 +31,7 @@ body {
   align-items: center;
   justify-content: end;
   border-radius: 10px;
-}
+} */
 
 .banner-p1-txt {
   margin-left: 20px;
@@ -127,8 +125,7 @@ body {
   justify-content: space-between;
 }
 
-
-.banner-p2-fbox-sub {
+/* .banner-p2-fbox-sub {
   background-image: url(../images/banner2-1-bg.jpg);
   background-position: center center;
   background-repeat: no-repeat;
@@ -138,7 +135,7 @@ body {
   justify-content: space-around;
   padding-top: 30px;
   border-radius: 10px;
-}
+} */
 
 .banner-p2-fbox-img img {
   transition: transform 0.3s ease;
@@ -173,7 +170,7 @@ body {
   font-size: 25px;
 }
 
-.banner-p2-sbox-sub {
+/* .banner-p2-sbox-sub {
   background-image: url(../images/banner-2-2-bg.jpg);
   background-position: center center;
   background-repeat: no-repeat;
@@ -183,65 +180,125 @@ body {
   justify-content: space-around;
   padding-top: 25px;
   border-radius: 10px;
-}
+} */
 .mySwiper .swiper-pagination-bullet {
-  background-color: #333; 
+  background-color: #333;
 }
 
 /* Change the color of the active pagination bullet */
 .mySwiper .swiper-pagination-bullet-active {
-  background-color: #c39428; 
+  background-color: #c39428;
 }
 
-.mySwiper .swiper-button-prev, 
+.mySwiper .swiper-button-prev,
 .mySwiper .swiper-button-next {
-  color: #c39428; 
+  color: #c39428;
 }
 
 /* Optionally, change the background color of the arrows */
-.mySwiper .swiper-button-prev::after, 
+.mySwiper .swiper-button-prev::after,
 .mySwiper .swiper-button-next::after {
-  background-color: transparent; 
+  background-color: transparent;
+  font-size: 22px;
+  font-weight: 900;
 }
 
 .mySwiper .swiper-slide {
   transition: transform 0.5s ease; /* Customize the transition */
 }
 
-.banner-1-main{
-  background-image: url(../images/IMG_-min-2.png);
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
+.home-main {
+  margin-top: 160px;
+}
+
+.banner-img {
   width: 100%;
   height: 70vh;
 }
+
+.banner-1-main {
+  position: relative;
+}
+
+.banner-img-main {
+  width: 100%;
+  height: auto;
+}
+
+.banner-img {
+  width: 100%;
+  height: auto;
+}
+
+.banner-btn-main {
+  position: absolute;
+  bottom: 20%;
+  left: 85%;
+  transform: translateX(-50%);
+}
+
+.banner-btn-main-2 {
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
+  transform: translateX(-50%);
+}
+
+.banner-btn-main-3 {
+  position: absolute;
+  bottom: 59%;
+  left: 7%;
+  transform: translateX(-50%);
+}
+
+.banner-btn-main-4 {
+  position: absolute;
+  bottom: 39%;
+  left: 82%;
+  transform: translateX(-50%);
+}
+
+.banner-btn-link {
+  text-decoration: none;
+}
+
+.banner-btn-shop {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  border: none;
+  align-items: center;
+  display: flex;
+  font-weight: 600;
+  color: rgb(21, 48, 42);
+  background: rgb(203, 145, 21) !important;
+  background: linear-gradient(
+  130deg,
+  #c3942f 0%,
+  #d89c27 18%,
+  #dfc86f 37%,
+  #e7dc96 50%,
+  #dfc86f 64%,
+  #d89c27 82%,
+  #c99c30 100%
+) !important;
+}
+
+.banner-btn-icon {
+  font-size: 20px;
+  font-weight: 600;
+  padding-top: 3px;
+}
+
+
 
 .banner-2-main {
-  background-image: url("../images/Cheek-Retractor-m.jpg");
-  background-position: center center; 
-  background-repeat: no-repeat; 
-  background-size: cover; 
-  width: 100%; 
-  height: 70vh; 
 }
-.banner-3-main{
-  background-image: url(../images/face-mask.jpg);
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100%;
-  height: 70vh;
+.banner-3-main {
 }
-.banner-4-main{
-  background-image: url(../images/Patient-Bibs-1.jpg);
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100%;
-  height: 70vh;
+.banner-4-main {
 }
-
 
 .banner-p2-sbox-img img {
   transition: transform 0.3s ease;
@@ -277,7 +334,6 @@ body {
 }
 
 /* Home Category */
-
 
 .home-cat-sub {
   display: flex;
@@ -351,7 +407,7 @@ body {
 }
 
 .b-txt-1 {
-  font-size: 24px;  
+  font-size: 24px;
   color: #000;
   text-transform: capitalize;
   margin-bottom: 5px;
@@ -602,19 +658,19 @@ body {
   box-shadow: inset 400px 0 0 0 #c89c31;
 }
 
-.form-text{
+.form-text {
   font-size: 14px;
   color: #333;
   font-weight: 600;
 }
 
-.from-txt-otp{
+.from-txt-otp {
   color: #c39428;
   border-bottom: 1px solid #c39428;
   cursor: pointer;
 }
 
-.from-txt-otp:hover{
+.from-txt-otp:hover {
   color: #bf8e22;
   transition: all 0.5s ease;
 }
@@ -629,25 +685,25 @@ body {
   margin-top: 10px;
 }
 
-.resend-txt{
+.resend-txt {
   color: #c39428;
   border-bottom: 1px solid #c39428;
   cursor: pointer;
 }
 
-.resend-txt:hover{
+.resend-txt:hover {
   color: #bf8e22;
 }
 
-.verify-otp-button{
+.verify-otp-button {
   background-color: #333;
   color: #fff;
   font-size: 17px;
   border-radius: 6px;
   padding: 10px 0px;
-  border:none;
+  border: none;
 }
-.verify-otp-button:hover{
+.verify-otp-button:hover {
   background-color: #bf8e22;
   transition: all 0.5s ease-in-out;
 }
@@ -913,11 +969,11 @@ body {
   color: #888;
 }
 
-a{
+a {
   text-decoration: none;
   color: #222;
 }
-.content{
+.content {
   padding-top: 4%;
 }
 .content h2 {
@@ -937,10 +993,10 @@ a{
   margin-left: 30px;
 }
 
- .content p {
+.content p {
   margin: 25px;
 }
-.content ul{
+.content ul {
   margin: 15px;
 }
 
@@ -958,7 +1014,7 @@ a{
   text-align: left;
 }
 .header {
-  background-image: url('../images/element_22.png');
+  background-image: url("../images/element_22.png");
   background-size: cover;
   opacity: 0.5;
   background-position: right;
@@ -967,24 +1023,24 @@ a{
   background-color: aliceblue;
   border-radius: 10px;
 }
-.policy-info{
+.policy-info {
   margin-top: 5%;
 }
-.policy-info h2{
+.policy-info h2 {
   font-size: 20px;
   margin-left: 30px;
   margin-top: 20px;
 }
-.policy-info h3{
+.policy-info h3 {
   font-size: 18px;
   margin-left: 30px;
   margin-top: 20px;
 }
-.policy-info ul{
+.policy-info ul {
   margin-left: 30px;
   margin-top: 10px;
 }
-.policy-info li{
+.policy-info li {
   margin-left: 40px;
   margin-top: 10px;
 }
@@ -1000,26 +1056,26 @@ a{
 .term-info {
   margin-top: 5%;
 }
-.term-info h2{
+.term-info h2 {
   font-family: Source Sans Pro, sans-serif;
   font-size: 32px;
   margin-left: 30px;
   margin-top: 20px;
 }
-.term-info h3{
+.term-info h3 {
   margin-top: 50px;
   margin-left: 20px;
 }
-.term-info p{
+.term-info p {
   font-family: Lato, sans-serif;
   margin-left: 30px;
   margin-top: 20px;
 }
-.term-info h4{
+.term-info h4 {
   margin-top: 40px;
   margin-left: 20px;
 }
-.term-info ul li{
+.term-info ul li {
   margin-left: 40px;
   margin-top: 10px;
 }
@@ -1090,7 +1146,7 @@ a{
 .shop-title {
   font-size: 32px;
   margin-bottom: 20px;
-  color:rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
   text-align: left;
 }
 
@@ -1121,7 +1177,7 @@ a{
 .shop-sidebar {
   width: 100%;
   padding: 20px;
-  background-color: #f2f2f2; 
+  background-color: #f2f2f2;
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-bottom: 20px;
@@ -1159,7 +1215,7 @@ a{
   color: #c89c31;
 }
 
-.price-range {
+/* .price-range {
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -1189,13 +1245,13 @@ a{
   border-radius: 5px;
   letter-spacing: 1px;
   cursor: pointer;
-  /* box-shadow: inset 0 0 0 0 #c89c31; */
+  box-shadow: inset 0 0 0 0 #c89c31;
   transition: ease-out 0.4s;
 }
 
 .price-range button:hover {
   box-shadow: inset 400px 0 0 0 #c89c31;
-}
+} */
 
 .products-grid {
   width: 80%;
@@ -1218,21 +1274,26 @@ a{
   transform: translateY(-5px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.product-card-link{
+.product-card-link {
   text-decoration: none;
   color: #222;
   position: relative;
   display: block;
 }
-.product-link{
+.product-link {
   text-decoration: none;
- 
 }
 .product-image {
   width: 100%;
   height: auto;
   transition: transform 0.3s ease-in-out;
+  filter: blur(10px);
 }
+
+.product-image .loaded{
+  filter: blur(0);
+}
+
 .product-card:hover .product-image {
   transform: scale(1.1);
 }
@@ -1249,12 +1310,12 @@ a{
   color: #c39428;
   margin-bottom: 10px;
 }
-.product-button-main{
+.product-button-main {
   text-decoration: none;
   list-style-type: none;
 }
 
-.product-button{
+.product-button {
   font-size: 15px;
   line-height: 20px;
   font-weight: 700;
@@ -1277,7 +1338,7 @@ a{
 
 .product-button:hover {
   box-shadow: inset 400px 0 0 0 #c89c31;
-  } 
+}
 
 .add-to-cart-button {
   font-size: 13px;
@@ -1305,7 +1366,7 @@ a{
   box-shadow: inset 400px 0 0 0 #c89c31;
 }
 .add-to-cart-button.disable-button {
-  background-color: grey; 
+  background-color: grey;
   cursor: not-allowed;
   opacity: 0.5;
 }
@@ -1387,8 +1448,6 @@ a{
   padding: 10px 15px;
 }
 
-
-
 /* check out page */
 .checkout-page {
   padding-top: 150px;
@@ -1398,14 +1457,14 @@ a{
   max-width: 1200px;
   margin: 0 auto;
 }
-.checkout-page h1{
+.checkout-page h1 {
   text-align: left;
   margin-bottom: 20px;
 }
- .checkout-page h2{
-    text-align: center;
-    margin-bottom: 20px;
- }
+.checkout-page h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
 .checkout-page form {
   display: flex;
@@ -1419,7 +1478,8 @@ a{
   margin-top: 25px;
 }
 
-.contact-details, .order-summary {
+.contact-details,
+.order-summary {
   width: 45%;
   padding: 20px;
   border: 1px solid #ccc;
@@ -1428,7 +1488,7 @@ a{
   text-align: left;
 }
 
-.order-summary p{
+.order-summary p {
   text-align: right;
 }
 
@@ -1470,7 +1530,6 @@ input {
 .product-variations li ul li {
   list-style-type: circle;
 }
-
 
 .coupon input {
   padding: 8px;
@@ -1517,7 +1576,7 @@ input {
   margin-bottom: 20px;
   margin: auto;
 }
-.ap-btn:hover{
+.ap-btn:hover {
   background-color: #080808;
   transition: all 0.3s ease-in-out;
 }
@@ -1536,18 +1595,20 @@ input {
   justify-content: center;
 }
 
-.s-password-text{
+.s-password-text {
   font-size: 18px;
   font-weight: 600;
   color: #c39428;
   text-align: center;
   margin: 0 auto;
   width: 100%;
-
 }
 
-
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
