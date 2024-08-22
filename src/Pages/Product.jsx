@@ -101,17 +101,18 @@ const Product = () => {
     setCurrentPage(1);
   };
 
-  const handlePriceRangeChange = () => {
-    setCurrentPage(1);
-    fetchProducts();
-  };
+  // const handlePriceRangeChange = () => {
+  //   setCurrentPage(1);
+  //   fetchProducts();
+  // };
 
   const handleAddToCart = (product) => {
     const stockStatus = stockStatuses[product.id];
     if (stockStatus === 'instock'){
       if (isLoggedIn) {
         const quantity = 1;
-        addToCart(product, quantity);
+        addToCart({ ...product, quantity});
+        alert("Product added to cart!");
       } else {
         window.alert('Please log In! Thank you.');
         navigate("/my-account");
@@ -133,7 +134,9 @@ const Product = () => {
       navigate("/my-account");
     }
   };
-
+  const handleImageLoad = (event) => {
+    event.target.classList.add('loaded');
+  };
   const paginationButtons = [];
   for (let i = 1; i <= totalPages; i++) {
     if (
@@ -183,7 +186,7 @@ const Product = () => {
               <li onClick={() => handleCategoryClick(76)}>LAB Material</li>
             </ul>
           </div>
-          <div className='price-range'>
+          {/* <div className='price-range'>
             <h3>Price Range</h3>
             <input
               type='range'
@@ -206,7 +209,7 @@ const Product = () => {
               <span>Min: {minPrice} Rs</span>
               <span>Max: {maxPrice} Rs</span>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className='products-grid' data-aos="fade">
           {products.map(product => {
@@ -221,7 +224,15 @@ const Product = () => {
               <div className='product-card' key={product.id}>
                 <div className='product-card-link'>
                   <Link to={`/products/${product.id}`} className='product-link'>
-                    {imageUrl && <img src={imageUrl} alt={product.title.rendered} className="product-image" />}
+                  {imageUrl && (
+                      <img 
+                        src={imageUrl} 
+                        alt={product.title.rendered} 
+                        className="product-image"
+                        loading='lazy'
+                        onLoad={handleImageLoad} 
+                      />
+                    )}
                     <h3 className='product-title'>{product.title.rendered}</h3>
                   </Link>
                 </div>

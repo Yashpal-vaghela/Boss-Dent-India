@@ -263,9 +263,9 @@ body {
 }
 
 .banner-btn-shop {
-  padding: 10px 20px;
+  padding: 6px 10px;
   font-size: 16px;
-  border-radius: 30px;
+  border-radius: 8px;
   cursor: pointer;
   border: none;
   align-items: center;
@@ -293,12 +293,12 @@ body {
 
 
 
-.banner-2-main {
+/* .banner-2-main {
 }
 .banner-3-main {
 }
 .banner-4-main {
-}
+} */
 
 .banner-p2-sbox-img img {
   transition: transform 0.3s ease;
@@ -1215,7 +1215,7 @@ a {
   color: #c89c31;
 }
 
-/* .price-range {
+.price-range {
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -1251,7 +1251,7 @@ a {
 
 .price-range button:hover {
   box-shadow: inset 400px 0 0 0 #c89c31;
-} */
+}
 
 .products-grid {
   width: 80%;
@@ -1286,11 +1286,11 @@ a {
 .product-image {
   width: 100%;
   height: auto;
-  transition: transform 0.3s ease-in-out;
   filter: blur(10px);
+  transition: filter 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-.product-image .loaded{
+.product-image.loaded{
   filter: blur(0);
 }
 

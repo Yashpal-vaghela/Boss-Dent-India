@@ -17,6 +17,7 @@ const SingleProduct = () => {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
   const [imageLoading, setImageLoading] = useState(true);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [error, setError] = useState(null);
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -96,7 +97,27 @@ const SingleProduct = () => {
 
     fetchProduct();
   }, [id]);
+  useEffect(() => {
+    const imgElement = document.getElementById(`product-imagr-${id}`);
 
+    const observer = new IntersectionObserver((enteries, observer) => {
+      enteries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          observer.unobserver(img);
+        }
+      });
+    }, { threshold: 0.1 });
+    if (imgElement){
+      observer.observe(imgElement);
+    }
+    return () => {
+      if (imgElement) {
+        observer.unobserve(imgElement);
+      }
+    };
+  }, [id]);
   const handleIncrease = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
   };
@@ -134,7 +155,7 @@ const SingleProduct = () => {
 
   const handleAddToCart = () => {
     if (stockStatus === 'instock') {
-      addToCart({ ...product, quantity });
+      addToCart({ ...product, quantity, selectedAttributes });
       alert("Product added to cart!");
     } else {
       alert("Product is out of stock")
@@ -167,8 +188,11 @@ const SingleProduct = () => {
           ) : (
             <Zoom>
               <img
+                id={`product-image-${id}`}
+                className={`single-product-img ${isImageLoaded ? 'loaded':''}`}
                 src={product.yoast_head_json?.og_image?.[0]?.url}
                 alt={product.title?.rendered}
+                onLoad={() => setIsImageLoaded(true)}
               />
             </Zoom>
           )}
