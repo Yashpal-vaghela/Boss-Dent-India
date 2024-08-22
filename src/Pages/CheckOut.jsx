@@ -116,7 +116,7 @@ const CheckOut = () => {
     const parentId = item.parent_id || item.id;
     if (!acc[parentId]){
       acc[parentId] = {
-        ...item,
+        ...item,    
         variations: []
       };
     }else {
