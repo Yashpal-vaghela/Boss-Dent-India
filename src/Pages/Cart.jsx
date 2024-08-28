@@ -29,6 +29,7 @@ const Cart = () => {
     });
     setCanCheckout(allAttributesSelected);
   }, [cart]);
+
   useEffect(() => {
     Aos.init({
       duration: 1000, // Animation duration in milliseconds
@@ -38,21 +39,21 @@ const Cart = () => {
   }, []);
 
   const handleAddQuantity = (product) => {
-    updateQuantity(product.id, product.quantity + 1);
+    updateQuantity(product.id, product.selectedAttributes, product.quantity + 1);
   };
 
   const handleSubtractQuantity = (product) => {
     if (product.quantity > 1) {
-      updateQuantity(product.id, product.quantity - 1);
+      updateQuantity(product.id, product.selectedAttributes, product.quantity - 1);
     }
   };
 
   const handleRemoveItem = (product) => {
-    removeFromCart(product.id);
+    removeFromCart(product.id, product.selectedAttributes);
   };
 
   const handleEmptyCart = () => {
-    cart.forEach((product) => removeFromCart(product.id));
+    cart.forEach((product) => removeFromCart(product.id, product.selectedAttributes));
   };
 
   const handleAttributeSelect = (product, attribute, value) => {
@@ -60,6 +61,7 @@ const Cart = () => {
       ...product.selectedAttributes,
       [attribute]: value,
     };
+
     updateAttributes(product.id, updatedAttributes);
 
     const selectedVariation = product.variations.find(
@@ -68,7 +70,7 @@ const Cart = () => {
 
     if (selectedVariation) {
       const newPrice = selectedVariation.price;
-      updatePrice(product.id, newPrice);
+      updatePrice(product.id, updatedAttributes, newPrice);
     }
   };
 
@@ -93,7 +95,7 @@ const Cart = () => {
         <div className="cart-content">
           <div className="cart-items">
             {cart.map((product) => (
-              <div key={product.id} className="cart-item">
+              <div key={`${product.id}-${JSON.stringify(product.selectedAttributes)}`} className="cart-item">
                 <img
                   src={product.yoast_head_json?.og_image?.[0]?.url}
                   alt={product.title.rendered}
@@ -109,7 +111,7 @@ const Cart = () => {
                   {product.variations && (
                     <div className="cart-item-attributes">
                       {Object.keys(product.variations[0].attributes || {}).map(
-                        (attribute) => (
+                        (attribute, index) => (
                           <div key={attribute} className="variation-cart-main">
                             <h4>
                               {attribute.replace(
@@ -147,6 +149,11 @@ const Cart = () => {
                                   </button>
                                 ))}
                             </div>
+                            {!canCheckout && index === 0 && !product.selectedAttributes?.[attribute] && (
+                              <p className="checkout-warning">
+                                * Please select above attribute values to proceed to checkout.
+                              </p>
+                            )}
                           </div>
                         )
                       )}

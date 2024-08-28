@@ -5,19 +5,21 @@ import { useNavigate } from "react-router-dom";
 const AddCartContext = createContext();
 
 export const AddCartProvider = ({ children }) => {
-    const [cart, setCart] = useState(() => {
-      try {
-        const savedCart = localStorage.getItem('cart');
-        return savedCart ? JSON.parse(savedCart) : [];
-      } catch (error) {
-        console.error("Error parsing cart data from local storage:", error);
-        return [];
-      }
-    });
-    const navigate = useNavigate();
-    useEffect(()=> {
-      localStorage.setItem('cart', JSON.stringify(cart));
-    },[cart]);
+  const [cart, setCart] = useState(() => {
+    try {
+      const savedCart = localStorage.getItem('cart');
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (error) {
+      console.error("Error parsing cart data from local storage:", error);
+      return [];
+    }
+  });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
 
 
     const fetchProductDetails = async (productId)=>{
@@ -53,7 +55,7 @@ export const AddCartProvider = ({ children }) => {
           const productDetails = await fetchProductDetails(product.id);
           if (productDetails){
             setCart((prevCart)=> [...prevCart,{...productDetails,quantity},
-            ]); 
+            ]);
           }
        }
     };

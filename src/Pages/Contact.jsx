@@ -1,8 +1,43 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import contact from "../images/contact.png";
 import Aos from "aos";
+import axios from "axios";
 
 const Contact = () => {
+  const [formData,setFormData] = useState ({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+
+  const handleChange = (e) =>{
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try{
+      const response = await axios.post(
+        'https://bossdentindia.com/wp-json/custom/v1/submit-form',
+        {
+          ...formData,
+          form_id:1,
+        }
+      );
+      if (response.data.success) {
+          alert("Form submitted successfully!");
+      } else {
+        alert("Form submission failed!");
+      }
+    } catch (error){
+      console.error('There was an error submitting the form:', error);
+      alert('An error occurred');
+    }
+  };
   useEffect(() => {
     Aos.init({
       duration: 1000, // Animation duration in milliseconds
@@ -66,23 +101,45 @@ const Contact = () => {
             Fill in the below form and we will get in touch with you as soon as
             possible.
           </p>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="input-row" >
-              <input type="text" name="name" placeholder="Name" required />
-              <input type="email" name="email" placeholder="E-mail" required />
+              <input 
+                type="text" 
+                name="name" 
+                placeholder="Name"
+                value={formData.name}
+                onChange={handleChange} 
+                required />
+              <input 
+                type="email" 
+                name="email" 
+                placeholder="E-mail"
+                value={formData.email}
+                onChange={handleChange} 
+                required />
             </div>
             <div className="input-row">
-              <input type="number" name="phone" placeholder="Phone" required />
+              <input 
+                type="number" 
+                name="phone" 
+                placeholder="Phone"
+                value={formData.phone}
+                onChange={handleChange} 
+                required />
               <input
                 type="text"
                 name="subject"
                 placeholder="Subject"
+                value={formData.subject}
+                onChange={handleChange}
                 required
               />
             </div>
             <textarea
-              name="comment"
-              placeholder="Comment"
+              name="message"
+              placeholder="Message"
+              value={formData.message}
+              onChange={handleChange}
               rows="5"
               required
             ></textarea>

@@ -88,11 +88,6 @@ const WatchList = () => {
   if (error) {
     return <div>{error}</div>;
   }
-
-  if (products.length === 0) {
-    return <div>No products in your watchlist.</div>;
-  }
-
   return (
     <div className="watchlist-page">
       <div className="header" data-aos="fade-up">
@@ -101,43 +96,49 @@ const WatchList = () => {
           <a href="/">Home</a> &gt; <span>Wishlist</span>
         </nav>
       </div>
-      <div className="watchlist-content">
-        <div className="watchlist-items" data-aos="fade">
-          {products.map((product) => (
-            <div key={product.id} className="watchlist-item">
-              <img
-                src={product.yoast_head_json?.og_image?.[0]?.url}
-                alt={product.title.rendered}
-                className="watchlist-item-image"
-              />
-              <div className="watchlist-item-details">
-                <div className="watchlist-item-info">
-                  <Link to={`/products/${product.id}`} className="watchlist-item-link">
-                    <h3>{product.title.rendered}</h3>
-                  </Link>
-                  <p className="watchlist-item-price">Price :- ₹{product.price}</p>
-                </div>
-                
-                <div className="actions">
-                  <button
-                      className={`watchlist-add-to-cart ${stockStatuses[product.id] !== 'instock'? 'disable-button':''}`}
-                      disabled={stockStatuses[product.id] !== 'instock'}
-                      onClick={() => handleAddToCart(product)}
+      {products.length === 0 ?(
+        <p>No products in your watchlist.</p>
+      ):(
+        <>
+        <div className="watchlist-content">
+          <div className="watchlist-items" data-aos="fade">
+            {products.map((product) => (
+              <div key={product.id} className="watchlist-item">
+                <img
+                  src={product.yoast_head_json?.og_image?.[0]?.url}
+                  alt={product.title.rendered}
+                  className="watchlist-item-image"
+                />
+                <div className="watchlist-item-details">
+                  <div className="watchlist-item-info">
+                    <Link to={`/products/${product.id}`} className="watchlist-item-link">
+                      <h3>{product.title.rendered}</h3>
+                    </Link>
+                    <p className="watchlist-item-price">Price :- ₹{product.price}</p>
+                  </div>
+                  
+                  <div className="actions">
+                    <button
+                        className={`watchlist-add-to-cart ${stockStatuses[product.id] !== 'instock'? 'disable-button':''}`}
+                        disabled={stockStatuses[product.id] !== 'instock'}
+                        onClick={() => handleAddToCart(product)}
+                      >
+                        Add to Cart
+                    </button>
+                    <button
+                      className="watchlist-item-remove"
+                      onClick={() => handleRemove(product.id)}
                     >
-                      Add to Cart
-                  </button>
-                  <button
-                    className="watchlist-item-remove"
-                    onClick={() => handleRemove(product.id)}
-                  >
-                    <MdDelete />
-                  </button>
+                      <MdDelete />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };

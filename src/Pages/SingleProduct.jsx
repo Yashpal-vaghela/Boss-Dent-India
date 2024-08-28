@@ -9,13 +9,15 @@ import { useCart } from "./AddCartContext";
 import Loader from "../component/Loader";
 import "../css/productview.css";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay,  Navigation } from "swiper/modules";
+import { Autoplay, Navigation } from "swiper/modules";
+import { FaCartPlus } from "react-icons/fa6";
 
 
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
   const [imageLoading, setImageLoading] = useState(true);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [error, setError] = useState(null);
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -59,7 +61,7 @@ const SingleProduct = () => {
             `https://bossdentindia.com/wp-json/wp/v2/product_cat/${categoryId}`
           );
           setCategory(categoryResponse.data.name);
-  
+
           // Fetch related products in the same category
           const relatedProductsResponse = await axios.get(
             `https://bossdentindia.com/wp-json/wp/v2/product?exclude=${id}&per_page=20`
@@ -67,7 +69,7 @@ const SingleProduct = () => {
           const shuffledProducts = relatedProductsResponse.data.sort(
             () => 0.5 - Math.random()
           );
-          setRelatedProducts(shuffledProducts.slice(0,10));
+          setRelatedProducts(shuffledProducts.slice(0, 10));
         }
 
         // Determine sale price
@@ -92,10 +94,30 @@ const SingleProduct = () => {
         setLoading(false);
       }
     };
-  
+
     fetchProduct();
   }, [id]);
+  useEffect(() => {
+    const imgElement = document.getElementById(`product-imagr-${id}`);
 
+    const observer = new IntersectionObserver((enteries, observer) => {
+      enteries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          observer.unobserver(img);
+        }
+      });
+    }, { threshold: 0.1 });
+    if (imgElement){
+      observer.observe(imgElement);
+    }
+    return () => {
+      if (imgElement) {
+        observer.unobserve(imgElement);
+      }
+    };
+  }, [id]);
   const handleIncrease = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
   };
@@ -132,11 +154,15 @@ const SingleProduct = () => {
   };
 
   const handleAddToCart = () => {
-     addToCart({ ...product, quantity }); 
-     alert("Product added to cart!");
-    
+    if (stockStatus === 'instock') {
+      addToCart({ ...product, quantity, selectedAttributes });
+      alert("Product added to cart!");
+    } else {
+      alert("Product is out of stock")
+    }
+
   };
-  console.log(stockStatus);
+
   if (loading) {
     return <Loader />;
   }
@@ -162,8 +188,11 @@ const SingleProduct = () => {
           ) : (
             <Zoom>
               <img
+                id={`product-image-${id}`}
+                className={`single-product-img ${isImageLoaded ? 'loaded':''}`}
                 src={product.yoast_head_json?.og_image?.[0]?.url}
                 alt={product.title?.rendered}
+                onLoad={() => setIsImageLoaded(true)}
               />
             </Zoom>
           )}
@@ -181,7 +210,7 @@ const SingleProduct = () => {
           </h4>
           <h4 className="single-product-stock-status">
             Stock Status:{" "}
-            {stockStatus === "in_stock" || stockStatus === "instock" ? "In Stock" : "Out of Stock"}
+            {stockStatus === "instock" ? "In Stock" : "Out of Stock"}
           </h4>
           {variations.length > 0 &&
             Object.keys(variations[0]?.attributes || {}).map((attribute) => (
@@ -196,12 +225,11 @@ const SingleProduct = () => {
                     .map((variation, index) => (
                       <button
                         key={index}
-                        className={`variation-button ${
-                          selectedAttributes[attribute] ===
-                          variation.attributes[attribute]
+                        className={`variation-button ${selectedAttributes[attribute] ===
+                            variation.attributes[attribute]
                             ? "selected"
                             : ""
-                        }`}
+                          }`}
                         onClick={() =>
                           handleAttributeSelect(
                             attribute,
@@ -241,7 +269,7 @@ const SingleProduct = () => {
               </button>
             </div>
             <div>
-              <span className={`like-icon ${!watchlist.includes(product.id) ? "" : "inactive-heart"}`} 
+              <span className={`like-icon ${!watchlist.includes(product.id) ? "" : "inactive-heart"}`}
                 onClick={handleWatchlistToggle}
               >
                 {watchlist.includes(product.id) ? <FaHeart /> : <FaRegHeart />}
@@ -264,7 +292,7 @@ const SingleProduct = () => {
       <div className="related-products">
         <h3 className="related-title">Related Products</h3>
         <Swiper
-          modules={[Navigation,Autoplay]}
+          modules={[Navigation, Autoplay]}
           spaceBetween={10}
           slidesPerView={1}
           navigation
@@ -294,8 +322,21 @@ const SingleProduct = () => {
                     alt={relatedProduct.title?.rendered}
                   />
                   <h4>{relatedProduct.title?.rendered}</h4>
-                  <p>{relatedProduct.price ? `Price: ${relatedProduct.price}` : "Price not available"}</p>
+                  <p>{relatedProduct.price ? `Price: ${relatedProduct.price} ₹` : "Price not available"}</p>
                 </a>
+                <div className="related-icons">
+                  <span className={`heart-icon ${!watchlist.includes(relatedProduct.id) ? "" : "inactive-heart"}`}
+                    onClick={() => addToWatchlist(relatedProduct.id)}
+                  >
+                    {watchlist.includes(relatedProduct.id) ? <FaHeart /> : <FaRegHeart />}
+                  </span>
+                  <span
+                    className="add-to-cart-icon"
+                    onClick={() => addToCart({ ...relatedProduct, quantity: 1 })}
+                  >
+                    <FaCartPlus />
+                  </span>
+                </div>
               </div>
             </SwiperSlide>
           ))}
