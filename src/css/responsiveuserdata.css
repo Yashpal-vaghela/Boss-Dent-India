@@ -155,6 +155,9 @@
 }
 
 /* Address form */
+.address-section h2 {
+  color: #222;
+}
 .address-form {
   max-width: 600px;
   margin: 0 auto;
@@ -277,8 +280,44 @@
 .change-password-form a:hover {
   text-decoration: underline;
 }
+/* Loader Overlay */
+.new-loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensures it's on top of other content */
+}
 
+/* Loader Spinner */
+.new-loader-spinner {
+  border: 8px solid rgba(0, 0, 0, 0.1); /* Light grey border */
+  border-left: 8px solid #c39428; /* Spinner color */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
 
+/* Loader Message */
+.new-loader-message {
+  margin-top: 10px;
+  color: #c39428; 
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 /* Forget password  */
 .forgot-password-container {

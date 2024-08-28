@@ -8,7 +8,6 @@ const AddressForm = ({ token, fetchUserData }) => {
     const [zipcode, setZipcode] = useState('');
     const [message, setMessage] = useState('');
     const [isEditing, setIsEditing] = useState(false);
-
     useEffect(() => {
         const fetchAddress = async () =>{
             try{
@@ -36,8 +35,6 @@ const AddressForm = ({ token, fetchUserData }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (isEditing) {
-                // Update existing address
                 const response = await axios.post('https://bossdentindia.com/wp-json/custom/v1/address', {
                     address,
                     city,
@@ -48,25 +45,12 @@ const AddressForm = ({ token, fetchUserData }) => {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                setMessage('Address updated successfully');
-            } else {
-                // Add new address
-                const response = await axios.post('https://bossdentindia.com/wp-json/custom/v1/address', {
-                    address,
-                    city,
-                    state,
-                    zipcode,
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setMessage('Address added successfully');
-            }
-            fetchUserData(); // Refresh user data after saving address
-        } catch (error) {
+                    setMessage(isEditing?'Address updated successfully':'Address added successfully');
+                    fetchUserData();
+            } catch (error) {
             let errorMessage = 'An unknown error occurred.';
             if (error.response) {
+                console.error('Server responded with:', error.response.data);
                 errorMessage = 'Error saving address: ' + (error.response.data.message || 'Unknown error');
             } else if (error.request) {
                 errorMessage = 'No response received from the server.';

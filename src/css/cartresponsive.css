@@ -22,15 +22,21 @@
   padding: 10px;
   border-bottom: 1px solid #ddd;
 }
-
+.cart-item-image-wrapper {
+  position: relative;
+}
 .cart-item-image {
   width: 100px;
-  height: 100px;
+  height: auto;
   object-fit: cover;
+  filter: blur(10px);
   margin-right: 20px;
   border-radius: 20px;
+  transition: filter 0.3s ease;
 }
-
+.cart-item-image.loaded {
+  filter: blur(0);
+}
 .cart-item-details {
   flex: 2;
   margin-right: 10px;

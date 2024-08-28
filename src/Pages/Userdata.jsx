@@ -6,6 +6,7 @@ import AddressForm from '../component/AddressForm';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import "../css/responsiveuserdata.css"
 import Aos from 'aos';
+import AlertSuccess from '../component/AlertSuccess';
 
 const UserData = () => {
   const [user, setUser] = useState(null);
@@ -18,8 +19,8 @@ const UserData = () => {
   const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
 
   const fetchUserData = async () => {
@@ -148,7 +149,9 @@ const UserData = () => {
     }
   };
 
-  const handleChangePassword = async () => {
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    setLoading(true);
     const token = localStorage.getItem("token");
     if (!token) {
       alert("Not logged in!");
@@ -160,10 +163,6 @@ const UserData = () => {
       oldPassword,
       newPassword,
     };
-
-    setIsLoading(true);
-        setIsSuccess(false); // Start the loader
-
     try {
       const response = await fetch(
         "https://bossdentindia.com/wp-json/custom/v1/change-password",
@@ -176,28 +175,29 @@ const UserData = () => {
           body: JSON.stringify(passwordData),
         }
       );
-
+      if (response.status === 401) {
+        alert("Incorrect old password!");
+        return;
+      }
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error data:", errorData);
         throw new Error("Failed to change password");
       }
-
-      alert("Password changed successfully!");
+      setShowAlert(true);
       setOldPassword("");
       setNewPassword("");
-      navigate("/my-account");
     } catch (error) {
       console.error("Error changing password:", error);
       alert("Error changing password");
     } finally {
-      setIsLoading(false); // Stop the loader
+      setLoading(false);
     }
+    console.log("value of showAlert", showAlert)
     setTimeout(() => {
-        // Simulate successful password change
-        setIsLoading(false);
-        setIsSuccess(true);
-    }, 2000);
+      setShowAlert(false);
+      navigate("/my-account");
+    }, 3000);
   };
 
   const linkToProduct = () => {
@@ -408,13 +408,24 @@ const UserData = () => {
                   </a>
                 </div>
                 <div>
-                  {isLoading ? <div className="loader"> </div>  : null }
-                  <button onClick={handleChangePassword} disabled={isLoading}>
+                  {/* {isLoading ? <div className="loader"> </div>  : null } */}
+                  <button onClick={handleChangePassword}>
                       Change Password
                   </button>
-                  {isLoading && <p>Changing Password...</p>}
-              {!isLoading && isSuccess && <p>Your password has been successfully changed.</p>}
+                  {/* {isLoading && <p>Changing Password...</p>}
+                  {!isLoading && isSuccess && <p>Your password has been successfully changed.</p>} */}
                 </div>
+                {loading && (
+                  <div className='new-loader-overlay'>
+                    <div>
+                      <div className='new-loader-spinner'></div>
+                      <div className='new-loader-message'>
+                        please wait, your password has been changed....
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {showAlert && <AlertSuccess message='Your Password Change successfully'/>}
               </form>
             )}
           </div>

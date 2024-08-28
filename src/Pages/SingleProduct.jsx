@@ -183,9 +183,6 @@ const SingleProduct = () => {
       </div>
       <div className="single-product-main">
         <div className="single-product-img">
-          {imageLoading ? (
-            <Loader />
-          ) : (
             <Zoom>
               <img
                 id={`product-image-${id}`}
@@ -195,7 +192,6 @@ const SingleProduct = () => {
                 onLoad={() => setIsImageLoaded(true)}
               />
             </Zoom>
-          )}
         </div>
         <div className="single-product-details">
           <h2 className="single-product-title">{product.title?.rendered}</h2>
