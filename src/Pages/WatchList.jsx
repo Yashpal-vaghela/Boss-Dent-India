@@ -15,6 +15,7 @@ const WatchList = () => {
   const [error, setError] = useState(null);
   const [stockStatuses, setStockStatuses] = useState({});
   const { addToCart } = useCart();
+  const [imageLoading, setImageLoading] = useState({});
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -81,6 +82,12 @@ const WatchList = () => {
     }
   };
 
+  const handleImageLoad = (productId) => {
+    setImageLoading((prevState) => ({
+      ...prevState,
+      [productId]: true,
+    }));
+  };
   if (loading) {
     return <Loader />;
   }
@@ -104,11 +111,15 @@ const WatchList = () => {
           <div className="watchlist-items" data-aos="fade">
             {products.map((product) => (
               <div key={product.id} className="watchlist-item">
-                <img
-                  src={product.yoast_head_json?.og_image?.[0]?.url}
-                  alt={product.title.rendered}
-                  className="watchlist-item-image"
-                />
+                <div className="watchlist-item-image-wrapper">
+                  <img
+                    src={product.yoast_head_json?.og_image?.[0]?.url}
+                    alt={product.title.rendered}
+                    className={`watchlist-item-image ${imageLoading[product.id]?'loaded' : 'loading'}`}
+                    loading="lazy"
+                    onLoad={() => handleImageLoad(product.id)}
+                  />
+                </div>
                 <div className="watchlist-item-details">
                   <div className="watchlist-item-info">
                     <Link to={`/products/${product.id}`} className="watchlist-item-link">

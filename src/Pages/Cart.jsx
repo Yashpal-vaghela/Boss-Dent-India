@@ -17,6 +17,7 @@ const Cart = () => {
     updatePrice,
   } = useCart();
   const [canCheckout, setCanCheckout] = useState(false);
+  const [imageLoading, setImageLoading] = useState({});
 
   useEffect(() => {
     const allAttributesSelected = cart.every((product) => {
@@ -73,6 +74,12 @@ const Cart = () => {
       updatePrice(product.id, updatedAttributes, newPrice);
     }
   };
+  const handleImageLoad = (productId) =>{
+    setImageLoading((prevState) => ({
+      ...prevState,
+      [productId]: true,
+    }));
+  };
 
   const total = cart.reduce(
     (total, product) => total + product.price * product.quantity,
@@ -96,11 +103,15 @@ const Cart = () => {
           <div className="cart-items">
             {cart.map((product) => (
               <div key={`${product.id}-${JSON.stringify(product.selectedAttributes)}`} className="cart-item">
-                <img
-                  src={product.yoast_head_json?.og_image?.[0]?.url}
-                  alt={product.title.rendered}
-                  className="cart-item-image"
-                />
+                <div className="cart-item-image-wrapper">
+                  <img
+                    src={product.yoast_head_json?.og_image?.[0]?.url}
+                    alt={product.title.rendered}
+                    className={`cart-item-image ${imageLoading[product.id]? 'loaded' : 'loading'}`}
+                    loading="lazy"
+                    onLoad={() => handleImageLoad(product.id)}
+                  /> 
+                </div>
                 <div className="cart-item-details">
                   <Link
                     to={`/products/${product.id}`}

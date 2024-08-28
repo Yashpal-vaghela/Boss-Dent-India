@@ -33,12 +33,20 @@
   border-radius: 8px;
   background: #fff;
 }
-
+.watchlist-item-image-wrapper {
+  position: relative;
+}
 .watchlist-item-image {
   width: 100px;
   height: auto;
+  object-fit: cover;
   border-radius: 8px;
   margin-right: 20px;
+  filter: blur(10px);
+  transition: filter 0.3s ease;
+}
+.watchlist-item-image.loaded {
+  filter: blur(0);
 }
 
 .watchlist-item-details {
