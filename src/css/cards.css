@@ -1,0 +1,144 @@
+
+ .mySwiper-1{
+width: 240px;
+  height: 320px;
+ }
+
+/* .swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+} */
+
+.cards-1-main{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 40px;
+}
+
+
+
+.slide-1 {
+  background-color: rgb(206, 17, 17);
+   border-radius: 18px;
+   display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.slide-1 {
+  background-color: rgb(0, 140, 255);
+   border-radius: 18px;
+   display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.slide-2 {
+  background-color: rgb(10, 184, 111);
+   border-radius: 18px;
+   display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.slide-3 {
+  background-color: rgb(211, 122, 7);
+   border-radius: 18px;
+   display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.slide-4 {
+  background-color: rgb(118, 163, 12);
+   border-radius: 18px;
+   display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.slide-5 {
+  background-color: rgb(180, 10, 47);
+   border-radius: 18px;
+   display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.slide-6{
+  background-color: rgb(35, 99, 19);
+   border-radius: 18px;
+   display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.slide-7{
+  background-color: rgb(0, 68, 255);
+   border-radius: 18px;
+   display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.slide-8{
+  background-color: rgb(218, 12, 218);
+   border-radius: 18px;
+   display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.slide-9 {
+  background-color: rgb(54, 94, 77);
+   border-radius: 18px;
+   display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}

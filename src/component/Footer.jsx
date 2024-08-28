@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <footer>
       <div className="footer-container">
-        <div className="footer-section">
+        <div className="footer-section"  data-aos="fade-up" data-aos-delay="0">
           <img src={flogo} alt="BossDent" className="logo" />
           <p>Bossdentindia (Disposables & Consumables) is an online dental product selling store based in Surat Gujrat.</p>
           <p className="helpline">Our Help Line: <div className='helpline-number'>+91 76988 28883</div></p>
@@ -22,7 +22,7 @@ const Footer = () => {
             <a href="#"><FaInstagram /></a>
           </div>
         </div>
-        <div className="footer-section ">
+        <div className="footer-section" data-aos="fade-up" data-aos-delay="200">
           <h3>Quick Links</h3>
           <ul>
             <li><a href="/products">Shop</a></li>
@@ -31,7 +31,7 @@ const Footer = () => {
             <li><a href="/my-account">My Account</a></li>
           </ul>
         </div>
-        <div className="footer-section">
+        <div className="footer-section" data-aos="fade-up" data-aos-delay="400">
           <h3>Policy</h3>
           <ul>
             <li><a href="/refund-and-returns-policy">Refund & Returns Policy</a></li>
@@ -40,7 +40,7 @@ const Footer = () => {
             <li><a href="/help-center">Help Center</a></li>
           </ul>
         </div>
-        <div className="footer-section">
+        <div className="footer-section" data-aos="fade-up" data-aos-delay="600">
           <h3>Contact Us</h3>
           <p className='f-i-txt'> 
             <span className='f-icon'><FaLocationDot /></span>
@@ -58,7 +58,7 @@ const Footer = () => {
           </p>
         </div>
       </div>
-      <div className="footer-bottom">
+      <div className="footer-bottom" >
         <p>2024 © all right reserved by BossDentIndia</p>
       </div>
     </footer>

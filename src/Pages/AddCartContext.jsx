@@ -53,7 +53,7 @@ export const AddCartProvider = ({ children }) => {
           const productDetails = await fetchProductDetails(product.id);
           if (productDetails){
             setCart((prevCart)=> [...prevCart,{...productDetails,quantity},
-            ]);
+            ]); 
           }
        }
     };

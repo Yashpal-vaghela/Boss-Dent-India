@@ -34,14 +34,14 @@ const About = () => {
           </div>
         </div>
         <div className='about-txt-main' data-aos="fade-right">
-          <p className='about-sub-title'>What We Are Doing For Our Business</p>
-          <h2 className='about-title'>Bossdentindia Create Unique High-quality Product.</h2>
+          <p className='about-sub-title' data-aos="fade-right" data-aos-delay="0">What We Are Doing For Our Business</p>
+          <h2 className='about-title' data-aos="fade-right" data-aos-delay="200">Bossdentindia Create Unique High-quality Product.</h2>
           <div className='about-txt-p'>
-            <p className='about-txt'>BossDentIndia is a leading online retailer specializing in dental products and equipment. We offer a wide range of high-quality dental supplies, instruments, and accessories to dental professionals, students, and individuals seeking dental care products. Our mission is to provide exceptional products and excellent customer service to support the dental community’s needs.</p>
-            <p className='about-txt'>At BossDentIndia, we are committed to delivering superior dental products and ensuring customer satisfaction. We strive to maintain the highest standards of quality, reliability, and affordability in all our offerings. We continuously work towards expanding our product selection, staying up-to-date with the latest advancements in dental technology, and fostering strong relationships with dental manufacturers to provide the best solutions to our customers.</p>
+            <p className='about-txt'data-aos="fade-right" data-aos-delay="300">BossDentIndia is a leading online retailer specializing in dental products and equipment. We offer a wide range of high-quality dental supplies, instruments, and accessories to dental professionals, students, and individuals seeking dental care products. Our mission is to provide exceptional products and excellent customer service to support the dental community’s needs.</p>
+            <p className='about-txt'data-aos="fade-right" data-aos-delay="400">At BossDentIndia, we are committed to delivering superior dental products and ensuring customer satisfaction. We strive to maintain the highest standards of quality, reliability, and affordability in all our offerings. We continuously work towards expanding our product selection, staying up-to-date with the latest advancements in dental technology, and fostering strong relationships with dental manufacturers to provide the best solutions to our customers.</p>
           </div>
-          <Link to="/contact" className='about-btn-main'>
-            <button className='about-btn'>Contact With Us <span className='about-icon'><IoIosArrowForward /></span></button>
+          <Link to="/contact" className='about-btn-main'data-aos="fade-right" data-aos-delay="800">
+            <button className='about-btn' data-aos="fade-right" data-aos-delay="600">Contact With Us <span className='about-icon'><IoIosArrowForward /></span></button>
           </Link>
         </div>
       </div>
