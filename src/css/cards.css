@@ -3,13 +3,33 @@
   width: 240px;
   height: 320px;
  }
+
+ .cards-main{
+  margin-top: 90px;
+  margin-bottom: 100px;
+ }
+
+ .variable-cards-main{
+  margin-top: 50px;
+ }
+
+.variable-cards-title{
+  font-size: 30px;
+  margin-bottom: 40px;
+  color: #333;
+  border-bottom: 2px solid #c39428;
+  width: fit-content;
+  padding-bottom: 15px;
+  margin-left: 30px;
+}
+
 .cards-1-main{
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
   gap: 40px;
 }
-.product-name {
+.card-product-name {
   position: absolute;
   bottom: 10px;
   left: 0;
@@ -20,6 +40,20 @@
   color: #fff;
   font-size: 16px;
   border-radius: 0 0 18px 18px;
+  background: linear-gradient(
+    130deg,
+    #c3942f 0%,
+    #d89c27 18%,
+    #dfc86f 37%,
+    #e7dc96 50%,
+    #dfc86f 64%,
+    #d89c27 82%,
+    #c99c30 100%
+  );
+  backdrop-filter: brightness(0.5);
+  -webkit-background-clip: text; /* Clip the background to the text */
+  -webkit-text-fill-color: transparent; /* Make the text color transparent */
+  background-clip: text; /* Standard syntax */
 }
 .slide {
   border-radius: 18px;
@@ -37,6 +71,7 @@
   object-fit: cover;
   border-radius: 18px;
 }
+
 .slide-1 {
   background-color: rgb(206, 17, 17);
    border-radius: 18px;

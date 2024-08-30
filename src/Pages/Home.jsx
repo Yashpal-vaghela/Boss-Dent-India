@@ -11,7 +11,8 @@ import banner3 from "../images/Bossdent-Web-banners-03.jpg";
 import banner4 from "../images/Bossdent-Web-banners-04.jpg";
 import { IoMdArrowDropright } from "react-icons/io";
 import { FaPlay, FaPause } from "react-icons/fa";
-import "../css/othercard.css"
+import { MdLocalHospital, MdLocalShipping, MdOutlineLocalHospital, MdSecurity , MdSupportAgent } from "react-icons/md";
+import "../css/othercard.css";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -394,17 +395,54 @@ const Home = () => {
 
       <section>
         <div className="other-cards-main-section">
-          <div className="other-cars-main">
-            <div className="other-card-main-1">
+        <div className="main-title-other-card-main">
+            <h2 className="main-title" data-aos="fade-down"
+              data-aos-delay="0">Our Services</h2>
+          </div>
+          <div className="other-cards-main">
+            <div className="other-card-main-1" data-aos="fade-down"
+              data-aos-delay="0">
               <div className="other-card-icon-main">
-                <span className="other-card-icon"></span>
+                <span className="other-card-icon" data-aos="fade-right"
+              data-aos-delay="0"><MdLocalShipping /></span>
               </div>
               <div className="other-card-title-main">
-                <h2 className="other-card-title"></h2>
+                <h2 className="other-card-title" data-aos="fade-left"
+              data-aos-delay="0">
+                FAST SHIPPING
+                </h2>
               </div>
             </div>
-            <div className="other-card-main-2"></div>
-            <div className="other-card-main-3"></div>
+            <div className="other-card-main-2" data-aos="fade-down"
+              data-aos-delay="200">
+              <div className="other-card-icon-main" data-aos="fade-right"
+              data-aos-delay="200">
+                <span className="other-card-icon">
+                <MdSecurity />
+                </span>
+              </div>
+              <div className="other-card-title-main" data-aos="fade-left"
+              data-aos-delay="200">
+                <h2 className="other-card-title">
+                SECURE PAYMENT
+                </h2>
+              </div>
+            </div>
+            <div className="other-card-main-3" data-aos="fade-down"
+              data-aos-delay="400">
+              <div className="other-card-icon-main">
+                <span className="other-card-icon" data-aos="fade-right"
+              data-aos-delay="400">
+                <MdSupportAgent />
+                </span>
+              </div>
+              <div className="other-card-title-main">
+                <h2 className="other-card-title" data-aos="fade-left"
+              data-aos-delay="400">
+                BEST SUPPORT
+                </h2>
+              </div>
+            </div>
           </div>
         </div>
       </section>
