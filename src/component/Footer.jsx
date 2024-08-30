@@ -44,7 +44,9 @@ const Footer = () => {
           <h3>Contact Us</h3>
           <p className='f-i-txt'> 
             <span className='f-icon'><FaLocationDot /></span>
-            <span>Plot no.3-3/3-4/ Dhuna house, opp. Patel Nagar, A.k. Road, Varachha, Surat</span>
+            {/* <span>Plot no.3-3/3-4/ Dhuna house, opp. Patel Nagar, A.k. Road, Varachha, Surat</span> */}
+            <span>Plot No. 1 to 8, Marutidham Industrial Estate, Behind Hotel Royal, 
+            Velanja Road, Umra, Surat-394130, Gujarat, India</span>
           </p>
           <p className='f-i-txt'>
             <span className='f-icon'><FaPhoneAlt /></span>

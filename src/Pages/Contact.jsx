@@ -71,7 +71,7 @@ const Contact = () => {
       <div className="contact-info" >
         <div className="map" data-aos="fade-left">
           <iframe
-            src="https://maps.google.com/maps?q=Plot%20no.3-3%2F3-4%2F%20Dhuna%20house%2C%20opp.patel%20nagar%2C%20A.k.%20Road%2Cvarachha%2CSurat&t=m&z=12&output=embed&iwloc=near"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22653.660484652923!2d72.893032!3d21.29031055!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be0474f4845eac3%3A0x15ce59a9f50ccaf5!2sAdvance%20Dental%20Export!5e1!3m2!1sen!2sin!4v1724932357670!5m2!1sen!2sin"
             width="80%"
             height="300"
             frameBorder="0"
@@ -96,8 +96,10 @@ const Contact = () => {
                 <p className="detail-row-1-txt-2"
                    data-aos="fade-right" data-aos-delay="400"                
                 >
-                  Plot no.3-3/3-4/ Dhuna house, opp. Patel Nagar, A.k. Road,
-                  Varachha, Surat
+                  {/* Plot no.3-3/3-4/ Dhuna house, opp. Patel Nagar, A.k. Road,
+                  Varachha, Surat */}
+                  Plot No. 1 to 8, Marutidham Industrial Estate, Behind Hotel Royal, 
+                  Velanja Road, Umra, Surat-394130, Gujarat
                 </p>
               </div>
               <div className="detail-row-2">

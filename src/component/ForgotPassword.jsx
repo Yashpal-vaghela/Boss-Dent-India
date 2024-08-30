@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import Aos from 'aos';
+import AlertSuccess from './AlertSuccess';
+import "../css/forgotpassword.css";
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -12,6 +14,8 @@ const ForgotPassword = () => {
     const [passwordError, setPasswordError] = useState('');
     const [step, setStep] = useState(1);
     const [error, setError] = useState('');
+    const [showAlert, setShowAlert] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const validatePassword = (value) => {
@@ -24,54 +28,75 @@ const ForgotPassword = () => {
     };
 
     const handleForgotPassword = async () => {
+        setLoading(true);
         try {
             const response = await axios.post('https://bossdentindia.com/wp-json/custom/v1/forgot-password', {
                 email
             });
-
-            if (response.status !== 200) {
+            if (response.data.success){
+                setLoading(false);
+                setShowAlert(true);    
+                // alert('Password reset email sent successfully!');
+                setStep(2); // Move to the next step
+            } else {
                 throw new Error('Failed to send reset password email');
             }
 
-            alert('Password reset email sent successfully!');
-            setStep(2); // Move to the next step
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 3000);
         } catch (error) {
             console.error('Error sending reset password email:', error);
             alert(error.response?.data?.message || 'Error sending reset password email');
+        } finally {
+            setLoading(false);
         }
     };  
 
     const handleVerifyOtp = async () => {
         try {
+            setLoading(true);
             const response = await axios.post('https://bossdentindia.com/wp-json/custom/v1/verify-reset-otp', {
                 email,
                 otp
             });
-
-            if (response.status !== 200) {
-                throw new Error('Invalid OTP');
+            if (response.data.success){
+                setLoading(false);
+                setShowAlert(true);
+                // alert('OTP verified successfully!');
+                setStep(3); // Move to the next step
+            } else{
+                throw new Error('Invalid OTP'); 
             }
-
-            alert('OTP verified successfully!');
-            setStep(3); // Move to the next step
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 3000);
         } catch (error) {
             console.error('Error verifying OTP:', error);
             alert(error.response?.data?.message || 'Invalid OTP');
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleChangePassword = async () => {
+        setLoading(true);
         try {
             const response = await axios.post('https://bossdentindia.com/wp-json/custom/v1/reset-password', {
                 email,
                 password: newPassword
             });
-
-            if (response.status !== 200) {
+            if (response.data.success){
+                setLoading(false);
+                setShowAlert(true);
+                // alert('Password changed successfully!');
+                navigate('/my-account');
+            } else {
                 throw new Error('Failed to change password');
             }
-            alert('Password changed successfully!');
-            navigate('/my-account');
+            setTimeout(() =>{
+                setShowAlert(false);
+            }, 3000);
         } catch (error) {
             console.error('Error changing password:', error);
             setError(error.response?.data?.message || 'Failed to change password');
@@ -112,6 +137,17 @@ const ForgotPassword = () => {
                         />
                     </div>
                     <button type="button" onClick={handleForgotPassword}>Request For OTP</button>
+                    {loading && (
+                        <div className="loader-overlay">
+                            <div>
+                                <div className="loader-spinner"></div>
+                                <div className="loader-message">
+                                Please wait, while OTP will send to your mail...
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    {showAlert && <AlertSuccess  message='OTP is sucessfully send to Entered Email Address'/>}
                 </div>
             )}
             {step === 2 && (
@@ -127,6 +163,17 @@ const ForgotPassword = () => {
                         />
                     </div>
                     <button type="button" onClick={handleVerifyOtp}>Verify OTP</button>
+                    {loading && (
+                        <div className='loader-overlay'>
+                            <div>
+                               <div className='loader-spinner'></div>
+                               <div className='loader-message'>
+                                please wait, while OTP is verifying...
+                               </div>
+                            </div>
+                        </div>
+                    )}
+                    {showAlert && <AlertSuccess message ="OTP verified succesfully" />}
                 </div>
             )}
             {step === 3 && (
@@ -147,6 +194,17 @@ const ForgotPassword = () => {
                         {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
                     </div>
                     <button type="button" onClick={handleChangePassword}>Change Password</button>
+                    {loading && (
+                        <div className='loader-overlay'>
+                            <div>
+                                <div className='loader-spinner'></div>
+                                <div className='loader-message'>
+                                    Your password has been Changing...
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    {showAlert && <AlertSuccess message ="Your password changed Successfully." />}
                 </div>
             )}
         </div>

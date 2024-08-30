@@ -57,9 +57,9 @@ const Home = () => {
   return (
     <div className="home-main">
       {/* Banner Section */}
-      <section>
+      {/* <section>
         <div className="banner-main">
-          {/* <div className="banner-sub">
+          <div className="banner-sub">
             <div className="banner-p1">
               <div className="banner-p1-txt">
                 <div className="banner-p1-txt-head">
@@ -149,11 +149,11 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
-      </section>
+      </section> */}
       <section
-        style={{ position: "relative" }}
+        style={{ position: "relative", overflow: "hidden" }}
         className="banner-section"
         data-aos="fade-down"
       >
@@ -209,16 +209,6 @@ const Home = () => {
               <div className="banneer-img-main">
                 <img src={banner2} alt="" className="banner-img" />
               </div>
-              {/* <div className="banner-btn-main-2">
-                <Link to="/products" className="banner-btn-link">
-                  <button className="banner-btn-shop">
-                    Shop Now{" "}
-                    <span className="banner-btn-icon">
-                      <IoMdArrowDropright />
-                    </span>{" "}
-                  </button>
-                </Link>
-              </div> */}
             </Link>
           </SwiperSlide>
           <SwiperSlide>
@@ -233,16 +223,6 @@ const Home = () => {
               <div className="banneer-img-main">
                 <img src={banner3} alt="" className="banner-img" />
               </div>
-              {/* <div className="banner-btn-main-3">
-                <Link to="/products" className="banner-btn-link">
-                  <button className="banner-btn-shop">
-                    Shop Now{" "}
-                    <span className="banner-btn-icon">
-                      <IoMdArrowDropright />
-                    </span>{" "}
-                  </button>
-                </Link>
-              </div> */}
             </Link>
           </SwiperSlide>
           <SwiperSlide>
@@ -257,16 +237,6 @@ const Home = () => {
               <div className="banneer-img-main">
                 <img src={banner4} alt="" className="banner-img" />
               </div>
-              {/* <div className="banner-btn-main-4">
-                <Link to="/products" className="banner-btn-link">
-                  <button className="banner-btn-shop">
-                    Shop Now{" "}
-                    <span className="banner-btn-icon">
-                      <IoMdArrowDropright />
-                    </span>{" "}
-                  </button>
-                </Link>
-              </div> */}
             </Link>
           </SwiperSlide>
         </Swiper>
@@ -377,7 +347,7 @@ const Home = () => {
                 <span className="txt-2-dicount-type">Flat Discount</span>
               </p>
             </div>
-            <div className="other-banner-btn-main" data-aos="fade-left">
+            <div className="other-banner-btn-main">
               <Link to="/products" className="other-banner-btn-0">
                 <button className="other-banner-btn">SEE COLLECTION</button>
               </Link>

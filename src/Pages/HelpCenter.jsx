@@ -33,7 +33,7 @@ const faqData = [
         question: "How can I contact the store?", 
           answer: [
         "Bossdentindia (Disposables & Consumables) is an online dental product selling store based in Surat Gujrat.", 
-        "Address: Plot no.3-3/3-4/ Dhuna house, opp. Patel Nagar, A.k. Road, Varachha, Surat",
+        "Address: Plot No. 1 to 8, Marutidham Industrial Estate, Behind Hotel Royal, Velanja Road, Umra, Surat - 394130, Gujarat, India",
         "Email: zahndentaldepo@gmail.com",
         "Phone: +91 76988 28883",
         ] 
