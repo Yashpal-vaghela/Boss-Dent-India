@@ -193,7 +193,7 @@ const UserData = () => {
     } finally {
       setLoading(false);
     }
-    console.log("value of showAlert", showAlert)
+    
     setTimeout(() => {
       setShowAlert(false);
       navigate("/my-account");

@@ -73,11 +73,12 @@ const SingleProduct = () => {
         }
 
         // Determine sale price
-        if (response.data.sale_price) {
-          setSalePrice(response.data.sale_price);
-        } else {
-          setSalePrice(response.data.price);
-        }
+        // if (response.data.sale_price) {
+        //   setSalePrice(response.data.sale_price);
+        // } else {
+        //   setSalePrice(response.data.price);
+        // }
+        setSalePrice(response.data.sale_price || response.data.price)
         try {
           const stockResponse = await axios.get(
             `https://bossdentindia.com/wp-json/custom/v1/stock-status/${id}`
@@ -109,7 +110,7 @@ const SingleProduct = () => {
         }
       });
     }, { threshold: 0.1 });
-    if (imgElement){
+    if (imgElement) {
       observer.observe(imgElement);
     }
     return () => {
@@ -183,15 +184,15 @@ const SingleProduct = () => {
       </div>
       <div className="single-product-main">
         <div className="single-product-img">
-            <Zoom>
-              <img
-                id={`product-image-${id}`}
-                className={`single-product-img ${isImageLoaded ? 'loaded':''}`}
-                src={product.yoast_head_json?.og_image?.[0]?.url}
-                alt={product.title?.rendered}
-                onLoad={() => setIsImageLoaded(true)}
-              />
-            </Zoom>
+          <Zoom>
+            <img
+              id={`product-image-${id}`}
+              className={`single-product-img ${isImageLoaded ? 'loaded' : ''}`}
+              src={product.yoast_head_json?.og_image?.[0]?.url}
+              alt={product.title?.rendered}
+              onLoad={() => setIsImageLoaded(true)}
+            />
+          </Zoom>
         </div>
         <div className="single-product-details">
           <h2 className="single-product-title">{product.title?.rendered}</h2>
@@ -209,37 +210,69 @@ const SingleProduct = () => {
             {stockStatus === "instock" ? "In Stock" : "Out of Stock"}
           </h4>
           {variations.length > 0 &&
-            Object.keys(variations[0]?.attributes || {}).map((attribute) => (
-              <div key={attribute} className="variation-main">
-                <h4>{attribute.replace(/attribute_pa_|attribute_/, "")}:</h4>
-                <div className="variation-buttons">
-                  {variations
-                    .filter(
-                      (variation) =>
-                        variation.attributes[attribute] !== undefined
-                    )
-                    .map((variation, index) => (
-                      <button
-                        key={index}
-                        className={`variation-button ${selectedAttributes[attribute] ===
-                            variation.attributes[attribute]
-                            ? "selected"
-                            : ""
-                          }`}
-                        onClick={() =>
-                          handleAttributeSelect(
-                            attribute,
-                            variation.attributes[attribute]
-                          )
+            Object.keys(variations[0]?.attributes || {}).map((attribute, index) => {
+              // Create a Set to store unique values
+              const uniqueValues = new Set(
+                variations
+                  .map((variation) => variation.attributes[attribute])
+                  .filter((value) => value !== undefined)
+              );
+              const uniqueValuesArray = Array.from(uniqueValues);
+
+              return (
+                <div key={attribute} className="variation-main">
+                  <h4>{attribute.replace(/attribute_pa_|attribute_/, "")}:</h4>
+                  {index === 1 ? ( // Only for the second attribute (index 1)
+                    uniqueValuesArray.length > 1 ? (
+                      // Render dropdown for the second attribute with more than one unique value
+                      <select
+                        value={selectedAttributes[attribute] || ""}
+                        onChange={(e) =>
+                          handleAttributeSelect(attribute, e.target.value)
                         }
                       >
-                        {variation.attributes[attribute]}
-                      </button>
-                    ))}
+                        <option value="">Select {attribute.replace(/attribute_pa_|attribute_/, "")}</option>
+                        {uniqueValuesArray.map((value, index) => (
+                          <option key={index} value={value}>
+                            {value}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <div className="variation-buttons">
+                        {uniqueValuesArray.map((value, index) => (
+                          <button
+                            key={index}
+                            className={`variation-button ${selectedAttributes[attribute] === value ? "selected" : ""
+                              }`}
+                            onClick={() =>
+                              handleAttributeSelect(attribute, value)
+                            }
+                          >
+                            {value}
+                          </button>
+                        ))}
+                      </div>
+                    )
+                  ) : (
+                    <div className="variation-buttons">
+                      {uniqueValuesArray.map((value, index) => (
+                        <button
+                          key={index}
+                          className={`variation-button ${selectedAttributes[attribute] === value ? "selected" : ""
+                            }`}
+                          onClick={() =>
+                            handleAttributeSelect(attribute, value)
+                          }
+                        >
+                          {value}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
-
+              );
+            })}
           <div
             dangerouslySetInnerHTML={{
               __html: product.excerpt?.rendered,

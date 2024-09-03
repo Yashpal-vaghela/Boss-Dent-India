@@ -374,6 +374,7 @@ section.banner-section {
   line-height: 22px;
   font-weight: 500;
   color: black;
+  cursor: pointer;
   font-family: Source Sans Pro, sans-serif;
   transition: all 0.2s;
 }
@@ -1367,7 +1368,6 @@ a {
 .product-button:hover {
   box-shadow: inset 400px 0 0 0 #c89c31;
 }
-
 .add-to-cart-button {
   font-size: 13px;
   line-height: 20px;

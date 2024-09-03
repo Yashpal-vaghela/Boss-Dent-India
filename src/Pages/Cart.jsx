@@ -40,21 +40,22 @@ const Cart = () => {
   }, []);
 
   const handleAddQuantity = (product) => {
-    updateQuantity(product.id, product.selectedAttributes, product.quantity + 1);
+    updateQuantity(product.id, product.quantity + 1);
   };
 
   const handleSubtractQuantity = (product) => {
     if (product.quantity > 1) {
-      updateQuantity(product.id, product.selectedAttributes, product.quantity - 1);
+      updateQuantity(product.id, product.quantity - 1);
     }
   };
 
   const handleRemoveItem = (product) => {
-    removeFromCart(product.id, product.selectedAttributes);
+    removeFromCart(product.id);
+    console.log("Removing product with ID:", product.id);
   };
 
   const handleEmptyCart = () => {
-    cart.forEach((product) => removeFromCart(product.id, product.selectedAttributes));
+    cart.forEach((product) => removeFromCart(product.id));
   };
 
   const handleAttributeSelect = (product, attribute, value) => {
@@ -71,10 +72,11 @@ const Cart = () => {
 
     if (selectedVariation) {
       const newPrice = selectedVariation.price;
-      updatePrice(product.id, updatedAttributes, newPrice);
+      updatePrice(product.id, newPrice);
     }
   };
-  const handleImageLoad = (productId) =>{
+
+  const handleImageLoad = (productId) => {
     setImageLoading((prevState) => ({
       ...prevState,
       [productId]: true,
@@ -102,27 +104,31 @@ const Cart = () => {
         <div className="cart-content">
           <div className="cart-items">
             {cart.map((product) => (
-              <div key={`${product.id}-${JSON.stringify(product.selectedAttributes)}`} className="cart-item">
+              <div
+                key={`${product.id}-${JSON.stringify(
+                  product.selectedAttributes || {}
+                )}`}
+                className="cart-item"
+              >
                 <div className="cart-item-image-wrapper">
                   <img
                     src={product.yoast_head_json?.og_image?.[0]?.url}
                     alt={product.title.rendered}
-                    className={`cart-item-image ${imageLoading[product.id]? 'loaded' : 'loading'}`}
+                    className={`cart-item-image ${
+                      imageLoading[product.id] ? "loaded" : "loading"
+                    }`}
                     loading="lazy"
                     onLoad={() => handleImageLoad(product.id)}
-                  /> 
+                  />
                 </div>
                 <div className="cart-item-details">
-                  <Link
-                    to={`/products/${product.id}`}
-                    className="cart-item-link"
-                  >
+                  <Link to={`/products/${product.id}`} className="cart-item-link">
                     <h3>{product.title.rendered}</h3>
                   </Link>
                   {product.variations && (
                     <div className="cart-item-attributes">
                       {Object.keys(product.variations[0].attributes || {}).map(
-                        (attribute, index) => (
+                        (attribute) => (
                           <div key={attribute} className="variation-cart-main">
                             <h4>
                               {attribute.replace(
@@ -135,8 +141,7 @@ const Cart = () => {
                               {product.variations
                                 .filter(
                                   (variation) =>
-                                    variation.attributes[attribute] !==
-                                    undefined
+                                    variation.attributes[attribute] !== undefined
                                 )
                                 .map((variation, index) => (
                                   <button
@@ -156,15 +161,22 @@ const Cart = () => {
                                       )
                                     }
                                   >
-                                    {variation.attributes[attribute]}
+                                    {typeof variation.attributes[attribute] ===
+                                    "string"
+                                      ? variation.attributes[attribute]
+                                      : JSON.stringify(
+                                          variation.attributes[attribute]
+                                        )}
                                   </button>
                                 ))}
                             </div>
-                            {!canCheckout && index === 0 && !product.selectedAttributes?.[attribute] && (
-                              <p className="checkout-warning">
-                                * Please select above attribute values to proceed to checkout.
-                              </p>
-                            )}
+                            {!canCheckout &&
+                              !product.selectedAttributes?.[attribute] && (
+                                <p className="checkout-warning">
+                                  * Please select above attribute values to
+                                  proceed to checkout.
+                                </p>
+                              )}
                           </div>
                         )
                       )}

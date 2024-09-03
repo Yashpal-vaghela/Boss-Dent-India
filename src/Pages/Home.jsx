@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoIosArrowDroprightCircle } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import cat1 from "../images/hom_cat-1.png";
 import cat2 from "../images/home_cat-2.png";
 import cat3 from "../images/home_cat-3.webp";
@@ -30,6 +30,12 @@ import Cards from "../component/Cards";
 const Home = () => {
   const [isAutoplay, setIsAutoplay] = useState(true);
   const swiperRef = useRef(null);
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (categoryId) => {
+    navigate(`/products?category=${categoryId}`);
+  };  
+
   const toggleAutoplay = () => {
     if (isAutoplay) {
       swiperRef.current.swiper.autoplay.stop();
@@ -268,16 +274,16 @@ const Home = () => {
               data-aos="fade-down"
               data-aos-delay="0"
             >
-              <Link>
+              <div>
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
                     <img src={cat1} alt="Prosthodontist" />
                   </div>
                 </div>
-                <div className="home-cat-txt">
-                  <h1>Prosthodontist</h1>
+                <div className="home-cat-txt" onClick={() => handleCategoryClick(46)}>
+                  <h1>Accessories</h1>
                 </div>
-              </Link>
+              </div>
             </div>
 
             <div
@@ -285,16 +291,16 @@ const Home = () => {
               data-aos="fade-down"
               data-aos-delay="200"
             >
-              <Link>
+              <div>
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
                     <img src={cat2} alt="LAB Material" />
                   </div>
                 </div>
-                <div className="home-cat-txt">
+                <div className="home-cat-txt" onClick={() => handleCategoryClick(76)}>
                   <h1>LAB Material</h1>
                 </div>
-              </Link>
+              </div>
             </div>
 
             <div
@@ -302,16 +308,16 @@ const Home = () => {
               data-aos="fade-down"
               data-aos-delay="400"
             >
-              <Link>
+              <div>
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
                     <img src={cat3} alt="General Dentist" />
                   </div>
                 </div>
-                <div className="home-cat-txt">
+                <div className="home-cat-txt" onClick={() => handleCategoryClick(75)}>
                   <h1>General Dentist</h1>
                 </div>
-              </Link>
+              </div>
             </div>
 
             <div
@@ -319,7 +325,7 @@ const Home = () => {
               data-aos="fade-down"
               data-aos-delay="600"
             >
-              <Link>
+              <div>
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
                     <img src={cat4} alt="Accessories" />
@@ -328,7 +334,7 @@ const Home = () => {
                 <div className="home-cat-txt">
                   <h1>Accessories</h1>
                 </div>
-              </Link>
+              </div>
             </div>
           </div>
         </div>

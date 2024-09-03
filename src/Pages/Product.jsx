@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { useLocation, Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Loader from '../component/Loader';
 import { useCart } from './AddCartContext';
 import { FaCartPlus } from "react-icons/fa";
 import { useWatchlist } from './WatchlistContext';
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import Aos from 'aos';
+import AlertSuccess from '../component/AlertSuccess';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -14,31 +15,23 @@ const Product = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(9);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  // const [selectedCategory, setSelectedCategory] = useState(null);
   const [minPrice, setMinPrice] = useState(40);
   const [maxPrice, setMaxPrice] = useState(12500);
   const [stockStatuses, setStockStatuses] = useState({});
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const location = useLocation();
+  const [alertMessage, setAlertMessage] = useState("");
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get('category');
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const query = params.get('search') || "";
-    setSearchQuery(query);
-  }, [location.search]);
-
-  useEffect(() => {
-    fetchProducts();
-  }, [currentPage, productsPerPage, selectedCategory, minPrice, maxPrice]);
-
-  useEffect(() => {
-    const userLoggedIn = localStorage.getItem('token') ? true : false;
+    const userLoggedIn = !!localStorage.getItem('token');
     setIsLoggedIn(userLoggedIn);
   }, []);
+
   useEffect(() => {
     Aos.init({
       duration: 1000, // Animation duration in milliseconds
@@ -47,13 +40,28 @@ const Product = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (category !== undefined) {
+      fetchProducts();
+    }
+  }, [currentPage, productsPerPage, category, minPrice, maxPrice]);
+
+  useEffect(() => {
+    if (alertMessage){
+      const timer = setTimeout(() => {
+        setAlertMessage("");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  },[alertMessage]);
+
   const fetchProducts = async () => {
     setLoading(true);
     try {
       let apiUrl = `https://bossdentindia.com/wp-json/wp/v2/product?per_page=100`; 
-
-      if (selectedCategory) {
-        apiUrl += `&product_cat=${selectedCategory}`;
+      // console.log(`Fetching products for category: ${category}`);
+      if (category) {
+        apiUrl += `&product_cat=${category}`;
       }
 
       const response = await axios.get(apiUrl);
@@ -87,18 +95,19 @@ const Product = () => {
     } finally {
       setLoading(false);
     }
+    // console.log("Fetching products for category:", category);
   };
   // console.log(response.data);
-  
-  const totalPages = Math.ceil(totalProducts / productsPerPage);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-    setCurrentPage(1);
+  const handleCategoryClick = (newCategory) => {
+    if (newCategory !== category){
+     setCurrentPage(1); 
+     navigate(`?category=${newCategory}`);
+    } 
   };
 
   // const handlePriceRangeChange = () => {
@@ -112,13 +121,13 @@ const Product = () => {
       if (isLoggedIn) {
         const quantity = 1;
         addToCart({ ...product, quantity});
-        alert("Product added to cart!");
+        setAlertMessage("Product added to cart!");
       } else {
-        window.alert('Please log In! Thank you.');
+        setAlertMessage('Please log In! Thank you.');
         navigate("/my-account");
       }
     } else {
-      alert('This product is out of stock and cannot be added to the cart.');
+      setAlertMessage('This product is out of stock and cannot be added to the cart.');
     }
   };
 
@@ -126,17 +135,20 @@ const Product = () => {
     if (isLoggedIn) {
       if (watchlist.includes(product.id)) {
         removeFromWatchlist(product.id);
+        setAlertMessage("Product removed from watchlist.");
       } else {
         addToWatchlist(product.id);
+        setAlertMessage("Product added to watchlist!");
       }
     } else {
-      window.alert('Please log in! Thank you.');
+      setAlertMessage('Please log in! Thank you.');
       navigate("/my-account");
     }
   };
   const handleImageLoad = (event) => {
     event.target.classList.add('loaded');
   };
+  const totalPages = Math.ceil(totalProducts / productsPerPage);
   const paginationButtons = [];
   for (let i = 1; i <= totalPages; i++) {
     if (
@@ -151,7 +163,7 @@ const Product = () => {
           className={`paginate_button page-item ${currentPage === i ? "active" : ""}`}
           onClick={() => handlePageChange(i)}
         >
-          {i}
+          {i}   
         </button>
       );
     } else if (i === currentPage - 2 || i === currentPage + 2) {
@@ -173,17 +185,19 @@ const Product = () => {
           <a href='/'>Home</a> &gt; <span>Shop</span>
         </nav>
       </div>
-      <div className='shop-header'></div>
+      <div className='shop-header'>
+      {alertMessage && <AlertSuccess message={alertMessage} />}
+      </div>
       <div className='shop-content'>
         <div className='shop-sidebar-menu' data-aos="fade">
           <div className='shop-sidebar'>
             <h3>Shop by Category</h3>
             <hr />
             <ul>
-              <li onClick={() => handleCategoryClick(null)}>All</li>
-              <li onClick={() => handleCategoryClick(46)}>Accessories</li>
-              <li onClick={() => handleCategoryClick(75)}>General dentist</li>
-              <li onClick={() => handleCategoryClick(76)}>LAB Material</li>
+              <li className= {`category ${category === null ? 'active': ''}`} onClick={() => handleCategoryClick(null)}>All</li>
+              <li className= {`category ${category === '46' ? 'active' :''}`} onClick={() => handleCategoryClick(46)}>Accessories</li>
+              <li className= {`category ${category === '75' ? 'active' : ''}`} onClick={() => handleCategoryClick(75)}>General dentist</li>
+              <li className= {`category ${category === '76' ? 'active' : ''}`} onClick={() => handleCategoryClick(76)}>LAB Material</li>
             </ul>
           </div>
           {/* <div className='price-range'>
