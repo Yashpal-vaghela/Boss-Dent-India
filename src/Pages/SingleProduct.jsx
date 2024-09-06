@@ -64,11 +64,12 @@ const SingleProduct = () => {
 
           // Fetch related products in the same category
           const relatedProductsResponse = await axios.get(
-            `https://bossdentindia.com/wp-json/wp/v2/product?exclude=${id}&per_page=20`
+            `https://bossdentindia.com/wp-json/wp/v2/product?product_cat=${categoryId}&exclude=${id}&per_page=20`
           );
           const shuffledProducts = relatedProductsResponse.data.sort(
             () => 0.5 - Math.random()
           );
+          // const a = relatedProductsResponse.data.filter((item)=>console.log("filterdara",item.title))
           setRelatedProducts(shuffledProducts.slice(0, 10));
         }
 
@@ -156,6 +157,7 @@ const SingleProduct = () => {
 
   const handleAddToCart = () => {
     if (stockStatus === 'instock') {
+      console.log('s',quantity)
       addToCart({ ...product, quantity, selectedAttributes });
       alert("Product added to cart!");
     } else {
