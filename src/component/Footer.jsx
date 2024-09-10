@@ -12,7 +12,10 @@ const Footer = () => {
         <div className="footer-section"  data-aos="fade-up" data-aos-delay="0">
           <img src={flogo} alt="BossDent" className="logo" />
           <p>Bossdentindia (Disposables & Consumables) is an online dental product selling store based in Surat Gujrat.</p>
-          <p className="helpline">Our Help Line: <div className='helpline-number'>+91 76988 28883</div></p>
+          <p className="helpline">Our Help Line:
+            <span className='helpline-number'>+91 76988 28883</span>
+             {/* <div className='helpline-number'>+91 76988 28883</div> */}
+             </p>
           <div className="social-media">
             <p>Follow Us On
                 <span className="golden-line"></span>

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const AddCartContext = createContext();
 
 export const AddCartProvider = ({ children }) => {
+  const [quantity, setquantity] = useState(1);
   const [cart, setCart] = useState(() => {
     try {
       const savedCart = localStorage.getItem('cart');
@@ -44,9 +45,16 @@ export const AddCartProvider = ({ children }) => {
     return true;
   };
 
-  const addToCart = async (product, quantity = 1, selectedAttributes = {}) => {
+  const addToCart = async (product, quantity, selectedAttributes = {}) => {
+    console.log("quanttity1",quantity);
+    // if(location.pathname === 'products'){
+    //   return quantity = 1
+    // }else{
+    //   return  quantity
+    // }
+    // if (quantity < 1) return quantity = 1;
     if (!ensureAuthenticated()) return;
-
+   
     const existingProduct = cart.find((item) => item.id === product.id && JSON.stringify(item.selectedAttributes) === JSON.stringify(selectedAttributes));
 
     if (existingProduct) {
@@ -96,15 +104,15 @@ export const AddCartProvider = ({ children }) => {
     ));
   };
 
-  const getCartCount = () => {
-    return cart.reduce((count, product) => count + product.quantity, 0);
-  };
+  // const getCartCount = () => {
+  //   return cart.reduce((count, product) => count + product.quantity, 0);
+  // };
 
-  const total = cart.reduce((total, product) => total + product.price * product.quantity, 0);
-  getCartCount();
+  // const total = cart.reduce((total, product) => total + product.price * product.quantity, 0);
+  // getCartCount();
 
   return (
-    <AddCartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, getCartCount, updateAttributes, updatePrice, total }}>
+    <AddCartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, updateAttributes, updatePrice, setquantity  }}>
       {children}
     </AddCartContext.Provider>
   );

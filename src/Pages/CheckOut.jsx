@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useCart } from './AddCartContext';
 import phonepe from "../images/Phone-pe.png";
 import banktransfer from "../images/bank-transfer.png";
+import { useDispatch, useSelector } from 'react-redux';
+import { getTotal } from '../redux/Apislice/cartslice';
+
 
 const CheckOut = () => {
-  const { cart, total } = useCart();
+  const cartData = useSelector((state)=>state.cart?.cartItems)
+  const cartTotal = useSelector((state)=>state.cart?.cartTotalAmount)
   const [contactDetails, setContactDetails] = useState({
     name: '',
     email: '',
@@ -16,13 +19,20 @@ const CheckOut = () => {
   });
   const [coupon, setCoupon] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState('');
-  const [finalTotal, setFinalTotal] = useState(total);
+  const [finalTotal, setFinalTotal] = useState(cartTotal);
   const [paymentMethod, setPaymentMethod] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const deliveryCharge = total < 2500 ? 103 : 0;
-    setFinalTotal(total + deliveryCharge);
-  }, [total]);
+    const deliveryCharge = cartTotal < 2500 ? 103 : 0;
+    setFinalTotal(cartTotal + deliveryCharge);
+  }, [cartTotal]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(getTotal());
+    };
+  }, [cartData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -57,10 +67,14 @@ const CheckOut = () => {
         body: JSON.stringify({
           amount: finalTotal,
           customerDetails: contactDetails,
-          items: cart.map((item)=>({
-            product_id: item.id,
-            quantity: item.quantity,
+          items:cartData?.map((item)=>({
+            product_id:item?.id,
+            quantity:item?.quantity
           }))
+          // items: cart.map((item)=>({
+          //   product_id: item.id,
+          //   quantity: item.quantity,
+          // }))
         }),
       });
 
@@ -112,7 +126,7 @@ const CheckOut = () => {
     }
   };
 
-  const groupedCart = cart.reduce((acc, item) =>{
+  const groupedCart = cartData?.reduce((acc, item) =>{
     const parentId = item.parent_id || item.id;
     if (!acc[parentId]){
       acc[parentId] = {
@@ -125,7 +139,7 @@ const CheckOut = () => {
     return acc;
   }, {});
 
-  const deliveryCharge = total < 2500 ? 103 : 0;
+  const deliveryCharge = cartTotal < 2500 ? 103 : 0;
 
   return (
     <div className="checkout-page">
@@ -246,7 +260,7 @@ const CheckOut = () => {
                 </li>
               ))}
             </ul>
-            <p><strong>Order Subtotal:</strong> ₹{total}.00</p>
+            <p><strong>Order Subtotal:</strong> ₹{cartTotal}.00</p>
             <p><strong>Shipping Charge:</strong> ₹{deliveryCharge}.00</p>
             <p><strong>Tax:</strong> ₹0.00</p>
             <p><strong>Total:</strong> ₹{finalTotal}.00</p>

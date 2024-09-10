@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState ,useCallback } from 'react';
 import axios from 'axios';
-import { useLocation, Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, Link,useRoutes, useNavigate, useSearchParams } from 'react-router-dom';
 import Loader from '../component/Loader';
-import { useCart } from './AddCartContext';
+// import { useCart } from './AddCartContext';
 import { FaCartPlus } from "react-icons/fa";
 import { useWatchlist } from './WatchlistContext';
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import Aos from 'aos';
 import AlertSuccess from '../component/AlertSuccess';
+import {useDispatch,useSelector} from 'react-redux';
+import { Add } from '../redux/Apislice/cartslice';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -25,8 +27,11 @@ const Product = () => {
   const [searchParams] = useSearchParams();
   const category = searchParams.get('category');
   const navigate = useNavigate();
-  const { addToCart } = useCart();
-
+  // const { addToCart } = useCart();
+  const dispatch = useDispatch();
+  const cartData = useSelector((state)=>state.cart?.cartItems)
+  const SavedData1 = JSON.parse(localStorage.getItem("cart"));
+  
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem('token');
     setIsLoggedIn(userLoggedIn);
@@ -39,6 +44,8 @@ const Product = () => {
       mirror: true,   // Trigger animations on scroll up
     });
   }, []);
+
+ 
 
   useEffect(() => {
     if (category !== undefined) {
@@ -114,13 +121,25 @@ const Product = () => {
   //   setCurrentPage(1);
   //   fetchProducts();
   // };
-
-  const handleAddToCart = (product) => {
+const [quantity,setquantity] = useState(1);
+  const handleAddToCart = (e,product) => {
+    e.preventDefault();
     const stockStatus = stockStatuses[product.id];
     if (stockStatus === 'instock'){
       if (isLoggedIn) {
-        const quantity = 1;
-        addToCart({ ...product, quantity});
+        // var quantity = 1;
+        // dispatch(AddCartItem({...product,qty:quantity}))
+        dispatch(Add({...product}))
+        // addToCart({ ...product, quantity});
+        const getProduct = JSON.parse(localStorage.getItem('cart'))
+        // getProduct.length != 0 && getProduct.map((item)=>{
+        //   if(item.id == product.id){universal@2024
+        //     setAlertMessage('Product already exists in cart')
+        //   }else{
+        //     addToCart({ ...product, quantity});
+        //     setAlertMessage("Product added to cart!");
+        //   }
+        // })
         setAlertMessage("Product added to cart!");
       } else {
         setAlertMessage('Please log In! Thank you.');
@@ -257,7 +276,7 @@ const Product = () => {
                 <button
                   className={`add-to-cart-button ${stockStatuses[product.id] !== 'instock' ? 'disable-button': ''}`}
                   disabled={stockStatuses[product.id] !== 'instock'}
-                  onClick={() => handleAddToCart(product)}
+                  onClick={(e)=>handleAddToCart(e,product)}
                 >
                   <FaCartPlus />
                 </button>

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoIosArrowDroprightCircle } from "react-icons/io";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import cat1 from "../images/hom_cat-1.png";
 import cat2 from "../images/home_cat-2.png";
 import cat3 from "../images/home_cat-3.webp";
@@ -30,12 +30,6 @@ import Cards from "../component/Cards";
 const Home = () => {
   const [isAutoplay, setIsAutoplay] = useState(true);
   const swiperRef = useRef(null);
-  const navigate = useNavigate();
-
-  const handleCategoryClick = (categoryId) => {
-    navigate(`/products?category=${categoryId}`);
-  };  
-
   const toggleAutoplay = () => {
     if (isAutoplay) {
       swiperRef.current.swiper.autoplay.stop();
@@ -63,9 +57,9 @@ const Home = () => {
   return (
     <div className="home-main">
       {/* Banner Section */}
-      {/* <section>
+      <section>
         <div className="banner-main">
-          <div className="banner-sub">
+          {/* <div className="banner-sub">
             <div className="banner-p1">
               <div className="banner-p1-txt">
                 <div className="banner-p1-txt-head">
@@ -155,11 +149,11 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
-      </section> */}
+      </section>
       <section
-        style={{ position: "relative", overflow: "hidden" }}
+        style={{ position: "relative" }}
         className="banner-section"
         data-aos="fade-down"
       >
@@ -215,6 +209,16 @@ const Home = () => {
               <div className="banneer-img-main">
                 <img src={banner2} alt="" className="banner-img" />
               </div>
+              {/* <div className="banner-btn-main-2">
+                <Link to="/products" className="banner-btn-link">
+                  <button className="banner-btn-shop">
+                    Shop Now{" "}
+                    <span className="banner-btn-icon">
+                      <IoMdArrowDropright />
+                    </span>{" "}
+                  </button>
+                </Link>
+              </div> */}
             </Link>
           </SwiperSlide>
           <SwiperSlide>
@@ -229,6 +233,16 @@ const Home = () => {
               <div className="banneer-img-main">
                 <img src={banner3} alt="" className="banner-img" />
               </div>
+              {/* <div className="banner-btn-main-3">
+                <Link to="/products" className="banner-btn-link">
+                  <button className="banner-btn-shop">
+                    Shop Now{" "}
+                    <span className="banner-btn-icon">
+                      <IoMdArrowDropright />
+                    </span>{" "}
+                  </button>
+                </Link>
+              </div> */}
             </Link>
           </SwiperSlide>
           <SwiperSlide>
@@ -243,6 +257,16 @@ const Home = () => {
               <div className="banneer-img-main">
                 <img src={banner4} alt="" className="banner-img" />
               </div>
+              {/* <div className="banner-btn-main-4">
+                <Link to="/products" className="banner-btn-link">
+                  <button className="banner-btn-shop">
+                    Shop Now{" "}
+                    <span className="banner-btn-icon">
+                      <IoMdArrowDropright />
+                    </span>{" "}
+                  </button>
+                </Link>
+              </div> */}
             </Link>
           </SwiperSlide>
         </Swiper>
@@ -274,16 +298,16 @@ const Home = () => {
               data-aos="fade-down"
               data-aos-delay="0"
             >
-              <div>
+              <Link>
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
                     <img src={cat1} alt="Prosthodontist" />
                   </div>
                 </div>
-                <div className="home-cat-txt" onClick={() => handleCategoryClick(46)}>
-                  <h1>Accessories</h1>
+                <div className="home-cat-txt">
+                  <h1>Prosthodontist</h1>
                 </div>
-              </div>
+              </Link>
             </div>
 
             <div
@@ -291,16 +315,16 @@ const Home = () => {
               data-aos="fade-down"
               data-aos-delay="200"
             >
-              <div>
+              <Link>
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
                     <img src={cat2} alt="LAB Material" />
                   </div>
                 </div>
-                <div className="home-cat-txt" onClick={() => handleCategoryClick(76)}>
+                <div className="home-cat-txt">
                   <h1>LAB Material</h1>
                 </div>
-              </div>
+              </Link>
             </div>
 
             <div
@@ -308,16 +332,16 @@ const Home = () => {
               data-aos="fade-down"
               data-aos-delay="400"
             >
-              <div>
+              <Link>
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
                     <img src={cat3} alt="General Dentist" />
                   </div>
                 </div>
-                <div className="home-cat-txt" onClick={() => handleCategoryClick(75)}>
+                <div className="home-cat-txt">
                   <h1>General Dentist</h1>
                 </div>
-              </div>
+              </Link>
             </div>
 
             <div
@@ -325,7 +349,7 @@ const Home = () => {
               data-aos="fade-down"
               data-aos-delay="600"
             >
-              <div>
+              <Link>
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
                     <img src={cat4} alt="Accessories" />
@@ -334,7 +358,7 @@ const Home = () => {
                 <div className="home-cat-txt">
                   <h1>Accessories</h1>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -353,7 +377,7 @@ const Home = () => {
                 <span className="txt-2-dicount-type">Flat Discount</span>
               </p>
             </div>
-            <div className="other-banner-btn-main">
+            <div className="other-banner-btn-main" data-aos="fade-left">
               <Link to="/products" className="other-banner-btn-0">
                 <button className="other-banner-btn">SEE COLLECTION</button>
               </Link>

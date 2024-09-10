@@ -4,9 +4,11 @@ import { useWatchlist } from "./WatchlistContext";
 import axios from "axios";
 import Loader from "../component/Loader";
 import { MdDelete } from "react-icons/md";
-import { useCart } from "./AddCartContext";
+// import { useCart } from "./AddCartContext";
 import '../css/wishlistresponsive.css';
 import Aos from "aos";
+import { useDispatch } from "react-redux";
+import { Add } from "../redux/Apislice/cartslice";
 
 const WatchList = () => {
   const { watchlist, removeFromWatchlist } = useWatchlist();
@@ -14,8 +16,9 @@ const WatchList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [stockStatuses, setStockStatuses] = useState({});
-  const { addToCart } = useCart();
+  // const { addToCart } = useCart();
   const [imageLoading, setImageLoading] = useState({});
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -76,7 +79,8 @@ const WatchList = () => {
   const handleAddToCart = (product) => {
     const stockStatus = stockStatuses[product.id];
     if (stockStatus === 'instock'){
-      addToCart && addToCart({ ...product, quantity: 1 });
+      dispatch(Add({...product,quantity:1}))
+      // addToCart && addToCart({ ...product, quantity: 1 });
     } else {
       alert('This product is Out of stock.')
     }

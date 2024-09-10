@@ -4,9 +4,10 @@ import { FaFacebookF, FaInstagram, FaUserAlt, FaHeart, FaCartPlus, FaSearch, FaP
 import logo from "../images/flogo.png";
 import axios from "axios";
 import { useWatchlist } from "../Pages/WatchlistContext";
-import { useCart } from "../Pages/AddCartContext";
+// import { useCart } from "../Pages/AddCartContext";
 import "../css/navbar.css";
 import Aos from "aos";
+import { useSelector } from "react-redux";
 
 const NewNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -20,8 +21,9 @@ const NewNav = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
   const { watchlist } = useWatchlist(); 
-  const { cart } = useCart(); 
+  // const { cart } = useCart(); 
   const navigate = useNavigate();
+  const cartData = useSelector((state)=>state.cart.cartItems)
 
   const toggleMenu = () => {
     setMenuOpen((prevMenuOpen) => !prevMenuOpen);
@@ -324,7 +326,9 @@ const NewNav = () => {
                   <div className="cart-icon">
                     <Link to="/cart">
                       <FaCartPlus />
-                      <span>{cart.length}</span>
+                      <span>
+                        {/* {cart.length} */}
+                        {cartData?.length}</span>
                     </Link>
                   </div>
                 </div>
@@ -388,7 +392,10 @@ const NewNav = () => {
                         <div className="cart-icon" onClick={closeMenu}>
                           <Link to="/cart">
                             <FaCartPlus />
-                            <span>{cart.length}</span>
+                            <span>
+                              {/* {cart.length} */}
+                              {cartData?.length}
+                              </span>
                           </Link>
                         </div>
                       </>

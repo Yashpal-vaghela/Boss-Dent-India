@@ -17,6 +17,7 @@ import CheckOut from '../Pages/CheckOut'
 import UserData from '../Pages/Userdata'
 import ForgotPassword from './ForgotPassword'
 import NewNav from './NewNav'
+import NewCart from '../Pages/NewCart'
 const Allroutes = () => {
   return (
     <div>
@@ -28,7 +29,7 @@ const Allroutes = () => {
             <Route path='/contact' element={<Contact />}/>
             <Route path='/products' element={<Product/>}/>
             <Route path='/products/:id' element={<SingleProduct/>}/>
-            <Route path= '/cart' element={<Cart />}/>
+            <Route path= '/cart' element={<NewCart />}/>
             <Route path='/watchlist' element={<WatchList/>} />
             <Route path='/your-data' element={<UserData/>} />
             <Route path='/help-center' element={<HelpCenter />}/>
