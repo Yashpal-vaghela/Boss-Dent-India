@@ -357,8 +357,8 @@ body {
   }
   .shop-sidebar-menu {
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
+    max-width: 1200px;
+    /* grid-template-columns: repeat(1, 1fr); */
     gap: 20px;
   }
   .products-grid {
@@ -586,6 +586,7 @@ body {
   .shop-sidebar-menu,
   .products-grid {
     width: 100%;
+    max-width: 1200px;
   }
 
   .products-grid {

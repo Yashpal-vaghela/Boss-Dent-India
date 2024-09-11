@@ -164,8 +164,11 @@
 .like-icon.inactive-heart {
   background-color: #c39428;
 }
-.other-detail-main {
+.other-main {
   margin-top: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .des-main {
@@ -173,23 +176,49 @@
   margin-left: 30px;
   margin-bottom: 10px;
   margin-top: 20px;
+  gap: 30px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
 }
 .des-title {
-  display: block;
+  display: inline-block;
+  cursor: pointer;
   font-size: 24px;
   color: #222;
   font-weight: 600;
   border-bottom: 2px solid #c89c31;
   width: fit-content;
   padding: 10px 0px;
+  margin-right: 20px;
+  transition: all 0.2s ease-in-out;
+  /* margin-top: 20px; */
 }
-
+.des-title.active {
+  color: #c39428;
+}
 .single-product-des {
   font-size: 16px;
   color: #111111;
   margin-top: 20px;
   font-weight: 400;
   line-height: 24px;
+  margin-left: 20px;
+}
+.product-description-nav ul {
+  list-style-type: none;
+  display: flex;
+  gap: 20px;
+}
+
+.product-description-nav li {
+  cursor: pointer;
+  padding: 10px 15px;
+  border-bottom: 2px solid transparent;
+}
+
+.product-description-nav li.active {
+  border-bottom: 2px solid black;
 }
 .add-to-cart-btn {
   font-size: 13px;

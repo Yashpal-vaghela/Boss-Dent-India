@@ -377,7 +377,7 @@ const Home = () => {
                 <span className="txt-2-dicount-type">Flat Discount</span>
               </p>
             </div>
-            <div className="other-banner-btn-main" data-aos="fade-left">
+            <div className="other-banner-btn-main">
               <Link to="/products" className="other-banner-btn-0">
                 <button className="other-banner-btn">SEE COLLECTION</button>
               </Link>

@@ -32,11 +32,6 @@ import applicator2 from '../images/Applicator-yellow-2.jpg';
 import applicator3 from '../images/Applicator-white-3.jpg';
 import applicator4 from '../images/Applicator-green-4.jpg';
 
-
-
-
-
-
 // import required modules
 import { EffectCards } from 'swiper/modules';
 import { Link } from 'react-router-dom';

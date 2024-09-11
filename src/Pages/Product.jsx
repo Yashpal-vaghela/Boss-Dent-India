@@ -121,7 +121,6 @@ const Product = () => {
   //   setCurrentPage(1);
   //   fetchProducts();
   // };
-const [quantity,setquantity] = useState(1);
   const handleAddToCart = (e,product) => {
     e.preventDefault();
     const stockStatus = stockStatuses[product.id];
@@ -217,6 +216,18 @@ const [quantity,setquantity] = useState(1);
               <li className= {`category ${category === '46' ? 'active' :''}`} onClick={() => handleCategoryClick(46)}>Accessories</li>
               <li className= {`category ${category === '75' ? 'active' : ''}`} onClick={() => handleCategoryClick(75)}>General dentist</li>
               <li className= {`category ${category === '76' ? 'active' : ''}`} onClick={() => handleCategoryClick(76)}>LAB Material</li>
+              <li className={`category ${category === '116' ? 'active' : ''}`} onClick={() => handleCategoryClick(116)}>All Gloves</li>
+              <li className={`category ${category === '117' ? 'active' : ''}`} onClick={() => handleCategoryClick(117)}>All Caps</li>
+              <li className={`category ${category === '118' ? 'active' : ''}`} onClick={() => handleCategoryClick(118)}>All Mask</li>
+              <li className={`category ${category === '119' ? 'active' : ''}`} onClick={() => handleCategoryClick(119)}>All Draps</li>
+              <li className={`category ${category === '122' ? 'active' : ''}`} onClick={() => handleCategoryClick(122)}>All Sleeve</li>
+              <li className={`category ${category === '125' ? 'active' : ''}`} onClick={() => handleCategoryClick(125)}>All Retractor</li>
+              <li className={`category ${category === '123' ? 'active' : ''}`} onClick={() => handleCategoryClick(123)}>All Tips</li>
+              <li className={`category ${category === '124' ? 'active' : ''}`} onClick={() => handleCategoryClick(124)}>All Trays</li>
+              <li className={`category ${category === '126' ? 'active' : ''}`} onClick={() => handleCategoryClick(126)}>All Wedges</li>
+              <li className={`category ${category === '120' ? 'active' : ''}`} onClick={() => handleCategoryClick(120)}>Polishing Kits</li>
+              <li className={`category ${category === '121'? 'active' : ''}`} onClick={() => handleCategoryClick(121)}>Endo Categories</li>
+              <li className={`category ${category === '127'? 'active' : ''}`} onClick={() => handleCategoryClick(127)}>Vincismiles</li>
             </ul>
           </div>
           {/* <div className='price-range'>
@@ -273,18 +284,20 @@ const [quantity,setquantity] = useState(1);
                 <Link to={`/products/${product.id}`} className='product-button-main'>
                   <button className='product-button'>Learn more</button>
                 </Link>
-                <button
-                  className={`add-to-cart-button ${stockStatuses[product.id] !== 'instock' ? 'disable-button': ''}`}
-                  disabled={stockStatuses[product.id] !== 'instock'}
-                  onClick={(e)=>handleAddToCart(e,product)}
-                >
-                  <FaCartPlus />
-                </button>
-                <span className={`watchlist-icon ${!watchlist.includes(product.id) ? "" : "inactive-heart"}`} 
-                  onClick={() => handleAddToWatchlist(product)}    
-                >
-                  {watchlist.includes(product.id) ? <FaHeart /> : <FaRegHeart />}
-                </span>
+                <div className="product-actions">
+                  <button
+                    className={`add-to-cart-button ${stockStatuses[product.id] !== 'instock' ? 'disable-button' : ''}`}
+                    disabled={stockStatuses[product.id] !== 'instock'}
+                    onClick={(e) => handleAddToCart(e, product)}
+                  >
+                    <FaCartPlus />
+                  </button>
+                  
+                  <span className={`watchlist-icon ${!watchlist.includes(product.id) ? "" : "inactive-heart"}`}
+                    onClick={() => handleAddToWatchlist(product)}>
+                    {watchlist.includes(product.id) ? <FaHeart /> : <FaRegHeart />}
+                  </span>
+                </div>
               </div>
             );
           })}
