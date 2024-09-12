@@ -30,10 +30,17 @@ const SingleProduct = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [weight, setWeight] = useState(null);
   const [activeSection, setActivesection] = useState('description');
+  const [reviewData, setReviewData] = useState({
+    reviewer: "",
+    reviewer_email: "",
+    rating: 0,
+    review: ""
+  });
   // const { addToCart, setquantity } = useCart();
   const { id } = useParams();
   const dispatch = useDispatch();
-
+  const token = localStorage.getItem("token");
+console.log(token);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -177,15 +184,15 @@ const SingleProduct = () => {
     if (stockStatus === "instock") {
       // console.log("s", quantity, selectedAttributes);
       // addToCart({ ...product, quantity, selectedAttributes });
-      dispatch(Add({ ...product, qty: quantity, selectedAttributes }));
+      dispatch(Add({ ...product, qty: quantity, selectedAttributes, weight:weight }));
       alert("Product added to cart!");
     } else {
       alert("Product is out of stock");
     }
   };
-  const handleSectionChange = (section) => {
-    setActivesection(section)
-  }
+  // const handleSectionChange = (section) => {
+  //   setActivesection(section)
+  // }
   // if (loading) {
   //   return <Loader />;
   // }
@@ -193,7 +200,33 @@ const SingleProduct = () => {
   // if (error) {
   //   return <div>{error}</div>;
   // }
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
 
+    try {
+      const response = await axios.post(
+        `https://bossdentindia.com/wp-json/wc/v3/products/${id}/reviews`,
+        {
+          product_id: id,
+          reviewer: reviewData.reviewer,
+          reviewer_email: reviewData.reviewer_email,
+          review: reviewData.review,
+          rating: reviewData.rating,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
+      );
+      if (response.status === 201) {
+        alert("Review submitted successfully!");
+      }
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      alert("Failed to submit the review. Please try again.");
+    }
+  };
   return (
     <>
       {loading ? (
@@ -394,26 +427,30 @@ const SingleProduct = () => {
           </div> */}
           <div className="other-main">
             <div className="des-main">
-            <nav className="product-description-nav">
-              <ul>
-                <li
-                  onClick={() => setActivesection("description")}
-                  className={`des-title ${activeSection === "description" ? "active" : ""}`}
-                >
-                  Description
-                </li>
-                <li
-                  onClick={() => setActivesection("additional")}
-                  className={`des-title ${activeSection === "additional" ? "active" : ""}`}
-                >
-                  Additional Information
-                </li>
-              </ul>
-            </nav>
+              <nav className="product-description-nav">
+                <ul>
+                  <li
+                    onClick={() => setActivesection("description")}
+                    className={`des-title ${activeSection === "description" ? "active" : ""}`}
+                  >
+                    Description
+                  </li>
+                  <li
+                    onClick={() => setActivesection("additional")}
+                    className={`des-title ${activeSection === "additional" ? "active" : ""}`}
+                  >
+                    Additional Information
+                  </li>
+                  <li
+                    onClick={() => setActivesection("review")}
+                    className={`des-title ${activeSection === "review" ? "active" : ""}`}
+                  >
+                    Review
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
-
-
           {activeSection === "description" && (
             <div
               dangerouslySetInnerHTML={{
@@ -425,6 +462,76 @@ const SingleProduct = () => {
           {activeSection === "additional" && (
             <div className="single-product-des">
               <p>Weight: {weight || "N/A"}gm</p>
+            </div>
+          )}
+          {activeSection === "review" && (
+            <div className="product-review-section">
+              {product.reviews?.length === 0 ? (
+                <div className="no-reviews-message">
+                  <p>No reviews for this product yet. You're the first to add a review!</p>
+                </div>
+              ) : null}
+
+              {/* Always show the review form */}
+              <form onSubmit={handleReviewSubmit}>
+                <div>
+                  <label htmlFor="reviewer">Name:</label>
+                  <input
+                    type="text"
+                    id="reviewer"
+                    value={reviewData.reviewer}
+                    onChange={(e) =>
+                      setReviewData({ ...reviewData, reviewer: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="reviewer_email">Email:</label>
+                  <input
+                    type="email"
+                    id="reviewer_email"
+                    value={reviewData.reviewer_email}
+                    onChange={(e) =>
+                      setReviewData({
+                        ...reviewData,
+                        reviewer_email: e.target.value
+                      })
+                    }
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="rating">Rating:</label>
+                  <select
+                    id="rating"
+                    value={reviewData.rating}
+                    onChange={(e) =>
+                      setReviewData({ ...reviewData, rating: e.target.value })
+                    }
+                    required
+                  >
+                    <option value="">Select Rating</option>
+                    <option value="5">5 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="2">2 Stars</option>
+                    <option value="1">1 Star</option>
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="review">Review:</label>
+                  <textarea
+                    id="review"
+                    value={reviewData.review}
+                    onChange={(e) =>
+                      setReviewData({ ...reviewData, review: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <button type="submit">Submit Review</button>
+              </form>
             </div>
           )}
           <div className="related-products">

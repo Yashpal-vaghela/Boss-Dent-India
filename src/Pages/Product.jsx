@@ -121,16 +121,15 @@ const Product = () => {
   //   setCurrentPage(1);
   //   fetchProducts();
   // };
-  const handleAddToCart = (e,product) => {
+  const handleAddToCart = async (e,product) => {
     e.preventDefault();
     const stockStatus = stockStatuses[product.id];
     if (stockStatus === 'instock'){
       if (isLoggedIn) {
         // var quantity = 1;
         // dispatch(AddCartItem({...product,qty:quantity}))
-        dispatch(Add({...product}))
         // addToCart({ ...product, quantity});
-        const getProduct = JSON.parse(localStorage.getItem('cart'))
+        // const getProduct = JSON.parse(localStorage.getItem('cart'))
         // getProduct.length != 0 && getProduct.map((item)=>{
         //   if(item.id == product.id){universal@2024
         //     setAlertMessage('Product already exists in cart')
@@ -139,7 +138,25 @@ const Product = () => {
         //     setAlertMessage("Product added to cart!");
         //   }
         // })
-        setAlertMessage("Product added to cart!");
+        try{
+          const weightResponse = await axios.get(
+            `https://bossdentindia.com/wp-json/custom/v1/product-weight/${product.id}`
+          );
+          const productWeight = weightResponse.data.weight;
+          const prodcutWithWeight = {
+            ...product,
+            weight: productWeight
+          };
+
+          dispatch(Add(prodcutWithWeight));
+          setAlertMessage("Product added to cart!");
+        }catch (error) {
+          console.error('Error fetching product weight:', error);
+          setAlertMessage("Error fetching product weight. Please try again.");
+        }
+
+        // dispatch(Add({...product}))
+        // setAlertMessage("Product added to cart!");
       } else {
         setAlertMessage('Please log In! Thank you.');
         navigate("/my-account");
