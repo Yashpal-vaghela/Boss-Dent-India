@@ -1,13 +1,15 @@
 import React from 'react'
+import BreadCrumbs from '../component/BreadCrumbs'
 
 const TermAndCondition = () => {
   return (
     <div className='terms-container'>
         <div className='header'>
             <h1>Terms & Conditions</h1>
-            <nav>
+            <BreadCrumbs></BreadCrumbs>
+            {/* <nav>
                 <a href="/">Home</a> &gt; <span>Terms & Conditions</span>
-            </nav>
+            </nav> */}
         </div>
         <div className="term-info">
             <h2>Terms and Conditions</h2>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import BreadCrumbs from '../component/BreadCrumbs';
 
 const faqData = [
     { 
@@ -46,12 +47,13 @@ const HelpCenter = () => {
         setActiveIndex(activeIndex === index ? null : index);
       };
   return (
-    <div className="help-center">
+    <div className="help-center container">
       <div className='header'>
         <h1>Help Center</h1>
-        <nav>
+        <BreadCrumbs></BreadCrumbs>
+        {/* <nav>
           <a href="/">Home</a> &gt; <span>Help Center</span>
-        </nav>
+        </nav> */}
       </div>
       
       <div className="faq-list">

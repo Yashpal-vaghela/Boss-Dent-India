@@ -3,6 +3,7 @@ import contact from "../images/contact.png";
 import Aos from "aos";
 import axios from "axios";
 import AlertSuccess from "../component/AlertSuccess";
+import BreadCrumbs from "../component/BreadCrumbs";
 
 const Contact = () => {
   const [formData,setFormData] = useState ({
@@ -66,7 +67,8 @@ const Contact = () => {
     <div className="container">
       <div className="header" data-aos="fade-up">
         <h1>Contact</h1>
-        <a href="/">Home</a> <span>&gt; Contact</span>
+        <BreadCrumbs/>
+        {/* <a href="/">Home</a> <span>&gt; Contact</span> */}
       </div>
       <div className="contact-info" >
         <div className="map" data-aos="fade-left">

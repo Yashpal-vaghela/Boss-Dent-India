@@ -16,6 +16,7 @@ import {
   AddCartItem,
   getTotal,
 } from "../redux/Apislice/cartslice";
+import BreadCrumbs from "../component/BreadCrumbs";
 
 const NewCart = () => {
   const [canCheckout, setCanCheckout] = useState(false);
@@ -95,12 +96,10 @@ const NewCart = () => {
     }));
   };
   return (
-    <div className="cart-page">
+    <div className="cart-page container">
       <div className="header" data-aos="fade-up">
         <h1 className="cart-title">Cart</h1>
-        <nav>
-          <a href="/">Home</a> &gt; <span>Cart</span>
-        </nav>
+       <BreadCrumbs></BreadCrumbs>
       </div>
       {cartData?.cartItems?.length == 0 ? (
         <p>Your Cart is Empty</p>

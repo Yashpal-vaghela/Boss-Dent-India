@@ -23,7 +23,7 @@ const Allroutes = () => {
     <div>
         <Routes>
             <Route path="/" element={<Home/>} />
-            <Route path="/about" element={<About/>}/>
+            <Route path="/aboutus" element={<About/>}/>
             <Route path="/my-account" element={<Login />} />
             <Route path='/sign-up' element={<Signup />}/>
             <Route path='/contact' element={<Contact />}/>
@@ -38,7 +38,7 @@ const Allroutes = () => {
             <Route path='/refund-and-returns-policy' element={<RefundPolicy />} />
             <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
             <Route path='/terms-and-conditions' element={ <TermAndCondition />}/>
-            <Route pathn= '/new-nav' element={ <NewNav />} />
+            <Route path= '/new-nav' element={ <NewNav />} />
         </Routes>
     </div>
   )

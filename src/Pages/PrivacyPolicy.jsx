@@ -1,13 +1,12 @@
 import React from 'react'
+import BreadCrumbs from '../component/BreadCrumbs'
 
 const PrivacyPolicy = () => {
   return (
     <div className='privacy-policy'>
         <div className='header'>
             <h1>Privacy Policy</h1>
-            <nav>
-                <a href='/'>Home</a> &gt; <span>Privacy Policy</span>
-            </nav>
+            <BreadCrumbs></BreadCrumbs>
         </div>
         <div className='policy-info'>
             <p>At <strong>BossDentIndia</strong>, we value and prioritize the privacy of our users and are committed to protecting their personal information. This Privacy Policy outlines how we collect, use, and safeguard the information you provide when using our online shopping website. By accessing or using BossDentIndia, you agree to the terms and practices described in this policy.</p>

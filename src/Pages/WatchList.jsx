@@ -9,6 +9,7 @@ import '../css/wishlistresponsive.css';
 import Aos from "aos";
 import { useDispatch } from "react-redux";
 import { Add } from "../redux/Apislice/cartslice";
+import BreadCrumbs from "../component/BreadCrumbs";
 
 const WatchList = () => {
   const { watchlist, removeFromWatchlist } = useWatchlist();
@@ -102,10 +103,8 @@ const WatchList = () => {
   return (
     <div className="watchlist-page">
       <div className="header" data-aos="fade-up">
-        <h1 className="wishlist-title">Wishlist</h1>
-        <nav>
-          <a href="/">Home</a> &gt; <span>Wishlist</span>
-        </nav>
+        <h1 >Wishlist</h1>
+        <BreadCrumbs></BreadCrumbs>
       </div>
       {products.length === 0 ?(
         <p>No products in your watchlist.</p>

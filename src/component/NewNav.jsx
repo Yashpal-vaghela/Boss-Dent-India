@@ -250,7 +250,7 @@ const NewNav = () => {
                       </Link>
                     </li>
                     <li onClick={closeMenu}>
-                      <Link to="/about" className="menu-link">
+                      <Link to="/aboutus" className="menu-link">
                         ABOUT US
                       </Link>
                     </li>
@@ -353,7 +353,7 @@ const NewNav = () => {
                       </Link>
                     </li>
                     <li onClick={closeMenu}>
-                      <Link to="/about" className="menu-link">
+                      <Link to="/aboutus" className="menu-link">
                         ABOUT US
                       </Link>
                     </li>

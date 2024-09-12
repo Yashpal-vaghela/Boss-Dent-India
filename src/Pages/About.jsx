@@ -6,6 +6,7 @@ import about2 from "../images/about-img_2.jpg";
 import "../css/about.css";
 import { Link } from 'react-router-dom';
 import { IoIosArrowForward } from "react-icons/io";
+import BreadCrumbs from '../component/BreadCrumbs';
 
 const About = () => {
   useEffect(() => {
@@ -20,9 +21,7 @@ const About = () => {
     <div className='container'>
       <div className="header" data-aos="fade-up">
         <h1 className="cart-title">About us</h1>
-        <nav>
-          <a href="/">Home</a> &gt; <span>About us</span>
-        </nav>
+        <BreadCrumbs></BreadCrumbs>
       </div>
       <div className='about-main-page'>
         <div className='about-img-main' data-aos="fade-left">

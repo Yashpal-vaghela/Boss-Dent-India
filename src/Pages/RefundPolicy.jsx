@@ -1,13 +1,12 @@
 import React from 'react'
+import BreadCrumbs from '../component/BreadCrumbs'
 
 const RefundPolicy = () => {
   return (
     <div className='refund-policy'>
         <div className='header'>
             <h1>Refund and Returns Policy</h1>
-            <nav>
-                <a href='/'>Home</a> &gt; <span>Refund and Returns Policy</span>
-            </nav>
+            <BreadCrumbs></BreadCrumbs>
         </div>
         <div className='content'> 
             <h2>Refund and Returns Policy for BossDentIndia</h2>
