@@ -16,7 +16,7 @@ import ReviewList from "./ReviewList";
 import ReviewForm from "./ReviewForm";
 import AlertSuccess from "../component/AlertSuccess";
 import { toast } from "react-toastify";
-import ColorOption from "../component/ColorOption";
+
 
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
@@ -173,11 +173,13 @@ const SingleProduct = () => {
     setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
   };
 
-  const handleAttributeSelect = (attribute, value) => {
+  const handleAttributeSelect = (attribute, value,key) => {
     const newSelectedAttributes = {
       ...selectedAttributes,
       [attribute]: value,
     };
+    setSelectedColor(key)
+    console.log("updtae",updateSize)
     dispatch(updateSize({ ...product, selectedAttributes }));
     setSelectedAttributes(newSelectedAttributes);
 
@@ -286,14 +288,15 @@ const SingleProduct = () => {
                         {attribute === "attribute_pa_color" ? (
                           <div style={{ display: "flex" }}>
                             {colors.map((color, index) => {
+                              console.log("color",color,attribute,selectedColor)
                               return (
-                                <ColorOption
-                                  key={index}
-                                  color={color}
-                                  onClick={() => handleAttributeSelect("color", color)}
-                                  isSelected={ selectedAttributes["color"] === color}
-                                />
-                              );
+                                <div  
+                                className={`color-option ${selectedColor === Object.values(color)[0] ? 'selected' : ''}`}
+                                style={{backgroundColor:Object.values(color)[0]}} 
+                                key={index}
+                                onClick={()=>handleAttributeSelect(attribute,Object.keys(color)[0],Object.values(color)[0])}
+                                ></div>
+                              );  
                             })}
                           </div>
                         ) : (
@@ -314,23 +317,6 @@ const SingleProduct = () => {
                             ))}
                           </div>
                         )}
-
-                        {/* <div className="variation-buttons">
-                          {uniqueValuesArray.map((value, index) => (
-                            <button
-                              key={index}
-                              className={`variation-button ${selectedAttributes[attribute] === value
-                                  ? "selected"
-                                  : ""
-                                }`}
-                              onClick={() =>
-                                handleAttributeSelect(attribute, value)
-                              }
-                            >
-                              {value}
-                            </button>
-                          ))}
-                        </div> */}
                       </div>
                     );
                   }

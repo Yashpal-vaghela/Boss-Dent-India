@@ -35,7 +35,6 @@ const NewCart = () => {
       }
       return true;
     });
-    // console.log("all",allAttributesSelected)
     setCanCheckout(allAttributesSelected);
   }, [cartData]);
 
@@ -48,7 +47,7 @@ const NewCart = () => {
   }, []);
 
   const handleAttributeSelect = (product, attribute, value) => {
-    console.log("update", attribute, value, product);
+    // console.log("update", attribute, value, product);
     dispatch(
       updateSize({
         ...product,
@@ -57,9 +56,9 @@ const NewCart = () => {
     );
   };
 
-  const deliveryChargeFunction = () =>{
+  const deliveryChargeFunction = () => {
     const count = cartData?.cartItems?.reduce((total, count) => {
-      return total + Number(count?.weight) * count.qty / 1000;
+      return total + (Number(count?.weight) * count.qty) / 1000;
     }, 0);
     if (count < 1) {
       setDeliveryCharge(99);
@@ -69,7 +68,7 @@ const NewCart = () => {
       setDeliveryCharge(65);
     }
     dispatch(DeliveryCharge(deliveryCharge));
-  }
+  };
 
   const handleAddQuantity = (e, product) => {
     e.preventDefault();
@@ -104,9 +103,8 @@ const NewCart = () => {
     };
   }, [cartData]);
 
- 
   useEffect(() => {
-   deliveryChargeFunction();
+    deliveryChargeFunction();
     // console.warn(deliveryCharge);
   }, [deliveryCharge]);
 
@@ -161,12 +159,6 @@ const NewCart = () => {
                           {Object.keys(
                             product.variations[0].attributes || {}
                           ).map((attribute) => {
-                            // console.log(
-                            //   "##################",
-                            //   attribute,
-                            //   product.variations[0].attributes,
-                            //   product.variations
-                            // );
                             return (
                               <div
                                 key={attribute}
@@ -179,53 +171,87 @@ const NewCart = () => {
                                   )}
                                   :
                                 </h4>
-                                <div className="variation-buttons">
-                                  {product?.variations?.map(
-                                    (variation, index) => {
-                                      return (
-                                        <button
-                                          key={index}
-                                          className={`variation-button ${
-                                            product.selectedAttributes &&
-                                            Object.values(
-                                              product.selectedAttributes
-                                            )[0] ===
-                                              // product.selectedAttributes[
-                                              //   attribute
-                                              // ]
-                                              variation.attributes[attribute]
-                                              ? "selected"
-                                              : ""
-                                          }`}
-                                          onClick={() =>
-                                            handleAttributeSelect(
-                                              product,
-                                              attribute,
-                                              variation.attributes[attribute]
-                                            )
-                                          }
-                                        >
-                                          {typeof variation.attributes[
-                                            attribute
-                                          ] === "string"
-                                            ? variation.attributes[attribute]
-                                            : JSON.stringify(
+
+                                {attribute === "attribute_pa_color" ? (
+                                  <div style={{ display: "flex" }}>
+                                    {product?.variations?.map(
+                                      (variation, index) => {   
+                                        return (
+                                          <div
+                                            className={`color-option ${
+                                              Object.values(
+                                                variation?.attributes
+                                              )[0]
+                                            } ${
+                                              Object.values(
+                                                variation?.attributes
+                                              )[0] ===
+                                              Object.values(
+                                                product.selectedAttributes
+                                              )[0]
+                                                ? `selected `
+                                                : ""
+                                            }`}
+                                            key={index}
+                                            onClick={() =>
+                                              handleAttributeSelect(
+                                                product,
+                                                attribute,
                                                 variation.attributes[attribute]
-                                              )}
-                                        </button>
-                                      );
-                                    }
-                                  )}
-                                </div>
-                                {
-                                  !canCheckout &&
+                                              )
+                                            }
+                                          ></div>
+                                        );
+                                      }
+                                    )}
+                                  </div>
+                                ) : (
+                                  <div className="variation-buttons">
+                                    {product?.variations?.map(
+                                      (variation, index) => {
+                                        return (
+                                          <button
+                                            key={index}
+                                            className={`variation-button ${
+                                              product.selectedAttributes &&
+                                              Object.values(
+                                                product.selectedAttributes
+                                              )[0] ===
+                                                variation.attributes[attribute]
+                                                ? "selected"
+                                                : ""
+                                            }`}
+                                            onClick={() =>
+                                              handleAttributeSelect(
+                                                product,
+                                                attribute,
+                                                variation.attributes[attribute]
+                                              )
+                                            }
+                                          >
+                                            {typeof variation.attributes[
+                                              attribute
+                                            ] === "string"
+                                              ? variation.attributes[attribute]
+                                              : JSON.stringify(
+                                                  variation.attributes[
+                                                    attribute
+                                                  ]
+                                                )}
+                                          </button>
+                                        );
+                                      }
+                                    )}
+                                  </div>
+                                )}
+
+                                {!canCheckout &&
                                   !product.selectedAttributes?.[attribute] && (
                                     <p className="checkout-warning">
                                       * Please select above attribute values to
                                       proceed to checkout.
                                     </p>
-                                  )
-                                }
+                                  )}
                               </div>
                             );
                           })}

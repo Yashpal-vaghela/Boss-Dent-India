@@ -365,9 +365,9 @@ const CheckOut = () => {
                             <>
                               <div className="d-flex align-items-center justify-content-center">
                                 {Object.keys(product?.selectedAttributes).map(
-                                  (attribute) => {
+                                  (attribute,index) => {
                                     return (
-                                      <h6>
+                                      <h6 key={index}>
                                         {attribute.replace(
                                           /attribute_pa_|attribute_/,
                                           ""
@@ -392,13 +392,13 @@ const CheckOut = () => {
                             null}
                         </div>
                         <div className="col-lg-1 col-md-1 col-1 cart-item-qty">
-                          <p>
+                          <p className="mb-0">
                             <i className="fa-solid fa-xmark"></i>&nbsp;
                             {product?.qty}
                           </p>
                         </div>
                         <div className="col-lg-2 col-md-2 col-2 cart-remove-item">
-                          <p>{product?.price}</p>
+                          <p className="mb-0">{product?.price}</p>
                         </div>
                       </div>
                     );
