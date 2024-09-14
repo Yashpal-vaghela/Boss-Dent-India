@@ -239,6 +239,7 @@ const SingleProduct = () => {
                   id={`product-image-${id}`}
                   className={`single-product-img ${isImageLoaded ? "loaded" : ""
                     }`}
+                    
                   src={product.yoast_head_json?.og_image?.[0]?.url}
                   alt={product.title?.rendered}
                   onLoad={() => setIsImageLoaded(true)}
