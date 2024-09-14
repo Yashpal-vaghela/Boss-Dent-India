@@ -283,6 +283,7 @@ const CheckOut = () => {
                     onChange={formik?.handleChange}
                     onBlur={formik?.handleBlur}
                   >
+                     <option>Select state</option>
                     {States &&
                       States?.map((state, index) => {
                         return (
