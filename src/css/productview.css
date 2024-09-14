@@ -220,6 +220,76 @@
 .product-description-nav li.active {
   border-bottom: 2px solid black;
 }
+.product-review-section {
+  background-color: #f9f9f9;
+   padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+}
+.product-review-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.product-review-section label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+}
+.product-review-section input[type="text"],
+.product-review-section input[type="email"],
+.product-review-section select,
+.product-review-section textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  background-color: #fff;
+  transition: border 0.3s ease;
+}
+
+.product-review-section input[type="text"]:focus,
+.product-review-section input[type="email"]:focus,
+.product-review-section select:focus,
+.product-review-section textarea:focus {
+  border-color: #c89c31;
+  outline: none;
+}
+
+.product-review-section textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+.product-review-section button[type="submit"] {
+  padding: 12px 20px;
+  background-color: #c89c31;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.product-review-section button[type="submit"]:hover {
+  background-color: #a67b24;
+}
+.no-reviews-message {
+  padding: 20px;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 50px;
+}
+
 .add-to-cart-btn {
   font-size: 13px;
   line-height: 20px;
