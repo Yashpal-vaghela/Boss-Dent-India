@@ -57,10 +57,25 @@ const NewCart = () => {
     );
   };
 
+  const deliveryChargeFunction = () =>{
+    const count = cartData?.cartItems?.reduce((total, count) => {
+      return total + Number(count?.weight) * count.qty / 1000;
+    }, 0);
+    if (count < 1) {
+      setDeliveryCharge(99);
+    } else if (count > 1 && count < 3) {
+      setDeliveryCharge(125);
+    } else if (count > 3) {
+      setDeliveryCharge(65);
+    }
+    dispatch(DeliveryCharge(deliveryCharge));
+  }
+
   const handleAddQuantity = (e, product) => {
     e.preventDefault();
     // console.warn("cartitem", product, product.qty);
     dispatch(Add({ ...product, qty: product.qty }));
+    deliveryChargeFunction();
   };
 
   const handleSubtractQuantity = (e, product) => {
@@ -69,6 +84,7 @@ const NewCart = () => {
     if (product.qty >= 1) {
       dispatch(decreaseCart(product));
     }
+    deliveryChargeFunction();
   };
 
   const handleRemoveItem = (e, product) => {
@@ -88,22 +104,12 @@ const NewCart = () => {
     };
   }, [cartData]);
 
+ 
   useEffect(() => {
-    const count = cartData?.cartItems?.reduce((total, count) => {
-      return total + Number(count?.weight) / 1000;
-    }, 0);
-    if (count < 1) {
-      setDeliveryCharge(99);
-    } else if (count > 1 && count < 3) {
-      setDeliveryCharge(125);
-    } else if (count > 3) {
-      setDeliveryCharge(65);
-    }
-    dispatch(DeliveryCharge(deliveryCharge));
-    console.warn(deliveryCharge, count);
+   deliveryChargeFunction();
+    // console.warn(deliveryCharge);
   }, [deliveryCharge]);
 
-  // const deliveryCharge = cartData?.cartTotalAmount < 2500 ? 103 : 0;
   const grandTotal = cartData?.cartTotalAmount + deliveryCharge;
 
   const handleImageLoad = (productId) => {
@@ -155,12 +161,12 @@ const NewCart = () => {
                           {Object.keys(
                             product.variations[0].attributes || {}
                           ).map((attribute) => {
-                            console.log(
-                              "##################",
-                              attribute,
-                              product.variations[0].attributes,
-                              product.variations
-                            );
+                            // console.log(
+                            //   "##################",
+                            //   attribute,
+                            //   product.variations[0].attributes,
+                            //   product.variations
+                            // );
                             return (
                               <div
                                 key={attribute}

@@ -80,7 +80,7 @@ export const cartSlice = createSlice({
       const SizeIndex = state.cartItems.findIndex(
         (item) => item.id === action.payload.id
       );
-      console.warn("state#######", state.cartItems, action.payload, SizeIndex);
+      // console.warn("state#######", state.cartItems, action.payload, SizeIndex);
       if (SizeIndex !== -1) {
         state.cartItems[SizeIndex].selectedAttributes = {
           ...action.payload.selectedAttributes,
@@ -89,7 +89,7 @@ export const cartSlice = createSlice({
       }
     },
     DeliveryCharge(state,action){
-      console.log("sytate",state.deliveryCharge,action.payload)
+      // console.log("sytate",state.deliveryCharge,action.payload)
       state.deliveryCharge = action.payload;
       localStorage.setItem('deliveryCharge',state.deliveryCharge)
       // state.cartItems = {...state.cartItems,"deliveryCharge":state.deliveryCharge}

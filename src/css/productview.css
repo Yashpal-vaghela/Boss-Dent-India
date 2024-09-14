@@ -50,7 +50,10 @@
   color: #000;
   margin-top: 2%;
 }
-
+.variation-main h4{
+  font-size: 16px;
+  font-weight: 700;
+}
 .variation-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -67,6 +70,18 @@
   cursor: pointer;
 }
 
+.color-option {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  margin: 5px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  transition: border 0.2s ease-in-out;
+}
+.color-option.selected {
+  border: 3px solid #000;
+}
 .variation-button.selected {
   background-color: #c89c31;
   color: #fff;
