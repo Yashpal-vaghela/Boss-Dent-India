@@ -237,9 +237,8 @@ const SingleProduct = () => {
               <Zoom>
                 <img
                   id={`product-image-${id}`}
-                  className={`single-product-img ${
-                    isImageLoaded ? "loaded" : ""
-                  }`}
+                  className={`single-product-img ${isImageLoaded ? "loaded" : ""
+                    }`}
                   src={product.yoast_head_json?.og_image?.[0]?.url}
                   alt={product.title?.rendered}
                   onLoad={() => setIsImageLoaded(true)}
@@ -283,74 +282,28 @@ const SingleProduct = () => {
                           {attribute.replace(/attribute_pa_|attribute_/, "")}:
                         </h4>
                         {/* color theme */}
-                        <div style={{ display: "flex" }}>
-                          {colors.map((color, index) => {
-                            console.log(
-                              color,
-                              Object.keys(selectedAttributes)[0]
-                            );
-                            return (
-                              <ColorOption
-                                key={index}
-                                color={color}
-                                onClick={setSelectedColor}
-                                isSelected={selectedColor === color}
-                              />
-                            );
-                          })}
-                        </div>
-
-                        {index === 1 ? ( // Only for the second attribute (index 1)
-                          uniqueValuesArray.length > 1 ? (
-                            // Render dropdown for the second attribute with more than one unique value
-                            <select
-                              value={selectedAttributes[attribute] || ""}
-                              onChange={(e) =>
-                                handleAttributeSelect(attribute, e.target.value)
-                              }
-                            >
-                              <option value="">
-                                Select{" "}
-                                {attribute.replace(
-                                  /attribute_pa_|attribute_/,
-                                  ""
-                                )}
-                              </option>
-                              {uniqueValuesArray.map((value, index) => (
-                                <option key={index} value={value}>
-                                  {value}
-                                </option>
-                              ))}
-                            </select>
-                          ) : (
-                            <div className="variation-buttons">
-                              {uniqueValuesArray.map((value, index) => (
-                                <button
+                        {attribute === "attribute_pa_color" ? (
+                          <div style={{ display: "flex" }}>
+                            {colors.map((color, index) => {
+                              return (
+                                <ColorOption
                                   key={index}
-                                  className={`variation-button ${
-                                    selectedAttributes[attribute] === value
-                                      ? "selected"
-                                      : ""
-                                  }`}
-                                  onClick={() =>
-                                    handleAttributeSelect(attribute, value)
-                                  }
-                                >
-                                  {value}
-                                </button>
-                              ))}
-                            </div>
-                          )
+                                  color={color}
+                                  onClick={() => handleAttributeSelect("color", color)}
+                                  isSelected={ selectedAttributes["color"] === color}
+                                />
+                              );
+                            })}
+                          </div>
                         ) : (
                           <div className="variation-buttons">
                             {uniqueValuesArray.map((value, index) => (
                               <button
                                 key={index}
-                                className={`variation-button ${
-                                  selectedAttributes[attribute] === value
+                                className={`variation-button ${selectedAttributes[attribute] === value
                                     ? "selected"
                                     : ""
-                                }`}
+                                  }`}
                                 onClick={() =>
                                   handleAttributeSelect(attribute, value)
                                 }
@@ -360,6 +313,23 @@ const SingleProduct = () => {
                             ))}
                           </div>
                         )}
+
+                        {/* <div className="variation-buttons">
+                          {uniqueValuesArray.map((value, index) => (
+                            <button
+                              key={index}
+                              className={`variation-button ${selectedAttributes[attribute] === value
+                                  ? "selected"
+                                  : ""
+                                }`}
+                              onClick={() =>
+                                handleAttributeSelect(attribute, value)
+                              }
+                            >
+                              {value}
+                            </button>
+                          ))}
+                        </div> */}
                       </div>
                     );
                   }
@@ -383,9 +353,8 @@ const SingleProduct = () => {
               <div className="btn-icon-main">
                 <div>
                   <button
-                    className={`add-to-cart-btn ${
-                      stockStatus === "outofstock" ? "disable-button" : ""
-                    }`}
+                    className={`add-to-cart-btn ${stockStatus === "outofstock" ? "disable-button" : ""
+                      }`}
                     disabled={stockStatus !== "instock"}
                     onClick={(e) => handleAddToCart(e)}
                   >
@@ -394,9 +363,8 @@ const SingleProduct = () => {
                 </div>
                 <div>
                   <span
-                    className={`like-icon ${
-                      !watchlist.includes(product.id) ? "" : "inactive-heart"
-                    }`}
+                    className={`like-icon ${!watchlist.includes(product.id) ? "" : "inactive-heart"
+                      }`}
                     onClick={handleWatchlistToggle}
                   >
                     {watchlist.includes(product.id) ? (
@@ -415,25 +383,22 @@ const SingleProduct = () => {
                 <ul>
                   <li
                     onClick={() => setActivesection("description")}
-                    className={`des-title ${
-                      activeSection === "description" ? "active" : ""
-                    }`}
+                    className={`des-title ${activeSection === "description" ? "active" : ""
+                      }`}
                   >
                     Description
                   </li>
                   <li
                     onClick={() => setActivesection("additional")}
-                    className={`des-title ${
-                      activeSection === "additional" ? "active" : ""
-                    }`}
+                    className={`des-title ${activeSection === "additional" ? "active" : ""
+                      }`}
                   >
                     Additional Information
                   </li>
                   <li
                     onClick={() => setActivesection("review")}
-                    className={`des-title ${
-                      activeSection === "review" ? "active" : ""
-                    }`}
+                    className={`des-title ${activeSection === "review" ? "active" : ""
+                      }`}
                   >
                     Review
                   </li>
@@ -501,11 +466,10 @@ const SingleProduct = () => {
                     </a>
                     <div className="related-icons">
                       <span
-                        className={`heart-icon ${
-                          !watchlist.includes(relatedProduct.id)
+                        className={`heart-icon ${!watchlist.includes(relatedProduct.id)
                             ? ""
                             : "inactive-heart"
-                        }`}
+                          }`}
                         onClick={() => addToWatchlist(relatedProduct.id)}
                       >
                         {watchlist.includes(relatedProduct.id) ? (
