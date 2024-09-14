@@ -51,9 +51,6 @@ const HelpCenter = () => {
       <div className='header'>
         <h1>Help Center</h1>
         <BreadCrumbs></BreadCrumbs>
-        {/* <nav>
-          <a href="/">Home</a> &gt; <span>Help Center</span>
-        </nav> */}
       </div>
       
       <div className="faq-list">

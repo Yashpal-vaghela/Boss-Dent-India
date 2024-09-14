@@ -4,6 +4,7 @@ const initialState = {
   cartItems: [],
   cartItems1:[],
   cartTotalAmount: 0,
+  deliveryCharge:0
 };
 
 export const cartSlice = createSlice({
@@ -59,7 +60,7 @@ export const cartSlice = createSlice({
       }
       localStorage.setItem("cart", JSON.stringify(state.cartItems));
     },
-       getTotal(state,action){
+    getTotal(state,action){
         let {total,qty} = state.cartItems.reduce((cartTotal,cartItems)=>{
             const {price,qty} = cartItems;
             const itemTotal = price * qty;
@@ -74,12 +75,12 @@ export const cartSlice = createSlice({
         );
         state.qty = qty;
         state.cartTotalAmount = total;
-       },
+    },
     updateSize(state, action) {
       const SizeIndex = state.cartItems.findIndex(
         (item) => item.id === action.payload.id
       );
-      // console.warn("state#######", state.cartItems, action.payload, SizeIndex);
+      console.warn("state#######", state.cartItems, action.payload, SizeIndex);
       if (SizeIndex !== -1) {
         state.cartItems[SizeIndex].selectedAttributes = {
           ...action.payload.selectedAttributes,
@@ -87,8 +88,14 @@ export const cartSlice = createSlice({
         localStorage.setItem("cart", JSON.stringify(state.cartItems));
       }
     },
+    DeliveryCharge(state,action){
+      console.log("sytate",state.deliveryCharge,action.payload)
+      state.deliveryCharge = action.payload;
+      localStorage.setItem('deliveryCharge',state.deliveryCharge)
+      // state.cartItems = {...state.cartItems,"deliveryCharge":state.deliveryCharge}
+    }
   },
 });
 
-export const { Add, Remove, decreaseCart, getTotal, updateSize } = cartSlice.actions;
+export const { Add, Remove, decreaseCart, getTotal, updateSize ,DeliveryCharge} = cartSlice.actions;
 export default cartSlice.reducer;

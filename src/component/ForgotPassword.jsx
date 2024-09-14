@@ -5,6 +5,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import Aos from 'aos';
 import AlertSuccess from './AlertSuccess';
 import "../css/forgotpassword.css";
+import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -73,7 +74,8 @@ const ForgotPassword = () => {
             }, 3000);
         } catch (error) {
             console.error('Error verifying OTP:', error);
-            alert(error.response?.data?.message || 'Invalid OTP');
+            toast.error(error.response?.data?.message || 'Invalid OTP');
+            // alert(error.response?.data?.message || 'Invalid OTP');
         } finally {
             setLoading(false);
         }

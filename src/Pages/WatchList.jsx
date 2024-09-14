@@ -10,6 +10,7 @@ import Aos from "aos";
 import { useDispatch } from "react-redux";
 import { Add } from "../redux/Apislice/cartslice";
 import BreadCrumbs from "../component/BreadCrumbs";
+import { toast } from "react-toastify";
 
 const WatchList = () => {
   const { watchlist, removeFromWatchlist } = useWatchlist();
@@ -83,7 +84,8 @@ const WatchList = () => {
       dispatch(Add({...product,quantity:1}))
       // addToCart && addToCart({ ...product, quantity: 1 });
     } else {
-      alert('This product is Out of stock.')
+      toast.info("This product is Out of stock.");
+      // alert('This product is Out of stock.')
     }
   };
 

@@ -3,6 +3,7 @@ import { FaEyeSlash, FaEye } from "react-icons/fa";
 import axios from "axios";
 import Aos from "aos";
 import AlertSuccess from "../component/AlertSuccess"; // Import the AlertSuccess component
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [userIdentifier, setUserIdentifier] = useState("");
@@ -25,8 +26,9 @@ const Login = () => {
         window.location.href = '/'; // Redirect after hiding alert
       }, 3000); // Adjust the duration as needed
     } catch (error) {
+      toast.error('Login failed. Please check your username and password.')
       console.error('Error logging in:', error);
-      alert('Login failed. Please check your username and password.');
+      // alert('Login failed. Please check your username and password.');
     }
     setUserIdentifier("");
     setPassword(""); 

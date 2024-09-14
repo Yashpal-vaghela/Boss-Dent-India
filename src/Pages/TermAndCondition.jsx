@@ -7,9 +7,6 @@ const TermAndCondition = () => {
         <div className='header'>
             <h1>Terms & Conditions</h1>
             <BreadCrumbs></BreadCrumbs>
-            {/* <nav>
-                <a href="/">Home</a> &gt; <span>Terms & Conditions</span>
-            </nav> */}
         </div>
         <div className="term-info">
             <h2>Terms and Conditions</h2>

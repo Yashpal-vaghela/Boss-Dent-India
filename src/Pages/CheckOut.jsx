@@ -6,38 +6,107 @@ import { getTotal } from "../redux/Apislice/cartslice";
 import * as yup from "yup";
 import BreadCrumbs from "../component/BreadCrumbs";
 import Indian_states_cities_list from "indian-states-cities-list";
+import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const checkoutSchema = yup.object().shape({
-  contactdetails_name: yup.string().required("Name field is required"),
-  contactdetails_email: yup
+  name: yup.string().required("Name field is required"),
+  email: yup
     .string()
     .email("Contact Details Email is not valid.")
     .required("Email Field is required."),
-  contactdetails_phone: yup
+  phone: yup
     .number()
     .min(10, "The phone number must be a vaild number.")
     .required("Phone Field is required."),
-  contactdetails_address: yup.string().required("Address Field is required."),
-  contactdetails_city: yup.string().required("City Field is required."),
-  contactdetails_state: yup.string().required("State Field is required."),
-  contactdetails_zipCode: yup.string().required("ZipCode Field is required."),
+  address: yup.string().required("Address Field is required."),
+  city: yup.string().required("City Field is required."),
+  state: yup.string().required("State Field is required."),
+  zipCode: yup.string().required("ZipCode Field is required."),
 });
 
 const CheckOut = () => {
   const cartData = useSelector((state) => state.cart?.cartItems);
   const cartTotal = useSelector((state) => state.cart?.cartTotalAmount);
+  const deliveryChargData = localStorage.getItem("deliveryCharge");
   const [coupon, setCoupon] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState("");
   const [finalTotal, setFinalTotal] = useState(cartTotal);
   const [paymentMethod, setPaymentMethod] = useState("");
-  const dispatch = useDispatch();
-  const [state, setState] = useState({});
-  const [error, setError] = useState({});
   const [States, setStates] = useState([]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // const [state, setState] = useState({});
+  // const [error, setError] = useState({});
+
+  // new form validation
+  const initialValues = {
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    zip: "",
+  };
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema: checkoutSchema,
+    validateOnChange: true,
+    validateOnBlur: false,
+    onSubmit: async () => {
+      // formik.resetForm();
+      console.log("finalsubmit");
+      const orderResponse = await axios
+        .post("https://bossdentindia.com/wp-json/custom/v1/order_create", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Add authorization if needed
+          },
+          body: JSON.stringify({
+            amount: finalTotal,
+            customerDetails: formik?.values,
+            items: cartData?.map((item) => ({
+              product_id: item?.id,
+              quantity: item?.quantity,
+            })),
+          }),
+        })
+        .then((res) => {
+        
+          const newOrderId = res.data?.orderId
+          console.log("res", res.data?.orderId,"finalTotal",finalTotal,"values",res);
+          if (paymentMethod === "PhonePe") {
+            const paymentResponse =  axios.post('https://bossdentindia.com/wp-json/phone/v1/initiate-payment',{
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+              body: JSON.stringify({
+                    amount: finalTotal,
+                    customerDetails: formik?.values,
+                    orderId: (newOrderId), // Pass the order ID to the payment initiation
+              }),
+            }).then((response)=>{
+              // console.log("response",response)
+            }).catch((error)=>{
+              toast.error(error.message)
+              console.log("error",error)})
+          
+        }
+        })
+        .catch((err) => {
+          toast.error(err?.message);
+        });
+    },
+  });
 
   useEffect(() => {
-    const deliveryCharge = cartTotal < 2500 ? 103 : 0;
-    setFinalTotal(cartTotal + deliveryCharge);
+    // const deliveryCharge = cartTotal < 2500 ? 103 : 0;
+    setFinalTotal(cartTotal + Number(deliveryChargData));
   }, [cartTotal]);
 
   useEffect(() => {
@@ -48,76 +117,6 @@ const CheckOut = () => {
   useEffect(() => {
     setStates(Indian_states_cities_list?.STATES_OBJECT);
   }, []);
-
-  const convertYupErrors = (err) => {
-    let temp_errors = {};
-    err?.inner?.forEach((e) => {
-      temp_errors = {
-        ...temp_errors,
-        [e.path]: e.message,
-      };
-    });
-    return temp_errors;
-  };
-
-  // validateSingleField
-  const validateSingleField = async (schema, name, value) => {
-    return schema
-      .validate({ [name]: value }, { abortEarly: false })
-      .then((res) => {
-        return false;
-      })
-      .catch((err) => {
-        let tErrors = convertYupErrors(err);
-        if (tErrors[name]) {
-          return { [name]: tErrors[name] };
-        } else {
-          return false;
-        }
-      });
-  };
-
-  // handleChange
-  async function handleChange(e) {
-    const { name, value, type } = e?.target;
-    setState({
-      ...state,
-      [name]: value,
-    });
-
-    const errors = await validateSingleField(checkoutSchema, state, name);
-    console.warn("showerros", errors);
-    if (errors) {
-      setError({ ...error, ...errors });
-    } else {
-      setError({ ...error, [name]: "" });
-    }
-  }
-
-  // handleStateChange
-
-  const handleStateChange = async (e) => {
-    const { name, value, type, checked } = e?.target;
-    try {
-      const { name, value, type, checked } = e?.target;
-      const errors = await validateSingleField(
-        checkoutSchema,
-        state,
-        name,
-        value
-      );
-      if (errors) {
-        setError({ ...error, ...errors });
-      } else {
-        setError({ ...error, [name]: "" });
-      }
-      if (Boolean(value)) {
-        setState({ ...state, [name]: value });
-      }
-    } catch (err) {
-      console.log("err", err);
-    }
-  };
 
   //Applied coupon code
   const handleCouponChange = (e) => {
@@ -142,115 +141,6 @@ const CheckOut = () => {
     setPaymentMethod(method);
   };
 
-  const finalSubmit = async () => {
-    try {
-      // Create the order and retrieve the order ID
-      const orderResponse = await fetch(
-        "https://bossdentindia.com/wp-json/custom/v1/order_create",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Add authorization if needed
-          },
-          body: JSON.stringify({
-            amount: finalTotal,
-            customerDetails: state,
-            items: cartData?.map((item) => ({
-              product_id: item?.id,
-              quantity: item?.quantity,
-            })),
-          }),
-        }
-      );
-
-      if (!orderResponse.ok) {
-        const errorText = await orderResponse.text();
-        console.error("Order creation error:", errorText);
-        throw new Error("Failed to create order.");
-      }
-
-      const orderData = await orderResponse.json();
-      const newOrderId = orderData.orderId.toString();
-
-      // Proceed to payment
-      if (paymentMethod === "PhonePe") {
-        const paymentResponse = await fetch(
-          "https://bossdentindia.com/wp-json/phone/v1/initiate-payment",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-            body: JSON.stringify({
-              amount: finalTotal,
-              customerDetails: state,
-              orderId: newOrderId, // Pass the order ID to the payment initiation
-            }),
-          }
-        );
-
-        if (!paymentResponse.ok) {
-          const paymentErrorText = await paymentResponse.text();
-          console.error("Payment response error text:", paymentErrorText);
-          throw new Error("Failed to initiate payment.");
-        }
-
-        const paymentData = await paymentResponse.json();
-        if (
-          paymentData.success &&
-          paymentData.data &&
-          paymentData.data.instrumentResponse &&
-          paymentData.data.instrumentResponse.redirectInfo &&
-          paymentData.data.instrumentResponse.redirectInfo.url
-        ) {
-          const paymentUrl =
-            paymentData.data.instrumentResponse.redirectInfo.url;
-          window.location.href = paymentUrl;
-        }
-      }
-    } catch (error) {
-      console.error("Error handling checkout:", error);
-      alert("Error processing payment. Please try again.");
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    if (e && e?.preventDefault && typeof e?.preventDefault == "function") {
-      e?.preventDefault();
-    }
-    const isValid = await checkoutSchema.isValid(state, { abortEarly: false });
-
-    if (!isValid) {
-      checkoutSchema.validate(state, { abortEarly: false }).catch((err) => {
-        let temp_errors = convertYupErrors(err);
-        // console.log("temp_errors", temp_errors);
-        setError(temp_errors);
-      });
-    } else {
-      console.log("finalSubmit");
-      finalSubmit();
-    }
-  };
-
-  const deliveryCharge = cartTotal < 2500 ? 103 : 0;
-
-  // const groupedCart = cartData?.reduce((acc, item) => {
-  //   const parentId = item.parent_id || item.id;
-  //   if (!acc[parentId]) {
-  //     acc[parentId] = {
-  //       ...item,
-  //       variations: [],
-  //     };
-  //   } else {
-  //     acc[parentId].variations.push(item);
-  //   }
-  //   return acc;
-  // }, {});
-
-  
-
   return (
     <>
       <div className="checkout-page1 container">
@@ -258,14 +148,14 @@ const CheckOut = () => {
           <h1 className="checkout-title">Checkout</h1>
           <BreadCrumbs></BreadCrumbs>
         </div>
-        <form onSubmit={handleSubmit}>
-          <div className="row checkout-content-wrapper">
+        <form onSubmit={formik?.handleSubmit}>
+          <div className="row checkout-content-wrapper position-relative">
             <div className="form-wrap col-lg-7 col-md-7 col-12">
               <h2>Billing Address</h2>
               <div className="form-inside">
                 <div
                   className={
-                    error?.contactdetails_name
+                    formik?.errors?.name
                       ? "contactField-wrapper mb-0"
                       : "contactField-wrapper"
                   }
@@ -273,20 +163,21 @@ const CheckOut = () => {
                   <label className="form-label">Name:</label>
                   <input
                     type="text"
-                    name="contactdetails_name"
+                    name="name"
                     className="form-control"
-                    value={state?.contactdetails_name || ""}
-                    onChange={handleChange}
+                    value={formik?.values?.name || ""}
+                    onChange={formik?.handleChange}
+                    onBlur={formik?.handleBlur}
                   />
-                  {error?.contactdetails_name && (
+                  {formik?.errors?.name && (
                     <span className="text-danger">
-                      {error?.contactdetails_name}
+                      {formik?.errors?.name}
                     </span>
                   )}
                 </div>
                 <div
                   className={
-                    error?.contactdetails_email
+                    formik?.errors?.email
                       ? "contactField-wrapper mb-0"
                       : "contactField-wrapper"
                   }
@@ -294,20 +185,21 @@ const CheckOut = () => {
                   <label className="form-label">Email:</label>
                   <input
                     type="email"
-                    name="contactdetails_email"
+                    name="email"
                     className="form-control"
-                    value={state?.contactdetails_email || ""}
-                    onChange={handleChange}
+                    value={formik?.values?.email || ""}
+                    onChange={formik?.handleChange}
+                    onBlur={formik?.handleBlur}
                   />
-                  {error?.contactdetails_email && (
+                  {formik?.errors?.email && (
                     <span className="text-danger">
-                      {error?.contactdetails_email}
+                      {formik?.errors?.email}
                     </span>
                   )}
                 </div>
                 <div
                   className={
-                    error?.contactdetails_phone
+                    formik?.errors?.phone
                       ? "contactField-wrapper mb-0"
                       : "contactField-wrapper"
                   }
@@ -315,20 +207,21 @@ const CheckOut = () => {
                   <label className="form-label">Phone:</label>
                   <input
                     type="text"
-                    name="contactdetails_phone"
+                    name="phone"
                     className="form-control"
-                    value={state?.contactdetails_phone || ""}
-                    onChange={handleChange}
+                    value={formik?.values?.phone || ""}
+                    onChange={formik?.handleChange}
+                    onBlur={formik?.handleBlur}
                   />
-                  {error?.contactdetails_phone && (
+                  {formik?.errors?.phone && (
                     <span className="text-danger">
-                      {error?.contactdetails_phone}
+                      {formik?.errors?.phone}
                     </span>
                   )}
                 </div>
                 <div
                   className={
-                    error?.contactdetails_address
+                    formik?.errors?.address
                       ? "contactField-wrapper mb-0"
                       : "contactField-wrapper"
                   }
@@ -336,20 +229,21 @@ const CheckOut = () => {
                   <label className="form-label">Address:</label>
                   <input
                     type="text"
-                    name="contactdetails_address"
+                    name="address"
                     className="form-control"
-                    value={state?.contactdetails_address || ""}
-                    onChange={handleChange}
+                    value={formik?.values?.address || ""}
+                    onChange={formik?.handleChange}
+                    onBlur={formik?.handleBlur}
                   />
-                  {error?.contactdetails_address && (
+                  {formik?.errors?.address && (
                     <span className="text-danger">
-                      {error?.contactdetails_address}
+                      {formik?.errors?.address}
                     </span>
                   )}
                 </div>
                 <div
                   className={
-                    error?.contactdetails_state
+                    formik?.errors?.state
                       ? "contactField-wrapper mb-0"
                       : "contactField-wrapper"
                   }
@@ -358,9 +252,10 @@ const CheckOut = () => {
                   <select
                     type="text"
                     className="form-control"
-                    name="contactdetails_state"
-                    value={state?.contactdetails_state || ""}
-                    onChange={handleStateChange}
+                    name="state"
+                    value={formik?.values?.state || ""}
+                    onChange={formik?.handleChange}
+                    onBlur={formik?.handleBlur}
                   >
                     {States &&
                       States?.map((state, index) => {
@@ -371,15 +266,15 @@ const CheckOut = () => {
                         );
                       })}
                   </select>
-                  {error?.contactdetails_state && (
+                  {formik?.errors?.state && (
                     <span className="text-danger">
-                      {error?.contactdetails_state}
+                      {formik?.errors?.state}
                     </span>
                   )}
                 </div>
                 <div
                   className={
-                    error?.contactdetails_city
+                    formik?.errors?.city
                       ? "contactField-wrapper mb-0"
                       : "contactField-wrapper"
                   }
@@ -387,21 +282,22 @@ const CheckOut = () => {
                   <label className="form-label">City:</label>
                   <input
                     type="text"
-                    name="contactdetails_city"
+                    name="city"
                     className="form-control"
-                    value={state?.contactdetails_city || ""}
-                    onChange={handleChange}
+                    value={formik?.values?.city || ""}
+                    onChange={formik?.handleChange}
+                    onBlur={formik?.handleBlur}
                   />
-                  {error?.contactdetails_city && (
+                  {formik?.errors?.city && (
                     <span className="text-danger">
-                      {error?.contactdetails_city}
+                      {formik?.errors?.city}
                     </span>
                   )}
                 </div>
 
                 <div
                   className={
-                    error?.contactdetails_zipCode
+                    formik?.errors?.zip
                       ? "contactField-wrapper mb-0"
                       : "contactField-wrapper"
                   }
@@ -409,14 +305,15 @@ const CheckOut = () => {
                   <label className="form-label">Zip Code:</label>
                   <input
                     type="text"
-                    name="contactdetails_zipCode"
+                    name="zipCode"
                     className="form-control"
-                    value={state?.contactdetails_zipCode || ""}
-                    onChange={handleChange}
+                    value={formik?.values?.zip || ""}
+                    onChange={formik?.handleChange}
+                    onBlur={formik?.handleBlur}
                   />
-                  {error?.contactdetails_zipCode && (
-                    <span className="text-danger ">
-                      {error?.contactdetails_zipCode}
+                  {formik?.errors?.zip && (
+                    <span className="text-danger">
+                      {formik?.errors?.zip}
                     </span>
                   )}
                 </div>
@@ -434,28 +331,44 @@ const CheckOut = () => {
                         className="order-summary-product-wrapper"
                         key={index}
                       >
-                        <div className="col-lg-3 ps-0 product-cart-img">
+                        <div className="col-lg-3 col-md-3 col-3 ps-0 product-cart-img">
                           <img
                             src={product?.yoast_head_json?.og_image?.[0]?.url}
                             className="mx-auto img-fluid"
                           ></img>
                         </div>
-                        <div className="col-lg-6 cart-item-detail">
+                        <div className="col-lg-6 col-md-6 col-6 cart-item-detail">
                           <h1>{product?.title?.rendered}</h1>
-                          <h6>Product weight</h6>
+
                           {product?.selectedAttributes ? (
-                            <button className="variation-button selected">
-                              {product?.selectedAttributes?.attribute_pa_size}
-                            </button>
-                          ) : null}
+                            <>
+                              <div className="d-flex align-items-center justify-content-center">
+                                {/* <b> </b> */}
+                                <h6>
+                                variation value:&nbsp;
+                                  <b>
+                                  {
+                                    Object.values(
+                                      product?.selectedAttributes
+                                    )[0]
+                                  }
+                                  </b>
+                                 
+                                </h6>
+                              </div>
+                            </>
+                          ) : // <button className="variation-button selected">
+                          //   {product?.selectedAttributes?.attribute_pa_size}
+                          // </button>
+                          null}
                         </div>
-                        <div className="col-lg-1 cart-item-qty">
+                        <div className="col-lg-1 col-md-1 col-1 cart-item-qty">
                           <p>
                             <i className="fa-solid fa-xmark"></i>&nbsp;
                             {product?.qty}
                           </p>
                         </div>
-                        <div className="col-lg-2 cart-remove-item">
+                        <div className="col-lg-2 col-md-2 col-2 cart-remove-item">
                           <p>{product?.price}</p>
                         </div>
                       </div>
@@ -484,7 +397,7 @@ const CheckOut = () => {
                   </div>
                   <div className="d-flex justify-content-between ">
                     <h6 className="order_title">Shipping </h6>
-                    <p>₹{deliveryCharge}.00</p>
+                    <p>₹{deliveryChargData}.00</p>
                   </div>
                   <div className="d-flex justify-content-between ">
                     <h6 className="order_title">Estimated taxes </h6>
@@ -529,3 +442,169 @@ const CheckOut = () => {
 };
 
 export default CheckOut;
+
+
+    // try {
+      //   // Create the order and retrieve the order ID
+
+      //   // const orderResponse = await fetch(
+      //   //   "https://bossdentindia.com/wp-json/custom/v1/order_create",
+      //   //   {
+      //   //     method: "POST",
+      //   //     headers: {
+      //   //       "Content-Type": "application/json",
+      //   //       Authorization: `Bearer ${localStorage.getItem("token")}`, // Add authorization if needed
+      //   //     },
+      //   //     body: JSON.stringify({
+      //   //       amount: finalTotal,
+      //   //       customerDetails: state,
+      //   //       items: cartData?.map((item) => ({
+      //   //         product_id: item?.id,
+      //   //         quantity: item?.quantity,
+      //   //       })),
+      //   //     }),
+      //   //   }
+      //   // );
+      //   // if (!orderResponse.ok) {
+      //   //   const errorText = await orderResponse.text();
+      //   //   console.error("Order creation error:", errorText);
+      //   //   throw new Error("Failed to create order.");
+      //   // }
+
+      //   // const orderData = await orderResponse.json();
+      //   // const newOrderId = orderData.orderId.toString();
+
+      //   // // Proceed to payment
+      //   // if (paymentMethod === "PhonePe") {
+      //   //   const paymentResponse = await fetch(
+      //   //     "https://bossdentindia.com/wp-json/phone/v1/initiate-payment",
+      //   //     {
+      //   //       method: "POST",
+      //   //       headers: {
+      //   //         "Content-Type": "application/json",
+      //   //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+      //   //       },
+      //   //       body: JSON.stringify({
+      //   //         amount: finalTotal,
+      //   //         customerDetails: formik?.values,
+      //   //         orderId: newOrderId, // Pass the order ID to the payment initiation
+      //   //       }),
+      //   //     }
+      //   //   );
+
+      //   //   if (!paymentResponse.ok) {
+      //   //     const paymentErrorText = await paymentResponse.text();
+      //   //     console.error("Payment response error text:", paymentErrorText);
+      //   //     throw new Error("Failed to initiate payment.");
+      //   //   }
+
+      //   //   const paymentData = await paymentResponse.json();
+      //   //   if (
+      //   //     paymentData.success &&
+      //   //     paymentData.data &&
+      //   //     paymentData.data.instrumentResponse &&
+      //   //     paymentData.data.instrumentResponse.redirectInfo &&
+      //   //     paymentData.data.instrumentResponse.redirectInfo.url
+      //   //   ) {
+      //   //     const paymentUrl =
+      //   //       paymentData.data.instrumentResponse.redirectInfo.url;
+      //   //     window.location.href = paymentUrl;
+      //   //   }
+      //   // }
+      // } catch (error) {
+      //   toast.error(error?.message)
+      //   console.error("Error handling checkout:", error,error?.message);
+      //   // alert("Error processing payment. Please try again.");
+      // }
+
+
+
+
+      // const finalSubmit = async () => {
+  //   try {
+  //     // Create the order and retrieve the order ID
+  //     const orderResponse = await fetch(
+  //       "https://bossdentindia.com/wp-json/custom/v1/order_create",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`, // Add authorization if needed
+  //         },
+  //         body: JSON.stringify({
+  //           amount: finalTotal,
+  //           customerDetails: formik?.values,
+  //           items: cartData?.map((item) => ({
+  //             product_id: item?.id,
+  //             quantity: item?.quantity,
+  //           })),
+  //         }),
+  //       }
+  //     );
+
+  //     if (!orderResponse.ok) {
+  //       const errorText = await orderResponse.text();
+  //       console.error("Order creation error:", errorText);
+  //       throw new Error("Failed to create order.");
+  //     }
+
+  //     const orderData = await orderResponse.json();
+  //     const newOrderId = orderData.orderId.toString();
+
+  //     // Proceed to payment
+  //     if (paymentMethod === "PhonePe") {
+  //       const paymentResponse = await fetch(
+  //         "https://bossdentindia.com/wp-json/phone/v1/initiate-payment",
+  //         {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //           },
+  //           body: JSON.stringify({
+  //             amount: finalTotal,
+  //             customerDetails: formik?.values,
+  //             orderId: newOrderId, // Pass the order ID to the payment initiation
+  //           }),
+  //         }
+  //       );
+
+  //       if (!paymentResponse.ok) {
+  //         const paymentErrorText = await paymentResponse.text();
+  //         console.error("Payment response error text:", paymentErrorText);
+  //         throw new Error("Failed to initiate payment.");
+  //       }
+
+  //       const paymentData = await paymentResponse.json();
+  //       if (
+  //         paymentData.success &&
+  //         paymentData.data &&
+  //         paymentData.data.instrumentResponse &&
+  //         paymentData.data.instrumentResponse.redirectInfo &&
+  //         paymentData.data.instrumentResponse.redirectInfo.url
+  //       ) {
+  //         const paymentUrl =
+  //           paymentData.data.instrumentResponse.redirectInfo.url;
+  //         window.location.href = paymentUrl;
+  //       }
+  //     }
+  //   } catch (error) {
+  //     toast.error(error?.message)
+  //     console.error("Error handling checkout:", error);
+  //     // alert("Error processing payment. Please try again.");
+  //   }
+  // };
+
+
+  // const groupedCart = cartData?.reduce((acc, item) => {
+  //   const parentId = item.parent_id || item.id;
+  //   if (!acc[parentId]) {
+  //     acc[parentId] = {
+  //       ...item,
+  //       variations: [],
+  //     };
+  //   } else {
+  //     acc[parentId].variations.push(item);
+  //   }
+  //   return acc;
+  // }, {});

@@ -10,7 +10,8 @@ import NewNav from "./component/NewNav";
 import { WatchlistProvider } from "./Pages/WatchlistContext";
 import { BrowserRouter } from "react-router-dom";
 import CartDefaultFuntion from "./component/CartDefaultFuntion";
-import BreadCrumbs from "./component/BreadCrumbs";
+import {ToastContainer} from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 // Main App Component
 const App = () => {
@@ -18,14 +19,12 @@ const App = () => {
     <>
       <BrowserRouter>
         <WatchlistProvider>
-          {/* <BreadCrumbs></BreadCrumbs> */}
           <CartDefaultFuntion></CartDefaultFuntion>
-          {/* <AddCartProvider> */}
+          <ToastContainer/>
             <NewNav />
             <Allroutes />
-            {/* <Footer /> */}
+            <Footer />
             {/* <BackToTopButton /> */}
-          {/* </AddCartProvider> */}
         </WatchlistProvider>
       </BrowserRouter>
     </>

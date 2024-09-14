@@ -8,6 +8,8 @@ import { useWatchlist } from "../Pages/WatchlistContext";
 import "../css/navbar.css";
 import Aos from "aos";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+
 
 const NewNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -82,7 +84,8 @@ const NewNav = () => {
         const product = response.data[0];
         navigate(`/products/${product.id}`);
       } else {
-        alert("No products found");
+        toast.error("No products found");
+        // alert("No products found");
       }
     } catch (error) {
       console.error("Error searching for products:", error);
@@ -173,7 +176,7 @@ const NewNav = () => {
           <div className="top-nav-sub">
             <div className="top-nav-p2">
               <div className="top-p2-txt">
-                <p>Follow Us On</p>
+                <p className="mb-0">Follow Us On</p>
               </div>
               <hr />
               <div className="top-p2-icon">

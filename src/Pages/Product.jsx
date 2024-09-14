@@ -10,6 +10,7 @@ import Aos from 'aos';
 import AlertSuccess from '../component/AlertSuccess';
 import {useDispatch,useSelector} from 'react-redux';
 import { Add } from '../redux/Apislice/cartslice';
+import BreadCrumbs from '../component/BreadCrumbs';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -216,9 +217,7 @@ const Product = () => {
     <div className='shop-container'>
       <div className='header' data-aos="fade-up">
         <h1 className='shop-title'>Shop</h1>
-        <nav>
-          <a href='/'>Home</a> &gt; <span>Shop</span>
-        </nav>
+        <BreadCrumbs/>
       </div>
       <div className='shop-header'>
       {alertMessage && <AlertSuccess message={alertMessage} />}

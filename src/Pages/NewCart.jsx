@@ -7,7 +7,7 @@ import banktransfer from "../images/bank-transfer.png";
 import "../css/cartresponsive.css";
 import Aos from "aos";
 import { useDispatch, useSelector } from "react-redux";
-import CartDefaultFuntion from "../component/CartDefaultFuntion";
+// import CartDefaultFuntion from "../component/CartDefaultFuntion";
 import {
   decreaseCart,
   Remove,
@@ -15,12 +15,14 @@ import {
   updateSize,
   AddCartItem,
   getTotal,
+  DeliveryCharge,
 } from "../redux/Apislice/cartslice";
 import BreadCrumbs from "../component/BreadCrumbs";
 
 const NewCart = () => {
   const [canCheckout, setCanCheckout] = useState(false);
   const [imageLoading, setImageLoading] = useState({});
+  const [deliveryCharge, setDeliveryCharge] = useState("");
   const cartData = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
@@ -33,9 +35,9 @@ const NewCart = () => {
       }
       return true;
     });
-    console.log("all",allAttributesSelected)
+    // console.log("all",allAttributesSelected)
     setCanCheckout(allAttributesSelected);
-  }, [cartData]); 
+  }, [cartData]);
 
   useEffect(() => {
     Aos.init({
@@ -45,12 +47,12 @@ const NewCart = () => {
     });
   }, []);
 
-  const handleAttributeSelect = (product, attribute_pa_size, value) => {
-    // console.log("update", attribute_pa_size, value, product);
+  const handleAttributeSelect = (product, attribute, value) => {
+    console.log("update", attribute, value, product);
     dispatch(
       updateSize({
         ...product,
-        selectedAttributes: { attribute_pa_size: value },
+        selectedAttributes: { [attribute]: value },
       })
     );
   };
@@ -77,7 +79,7 @@ const NewCart = () => {
   };
 
   const handleEmptyCart = () => {
-    cartData.forEach((product) => dispatch(Remove(product.id)));
+    cartData?.cartItems.forEach((product) => dispatch(Remove(product.id)));
   };
 
   useEffect(() => {
@@ -86,7 +88,22 @@ const NewCart = () => {
     };
   }, [cartData]);
 
-  const deliveryCharge = cartData?.cartTotalAmount < 2500 ? 103 : 0;
+  useEffect(() => {
+    const count = cartData?.cartItems?.reduce((total, count) => {
+      return total + Number(count?.weight) / 1000;
+    }, 0);
+    if (count < 1) {
+      setDeliveryCharge(99);
+    } else if (count > 1 && count < 3) {
+      setDeliveryCharge(125);
+    } else if (count > 3) {
+      setDeliveryCharge(65);
+    }
+    dispatch(DeliveryCharge(deliveryCharge));
+    console.warn(deliveryCharge, count);
+  }, [deliveryCharge]);
+
+  // const deliveryCharge = cartData?.cartTotalAmount < 2500 ? 103 : 0;
   const grandTotal = cartData?.cartTotalAmount + deliveryCharge;
 
   const handleImageLoad = (productId) => {
@@ -99,7 +116,7 @@ const NewCart = () => {
     <div className="cart-page container">
       <div className="header" data-aos="fade-up">
         <h1 className="cart-title">Cart</h1>
-       <BreadCrumbs></BreadCrumbs>
+        <BreadCrumbs></BreadCrumbs>
       </div>
       {cartData?.cartItems?.length == 0 ? (
         <p>Your Cart is Empty</p>
@@ -137,61 +154,75 @@ const NewCart = () => {
                         <div className="cart-item-attributes">
                           {Object.keys(
                             product.variations[0].attributes || {}
-                          ).map((attribute) => (
-                            <div
-                              key={attribute}
-                              className="variation-cart-main"
-                            >
-                              <h4>
-                                {attribute.replace(
-                                  /attribute_pa_|attribute_/,
-                                  ""
-                                )}
-                                :
-                              </h4>
-                              <div className="variation-buttons">
-                                {product?.variations?.map(
-                                  (variation, index) => {
-                                    return (
-                                      <button
-                                        key={index}
-                                        className={`variation-button ${
-                                          product.selectedAttributes &&
-                                          product.selectedAttributes[
-                                            attribute
-                                          ] === variation.attributes[attribute]
-                                            ? "selected"
-                                            : ""
-                                        }`}
-                                        onClick={() =>
-                                          handleAttributeSelect(
-                                            product,
-                                            attribute,
-                                            variation.attributes[attribute]
-                                          )
-                                        }
-                                      >
-                                        {typeof variation.attributes[
-                                          attribute
-                                        ] === "string"
-                                          ? variation.attributes[attribute]
-                                          : JSON.stringify(
+                          ).map((attribute) => {
+                            console.log(
+                              "##################",
+                              attribute,
+                              product.variations[0].attributes,
+                              product.variations
+                            );
+                            return (
+                              <div
+                                key={attribute}
+                                className="variation-cart-main"
+                              >
+                                <h4>
+                                  {attribute.replace(
+                                    /attribute_pa_|attribute_/,
+                                    ""
+                                  )}
+                                  :
+                                </h4>
+                                <div className="variation-buttons">
+                                  {product?.variations?.map(
+                                    (variation, index) => {
+                                      return (
+                                        <button
+                                          key={index}
+                                          className={`variation-button ${
+                                            product.selectedAttributes &&
+                                            Object.values(
+                                              product.selectedAttributes
+                                            )[0] ===
+                                              // product.selectedAttributes[
+                                              //   attribute
+                                              // ]
                                               variation.attributes[attribute]
-                                            )}
-                                      </button>
-                                    );
-                                  }
-                                )}
+                                              ? "selected"
+                                              : ""
+                                          }`}
+                                          onClick={() =>
+                                            handleAttributeSelect(
+                                              product,
+                                              attribute,
+                                              variation.attributes[attribute]
+                                            )
+                                          }
+                                        >
+                                          {typeof variation.attributes[
+                                            attribute
+                                          ] === "string"
+                                            ? variation.attributes[attribute]
+                                            : JSON.stringify(
+                                                variation.attributes[attribute]
+                                              )}
+                                        </button>
+                                      );
+                                    }
+                                  )}
+                                </div>
+                                {
+                                  !canCheckout &&
+                                  !product.selectedAttributes?.[attribute] && (
+                                    <p className="checkout-warning">
+                                      * Please select above attribute values to
+                                      proceed to checkout.
+                                    </p>
+                                  )
+                                }
                               </div>
-                              {!canCheckout &&
-                                !product.selectedAttributes?.[attribute] && (
-                                  <p className="checkout-warning">
-                                    * Please select above attribute values to
-                                    proceed to checkout.
-                                  </p>
-                                )}
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
                       )}
                     </div>
@@ -269,23 +300,6 @@ const NewCart = () => {
 };
 
 export default NewCart;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 {
   /* {product?.selectedAttributes

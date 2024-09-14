@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AddCartContext = createContext();
 
@@ -38,7 +39,8 @@ export const AddCartProvider = ({ children }) => {
 
   const ensureAuthenticated = () => {
     if (!isAuthenticated()) {
-      window.alert("Please Log In!! Thank you..");
+      toast("Please Log In!! Thank you..");
+      // window.alert("Please Log In!! Thank you..");
       navigate('/my-account');
       return false;
     }

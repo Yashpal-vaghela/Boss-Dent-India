@@ -22,6 +22,7 @@ export const WatchlistProvider = ({ children }) => {
 
   const ensureAuthenticated = () => {
     if (!isAuthenticated()) {
+      
       window.alert("Please Log In! Thank you.");
       navigate('/my-account');
       return false;

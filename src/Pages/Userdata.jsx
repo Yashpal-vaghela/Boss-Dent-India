@@ -7,6 +7,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import "../css/responsiveuserdata.css"
 import Aos from 'aos';
 import AlertSuccess from '../component/AlertSuccess';
+import { toast } from "react-toastify";
 
 const UserData = () => {
   const [user, setUser] = useState(null);
@@ -26,7 +27,8 @@ const UserData = () => {
   const fetchUserData = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Not logged in!");
+      toast.error("Not logged in!")
+      // alert("Not logged in!");
       navigate("/my-account");
       return;
     }
@@ -43,7 +45,8 @@ const UserData = () => {
       );
 
       if (response.status === 401) {
-        alert("Please log in!");
+        toast("Please log in!");
+        // alert("Please log in!");
         navigate("/my-account");
         return;
       }
@@ -82,7 +85,8 @@ const UserData = () => {
       setAddress(addressData.pickup_locations || []);
     } catch (error) {
       console.error("Error fetching user data:", error);
-      alert("Error fetching user data");
+      toast.error("Error fetching user data");
+      // alert("Error fetching user data");
       navigate("/login");
     }
   };
@@ -111,7 +115,8 @@ const UserData = () => {
   const handleSave = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Not logged in!");
+      toast.warn("Not logged in!");
+      // alert("Not logged in!");
       navigate("/my-account");
       return;
     }
@@ -142,10 +147,12 @@ const UserData = () => {
 
       const updatedUserData = await response.json();
       setUser(updatedUserData);
-      alert("User data updated successfully!");
+      toast.success("User data updated successfully!");
+      // alert("User data updated successfully!");
     } catch (error) {
+      toast.error("Error updating user data");
       console.error("Error updating user data:", error);
-      alert("Error updating user data");
+      // alert("Error updating user data");
     }
   };
 
@@ -154,7 +161,8 @@ const UserData = () => {
     setLoading(true);
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Not logged in!");
+      toast.warn("Not logged in!")
+      // alert("Not logged in!");
       navigate("/my-account");
       return;
     }
@@ -176,7 +184,8 @@ const UserData = () => {
         }
       );
       if (response.status === 401) {
-        alert("Incorrect old password!");
+        toast.error("Incorrect old password!");
+        // alert("Incorrect old password!");
         return;
       }
       if (!response.ok) {
@@ -189,7 +198,8 @@ const UserData = () => {
       setNewPassword("");
     } catch (error) {
       console.error("Error changing password:", error);
-      alert("Error changing password");
+      toast.error("Error changing password");
+      // alert("Error changing password");
     } finally {
       setLoading(false);
     }
@@ -206,7 +216,8 @@ const UserData = () => {
 
   const logout = () => {
     localStorage.removeItem("token");
-    alert("Logged out!");
+    toast("Logged out!");
+    // alert("Logged out!");
     navigate("/my-account");
   };
   const togglePasswordVisibility = () => {
