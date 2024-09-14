@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Add, updateSize } from "../redux/Apislice/cartslice";
 import ReviewList from "./ReviewList";
 import ReviewForm from "./ReviewForm";
+import AlertSuccess from '../component/AlertSuccess';
+import {toast} from 'react-toastify'
 
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
@@ -34,7 +36,8 @@ const SingleProduct = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
-console.log(token);
+  const [alertMessage, setAlertMessage] = useState("");
+// console.log(token);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -135,22 +138,18 @@ console.log(token);
   }, [id]);
 
   const handleIncrease = () => {
-    // setquantity((prevQuantity )=>prevQuantity+1)
     setQuantity((prevQuantity) => prevQuantity + 1);
   };
 
   const handleDecrease = () => {
-    // setquantity((prevQuantity)=>(prevQuantity > 1 ? prevQuantity -1 : 1));
     setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
   };
 
   const handleAttributeSelect = (attribute, value) => {
-    // console.log("size", attribute, value);
     const newSelectedAttributes = {
       ...selectedAttributes,
       [attribute]: value,
     };
-    // console.log("update",product)
     dispatch(updateSize({ ...product, selectedAttributes }))
     setSelectedAttributes(newSelectedAttributes);
 
@@ -179,9 +178,10 @@ console.log(token);
       // console.log("s", quantity, selectedAttributes);
       // addToCart({ ...product, quantity, selectedAttributes });
       dispatch(Add({ ...product, qty: quantity, selectedAttributes, weight:weight }));
-      alert("Product added to cart!");
+      setAlertMessage("Product added to cart!");
+      // alert("Product added to cart!");
     } else {
-      alert("Product is out of stock");
+      toast.info("Product is out of stock");
     }
   };
 
@@ -201,6 +201,7 @@ console.log(token);
               <span>{product.title?.rendered}</span>
             </nav>
           </div>
+          {alertMessage && <AlertSuccess message={alertMessage} />}
           <div className="single-product-main">
             <div className="single-product-img">
               <Zoom>

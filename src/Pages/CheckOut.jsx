@@ -24,7 +24,7 @@ const checkoutSchema = yup.object().shape({
   address: yup.string().required("Address Field is required."),
   city: yup.string().required("City Field is required."),
   state: yup.string().required("State Field is required."),
-  zipCode: yup.string().required("ZipCode Field is required."),
+  zip: yup.string().required("ZipCode Field is required."),
 });
 
 const CheckOut = () => {
@@ -36,7 +36,6 @@ const CheckOut = () => {
   const [finalTotal, setFinalTotal] = useState(cartTotal);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [States, setStates] = useState([]);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   // const [state, setState] = useState({});
   // const [error, setError] = useState({});
@@ -58,7 +57,6 @@ const CheckOut = () => {
     validateOnChange: true,
     validateOnBlur: false,
     onSubmit: async () => {
-      // formik.resetForm();
       console.log("finalsubmit");
       const orderResponse = await axios
         .post("https://bossdentindia.com/wp-json/custom/v1/order_create", {
@@ -76,27 +74,33 @@ const CheckOut = () => {
           }),
         })
         .then((res) => {
-        
-          const newOrderId = res.data?.orderId
-          console.log("res", res.data?.orderId,"finalTotal",finalTotal,"values",res);
+          const newOrderId = res.data?.orderId;
+          // console.log("res", res.data?.orderId,"finalTotal",finalTotal,"values",res);
+          formik.resetForm();
           if (paymentMethod === "PhonePe") {
-            const paymentResponse =  axios.post('https://bossdentindia.com/wp-json/phone/v1/initiate-payment',{
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-              body: JSON.stringify({
+            const paymentResponse = axios
+              .post(
+                "https://bossdentindia.com/wp-json/phone/v1/initiate-payment",
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
+                  body: JSON.stringify({
                     amount: finalTotal,
                     customerDetails: formik?.values,
-                    orderId: (newOrderId), // Pass the order ID to the payment initiation
-              }),
-            }).then((response)=>{
-              // console.log("response",response)
-            }).catch((error)=>{
-              toast.error(error.message)
-              console.log("error",error)})
-          
-        }
+                    orderId: newOrderId, // Pass the order ID to the payment initiation
+                  }),
+                }
+              )
+              .then((response) => {
+                console.log("response", response);
+              })
+              .catch((error) => {
+                toast.error(error.message);
+                console.log("error", error);
+              });
+          }
         })
         .catch((err) => {
           toast.error(err?.message);
@@ -170,9 +174,7 @@ const CheckOut = () => {
                     onBlur={formik?.handleBlur}
                   />
                   {formik?.errors?.name && (
-                    <span className="text-danger">
-                      {formik?.errors?.name}
-                    </span>
+                    <span className="text-danger">{formik?.errors?.name}</span>
                   )}
                 </div>
                 <div
@@ -192,9 +194,7 @@ const CheckOut = () => {
                     onBlur={formik?.handleBlur}
                   />
                   {formik?.errors?.email && (
-                    <span className="text-danger">
-                      {formik?.errors?.email}
-                    </span>
+                    <span className="text-danger">{formik?.errors?.email}</span>
                   )}
                 </div>
                 <div
@@ -214,9 +214,7 @@ const CheckOut = () => {
                     onBlur={formik?.handleBlur}
                   />
                   {formik?.errors?.phone && (
-                    <span className="text-danger">
-                      {formik?.errors?.phone}
-                    </span>
+                    <span className="text-danger">{formik?.errors?.phone}</span>
                   )}
                 </div>
                 <div
@@ -267,9 +265,7 @@ const CheckOut = () => {
                       })}
                   </select>
                   {formik?.errors?.state && (
-                    <span className="text-danger">
-                      {formik?.errors?.state}
-                    </span>
+                    <span className="text-danger">{formik?.errors?.state}</span>
                   )}
                 </div>
                 <div
@@ -289,9 +285,7 @@ const CheckOut = () => {
                     onBlur={formik?.handleBlur}
                   />
                   {formik?.errors?.city && (
-                    <span className="text-danger">
-                      {formik?.errors?.city}
-                    </span>
+                    <span className="text-danger">{formik?.errors?.city}</span>
                   )}
                 </div>
 
@@ -305,16 +299,14 @@ const CheckOut = () => {
                   <label className="form-label">Zip Code:</label>
                   <input
                     type="text"
-                    name="zipCode"
+                    name="zip"
                     className="form-control"
                     value={formik?.values?.zip || ""}
                     onChange={formik?.handleChange}
                     onBlur={formik?.handleBlur}
                   />
                   {formik?.errors?.zip && (
-                    <span className="text-danger">
-                      {formik?.errors?.zip}
-                    </span>
+                    <span className="text-danger">{formik?.errors?.zip}</span>
                   )}
                 </div>
               </div>
@@ -343,18 +335,26 @@ const CheckOut = () => {
                           {product?.selectedAttributes ? (
                             <>
                               <div className="d-flex align-items-center justify-content-center">
-                                {/* <b> </b> */}
-                                <h6>
-                                variation value:&nbsp;
-                                  <b>
-                                  {
-                                    Object.values(
-                                      product?.selectedAttributes
-                                    )[0]
+                                {Object.keys(product?.selectedAttributes).map(
+                                  (attribute) => {
+                                    return (
+                                      <h6>
+                                        {attribute.replace(
+                                          /attribute_pa_|attribute_/,
+                                          ""
+                                        )}
+                                        : &nbsp;
+                                        <b>
+                                          {
+                                            Object.values(
+                                              product?.selectedAttributes
+                                            )[0]
+                                          }
+                                        </b>
+                                      </h6>
+                                    );
                                   }
-                                  </b>
-                                 
-                                </h6>
+                                )}
                               </div>
                             </>
                           ) : // <button className="variation-button selected">
@@ -442,169 +442,3 @@ const CheckOut = () => {
 };
 
 export default CheckOut;
-
-
-    // try {
-      //   // Create the order and retrieve the order ID
-
-      //   // const orderResponse = await fetch(
-      //   //   "https://bossdentindia.com/wp-json/custom/v1/order_create",
-      //   //   {
-      //   //     method: "POST",
-      //   //     headers: {
-      //   //       "Content-Type": "application/json",
-      //   //       Authorization: `Bearer ${localStorage.getItem("token")}`, // Add authorization if needed
-      //   //     },
-      //   //     body: JSON.stringify({
-      //   //       amount: finalTotal,
-      //   //       customerDetails: state,
-      //   //       items: cartData?.map((item) => ({
-      //   //         product_id: item?.id,
-      //   //         quantity: item?.quantity,
-      //   //       })),
-      //   //     }),
-      //   //   }
-      //   // );
-      //   // if (!orderResponse.ok) {
-      //   //   const errorText = await orderResponse.text();
-      //   //   console.error("Order creation error:", errorText);
-      //   //   throw new Error("Failed to create order.");
-      //   // }
-
-      //   // const orderData = await orderResponse.json();
-      //   // const newOrderId = orderData.orderId.toString();
-
-      //   // // Proceed to payment
-      //   // if (paymentMethod === "PhonePe") {
-      //   //   const paymentResponse = await fetch(
-      //   //     "https://bossdentindia.com/wp-json/phone/v1/initiate-payment",
-      //   //     {
-      //   //       method: "POST",
-      //   //       headers: {
-      //   //         "Content-Type": "application/json",
-      //   //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-      //   //       },
-      //   //       body: JSON.stringify({
-      //   //         amount: finalTotal,
-      //   //         customerDetails: formik?.values,
-      //   //         orderId: newOrderId, // Pass the order ID to the payment initiation
-      //   //       }),
-      //   //     }
-      //   //   );
-
-      //   //   if (!paymentResponse.ok) {
-      //   //     const paymentErrorText = await paymentResponse.text();
-      //   //     console.error("Payment response error text:", paymentErrorText);
-      //   //     throw new Error("Failed to initiate payment.");
-      //   //   }
-
-      //   //   const paymentData = await paymentResponse.json();
-      //   //   if (
-      //   //     paymentData.success &&
-      //   //     paymentData.data &&
-      //   //     paymentData.data.instrumentResponse &&
-      //   //     paymentData.data.instrumentResponse.redirectInfo &&
-      //   //     paymentData.data.instrumentResponse.redirectInfo.url
-      //   //   ) {
-      //   //     const paymentUrl =
-      //   //       paymentData.data.instrumentResponse.redirectInfo.url;
-      //   //     window.location.href = paymentUrl;
-      //   //   }
-      //   // }
-      // } catch (error) {
-      //   toast.error(error?.message)
-      //   console.error("Error handling checkout:", error,error?.message);
-      //   // alert("Error processing payment. Please try again.");
-      // }
-
-
-
-
-      // const finalSubmit = async () => {
-  //   try {
-  //     // Create the order and retrieve the order ID
-  //     const orderResponse = await fetch(
-  //       "https://bossdentindia.com/wp-json/custom/v1/order_create",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`, // Add authorization if needed
-  //         },
-  //         body: JSON.stringify({
-  //           amount: finalTotal,
-  //           customerDetails: formik?.values,
-  //           items: cartData?.map((item) => ({
-  //             product_id: item?.id,
-  //             quantity: item?.quantity,
-  //           })),
-  //         }),
-  //       }
-  //     );
-
-  //     if (!orderResponse.ok) {
-  //       const errorText = await orderResponse.text();
-  //       console.error("Order creation error:", errorText);
-  //       throw new Error("Failed to create order.");
-  //     }
-
-  //     const orderData = await orderResponse.json();
-  //     const newOrderId = orderData.orderId.toString();
-
-  //     // Proceed to payment
-  //     if (paymentMethod === "PhonePe") {
-  //       const paymentResponse = await fetch(
-  //         "https://bossdentindia.com/wp-json/phone/v1/initiate-payment",
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //           },
-  //           body: JSON.stringify({
-  //             amount: finalTotal,
-  //             customerDetails: formik?.values,
-  //             orderId: newOrderId, // Pass the order ID to the payment initiation
-  //           }),
-  //         }
-  //       );
-
-  //       if (!paymentResponse.ok) {
-  //         const paymentErrorText = await paymentResponse.text();
-  //         console.error("Payment response error text:", paymentErrorText);
-  //         throw new Error("Failed to initiate payment.");
-  //       }
-
-  //       const paymentData = await paymentResponse.json();
-  //       if (
-  //         paymentData.success &&
-  //         paymentData.data &&
-  //         paymentData.data.instrumentResponse &&
-  //         paymentData.data.instrumentResponse.redirectInfo &&
-  //         paymentData.data.instrumentResponse.redirectInfo.url
-  //       ) {
-  //         const paymentUrl =
-  //           paymentData.data.instrumentResponse.redirectInfo.url;
-  //         window.location.href = paymentUrl;
-  //       }
-  //     }
-  //   } catch (error) {
-  //     toast.error(error?.message)
-  //     console.error("Error handling checkout:", error);
-  //     // alert("Error processing payment. Please try again.");
-  //   }
-  // };
-
-
-  // const groupedCart = cartData?.reduce((acc, item) => {
-  //   const parentId = item.parent_id || item.id;
-  //   if (!acc[parentId]) {
-  //     acc[parentId] = {
-  //       ...item,
-  //       variations: [],
-  //     };
-  //   } else {
-  //     acc[parentId].variations.push(item);
-  //   }
-  //   return acc;
-  // }, {});
