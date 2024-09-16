@@ -139,13 +139,13 @@ const CheckOut = () => {
 
   useEffect(() => {
     setFinalTotal(cartTotal + Number(deliveryChargData));
-  }, [cartTotal]);
+  }, [cartTotal, deliveryChargData]);
 
   useEffect(() => {
     return () => {
       dispatch(getTotal);
     };
-  }, [cartData]);
+  }, [cartData, dispatch]);
 
 
   //Applied coupon code

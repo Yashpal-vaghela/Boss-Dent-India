@@ -36,9 +36,6 @@ const Product = () => {
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem("token");
     setIsLoggedIn(userLoggedIn);
-  }, []);
-
-  useEffect(() => {
     Aos.init({
       duration: 1000, // Animation duration in milliseconds
       once: false, // Allow animations to trigger multiple times
@@ -52,14 +49,14 @@ const Product = () => {
     }
   }, [currentPage, productsPerPage, category, minPrice, maxPrice]);
 
-  useEffect(() => {
-    if (alertMessage) {
-      const timer = setTimeout(() => {
-        setAlertMessage("");
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [alertMessage]);
+  // useEffect(() => {
+  //   if (alertMessage) {
+  //     const timer = setTimeout(() => {
+  //       setAlertMessage("");
+  //     }, 3000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [alertMessage]);
 
   const fetchProducts = async (page = 1, prevProducts = []) => {
     setLoading(true);
@@ -130,7 +127,18 @@ const Product = () => {
     // console.log("Fetching products for category:", category);
   };
   // console.log(response.data);
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
+  useEffect(() => {
+    if (alertMessage) {
+      const timer = setTimeout(() => {
+        setAlertMessage("");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [alertMessage]);
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };

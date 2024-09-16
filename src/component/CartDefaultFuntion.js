@@ -9,7 +9,7 @@ const CartDefaultFuntion = () => {
 
   useEffect(() => {
     DefaultFunction();
-  }, []);
+  }, [DefaultFunction]);
 
   const DefaultFunction = useCallback(() => {
     if (SavedData1.length !== 0) {
@@ -18,7 +18,7 @@ const CartDefaultFuntion = () => {
       }
     }
     // console.warn("cartdata", cartData, SavedData1);
-  }, [SavedData1]);
+  }, [SavedData1, dispatch, cartData.length]);
   return <></>;
 };
 

@@ -93,7 +93,7 @@ const UserData = () => {
 
   useEffect(() => {
     fetchUserData();
-  }, [navigate]);
+  }, [navigate, fetchUserData]);
 
   const validatePassword = (value) => {
     const strongPasswordRegex =

@@ -100,11 +100,11 @@ const NewCart = () => {
     return () => {
       dispatch(getTotal());
     };
-  }, [cartData]);
+  }, [dispatch]);
 
   useEffect(() => {
     deliveryChargeFunction();
-  }, [deliveryCharge]);
+  }, [deliveryCharge, dispatch]);
 
   const grandTotal = cartData?.cartTotalAmount + deliveryCharge;
 
@@ -120,7 +120,7 @@ const NewCart = () => {
         <h1 className="cart-title">Cart</h1>
         <BreadCrumbs></BreadCrumbs>
       </div>
-      {cartData?.cartItems?.length == 0 ? (
+      {cartData?.cartItems?.length === 0 ? (
         <div className="cart-page-empty">
           <p className="">Your Cart is Empty </p>
           <button className="btn btn-dark">
