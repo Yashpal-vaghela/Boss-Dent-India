@@ -1,20 +1,17 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
-  useLocation,
   Link,
-  useRoutes,
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
 import Loader from "../component/Loader";
-// import { useCart } from './AddCartContext';
 import { FaCartPlus } from "react-icons/fa";
 import { useWatchlist } from "./WatchlistContext";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import Aos from "aos";
 import AlertSuccess from "../component/AlertSuccess";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Add } from "../redux/Apislice/cartslice";
 import BreadCrumbs from "../component/BreadCrumbs";
 
@@ -22,11 +19,11 @@ const Product = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage, setProductsPerPage] = useState(9);
+  const [productsPerPage] = useState(9);
   const [totalProducts, setTotalProducts] = useState(0);
   // const [selectedCategory, setSelectedCategory] = useState(null);
-  const [minPrice, setMinPrice] = useState(40);
-  const [maxPrice, setMaxPrice] = useState(12500);
+  const [minPrice] = useState(40);
+  const [maxPrice] = useState(12500);
   const [stockStatuses, setStockStatuses] = useState({});
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -34,10 +31,7 @@ const Product = () => {
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category");
   const navigate = useNavigate();
-  // const { addToCart } = useCart();
   const dispatch = useDispatch();
-  const cartData = useSelector((state) => state.cart?.cartItems);
-  const SavedData1 = JSON.parse(localStorage.getItem("cart"));
 
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem("token");
