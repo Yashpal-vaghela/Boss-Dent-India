@@ -225,7 +225,14 @@ section.banner-section {
   width: 100%;
   height: auto;
 }
-
+.banner-img.loading {
+  filter: blur(20px);
+  transition: filter 0.3s ease-out;
+}
+.banner-img.loaded {
+  filter: none;
+  transition: filter 0.3s ease-out;
+}
 .banner-btn-main {
   position: absolute;
   bottom: 20%;
@@ -373,6 +380,7 @@ section.banner-section {
   font-size: 16px;
   line-height: 22px;
   font-weight: 500;
+  text-align: center;
   color: black;
   cursor: pointer;
   font-family: Source Sans Pro, sans-serif;

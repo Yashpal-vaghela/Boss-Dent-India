@@ -288,12 +288,6 @@ const Product = () => {
                 General dentist
               </li>
               <li
-                className={`category ${category === "76" ? "active" : ""}`}
-                onClick={() => handleCategoryClick(76)}
-              >
-                LAB Material
-              </li>
-              <li
                 className={`category ${category === "116" ? "active" : ""}`}
                 onClick={() => handleCategoryClick(116)}
               >
