@@ -17,7 +17,6 @@ import ReviewForm from "./ReviewForm";
 import AlertSuccess from "../component/AlertSuccess";
 import { toast } from "react-toastify";
 
-
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
@@ -173,13 +172,13 @@ const SingleProduct = () => {
     setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
   };
 
-  const handleAttributeSelect = (attribute, value,key) => {
+  const handleAttributeSelect = (attribute, value, key) => {
     const newSelectedAttributes = {
       ...selectedAttributes,
       [attribute]: value,
     };
-    setSelectedColor(key)
-    console.log("updtae",updateSize)
+    setSelectedColor(key);
+    console.log("updtae", updateSize);
     dispatch(updateSize({ ...product, selectedAttributes }));
     setSelectedAttributes(newSelectedAttributes);
 
@@ -239,9 +238,9 @@ const SingleProduct = () => {
               <Zoom>
                 <img
                   id={`product-image-${id}`}
-                  className={`single-product-img ${isImageLoaded ? "loaded" : ""
-                    }`}
-                    
+                  className={`single-product-img ${
+                    isImageLoaded ? "loaded" : ""
+                  }`}
                   src={product.yoast_head_json?.og_image?.[0]?.url}
                   alt={product.title?.rendered}
                   onLoad={() => setIsImageLoaded(true)}
@@ -265,6 +264,7 @@ const SingleProduct = () => {
                 Stock Status:{" "}
                 {stockStatus === "instock" ? "In Stock" : "Out of Stock"}
               </h4>
+             
               {variations.length > 0 &&
                 Object.keys(variations[0]?.attributes || {}).map(
                   (attribute, index) => {
@@ -288,15 +288,32 @@ const SingleProduct = () => {
                         {attribute === "attribute_pa_color" ? (
                           <div style={{ display: "flex" }}>
                             {colors.map((color, index) => {
-                              console.log("color",color,attribute,selectedColor)
+                              console.log(
+                                "color",
+                                color,
+                                attribute,
+                                selectedColor
+                              );
                               return (
-                                <div  
-                                className={`color-option ${selectedColor === Object.values(color)[0] ? 'selected' : ''}`}
-                                style={{backgroundColor:Object.values(color)[0]}} 
-                                key={index}
-                                onClick={()=>handleAttributeSelect(attribute,Object.keys(color)[0],Object.values(color)[0])}
+                                <div
+                                  className={`color-option ${
+                                    selectedColor === Object.values(color)[0]
+                                      ? "selected"
+                                      : ""
+                                  }`}
+                                  style={{
+                                    backgroundColor: Object.values(color)[0],
+                                  }}
+                                  key={index}
+                                  onClick={() =>
+                                    handleAttributeSelect(
+                                      attribute,
+                                      Object.keys(color)[0],
+                                      Object.values(color)[0]
+                                    )
+                                  }
                                 ></div>
-                              );  
+                              );
                             })}
                           </div>
                         ) : (
@@ -304,10 +321,11 @@ const SingleProduct = () => {
                             {uniqueValuesArray.map((value, index) => (
                               <button
                                 key={index}
-                                className={`variation-button ${selectedAttributes[attribute] === value
+                                className={`variation-button ${
+                                  selectedAttributes[attribute] === value
                                     ? "selected"
                                     : ""
-                                  }`}
+                                }`}
                                 onClick={() =>
                                   handleAttributeSelect(attribute, value)
                                 }
@@ -340,8 +358,9 @@ const SingleProduct = () => {
               <div className="btn-icon-main">
                 <div>
                   <button
-                    className={`add-to-cart-btn ${stockStatus === "outofstock" ? "disable-button" : ""
-                      }`}
+                    className={`add-to-cart-btn ${
+                      stockStatus === "outofstock" ? "disable-button" : ""
+                    }`}
                     disabled={stockStatus !== "instock"}
                     onClick={(e) => handleAddToCart(e)}
                   >
@@ -350,8 +369,9 @@ const SingleProduct = () => {
                 </div>
                 <div>
                   <span
-                    className={`like-icon ${!watchlist.includes(product.id) ? "" : "inactive-heart"
-                      }`}
+                    className={`like-icon ${
+                      !watchlist.includes(product.id) ? "" : "inactive-heart"
+                    }`}
                     onClick={handleWatchlistToggle}
                   >
                     {watchlist.includes(product.id) ? (
@@ -370,22 +390,25 @@ const SingleProduct = () => {
                 <ul>
                   <li
                     onClick={() => setActivesection("description")}
-                    className={`des-title ${activeSection === "description" ? "active" : ""
-                      }`}
+                    className={`des-title ${
+                      activeSection === "description" ? "active" : ""
+                    }`}
                   >
                     Description
                   </li>
                   <li
                     onClick={() => setActivesection("additional")}
-                    className={`des-title ${activeSection === "additional" ? "active" : ""
-                      }`}
+                    className={`des-title ${
+                      activeSection === "additional" ? "active" : ""
+                    }`}
                   >
                     Additional Information
                   </li>
                   <li
                     onClick={() => setActivesection("review")}
-                    className={`des-title ${activeSection === "review" ? "active" : ""
-                      }`}
+                    className={`des-title ${
+                      activeSection === "review" ? "active" : ""
+                    }`}
                   >
                     Review
                   </li>
@@ -453,10 +476,11 @@ const SingleProduct = () => {
                     </a>
                     <div className="related-icons">
                       <span
-                        className={`heart-icon ${!watchlist.includes(relatedProduct.id)
+                        className={`heart-icon ${
+                          !watchlist.includes(relatedProduct.id)
                             ? ""
                             : "inactive-heart"
-                          }`}
+                        }`}
                         onClick={() => addToWatchlist(relatedProduct.id)}
                       >
                         {watchlist.includes(relatedProduct.id) ? (
@@ -468,16 +492,16 @@ const SingleProduct = () => {
                       <span
                         className="add-to-cart-icon"
                         onClick={
-                          () =>
+                          () => {
                             dispatch(
                               Add({
-                                ...product,
+                                ...relatedProduct,
                                 qty: quantity,
                                 selectedAttributes,
                               })
-                            )
-                          // dispatch(Add({...relatedProduct,qty:1}))
-                          // addToCart({ ...relatedProduct, quantity: 1 })
+                            );
+                            setAlertMessage("Product added to cart!");
+                          }
                         }
                       >
                         <FaCartPlus />

@@ -123,7 +123,12 @@ const NewCart = () => {
         <BreadCrumbs></BreadCrumbs>
       </div>
       {cartData?.cartItems?.length == 0 ? (
-        <p>Your Cart is Empty</p>
+        <div className="cart-page-empty">
+          <p className="">Your Cart is Empty </p>
+          <button className="btn btn-dark">
+            <Link to="/products">Shop Now</Link>
+          </button>
+        </div>
       ) : (
         <div className="cart-content">
           <div className="cart-items">
@@ -175,7 +180,7 @@ const NewCart = () => {
                                 {attribute === "attribute_pa_color" ? (
                                   <div style={{ display: "flex" }}>
                                     {product?.variations?.map(
-                                      (variation, index) => {   
+                                      (variation, index) => {
                                         return (
                                           <div
                                             className={`color-option ${

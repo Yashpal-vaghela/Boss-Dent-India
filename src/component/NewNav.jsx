@@ -180,10 +180,10 @@ const NewNav = () => {
               </div>
               <hr />
               <div className="top-p2-icon">
-                <Link to="#">
+                <Link to="https://www.facebook.com/share/FgTSjonfbbaGDbNo/?mibextid=qi2Omg" target="_blank">
                   <FaFacebookF />
                 </Link>
-                <Link to="#">
+                <Link to="https://www.instagram.com/_bossdent_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" target="_blank">
                   <FaInstagram />
                 </Link>
               </div>
