@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import {
   Link,
@@ -33,7 +33,7 @@ const Product = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const fetchProducts = async (page = 1, prevProducts = []) => {
+  const fetchProducts = useCallback(async (page = 1, prevProducts = []) => {
     setLoading(true);
     try {
       let apiUrl = `https://bossdentindia.com/wp-json/wp/v2/product?per_page=100`;
@@ -100,7 +100,7 @@ const Product = () => {
       setLoading(false);
     }
     // console.log("Fetching products for category:", category);
-  };
+  },[category, currentPage, minPrice, maxPrice, productsPerPage]);
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem("token");
     setIsLoggedIn(userLoggedIn);
@@ -115,7 +115,7 @@ const Product = () => {
     if (category !== undefined) {
       fetchProducts();
     }
-  }, [currentPage, productsPerPage, category, minPrice, maxPrice,fetchProducts]);
+  }, [currentPage, productsPerPage, category, minPrice, maxPrice, fetchProducts]);
 
   // useEffect(() => {
   //   if (alertMessage) {
@@ -128,9 +128,9 @@ const Product = () => {
 
  
   // console.log(response.data);
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, [fetchProducts]);
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   useEffect(() => {
     if (alertMessage) {
