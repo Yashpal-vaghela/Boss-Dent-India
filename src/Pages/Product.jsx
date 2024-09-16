@@ -71,16 +71,16 @@ const Product = () => {
     setLoading(true);
     try {
       let apiUrl = `https://bossdentindia.com/wp-json/wp/v2/product?per_page=100`;
-      const baseurl = "https://bossdentindia.com/wp-json/wp/v2/product";
+      // const baseurl = "https://bossdentindia.com/wp-json/wp/v2/product";
       const perPage = 100;
       // console.log(`Fetching products for category: ${category}`);
       if (category) {
         apiUrl += `&product_cat=${category}`;
       }
 
-      const response = await axios.get(baseurl, {
+      const response = await axios.get(apiUrl, {
         params: {
-          per_page: perPage,
+          // per_page: perPage,
           page: page,
         },
       });
@@ -89,14 +89,22 @@ const Product = () => {
       if (newProducts.length === perPage) {
         return fetchProducts(page + 1, allProducts);
       }
-      // console.log("response", response.data, "allProducts", allProducts);
+
       // console.log('Full Product Response:', response.data);
-      const filteredProducts = allProducts.filter(
-        (product) =>
+      const filteredProducts = allProducts.filter((product) => {
+        return (
           parseFloat(product.price) >= minPrice &&
           parseFloat(product.price) <= maxPrice
-      );
-
+        );
+      });
+      // console.log(
+      //   "response",
+      //   response.data,
+      //   "allProducts",
+      //   allProducts,
+      //   "filterDatA",
+      //   filteredProducts
+      // );
       setTotalProducts(filteredProducts.length);
       const startIndex = (currentPage - 1) * productsPerPage;
       const paginatedProducts = filteredProducts.slice(
@@ -118,7 +126,7 @@ const Product = () => {
       const stockStatusesResults = await Promise.all(stockStatusPromises);
       const combinedStockStatuses = Object.assign({}, ...stockStatusesResults);
       setStockStatuses(combinedStockStatuses);
-
+      
       setProducts(paginatedProducts);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -134,6 +142,7 @@ const Product = () => {
   };
 
   const handleCategoryClick = (newCategory) => {
+    console.log("category", newCategory);
     if (newCategory !== category) {
       setCurrentPage(1);
       navigate(`?category=${newCategory}`);
