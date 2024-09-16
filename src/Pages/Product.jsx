@@ -33,31 +33,6 @@ const Product = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const userLoggedIn = !!localStorage.getItem("token");
-    setIsLoggedIn(userLoggedIn);
-    Aos.init({
-      duration: 1000, // Animation duration in milliseconds
-      once: false, // Allow animations to trigger multiple times
-      mirror: true, // Trigger animations on scroll up
-    });
-  }, []);
-
-  useEffect(() => {
-    if (category !== undefined) {
-      fetchProducts();
-    }
-  }, [currentPage, productsPerPage, category, minPrice, maxPrice]);
-
-  // useEffect(() => {
-  //   if (alertMessage) {
-  //     const timer = setTimeout(() => {
-  //       setAlertMessage("");
-  //     }, 3000);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [alertMessage]);
-
   const fetchProducts = async (page = 1, prevProducts = []) => {
     setLoading(true);
     try {
@@ -126,10 +101,36 @@ const Product = () => {
     }
     // console.log("Fetching products for category:", category);
   };
-  // console.log(response.data);
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+    const userLoggedIn = !!localStorage.getItem("token");
+    setIsLoggedIn(userLoggedIn);
+    Aos.init({
+      duration: 1000, // Animation duration in milliseconds
+      once: false, // Allow animations to trigger multiple times
+      mirror: true, // Trigger animations on scroll up
+    });
+  }, []);
+
+  useEffect(() => {
+    if (category !== undefined) {
+      fetchProducts();
+    }
+  }, [currentPage, productsPerPage, category, minPrice, maxPrice,fetchProducts]);
+
+  // useEffect(() => {
+  //   if (alertMessage) {
+  //     const timer = setTimeout(() => {
+  //       setAlertMessage("");
+  //     }, 3000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [alertMessage]);
+
+ 
+  // console.log(response.data);
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, [fetchProducts]);
 
   useEffect(() => {
     if (alertMessage) {

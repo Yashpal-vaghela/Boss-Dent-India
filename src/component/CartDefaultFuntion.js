@@ -7,10 +7,6 @@ const CartDefaultFuntion = () => {
   const dispatch = useDispatch();
   const SavedData1 = JSON.parse(localStorage.getItem("cart"));
 
-  useEffect(() => {
-    DefaultFunction();
-  }, [DefaultFunction]);
-
   const DefaultFunction = useCallback(() => {
     if (SavedData1.length !== 0) {
       if (cartData.length === 0) {
@@ -19,6 +15,9 @@ const CartDefaultFuntion = () => {
     }
     // console.warn("cartdata", cartData, SavedData1);
   }, [SavedData1, dispatch, cartData.length]);
+  useEffect(() => {
+    DefaultFunction();
+  }, [DefaultFunction]);
   return <></>;
 };
 

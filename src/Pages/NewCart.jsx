@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { FaTrashAlt } from "react-icons/fa";
 import googlepay from "../images/Google-pay.png";
@@ -55,7 +55,7 @@ const NewCart = () => {
     );
   };
 
-  const deliveryChargeFunction = () => {
+  const deliveryChargeFunction = useCallback(() => {
     const count = cartData?.cartItems?.reduce((total, count) => {
       return total + (Number(count?.weight) * count.qty) / 1000;
     }, 0);
@@ -67,7 +67,7 @@ const NewCart = () => {
       setDeliveryCharge(65);
     }
     dispatch(DeliveryCharge(deliveryCharge));
-  };
+  },[cartData, dispatch, deliveryCharge]);
 
   const handleAddQuantity = (e, product) => {
     e.preventDefault();
@@ -104,7 +104,7 @@ const NewCart = () => {
 
   useEffect(() => {
     deliveryChargeFunction();
-  }, [deliveryCharge, dispatch]);
+  }, [deliveryCharge, dispatch, deliveryChargeFunction]);
 
   const grandTotal = cartData?.cartTotalAmount + deliveryCharge;
 
