@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaTrashAlt } from "react-icons/fa";
 import googlepay from "../images/Google-pay.png";
@@ -13,7 +13,6 @@ import {
   Remove,
   Add,
   updateSize,
-  AddCartItem,
   getTotal,
   DeliveryCharge,
 } from "../redux/Apislice/cartslice";
@@ -105,7 +104,6 @@ const NewCart = () => {
 
   useEffect(() => {
     deliveryChargeFunction();
-    // console.warn(deliveryCharge);
   }, [deliveryCharge]);
 
   const grandTotal = cartData?.cartTotalAmount + deliveryCharge;
@@ -337,53 +335,3 @@ const NewCart = () => {
 };
 
 export default NewCart;
-
-{
-  /* {product?.selectedAttributes
-                                  ?.attribute_pa_size !== undefined ? (
-                                  <button
-                                    className={`variation-button 
-                                      ${!product.selectedAttributes ? 'selected':''}
-                                      `}
-                                  >
-                                    {
-                                      product.selectedAttributes
-                                        .attribute_pa_size
-                                    }
-                                  </button>
-                                ) : (
-                                  product?.variations?.map(
-                                    (variation, index) => {
-                                      return (
-                                        <button
-                                          key={index}
-                                          className={`variation-button ${
-                                            product.selectedAttributes &&
-                                            product.selectedAttributes[
-                                              attribute
-                                            ] ===
-                                              variation.attributes[attribute]
-                                              ? "selected"
-                                              : ""
-                                          }`}
-                                          onClick={() =>
-                                            handleAttributeSelect(
-                                              product,
-                                              attribute,
-                                              variation.attributes[attribute]
-                                            )
-                                          }
-                                        >
-                                          {typeof variation.attributes[
-                                            attribute
-                                          ] === "string"
-                                            ? variation.attributes[attribute]
-                                            : JSON.stringify(
-                                                variation.attributes[attribute]
-                                              )}
-                                        </button>
-                                      );
-                                    }
-                                  )
-                                )} */
-}

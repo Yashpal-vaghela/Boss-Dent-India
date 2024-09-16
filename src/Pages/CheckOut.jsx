@@ -6,9 +6,7 @@ import { getTotal } from "../redux/Apislice/cartslice";
 import * as yup from "yup";
 import BreadCrumbs from "../component/BreadCrumbs";
 import Indian_states_cities_list from "indian-states-cities-list";
-import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import axios from "axios";
 import { toast } from "react-toastify";
 
 const checkoutSchema = yup.object().shape({
@@ -32,7 +30,7 @@ const CheckOut = () => {
   const cartTotal = useSelector((state) => state.cart?.cartTotalAmount);
   const deliveryChargData = localStorage.getItem("deliveryCharge");
   const [coupon, setCoupon] = useState("");
-  const [appliedCoupon, setAppliedCoupon] = useState("");
+  // const [appliedCoupon, setAppliedCoupon] = useState("");
   const [finalTotal, setFinalTotal] = useState(cartTotal);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [States, setStates] = useState([]);
@@ -40,6 +38,10 @@ const CheckOut = () => {
   // const [state, setState] = useState({});
   // const [error, setError] = useState({});
   const token = localStorage.getItem("token")
+
+  useEffect(() => {
+    setStates(Indian_states_cities_list?.STATES_OBJECT);
+  }, []);
 
   // new form validation
   const initialValues = {
@@ -59,10 +61,8 @@ const CheckOut = () => {
     validateOnBlur: false,
     onSubmit: async () => {
       // console.log("finalsubmit");
-
       try {
         // Create the order and retrieve the order ID
-
         const orderResponse = await fetch(
           "https://bossdentindia.com/wp-json/custom/v1/order_create",
           {
@@ -143,25 +143,22 @@ const CheckOut = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(getTotal());
+      dispatch(getTotal);
     };
   }, [cartData]);
-  useEffect(() => {
-    setStates(Indian_states_cities_list?.STATES_OBJECT);
-  }, []);
+
 
   //Applied coupon code
   const handleCouponChange = (e) => {
     setCoupon(e.target.value);
   };
 
-  const handleApplyCouponCode = () => {
-    // console.log("apply code");
-    if (coupon === "DISCOUNT10") {
-      setAppliedCoupon(coupon);
-      setFinalTotal(finalTotal - 10);
-    }
-  };
+  // const handleApplyCouponCode = () => {
+  //   if (coupon === "DISCOUNT10") {
+  //     setAppliedCoupon(coupon);
+  //     setFinalTotal(finalTotal - 10);
+  //   }
+  // };
   // const applyCoupon = () => {
   //   if (coupon === "DISCOUNT10") {
   //     setAppliedCoupon(coupon);
@@ -356,6 +353,7 @@ const CheckOut = () => {
                           <img
                             src={product?.yoast_head_json?.og_image?.[0]?.url}
                             className="mx-auto img-fluid"
+                            alt={product?.yoast_head_json?.og_title}
                           ></img>
                         </div>
                         <div className="col-lg-6 col-md-6 col-6 cart-item-detail">
@@ -414,7 +412,7 @@ const CheckOut = () => {
                   ></input>
                   <button
                     className="btn btn-ApplyCouponCode"
-                    onClick={handleApplyCouponCode}
+                    // onClick={handleApplyCouponCode}
                   >
                     Apply
                   </button>

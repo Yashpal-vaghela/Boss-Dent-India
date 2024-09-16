@@ -52,7 +52,7 @@ const UserData = () => {
       }
 
       if (!response.ok) throw new Error("Failed to fetch user data");
-      const userData = await response.json();
+      // const userData = await response.json();
 
       // Fetch detailed user info
       const userDetailResponse = await fetch(

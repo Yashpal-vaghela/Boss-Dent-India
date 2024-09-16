@@ -5,7 +5,6 @@ import { FaLocationDot } from "react-icons/fa6";
 import {
   FaFacebook,
   FaInstagram,
-  FaLinkedin,
   FaPhoneAlt,
 } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
@@ -82,8 +81,8 @@ const Footer = () => {
         </div>
         <div className="footer-section" data-aos="fade-up" data-aos-delay="600">
           <h3>Contact Us</h3>
-          <p className="f-i-txt">
-            <span className="f-icon">
+          <p className="f-i-txt align-items-start">
+            <span className="f-icon mt-1">
               <FaLocationDot />
             </span>
             {/* <span>Plot no.3-3/3-4/ Dhuna house, opp. Patel Nagar, A.k. Road, Varachha, Surat</span> */}

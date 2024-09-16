@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { json, Link } from "react-router-dom";
+import {  Link } from "react-router-dom";
 import { useCart } from "./AddCartContext";
 import { FaTrashAlt } from "react-icons/fa";
 import googlepay from "../images/Google-pay.png";
@@ -8,7 +8,7 @@ import banktransfer from "../images/bank-transfer.png";
 import "../css/cartresponsive.css";
 import Aos from "aos";
 import { useDispatch, useSelector } from "react-redux";
-import { decreaseCart, Remove,Add ,updateSize} from "../redux/Apislice/cartslice";
+import { decreaseCart, Remove,Add } from "../redux/Apislice/cartslice";
 
 const Cart = () => {
   const {

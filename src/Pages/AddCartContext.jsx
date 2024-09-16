@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 const AddCartContext = createContext();
 
 export const AddCartProvider = ({ children }) => {
-  const [quantity, setquantity] = useState(1);
   const [cart, setCart] = useState(() => {
     try {
       const savedCart = localStorage.getItem('cart');
@@ -49,12 +48,6 @@ export const AddCartProvider = ({ children }) => {
 
   const addToCart = async (product, quantity, selectedAttributes = {}) => {
     console.log("quanttity1",quantity);
-    // if(location.pathname === 'products'){
-    //   return quantity = 1
-    // }else{
-    //   return  quantity
-    // }
-    // if (quantity < 1) return quantity = 1;
     if (!ensureAuthenticated()) return;
    
     const existingProduct = cart.find((item) => item.id === product.id && JSON.stringify(item.selectedAttributes) === JSON.stringify(selectedAttributes));
@@ -114,7 +107,7 @@ export const AddCartProvider = ({ children }) => {
   // getCartCount();
 
   return (
-    <AddCartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, updateAttributes, updatePrice, setquantity  }}>
+    <AddCartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, updateAttributes, updatePrice }}>
       {children}
     </AddCartContext.Provider>
   );

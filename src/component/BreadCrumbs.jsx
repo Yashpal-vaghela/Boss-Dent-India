@@ -1,15 +1,15 @@
-import React, { useEffect,useState } from 'react'
-import { useLocation, useRoutes } from 'react-router-dom'
+// import React, { useEffect,useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
 const BreadCrumbs = () => {
     const pathName = useLocation();
     // const pathName1 = useRoutes();
-    const [pathname,setPathname] = useState([])
-    useEffect(()=>{
+    // const [pathname,setPathname] = useState([])
+    // useEffect(()=>{
         
-        setPathname(pathName?.pathname?.split("/"))
-        // console.log("pathName",pathName1)
-    },[pathName])
+    //     setPathname(pathName?.pathname?.split("/"))
+    //     // console.log("pathName",pathName1)
+    // },[pathName])
   return (
     <div>
       <nav className="bread-crumbs">
@@ -18,8 +18,6 @@ const BreadCrumbs = () => {
           {
             pathName !== undefined ? <span>{pathName?.pathname?.split("/")}</span>: null
           }
-          
-          {/* <span>Checkout</span> */}
         </nav>
     </div>
   )
