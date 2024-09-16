@@ -24,7 +24,7 @@ const App = () => {
             <NewNav />
             <Allroutes />
             <Footer />
-            {/* <BackToTopButton /> */}
+            <BackToTopButton />
         </WatchlistProvider>
       </BrowserRouter>
     </>
