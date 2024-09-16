@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
@@ -10,7 +10,7 @@ import "../css/productview.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 import { FaCartPlus } from "react-icons/fa6";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Add, updateSize } from "../redux/Apislice/cartslice";
 import ReviewList from "./ReviewList";
 import ReviewForm from "./ReviewForm";
@@ -20,7 +20,6 @@ import { toast } from "react-toastify";
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
-  const [imageLoading, setImageLoading] = useState(true);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [error, setError] = useState(null);
   const [category, setCategory] = useState("");
@@ -35,7 +34,6 @@ const SingleProduct = () => {
   const [activeSection, setActivesection] = useState("description");
   const { id } = useParams();
   const dispatch = useDispatch();
-  const token = localStorage.getItem("token");
   const [alertMessage, setAlertMessage] = useState("");
   const [selectedColor, setSelectedColor] = useState(null);
   const colors = [
@@ -64,7 +62,6 @@ const SingleProduct = () => {
       "white-meltblown": "#fff",
     },
   ];
-  // console.log(token);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -80,10 +77,7 @@ const SingleProduct = () => {
         if (response.data.yoast_head_json?.og_image?.[0]?.url) {
           const img = new Image();
           img.src = response.data.yoast_head_json.og_image[0].url;
-          img.onload = () => setImageLoading(false);
-        } else {
-          setImageLoading(false);
-        }
+        } 
 
         // Extract and set variations if available
         if (response.data.variations) {

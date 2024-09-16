@@ -14,7 +14,6 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [otp, setOTP] = useState("");
-  const [otpSent, setOTPSent] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
   const navigate = useNavigate();
@@ -60,7 +59,6 @@ const Signup = () => {
 
       if (response.status === 200) {
         setStep(2);
-        setOTPSent(true);
         setAlertMessage("Registration successful. Please check your email for the OTP.");
       }
     } catch (error) {
@@ -122,7 +120,6 @@ const Signup = () => {
 
       if (response.status === 200) {
         setAlertMessage("OTP has been resent. Please check your email.");
-        setOTPSent(true);
       }
     } catch (error) {
       console.error("Error resending OTP:", error);

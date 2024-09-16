@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import cat1 from "../images/hom_cat-1.png";
-import cat2 from "../images/home_cat-2.png";
+// import cat1 from "../images/hom_cat-1.png";
+// import cat2 from "../images/home_cat-2.png";
 import cat3 from "../images/home_cat-3.webp";
-import cat4 from "../images/home_cat-4.png";
+// import cat4 from "../images/home_cat-4.png";
 import retractor from "../images/retractor.png"
 import gloves from "../images/gloves.png";
 import vincismile from "../images/v2-logo.png";
@@ -12,7 +12,7 @@ import banner2 from "../images/Bossdent-Web-banners-02.jpg";
 import banner3 from "../images/Bossdent-Web-banners-03.jpg";
 import banner4 from "../images/Bossdent-Web-banners-04.jpg";
 import { FaPlay, FaPause } from "react-icons/fa";
-import { MdLocalHospital, MdLocalShipping, MdOutlineLocalHospital, MdSecurity, MdSupportAgent } from "react-icons/md";
+import { MdLocalShipping, MdSecurity, MdSupportAgent } from "react-icons/md";
 import "../css/othercard.css";
 
 // Import Swiper React components

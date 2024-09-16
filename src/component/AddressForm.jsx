@@ -9,15 +9,15 @@ const AddressForm = ({ token, fetchUserData }) => {
     const [message, setMessage] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     useEffect(() => {
-        const fetchAddress = async () =>{
-            try{
-                const response = await axios.get ('https://bossdentindia.com/wp-json/custom/v1/address',{
+        const fetchAddress = async () => {
+            try {
+                const response = await axios.get('https://bossdentindia.com/wp-json/custom/v1/address', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                if (response.data ) {
-                    const {address, city, state, zipcode } = response.data;
+                if (response.data) {
+                    const { address, city, state, zipcode } = response.data;
                     setAddress(address);
                     setCity(city);
                     setState(state);
@@ -35,19 +35,19 @@ const AddressForm = ({ token, fetchUserData }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-                const response = await axios.post('https://bossdentindia.com/wp-json/custom/v1/address', {
-                    address,
-                    city,
-                    state,
-                    zipcode,
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                    setMessage(isEditing?'Address updated successfully':'Address added successfully');
-                    fetchUserData();
-            } catch (error) {
+            await axios.post('https://bossdentindia.com/wp-json/custom/v1/address', {
+                address,
+                city,
+                state,
+                zipcode,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setMessage(isEditing ? 'Address updated successfully' : 'Address added successfully');
+            fetchUserData();
+        } catch (error) {
             let errorMessage = 'An unknown error occurred.';
             if (error.response) {
                 console.error('Server responded with:', error.response.data);
