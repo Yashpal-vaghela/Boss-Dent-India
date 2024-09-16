@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import avtar from '../images/avtar.png';
 import Loader from '../component/Loader';
@@ -24,76 +24,79 @@ const UserData = () => {
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
 
-  const fetchUserData = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("Not logged in!")
-      // alert("Not logged in!");
-      navigate("/my-account");
-      return;
-    }
-
-    try {
-      // Fetch user data
-      const response = await fetch(
-        "https://bossdentindia.com/wp-json/wp/v2/users/me",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.status === 401) {
-        toast("Please log in!");
-        // alert("Please log in!");
+  const fetchUserData = useCallback(
+    async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Not logged in!")
+        // alert("Not logged in!");
         navigate("/my-account");
         return;
       }
-
-      if (!response.ok) throw new Error("Failed to fetch user data");
-      // const userData = await response.json();
-
-      // Fetch detailed user info
-      const userDetailResponse = await fetch(
-        "https://bossdentindia.com/wp-json/custom/v1/user-data",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+  
+      try {
+        // Fetch user data
+        const response = await fetch(
+          "https://bossdentindia.com/wp-json/wp/v2/users/me",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        if (response.status === 401) {
+          toast("Please log in!");
+          // alert("Please log in!");
+          navigate("/my-account");
+          return;
         }
-      );
-      if (!userDetailResponse.ok)
-        throw new Error("Failed to fetch user details");
-      const userDetailData = await userDetailResponse.json();
+  
+        if (!response.ok) throw new Error("Failed to fetch user data");
+        // const userData = await response.json();
+  
+        // Fetch detailed user info
+        const userDetailResponse = await fetch(
+          "https://bossdentindia.com/wp-json/custom/v1/user-data",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!userDetailResponse.ok)
+          throw new Error("Failed to fetch user details");
+        const userDetailData = await userDetailResponse.json();
+  
+        setUser(userDetailData);
+        setContactNumber(userDetailData.contactNumber || "");
+        setGender(userDetailData.gender || "");
+  
+        // Fetch address data
+        const addressResponse = await fetch(
+          "https://bossdentindia.com/wp-json/custom/v1/settings",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!addressResponse.ok) throw new Error("Failed to fetch address data");
+        const addressData = await addressResponse.json();
+        setAddress(addressData.pickup_locations || []);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        toast.error("Error fetching user data");
+        // alert("Error fetching user data");
+        navigate("/login");
+      }
+    },[navigate]
+  )
 
-      setUser(userDetailData);
-      setContactNumber(userDetailData.contactNumber || "");
-      setGender(userDetailData.gender || "");
-
-      // Fetch address data
-      const addressResponse = await fetch(
-        "https://bossdentindia.com/wp-json/custom/v1/settings",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (!addressResponse.ok) throw new Error("Failed to fetch address data");
-      const addressData = await addressResponse.json();
-      setAddress(addressData.pickup_locations || []);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-      toast.error("Error fetching user data");
-      // alert("Error fetching user data");
-      navigate("/login");
-    }
-  };
 
   useEffect(() => {
     fetchUserData();
-  }, [navigate, fetchUserData]);
+  }, [fetchUserData]);
 
   const validatePassword = (value) => {
     const strongPasswordRegex =
