@@ -183,7 +183,7 @@ const Home = () => {
             >
               <div className="banneer-img-main">
                 <img
-                  src="./asset/images/Bossdent-Web-banners-01.jpg"
+                  src="/asset/images/Bossdent-Web-banners-01.jpg"
                   alt="banner1"
                   className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                   onLoad={handleImageLoad}
@@ -213,7 +213,7 @@ const Home = () => {
             >
               <div className="banneer-img-main">
                 <img
-                  src="./asset/images/Bossdent-Web-banners-02.jpg"
+                  src="/asset/images/Bossdent-Web-banners-02.jpg"
                   alt="banner2"
                   className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                   onLoad={handleImageLoad}
@@ -233,7 +233,7 @@ const Home = () => {
             >
               <div className="banneer-img-main">
                 <img
-                  src="./asset/images/Bossdent-Web-banners-03.jpg"
+                  src="/asset/images/Bossdent-Web-banners-03.jpg"
                   alt="banner3"
                   className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                   onLoad={handleImageLoad}
@@ -253,7 +253,7 @@ const Home = () => {
             >
               <div className="banneer-img-main">
                 <img
-                  src="./asset/images/Bossdent-Web-banners-04.jpg"
+                  src="/asset/images/Bossdent-Web-banners-04.jpg"
                   alt="banner4"
                   className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                   onLoad={handleImageLoad}
@@ -305,7 +305,7 @@ const Home = () => {
               <Link to="/products?category=116">
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img src="./asset/images/gloves.png" alt="gloves" />
+                    <img src="/asset/images/gloves.png" alt="gloves" />
                   </div>
                 </div>
                 <div className="home-cat-txt">
@@ -321,7 +321,7 @@ const Home = () => {
               <Link to="/products?category=75">
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img src="./asset/images/home_cat-3.webp" alt="General Dentist" />
+                    <img src="/asset/images/home_cat-3.webp" alt="General Dentist" />
                   </div>
                 </div>
                 <div className="home-cat-txt">
@@ -337,7 +337,7 @@ const Home = () => {
               <Link to="/products?category=127">
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img src="./asset/images/v2-logo.png" alt="Vincismile" />
+                    <img src="/asset/images/v2-logo.png" alt="Vincismile" />
                   </div>
                 </div>
                 <div className="home-cat-txt">
@@ -354,7 +354,7 @@ const Home = () => {
               <Link to="/products?category=125">
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img src="./asset/images/retractor.png" alt="retractor" />
+                    <img src="/asset/images/retractor.png" alt="retractor" />
                   </div>
                 </div>
                 <div className="home-cat-txt">

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FaTrashAlt } from "react-icons/fa";
 // import googlepay from "../images/Google-pay.png";
 // import phonepe from "../images/Phone-pe.png";
-import banktransfer from "../images/bank-transfer.png";
+// import banktransfer from "../images/bank-transfer.png";
 import "../css/cartresponsive.css";
 // import Aos from "aos";
 import { useDispatch, useSelector } from "react-redux";
@@ -322,9 +322,9 @@ const NewCart = () => {
             <div className="cart-payment-methods">
               <p>We Accept</p>
               <div className="payment-logos">
-                <img src="./asset/images/Google-pay.png" alt="googlepay" />
-                <img src="./asset/images/Phone-pe.png" alt="phone-pe" />
-                <img src="./asset/images/bank-transfer.png" alt="banktransfer" />
+                <img src="/asset/images/Google-pay.png" alt="googlepay" />
+                <img src="/asset/images/Phone-pe.png" alt="phone-pe" />
+                <img src="/asset/images/bank-transfer.png" alt="banktransfer" />
               </div>
             </div>
           </div>

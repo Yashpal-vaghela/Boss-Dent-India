@@ -26,10 +26,10 @@ const About = () => {
       <div className='about-main-page'>
         <div className='about-img-main' data-aos="fade-left">
           <div className='about-img-1'>
-            <img src="./asset/images/about-img_1.jpg" alt="" className='about-img-item-1'/>
+            <img src="/asset/images/about-img_1.jpg" alt="" className='about-img-item-1'/>
           </div>
           <div className='about-img-2'>
-            <img src="./asset/images/about-img_2.jpg" alt="" className='about-img-item-2' />
+            <img src="/asset/images/about-img_2.jpg" alt="" className='about-img-item-2' />
           </div>
         </div>
         <div className='about-txt-main' data-aos="fade-right">

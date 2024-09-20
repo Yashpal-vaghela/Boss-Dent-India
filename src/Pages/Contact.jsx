@@ -285,7 +285,7 @@ const Contact = () => {
           )}
         </div>
         <div className="form-image" data-aos="fade-left" data-aos-delay="400">
-          <img src="./asset/images/contact.png" alt="Contact" />
+          <img src="/asset/images/contact.png" alt="Contact" />
         </div>
       </div>
     </div>

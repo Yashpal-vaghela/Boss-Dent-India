@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import phonepe from "../images/Phone-pe.png";
-import banktransfer from "../images/bank-transfer.png";
+// import phonepe from "../images/Phone-pe.png";
+// import banktransfer from "../images/bank-transfer.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getTotal } from "../redux/Apislice/cartslice";
 import * as yup from "yup";
@@ -443,13 +443,13 @@ const CheckOut = () => {
                 <div className="order-payment-content">
                   <div className="payment-logos">
                     <img
-                      src={phonepe}
+                      src="/asset/images/Phone-pe.png"
                       alt="PhonePe"
                       onClick={() => handlePaymentSelect("PhonePe")}
                       className={paymentMethod === "PhonePe" ? "selected" : ""}
                     />
                     <img
-                      src={banktransfer}
+                      src="/asset/images/bank-transfer.png"
                       alt="Bank Transfer"
                       onClick={() => handlePaymentSelect("BankTransfer")}
                       className={
