@@ -65,15 +65,6 @@ const App = () => {
           wrapperClass
         ></RotatingLines>
       ) : (
-        //   <Rings
-        //   visible={true}
-        //   height="100vh"
-        //   width="100"
-        //   color="rgb(195, 148, 40)"
-        //   ariaLabel="rings-loading"
-        //   wrapperStyle={{margin:'auto',display:'flex',alignIems:'center',justifyContent:'center',backgroundcolot:"transparent"}}
-        //   wrapperClass
-        // ></Rings>
         <BrowserRouter>
         <RouteChangeListener/>
           <WatchlistProvider>
@@ -82,7 +73,7 @@ const App = () => {
             <NewNav />
             <Allroutes />
             <Footer />
-            {/* <BackToTopButton /> */}
+            <BackToTopButton />
           </WatchlistProvider>
         </BrowserRouter>
       )}
