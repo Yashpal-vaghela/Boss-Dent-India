@@ -419,6 +419,7 @@ const Product = () => {
                   ) {
                     imageUrl = product.yoast_head_json.og_image[0].url;
                   }
+                  // console.log("product",typeof(imageUrl),product,imageUrl.replace("https://","https://admin."))
                   return (
                     <div className="product-card" key={product.id}>
                       <div className="product-card-link">
@@ -428,7 +429,7 @@ const Product = () => {
                         >
                           {imageUrl && (
                             <img
-                              src={imageUrl}
+                              src={imageUrl.replace("https://","https://admin.")}
                               alt={product.title.rendered}
                               className="product-image"
                               loading="lazy"
