@@ -37,7 +37,7 @@ const App = () => {
     setTimeout(() => {
       // setData({ message: 'Data fetched successfully!' });
       setLoading(false);
-    }, 2000); // Simulate a 2-second delay
+    }, 500); // Simulate a 2-second delay
     Aos.init({
       duration: 1000, // Animation duration in milliseconds
       once: false,    // Allow animations to trigger multiple times

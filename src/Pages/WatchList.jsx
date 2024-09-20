@@ -29,7 +29,7 @@ const WatchList = () => {
       try {
         const responses = await Promise.all(
           watchlist.map((id) =>
-            axios.get(`https://bossdentindia.com/wp-json/wp/v2/product/${id}`)
+            axios.get(`https://admin.bossdentindia.com/wp-json/wp/v2/product/${id}`)
           )
         );
         const productsData = responses.map((response) => response.data);
@@ -38,7 +38,7 @@ const WatchList = () => {
         const stockStatusPromises = productsData.map(async (product) => {
           try {
             const stockResponse = await axios.get(
-              `https://bossdentindia.com/wp-json/custom/v1/stock-status/${product.id}`
+              `https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/${product.id}`
             );
             return { [product.id]: stockResponse.data.stock_status };
           } catch (error) {
