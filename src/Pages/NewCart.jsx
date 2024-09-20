@@ -59,7 +59,7 @@ const NewCart = () => {
     const count = cartData?.cartItems?.reduce((total, count) => {
       return total + (Number(count?.weight) * count.qty) / 1000;
     }, 0);
-    if (count <= 1) {
+    if (count < 1) {
       setDeliveryCharge(99);
     } else if (count > 1 && count < 3) {
       setDeliveryCharge(125);

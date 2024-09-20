@@ -35,15 +35,13 @@ const NewNav = () => {
     setMenuOpen(false);
   };
 
-
-  
   const handleSearchInputChange = async (e) => {
     const query = e.target.value;
     setSearchQuery(query);
     setShowAltMenu(query.trim().length > 0);
     try {
       const response = await axios.get(
-        `https://bossdentindia.com/wp-json/wp/v2/product?search=${query}`
+        `https://admin.bossdentindia.com/wp-json/wp/v2/product?search=${query}`
       );
       const products = response.data.map((product) => ({
         id: product.id,
@@ -63,7 +61,7 @@ const NewNav = () => {
     setShowAltMenu(query.trim().length > 0);
     try {
       const response = await axios.get(
-        `https://bossdentindia.com/wp-json/wp/v2/product?search=${query}`
+        `https://admin.bossdentindia.com/wp-json/wp/v2/product?search=${query}`
       );
       const products = response.data.map((product) => ({
         id: product.id,
@@ -80,7 +78,7 @@ const NewNav = () => {
     e.preventDefault();
     try {
       const response = await axios.get(
-        `https://bossdentindia.com/wp-json/wp/v2/product?search=${searchQuery}`
+        `https://admin.bossdentindia.com/wp-json/wp/v2/product?search=${searchQuery}`
       );
       if (response.data.length > 0) {
         const product = response.data[0];

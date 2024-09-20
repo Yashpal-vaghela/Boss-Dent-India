@@ -31,7 +31,7 @@ const ForgotPassword = () => {
     const handleForgotPassword = async () => {
         setLoading(true);
         try {
-            const response = await axios.post('https://bossdentindia.com/wp-json/custom/v1/forgot-password', {
+            const response = await axios.post('https://admin.bossdentindia.com/wp-json/custom/v1/forgot-password', {
                 email
             });
             if (response.data.success){

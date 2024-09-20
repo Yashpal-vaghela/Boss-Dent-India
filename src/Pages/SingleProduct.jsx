@@ -285,12 +285,12 @@ const SingleProduct = () => {
                         {attribute === "attribute_pa_color" ? (
                           <div style={{ display: "flex" }}>
                             {colors.map((color, index) => {
-                              console.log(
-                                "color",
-                                color,
-                                attribute,
-                                selectedColor
-                              );
+                              // console.log(
+                              //   "color",
+                              //   color,
+                              //   attribute,
+                              //   selectedColor
+                              // );
                               return (
                                 <div
                                   className={`color-option ${
@@ -495,7 +495,7 @@ const SingleProduct = () => {
                             dispatch(
                               Add({
                                 ...relatedProduct,
-                                qty: quantity,
+                                // qty: undefined,
                                 selectedAttributes,
                               })
                             );

@@ -586,6 +586,9 @@
     margin-left: 0;
     justify-content: center;
   }
+  .cart-item-attributes .variation-buttons{
+    justify-content: left;
+  }
 
   .quantity-controls {
     flex-direction: row;
@@ -644,7 +647,8 @@
   }
 
   .variation-button {
-    padding: 5px 8px;
+    padding: 0px 7px;
+    font-size: 12px;
   }
 
   .ind-btn {
@@ -667,5 +671,12 @@
   .single-product-des {
     font-size: 14px;
     text-align: left;
+  }
+  .variation-main h4, .variation-cart-main h4{
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .variation-cart-main{
+    margin-bottom: 5px;
   }
 }

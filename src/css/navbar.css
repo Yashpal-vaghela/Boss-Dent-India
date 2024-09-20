@@ -357,6 +357,7 @@
   
   .menu-div ul {
     display: flex;
+    margin-bottom: 0px;
 }
   
   .menu-div ul li {
@@ -553,8 +554,8 @@
         top: 15px;
       }
       .main-nav-icon-sub a span {
-        left: 0px;
-        bottom: 15px;
+        left: -7px;
+        bottom: 12px;
         font-size: 1rem;
         color: #000;
       }

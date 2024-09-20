@@ -23,14 +23,3 @@ const CartDefaultFuntion = () => {
 };
 
 export default CartDefaultFuntion;
-
-//  const  CartDefaultFunction = useCallback(() => {
-//   if (SavedData1.length !== 0) {
-//     if (cartData.length === 0) {
-//       dispatch(Add(SavedData1));
-//     }
-//   }
-//   console.warn("cartdata", cartData, SavedData1);
-// }, [SavedData1]);
-
-// export default CartDefaultFunction;
