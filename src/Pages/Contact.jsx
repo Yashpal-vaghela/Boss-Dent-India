@@ -34,7 +34,7 @@ const Contact = () => {
     onSubmit: async () => {
       try {
         const response = await axios.post(
-          "https://bossdentindia.com/wp-json/custom/v1/submit-form",
+          "https://admin.bossdentindia.com/wp-json/custom/v1/submit-form",
           {
             name: formik?.values?.name,
             email: formik?.values?.email,

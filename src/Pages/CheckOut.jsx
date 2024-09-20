@@ -64,7 +64,7 @@ const CheckOut = () => {
       try {
         // Create the order and retrieve the order ID
         const orderResponse = await fetch(
-          "https://bossdentindia.com/wp-json/custom/v1/order_create",
+          "https://admin.bossdentindia.com/wp-json/custom/v1/order_create",
           {
             method: "POST",
             headers: {
@@ -94,7 +94,7 @@ const CheckOut = () => {
         //  Proceed to payment
         if (paymentMethod === "PhonePe") {
           const paymentResponse = await fetch(
-            "https://bossdentindia.com/wp-json/phone/v1/initiate-payment",
+            "https://admin.bossdentindia.com/wp-json/phone/v1/initiate-payment",
             {
               method: "POST",
               headers: {

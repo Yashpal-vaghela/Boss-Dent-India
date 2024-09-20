@@ -49,7 +49,7 @@ const Nav = () => {
     setSearchQuery(query);
     setShowAltMenu(query.trim().length> 0);
     try {
-      const response = await axios.get(`https://bossdentindia.com/wp-json/wp/v2/product?search=${query}`);
+      const response = await axios.get(`https://admin.bossdentindia.com/wp-json/wp/v2/product?search=${query}`);
       const products = response.data.map(product => ({
         id: product.id,
         title: product.title.rendered,
@@ -66,7 +66,7 @@ const Nav = () => {
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`https://bossdentindia.com/wp-json/wp/v2/product?search=${searchQuery}`);
+      const response = await axios.get(`https://admin.bossdentindia.com/wp-json/wp/v2/product?search=${searchQuery}`);
       if (response.data.length > 0) {
         const product = response.data[0]; // Assuming you want to navigate to the first matching product
         navigate(`/products/${product.slug}`);

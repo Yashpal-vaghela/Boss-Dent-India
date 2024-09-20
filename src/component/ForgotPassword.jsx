@@ -57,7 +57,7 @@ const ForgotPassword = () => {
     const handleVerifyOtp = async () => {
         try {
             setLoading(true);
-            const response = await axios.post('https://bossdentindia.com/wp-json/custom/v1/verify-reset-otp', {
+            const response = await axios.post('https://admin.bossdentindia.com/wp-json/custom/v1/verify-reset-otp', {
                 email,
                 otp
             });
@@ -84,7 +84,7 @@ const ForgotPassword = () => {
     const handleChangePassword = async () => {
         setLoading(true);
         try {
-            const response = await axios.post('https://bossdentindia.com/wp-json/custom/v1/reset-password', {
+            const response = await axios.post('https://admin.bossdentindia.com/wp-json/custom/v1/reset-password', {
                 email,
                 password: newPassword
             });

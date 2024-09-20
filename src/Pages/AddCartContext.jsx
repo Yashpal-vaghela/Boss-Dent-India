@@ -24,7 +24,7 @@ export const AddCartProvider = ({ children }) => {
 
   const fetchProductDetails = async (productId) => {
     try {
-      const response = await axios.get(`https://bossdentindia.com/wp-json/wp/v2/product/${productId}`);
+      const response = await axios.get(`https://admin.bossdentindia.com/wp-json/wp/v2/product/${productId}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching product details:", error);

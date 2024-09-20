@@ -49,7 +49,7 @@ const Signup = () => {
     }
     try {
       const response = await axios.post(
-        "https://bossdentindia.com/wp-json/custom/v1/register",
+        "https://admin.bossdentindia.com/wp-json/custom/v1/register",
         {
           username,
           email,
@@ -87,7 +87,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://bossdentindia.com/wp-json/custom/v1/verify-otp",
+        "https://admin.bossdentindia.com/wp-json/custom/v1/verify-otp",
         {
           email,
           otp,
@@ -112,7 +112,7 @@ const Signup = () => {
   const handleResendOTP = async () => {
     try {
       const response = await axios.post(
-        "https://bossdentindia.com/wp-json/custom/v1/resend-otp",
+        "https://admin.bossdentindia.com/wp-json/custom/v1/resend-otp",
         {
           email,
         }

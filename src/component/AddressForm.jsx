@@ -11,7 +11,7 @@ const AddressForm = ({ token, fetchUserData }) => {
     useEffect(() => {
         const fetchAddress = async () => {
             try {
-                const response = await axios.get('https://bossdentindia.com/wp-json/custom/v1/address', {
+                const response = await axios.get('https://admin.bossdentindia.com/wp-json/custom/v1/address', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -35,7 +35,7 @@ const AddressForm = ({ token, fetchUserData }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('https://bossdentindia.com/wp-json/custom/v1/address', {
+            await axios.post('https://admin.bossdentindia.com/wp-json/custom/v1/address', {
                 address,
                 city,
                 state,

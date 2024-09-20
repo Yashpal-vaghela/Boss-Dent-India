@@ -14,7 +14,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://bossdentindia.com/wp-json/jwt-auth/v1/token', {
+      const response = await axios.post('https://admin.bossdentindia.com/wp-json/jwt-auth/v1/token', {
         username: userIdentifier,
         password
       });

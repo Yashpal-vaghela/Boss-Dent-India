@@ -25,7 +25,7 @@ const ReviewForm = ({ productId }) => {
 
         try {
             const response = await axios.post(
-                `https://bossdentindia.com/wp-json/wp/v2/reviews`,
+                `https://admin.bossdentindia.com/wp-json/wp/v2/reviews`,
                 {
                     product_id: productId,
                     rating,

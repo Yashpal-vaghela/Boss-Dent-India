@@ -9,7 +9,7 @@ const ReviewList = ({productId}) => {
         const fetchReviews = async () => {
             try {
                 const response = await axios.get(
-                    `https://bossdentindia.com/wp-json/wp/v2/reviews?product_id=${productId}`
+                    `https://admin.bossdentindia.com/wp-json/wp/v2/reviews?product_id=${productId}`
                 );
                 setReviews(response.data);
             } catch (error) {
