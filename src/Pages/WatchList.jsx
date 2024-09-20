@@ -124,11 +124,13 @@ const WatchList = () => {
         <>
           <div className="watchlist-content">
             <div className="watchlist-items" data-aos="fade">
-              {products.map((product) => (
+              {products.map((product) => {
+                let  imageUrl= product.yoast_head_json?.og_image?.[0]?.url;
+            return     (
                 <div key={product.id} className="watchlist-item">
                   <div className="watchlist-item-image-wrapper">
                     <img
-                      src={product.yoast_head_json?.og_image?.[0]?.url}
+                      src={imageUrl.replace("https://","https://admin.")}
                       alt={product.title.rendered}
                       className={`watchlist-item-image ${
                         imageLoading[product.id] ? "loaded" : "loading"
@@ -171,7 +173,8 @@ const WatchList = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+              )
+})}
             </div>
           </div>
         </>

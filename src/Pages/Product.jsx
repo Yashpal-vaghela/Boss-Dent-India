@@ -445,7 +445,9 @@ const Product = () => {
                             {product.title.rendered}
                           </h3>
                         </Link>
-                        <h3
+                        
+                      </div>
+                      <h3
                           className="product-price"
                           style={{
                             display: "flex",
@@ -533,12 +535,13 @@ const Product = () => {
                             </div>
                           </span>
                         </h3>
-                        <div className="product-actions" onClick={()=>navigate(`/products/${product.id}`)}>
+                        <div className="product-actions" >
                           <button
                             className="btnProductQuickview"
                             data-toggle="tooltip"
                             data-placement="top"
                             data-original-title="Quick view"
+                            onClick={()=>navigate(`/products/${product.id}`)}
                           >
                             <BsFillGridFill />
                           </button>
@@ -584,7 +587,6 @@ const Product = () => {
                         >
                           <button className="product-button">Learn More</button>
                         </Link>
-                      </div>
 
                       {/* <Link
                         to={`/products/${product.id}`}

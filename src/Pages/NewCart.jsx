@@ -59,13 +59,14 @@ const NewCart = () => {
     const count = cartData?.cartItems?.reduce((total, count) => {
       return total + (Number(count?.weight) * count.qty) / 1000;
     }, 0);
-    if (count < 1) {
+    if (count <= 1) {
       setDeliveryCharge(99);
     } else if (count > 1 && count < 3) {
       setDeliveryCharge(125);
     } else if (count > 3) {
       setDeliveryCharge(65);
     }
+    console.log(deliveryCharge)
     dispatch(DeliveryCharge(deliveryCharge));
   },[cartData, dispatch, deliveryCharge]);
 
@@ -104,6 +105,7 @@ const NewCart = () => {
 
   useEffect(() => {
     deliveryChargeFunction();
+    console.log("deliveryCharge",deliveryCharge)
   }, [deliveryCharge, dispatch, deliveryChargeFunction]);
 
   const grandTotal = cartData?.cartTotalAmount + deliveryCharge;
@@ -132,6 +134,7 @@ const NewCart = () => {
           <div className="cart-items">
             {cartData.cartItems?.length !== 0 &&
               cartData.cartItems?.map((product) => {
+                let imageUrl = product?.yoast_head_json?.og_image?.[0]?.url
                 return (
                   <div
                     key={`${product.id}-${JSON.stringify(
@@ -141,7 +144,7 @@ const NewCart = () => {
                   >
                     <div className="cart-item-image-wrapper">
                       <img
-                        src={product?.yoast_head_json?.og_image?.[0]?.url}
+                        src={imageUrl.replace("https://","https://admin.")}
                         alt={product?.title?.rendered}
                         className={`cart-item-image ${
                           imageLoading[product.id] ? "loaded" : "loading"

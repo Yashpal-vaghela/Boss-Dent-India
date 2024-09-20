@@ -39,7 +39,7 @@
   padding: 0px;
 }
 
-.product-card-link .product-actions {
+.product-card .product-actions {
   position: absolute;
   top: 30%;
   left: 50%;
@@ -55,27 +55,27 @@
   width: 70%;
 }
 
-.product-card-link .product-actions > button,
-.product-card-link .product-actions .btnProductQuickview {
+.product-card .product-actions > button,
+.product-card .product-actions .btnProductQuickview {
   transition: transform 0.35s linear;
   transform: scale(0);
   opacity: 0;
 }
 
-.product-card-link .item-product__wishlist svg,
-.product-card-link .btnProductQuickview svg,
-.product-card-link .btn-quick-add svg {
+.product-card .item-product__wishlist svg,
+.product-card .btnProductQuickview svg,
+.product-card .btn-quick-add svg {
   width: 17px;
 }
 
-.product-card-link .item-product__wishlist {
+.product-card .item-product__wishlist {
   font-size: 18px;
   line-height: 1;
 }
 
-.product-card-link .item-product__wishlist,
-.product-card-link .btnProductQuickview,
-.product-card-link .btn-quick-add {
+.product-card .item-product__wishlist,
+.product-card .btnProductQuickview,
+.product-card .btn-quick-add {
   width: 40px;
   height: 40px;
   border-radius: 100%;
@@ -88,9 +88,9 @@
 }
 
 /* hover effect 1 */
-.product-card-link:hover .product-actions > button,
-.product-card-link:hover .product-actions .btn-quick-add,
-.product-card-link:hover .product-actions .btnProductQuickview {
+.product-card:hover .product-actions > button,
+.product-card:hover .product-actions .btn-quick-add,
+.product-card:hover .product-actions .btnProductQuickview {
   transform: scale(1);
   opacity: 1;
 }
@@ -101,14 +101,14 @@
   width: 17px;
 }
 
-.product-card-link:hover .product-actions {
+.product-card:hover .product-actions {
   visibility: visible;
 }
 
-.product-card-link .item-product__wishlist:hover,
-.product-card-link .btnProductQuickview:hover,
-.product-card-link .btn-quick-add:hover ,
-.product-card-link .btn-quick-add:hover .product-actions button svg {
+.product-card .item-product__wishlist:hover,
+.product-card .btnProductQuickview:hover,
+.product-card .btn-quick-add:hover ,
+.product-card .btn-quick-add:hover .product-actions button svg {
   color: #bf8e22 !important;
   background-color: #222;
   border-color: #222;
@@ -149,12 +149,12 @@
   padding: 0px;
 }
 
-.product-card-link:hover .product-actions span {
+.product-card:hover .product-actions span {
   opacity: 1;
   display: flex;
   transform: scale(1);
 }
-.product-card-link:hover .product-image {
+.product-card:hover .product-image {
   opacity: 0.4;
 }
 .add-to-cart-button:hover {
