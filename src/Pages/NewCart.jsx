@@ -322,9 +322,9 @@ const NewCart = () => {
             <div className="cart-payment-methods">
               <p>We Accept</p>
               <div className="payment-logos">
-                <img src="./asset/Google-pay.png" alt="googlepay" />
-                <img src="./asset/Phone-pe.png" alt="phone-pe" />
-                <img src="./asset/bank-transfer.png" alt="banktransfer" />
+                <img src="./asset/images/Google-pay.png" alt="googlepay" />
+                <img src="./asset/images/Phone-pe.png" alt="phone-pe" />
+                <img src="./asset/images/bank-transfer.png" alt="banktransfer" />
               </div>
             </div>
           </div>

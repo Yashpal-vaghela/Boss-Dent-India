@@ -246,7 +246,7 @@ const UserData = () => {
           <div className="user-data-sidebar">
             <img
               className="avatar"
-              src="./asset/avtar.png"
+              src="./asset/images/avtar.png"
               alt="User Avatar"
               onClick={() => setSelectedSection("welcome")}
             />
