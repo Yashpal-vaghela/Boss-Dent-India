@@ -69,7 +69,7 @@ const SingleProduct = () => {
       setError(null);
       try {
         const response = await axios.get(
-          `https://bossdentindia.com/wp-json/wp/v2/product/${id}`
+          `https://admin.bossdentindia.com/wp-json/wp/v2/product/${id}`
         );
         setProduct(response.data);
 
@@ -88,13 +88,13 @@ const SingleProduct = () => {
         if (response.data.product_cat && response.data.product_cat.length > 0) {
           const categoryId = response.data.product_cat[0];
           const categoryResponse = await axios.get(
-            `https://bossdentindia.com/wp-json/wp/v2/product_cat/${categoryId}`
+            `https://admin.bossdentindia.com/wp-json/wp/v2/product_cat/${categoryId}`
           );
           setCategory(categoryResponse.data.name);
 
           // Fetch related products in the same category
           const relatedProductsResponse = await axios.get(
-            `https://bossdentindia.com/wp-json/wp/v2/product?product_cat=${categoryId}&exclude=${id}&per_page=20`
+            `https://admin.bossdentindia.com/wp-json/wp/v2/product?product_cat=${categoryId}&exclude=${id}&per_page=20`
           );
           const shuffledProducts = relatedProductsResponse.data.sort(
             () => 0.5 - Math.random()
@@ -110,12 +110,12 @@ const SingleProduct = () => {
         // }
         setSalePrice(response.data.sale_price || response.data.price);
         const weightData = await axios.get(
-          `https://bossdentindia.com/wp-json/custom/v1/product-weight/${id}`
+          `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${id}`
         );
         setWeight(weightData.data.weight);
         try {
           const stockResponse = await axios.get(
-            `https://bossdentindia.com/wp-json/custom/v1/stock-status/${id}`
+            `https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/${id}`
           );
           setStockStatus(stockResponse.data.stock_status);
         } catch (stockError) {

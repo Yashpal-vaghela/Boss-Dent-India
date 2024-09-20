@@ -36,7 +36,7 @@ const UserData = () => {
       try {
         // Fetch user data
         const response = await fetch(
-          "https://bossdentindia.com/wp-json/wp/v2/users/me",
+          "https://admin.bossdentindia.com/wp-json/wp/v2/users/me",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -56,7 +56,7 @@ const UserData = () => {
   
         // Fetch detailed user info
         const userDetailResponse = await fetch(
-          "https://bossdentindia.com/wp-json/custom/v1/user-data",
+          "https://admin.bossdentindia.com/wp-json/custom/v1/user-data",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -73,7 +73,7 @@ const UserData = () => {
   
         // Fetch address data
         const addressResponse = await fetch(
-          "https://bossdentindia.com/wp-json/custom/v1/settings",
+          "https://admin.bossdentindia.com/wp-json/custom/v1/settings",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ const UserData = () => {
         console.error("Error fetching user data:", error);
         toast.error("Error fetching user data");
         // alert("Error fetching user data");
-        navigate("/login");
+        navigate("/my-account");
       }
     },[navigate]
   )
@@ -130,7 +130,7 @@ const UserData = () => {
 
     try {
       const response = await fetch(
-        "https://bossdentindia.com/wp-json/custom/v1/user-details",
+        "https://admin.bossdentindia.com/wp-json/custom/v1/user-details",
         {
           method: "POST",
           headers: {
@@ -175,7 +175,7 @@ const UserData = () => {
     };
     try {
       const response = await fetch(
-        "https://bossdentindia.com/wp-json/custom/v1/change-password",
+        "https://admin.bossdentindia.com/wp-json/custom/v1/change-password",
         {
           method: "POST",
           headers: {
