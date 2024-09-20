@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaUserAlt, FaHeart, FaCartPlus, FaSearch, FaPhoneAlt, FaTimes } from "react-icons/fa";
-import logo from "../images/flogo.png";
+// import logo from "../images/flogo.png";
 import axios from "axios";
 import { useWatchlist } from "../Pages/WatchlistContext";
 // import { useCart } from "../Pages/AddCartContext";
 import "../css/navbar.css";
-import Aos from "aos";
+// import Aos from "aos";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -35,6 +35,8 @@ const NewNav = () => {
     setMenuOpen(false);
   };
 
+
+  
   const handleSearchInputChange = async (e) => {
     const query = e.target.value;
     setSearchQuery(query);
@@ -156,11 +158,11 @@ const NewNav = () => {
     const scrollFunction = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    Aos.init({
-      duration: 1000, // Animation duration in milliseconds
-      once: false,    // Allow animations to trigger multiple times
-      mirror: true,   // Trigger animations on scroll up
-    });
+    // Aos.init({
+    //   duration: 1000, // Animation duration in milliseconds
+    //   once: false,    // Allow animations to trigger multiple times
+    //   mirror: true,   // Trigger animations on scroll up
+    // });
 
     window.addEventListener("scroll", scrollFunction);
 
@@ -239,7 +241,7 @@ const NewNav = () => {
             <div className="logo-main">
               <div className="logo-sub">
                 <Link to="/">
-                  <img src={logo} alt="Logo" />
+                  <img src="/asset/images/flogo.png" alt="Logo" />
                 </Link>
               </div>
             </div>
