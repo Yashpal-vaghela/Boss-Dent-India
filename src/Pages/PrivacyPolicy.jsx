@@ -4,7 +4,7 @@ import BreadCrumbs from '../component/BreadCrumbs'
 const PrivacyPolicy = () => {
   return (
     <div className='privacy-policy'>
-        <div className='header'>
+        <div className='header'  data-aos="fade-up">
             <h1>Privacy Policy</h1>
             <BreadCrumbs></BreadCrumbs>
         </div>

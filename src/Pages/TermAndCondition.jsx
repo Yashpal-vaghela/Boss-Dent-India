@@ -4,7 +4,7 @@ import BreadCrumbs from '../component/BreadCrumbs'
 const TermAndCondition = () => {
   return (
     <div className='terms-container'>
-        <div className='header'>
+        <div className='header' data-aos="fade-up">
             <h1>Terms & Conditions</h1>
             <BreadCrumbs></BreadCrumbs>
         </div>

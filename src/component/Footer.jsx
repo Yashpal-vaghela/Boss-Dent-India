@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/styles.css";
-import flogo from "../images/flogo.png";
+// import flogo from "../images/flogo.png";
 import { FaLocationDot } from "react-icons/fa6";
 import {
   FaFacebook,
@@ -15,7 +15,7 @@ const Footer = () => {
     <footer>
       <div className="footer-container">
         <div className="footer-section" data-aos="fade-up" data-aos-delay="0">
-          <img src={flogo} alt="BossDent" className="logo" />
+          <img src="/asset/images/flogo.png" alt="BossDent" className="logo" />
           <p>
             Bossdentindia (Disposables & Consumables) is an online dental
             product selling store based in Surat Gujrat.
@@ -52,7 +52,7 @@ const Footer = () => {
               <a href="/products">Shop</a>
             </li>
             <li>
-              <a href="/about">About Us</a>
+              <a href="/aboutus">About Us</a>
             </li>
             <li>
               <a href="/watchlist">Wishlist</a>

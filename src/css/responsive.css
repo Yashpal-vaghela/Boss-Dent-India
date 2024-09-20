@@ -259,7 +259,9 @@ body {
   .help-center,
   .refund-policy {
     padding-top: 60px;
-    margin: 30px auto;
+    /* margin: 30px auto; */
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 
   .help-center h1,
@@ -441,8 +443,10 @@ body {
   /* help center and return policy */
   .help-center,
   .refund-policy {
-    padding-top: 80px;
-    margin: 20px auto;
+    padding-top: 70px;
+    /* margin: 20px auto; */
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 
   .help-center h1,
@@ -668,7 +672,7 @@ body {
   /* help center and return policy */
   .help-center,
   .refund-policy {
-    padding-top: 60px;
+    padding-top: 75px;
     margin: 10px auto;
   }
 

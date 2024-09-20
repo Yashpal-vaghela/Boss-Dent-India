@@ -17,6 +17,7 @@ import UserData from '../Pages/Userdata'
 import ForgotPassword from './ForgotPassword'
 import NewNav from './NewNav'
 import NewCart from '../Pages/NewCart'
+
 const Allroutes = () => {
   return (
     <div>

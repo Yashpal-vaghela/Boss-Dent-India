@@ -390,7 +390,7 @@ section.banner-section {
 /* other banner */
 
 .other-banner-main {
-  background-image: url(../images/huge-topsem-1.jpg);
+  background-image: url(../../public/asset/images/huge-topsem-1.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -750,7 +750,7 @@ section.banner-section {
   color: #000;
   margin-right: 20px;
   /* padding: 30px; */
-  background-image: url("../images/element_26.png");
+  background-image: url(../../public/asset/images/element_26.png);
   background-size: cover;
   background-position: right;
   border-radius: 10px;
@@ -1056,6 +1056,7 @@ a {
 }
 .content {
   padding-top: 4%;
+  text-align: justify;
 }
 .content h2 {
   font-family: Source Sans Pro, sans-serif;
@@ -1095,7 +1096,7 @@ a {
   text-align: left;
 }
 .header {
-  background-image: url("../images/element_22.png");
+  background-image: url(../../public/asset/images/element_22.png);
   background-size: cover;
   opacity: 0.5;
   background-position: right;
@@ -1393,10 +1394,10 @@ a {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
 }
-.product-card:hover {
+/* .product-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+} */
 .product-card-link {
   text-decoration: none;
   color: #222;
@@ -1739,5 +1740,11 @@ input {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@media(max-width:991px){
+  .refund-policy {
+    padding-top: 80px;
   }
 }

@@ -5,8 +5,8 @@ import axios from "axios";
 import Loader from "../component/Loader";
 import { MdDelete } from "react-icons/md";
 // import { useCart } from "./AddCartContext";
-import '../css/wishlistresponsive.css';
-import Aos from "aos";
+import "../css/wishlistresponsive.css";
+// import Aos from "aos";
 import { useDispatch } from "react-redux";
 import { Add } from "../redux/Apislice/cartslice";
 import BreadCrumbs from "../component/BreadCrumbs";
@@ -34,7 +34,7 @@ const WatchList = () => {
         );
         const productsData = responses.map((response) => response.data);
         setProducts(productsData);
-  
+
         const stockStatusPromises = productsData.map(async (product) => {
           try {
             const stockResponse = await axios.get(
@@ -42,13 +42,16 @@ const WatchList = () => {
             );
             return { [product.id]: stockResponse.data.stock_status };
           } catch (error) {
-            console.error('Error fetching stock status:', error);
-            return { [product.id]: 'unknown' };
+            console.error("Error fetching stock status:", error);
+            return { [product.id]: "unknown" };
           }
         });
-  
+
         const stockStatusesResults = await Promise.all(stockStatusPromises);
-        const combinedStockStatuses = Object.assign({}, ...stockStatusesResults);
+        const combinedStockStatuses = Object.assign(
+          {},
+          ...stockStatusesResults
+        );
         setStockStatuses(combinedStockStatuses);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -57,31 +60,33 @@ const WatchList = () => {
         setLoading(false);
       }
     };
-  
+
     if (watchlist.length > 0) {
       fetchProducts();
     } else {
       setLoading(false);
     }
-  }, [watchlist]);  
+  }, [watchlist]);
 
-  useEffect(() => {
-    Aos.init({
-      duration: 1000, // Animation duration in milliseconds
-      once: false,    // Allow animations to trigger multiple times
-      mirror: true,   // Trigger animations on scroll up
-    });
-  }, []);
+  // useEffect(() => {
+  //   Aos.init({
+  //     duration: 1000, // Animation duration in milliseconds
+  //     once: false, // Allow animations to trigger multiple times
+  //     mirror: true, // Trigger animations on scroll up
+  //   });
+  // }, []);
 
   const handleRemove = (id) => {
     removeFromWatchlist(id);
-    setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+    setProducts((prevProducts) =>
+      prevProducts.filter((product) => product.id !== id)
+    );
   };
 
   const handleAddToCart = (product) => {
     const stockStatus = stockStatuses[product.id];
-    if (stockStatus === 'instock'){
-      dispatch(Add({...product,quantity:1}))
+    if (stockStatus === "instock") {
+      dispatch(Add({ ...product, quantity: 1 }));
       // addToCart && addToCart({ ...product, quantity: 1 });
     } else {
       toast.info("This product is Out of stock.");
@@ -105,54 +110,70 @@ const WatchList = () => {
   return (
     <div className="watchlist-page">
       <div className="header" data-aos="fade-up">
-        <h1 >Wishlist</h1>
+        <h1>Wishlist</h1>
         <BreadCrumbs></BreadCrumbs>
       </div>
-      {products.length === 0 ?(
-        <p>No products in your watchlist.</p>
-      ):(
+      {products.length === 0 ? (
+        <div className="cart-page-empty">
+          <p>No products in your watchlist</p>
+          <button className="btn btn-dark">
+            <Link to="/products">Add Now</Link>
+          </button>
+        </div>
+      ) : (
         <>
-        <div className="watchlist-content">
-          <div className="watchlist-items" data-aos="fade">
-            {products.map((product) => (
-              <div key={product.id} className="watchlist-item">
-                <div className="watchlist-item-image-wrapper">
-                  <img
-                    src={product.yoast_head_json?.og_image?.[0]?.url}
-                    alt={product.title.rendered}
-                    className={`watchlist-item-image ${imageLoading[product.id]?'loaded' : 'loading'}`}
-                    loading="lazy"
-                    onLoad={() => handleImageLoad(product.id)}
-                  />
-                </div>
-                <div className="watchlist-item-details">
-                  <div className="watchlist-item-info">
-                    <Link to={`/products/${product.id}`} className="watchlist-item-link">
-                      <h3>{product.title.rendered}</h3>
-                    </Link>
-                    <p className="watchlist-item-price">Price :- ₹{product.price}</p>
+          <div className="watchlist-content">
+            <div className="watchlist-items" data-aos="fade">
+              {products.map((product) => (
+                <div key={product.id} className="watchlist-item">
+                  <div className="watchlist-item-image-wrapper">
+                    <img
+                      src={product.yoast_head_json?.og_image?.[0]?.url}
+                      alt={product.title.rendered}
+                      className={`watchlist-item-image ${
+                        imageLoading[product.id] ? "loaded" : "loading"
+                      }`}
+                      loading="lazy"
+                      onLoad={() => handleImageLoad(product.id)}
+                    />
                   </div>
-                  
-                  <div className="actions">
-                    <button
-                        className={`watchlist-add-to-cart ${stockStatuses[product.id] !== 'instock'? 'disable-button':''}`}
-                        disabled={stockStatuses[product.id] !== 'instock'}
+                  <div className="watchlist-item-details">
+                    <div className="watchlist-item-info">
+                      <Link
+                        to={`/products/${product.id}`}
+                        className="watchlist-item-link"
+                      >
+                        <h3>{product.title.rendered}</h3>
+                      </Link>
+                      <p className="watchlist-item-price">
+                        Price :- ₹{product.price}
+                      </p>
+                    </div>
+
+                    <div className="actions">
+                      <button
+                        className={`watchlist-add-to-cart ${
+                          stockStatuses[product.id] !== "instock"
+                            ? "disable-button"
+                            : ""
+                        }`}
+                        disabled={stockStatuses[product.id] !== "instock"}
                         onClick={() => handleAddToCart(product)}
                       >
                         Add to Cart
-                    </button>
-                    <button
-                      className="watchlist-item-remove"
-                      onClick={() => handleRemove(product.id)}
-                    >
-                      <MdDelete />
-                    </button>
+                      </button>
+                      <button
+                        className="watchlist-item-remove"
+                        onClick={() => handleRemove(product.id)}
+                      >
+                        <MdDelete />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
         </>
       )}
     </div>

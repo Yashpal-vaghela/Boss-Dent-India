@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { FaTrashAlt } from "react-icons/fa";
-import googlepay from "../images/Google-pay.png";
-import phonepe from "../images/Phone-pe.png";
+// import googlepay from "../images/Google-pay.png";
+// import phonepe from "../images/Phone-pe.png";
 import banktransfer from "../images/bank-transfer.png";
 import "../css/cartresponsive.css";
-import Aos from "aos";
+// import Aos from "aos";
 import { useDispatch, useSelector } from "react-redux";
 // import CartDefaultFuntion from "../component/CartDefaultFuntion";
 import {
@@ -37,13 +37,13 @@ const NewCart = () => {
     setCanCheckout(allAttributesSelected);
   }, [cartData]);
 
-  useEffect(() => {
-    Aos.init({
-      duration: 1000, // Animation duration in milliseconds
-      once: false, // Allow animations to trigger multiple times
-      mirror: true, // Trigger animations on scroll up
-    });
-  }, []);
+  // useEffect(() => {
+  //   Aos.init({
+  //     duration: 1000, // Animation duration in milliseconds
+  //     once: false, // Allow animations to trigger multiple times
+  //     mirror: true, // Trigger animations on scroll up
+  //   });
+  // }, []);
 
   const handleAttributeSelect = (product, attribute, value) => {
     // console.log("update", attribute, value, product);
@@ -322,9 +322,9 @@ const NewCart = () => {
             <div className="cart-payment-methods">
               <p>We Accept</p>
               <div className="payment-logos">
-                <img src={googlepay} alt="googlepay" />
-                <img src={phonepe} alt="phone-pe" />
-                <img src={banktransfer} alt="banktransfer" />
+                <img src="./asset/Google-pay.png" alt="googlepay" />
+                <img src="./asset/Phone-pe.png" alt="phone-pe" />
+                <img src="./asset/bank-transfer.png" alt="banktransfer" />
               </div>
             </div>
           </div>

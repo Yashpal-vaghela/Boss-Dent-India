@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import Aos from "aos";
+// import Aos from "aos";
 import AlertSuccess from "../component/AlertSuccess"; // Adjust the path as needed
 
 const Signup = () => {
@@ -136,13 +136,13 @@ const Signup = () => {
     setShowPassword(!showPassword);
   };
 
-  useEffect(() => {
-    Aos.init({
-      duration: 1000,
-      once: false,
-      mirror: true,
-    });
-  }, []);
+  // useEffect(() => {
+  //   Aos.init({
+  //     duration: 1000,
+  //     once: false,
+  //     mirror: true,
+  //   });
+  // }, []);
 
   return (
     <div className="signup-container" data-aos="fade">

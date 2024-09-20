@@ -1,11 +1,10 @@
 import React, { useEffect, useState,useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import avtar from '../images/avtar.png';
+// import avtar from '../images/avtar.png';
 import Loader from '../component/Loader';
 import AddressForm from '../component/AddressForm';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import "../css/responsiveuserdata.css"
-import Aos from 'aos';
 import AlertSuccess from '../component/AlertSuccess';
 import { toast } from "react-toastify";
 
@@ -229,13 +228,7 @@ const UserData = () => {
   const togglePasswordVisibility1 = () => {
     setShowNewPassword(!showNewPassword);
   };
-  useEffect(() => {
-    Aos.init({
-      duration: 1000, // Animation duration in milliseconds
-      once: false,    // Allow animations to trigger multiple times
-      mirror: true,   // Trigger animations on scroll up
-    });
-  }, []);
+  
 
   if (!user) {
     return <Loader />;
@@ -253,7 +246,7 @@ const UserData = () => {
           <div className="user-data-sidebar">
             <img
               className="avatar"
-              src={avtar}
+              src="./asset/avtar.png"
               alt="User Avatar"
               onClick={() => setSelectedSection("welcome")}
             />

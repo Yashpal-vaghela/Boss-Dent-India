@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css'; // Import AOS styles
-import about1 from "../images/about-img_1.jpg";
-import about2 from "../images/about-img_2.jpg";
+// import AOS from 'aos';
+// import 'aos/dist/aos.css'; // Import AOS styles
+// import about1 from "../images/about-img_1.jpg";
+// import about2 from "../images/about-img_2.jpg";
 import "../css/about.css";
 import { Link } from 'react-router-dom';
 import { IoIosArrowForward } from "react-icons/io";
 import BreadCrumbs from '../component/BreadCrumbs';
 
 const About = () => {
-  useEffect(() => {
-    AOS.init({
-      duration: 1000, // Animation duration in milliseconds
-      once: false,    // Allow animations to trigger multiple times
-      mirror: true,   // Trigger animations on scroll up
-    });
-  }, []);
+  // useEffect(() => {
+  //   AOS.init({
+  //     duration: 1000, // Animation duration in milliseconds
+  //     once: false,    // Allow animations to trigger multiple times
+  //     mirror: true,   // Trigger animations on scroll up
+  //   });
+  // }, []);
 
   return (
     <div className='container'>
@@ -26,10 +26,10 @@ const About = () => {
       <div className='about-main-page'>
         <div className='about-img-main' data-aos="fade-left">
           <div className='about-img-1'>
-            <img src={about1} alt="" className='about-img-item-1'/>
+            <img src="./asset/images/about-img_1.jpg" alt="" className='about-img-item-1'/>
           </div>
           <div className='about-img-2'>
-            <img src={about2} alt="" className='about-img-item-2' />
+            <img src="./asset/images/about-img_2.jpg" alt="" className='about-img-item-2' />
           </div>
         </div>
         <div className='about-txt-main' data-aos="fade-right">

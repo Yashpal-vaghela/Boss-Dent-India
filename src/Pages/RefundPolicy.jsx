@@ -4,7 +4,7 @@ import BreadCrumbs from '../component/BreadCrumbs'
 const RefundPolicy = () => {
   return (
     <div className='refund-policy'>
-        <div className='header'>
+        <div className='header' data-aos="fade-up">
             <h1>Refund and Returns Policy</h1>
             <BreadCrumbs></BreadCrumbs>
         </div>

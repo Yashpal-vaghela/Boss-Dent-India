@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import contact from "../images/contact.png";
-import Aos from "aos";
+// import contact from "../images/contact.png";
+// import Aos from "aos";
 import axios from "axios";
 import AlertSuccess from "../component/AlertSuccess";
 import BreadCrumbs from "../component/BreadCrumbs";
@@ -65,13 +65,13 @@ const Contact = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    Aos.init({
-      duration: 1000,
-      once: false,
-      mirror: true,
-    });
-  }, []);
+  // useEffect(() => {
+  //   Aos.init({
+  //     duration: 1000,
+  //     once: false,
+  //     mirror: true,
+  //   });
+  // }, []);
 
   return (
     <div className="container">
@@ -285,7 +285,7 @@ const Contact = () => {
           )}
         </div>
         <div className="form-image" data-aos="fade-left" data-aos-delay="400">
-          <img src={contact} alt="Contact" />
+          <img src="./asset/contact.png" alt="Contact" />
         </div>
       </div>
     </div>

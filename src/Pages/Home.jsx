@@ -1,16 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {  useRef, useState } from "react";
 import { Link } from "react-router-dom";
 // import cat1 from "../images/hom_cat-1.png";
 // import cat2 from "../images/home_cat-2.png";
-import cat3 from "../images/home_cat-3.webp";
+// import cat3 from "../images/home_cat-3.webp";
 // import cat4 from "../images/home_cat-4.png";
-import retractor from "../images/retractor.png"
-import gloves from "../images/gloves.png";
-import vincismile from "../images/v2-logo.png";
-import banner1 from "../images/Bossdent-Web-banners-01.jpg";
-import banner2 from "../images/Bossdent-Web-banners-02.jpg";
-import banner3 from "../images/Bossdent-Web-banners-03.jpg";
-import banner4 from "../images/Bossdent-Web-banners-04.jpg";
+// import gloves from "../images/gloves.png";
+// import vincismile from "../images/v2-logo.png";
+// import banner1 from "../images/Bossdent-Web-banners-01.jpg";
+// import banner2 from "../images/Bossdent-Web-banners-02.jpg";
+// import banner3 from "../images/Bossdent-Web-banners-03.jpg";
+// import banner4 from "../images/Bossdent-Web-banners-04.jpg";
 import { FaPlay, FaPause } from "react-icons/fa";
 import { MdLocalShipping, MdSecurity, MdSupportAgent } from "react-icons/md";
 import "../css/othercard.css";
@@ -25,8 +24,8 @@ import "swiper/css/navigation";
 
 // import required modules
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-import Aos from "aos";
 import Cards from "../component/Cards";
+// import SimpleSlider from "../component/SimpleSlider";
 
 const Home = () => {
   const [isAutoplay, setIsAutoplay] = useState(true);
@@ -53,13 +52,7 @@ const Home = () => {
   const handleImageLoad = () => {
     setIsLoaded(true);
   }
-  useEffect(() => {
-    Aos.init({
-      duration: 1000, // Animation duration in milliseconds
-      once: false, // Allow animations to trigger multiple times
-      mirror: true, // Trigger animations on scroll up
-    });
-  }, []);
+ 
   return (
     <div className="home-main">
       {/* Banner Section */}
@@ -190,7 +183,7 @@ const Home = () => {
             >
               <div className="banneer-img-main">
                 <img
-                  src={banner1}
+                  src="./asset/images/Bossdent-Web-banners-01.jpg"
                   alt="banner1"
                   className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                   onLoad={handleImageLoad}
@@ -220,7 +213,7 @@ const Home = () => {
             >
               <div className="banneer-img-main">
                 <img
-                  src={banner2}
+                  src="./asset/images/Bossdent-Web-banners-02.jpg"
                   alt="banner2"
                   className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                   onLoad={handleImageLoad}
@@ -240,7 +233,7 @@ const Home = () => {
             >
               <div className="banneer-img-main">
                 <img
-                  src={banner3}
+                  src="./asset/images/Bossdent-Web-banners-03.jpg"
                   alt="banner3"
                   className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                   onLoad={handleImageLoad}
@@ -260,7 +253,7 @@ const Home = () => {
             >
               <div className="banneer-img-main">
                 <img
-                  src={banner4}
+                  src="./asset/images/Bossdent-Web-banners-04.jpg"
                   alt="banner4"
                   className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                   onLoad={handleImageLoad}
@@ -280,6 +273,7 @@ const Home = () => {
             </Link>
           </SwiperSlide>
         </Swiper>
+        {/* <SimpleSlider/> */}
         <button
           onClick={toggleAutoplay}
           style={{
@@ -311,7 +305,7 @@ const Home = () => {
               <Link to="/products?category=116">
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img src={gloves} alt="gloves" />
+                    <img src="./asset/images/gloves.png" alt="gloves" />
                   </div>
                 </div>
                 <div className="home-cat-txt">
@@ -327,7 +321,7 @@ const Home = () => {
               <Link to="/products?category=75">
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img src={cat3} alt="General Dentist" />
+                    <img src="./asset/images/home_cat-3.webp" alt="General Dentist" />
                   </div>
                 </div>
                 <div className="home-cat-txt">
@@ -343,7 +337,7 @@ const Home = () => {
               <Link to="/products?category=127">
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img src={vincismile} alt="Vincismile" />
+                    <img src="./asset/images/v2-logo.png" alt="Vincismile" />
                   </div>
                 </div>
                 <div className="home-cat-txt">
@@ -360,7 +354,7 @@ const Home = () => {
               <Link to="/products?category=125">
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img src={retractor} alt="retractor" />
+                    <img src="./asset/images/retractor.png" alt="retractor" />
                   </div>
                 </div>
                 <div className="home-cat-txt">

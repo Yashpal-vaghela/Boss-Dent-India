@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import axios from "axios";
-import Aos from "aos";
+// import Aos from "aos";
 import AlertSuccess from "../component/AlertSuccess"; // Import the AlertSuccess component
 import { toast } from "react-toastify";
 
@@ -38,13 +38,13 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  useEffect(() => {
-    Aos.init({
-      duration: 1000,
-      once: false,
-      mirror: true,
-    });
-  }, []);
+  // useEffect(() => {
+  //   Aos.init({
+  //     duration: 1000,
+  //     once: false,
+  //     mirror: true,
+  //   });
+  // }, []);
 
   return (
     <div className="login-container" data-aos="fade">

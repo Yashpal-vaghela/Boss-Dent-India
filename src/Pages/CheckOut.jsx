@@ -173,13 +173,15 @@ const CheckOut = () => {
   return (
     <>
       <div className="checkout-page1 container">
-        <div className="header">
+        <div className="header" data-aos="fade-up">
           <h1 className="checkout-title">Checkout</h1>
           <BreadCrumbs></BreadCrumbs>
         </div>
         <form onSubmit={formik?.handleSubmit}>
           <div className="row checkout-content-wrapper position-relative">
-            <div className="form-wrap col-lg-7 col-md-7 col-12">
+            <div className="form-wrap col-lg-7 col-md-7 col-12" data-aos="fade-right"
+    //  data-aos-anchor-placement="top-bottom"
+     >
               <h2>Billing Address</h2>
               <div className="form-inside">
                 <div
@@ -337,7 +339,7 @@ const CheckOut = () => {
                 </div>
               </div>
             </div>
-            <div className="col-lg-5 col-md-5 col-12 ">
+            <div className="col-lg-5 col-md-5 col-12" data-aos="fade-left">
               <div className="order-summary-wrapper">
                 <h2>order summary</h2>
 

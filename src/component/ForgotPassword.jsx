@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
-import Aos from 'aos';
+// import Aos from 'aos';
 import AlertSuccess from './AlertSuccess';
 import "../css/forgotpassword.css";
 import { toast } from "react-toastify";
@@ -113,13 +113,13 @@ const ForgotPassword = () => {
         validatePassword(value);
     };
 
-    useEffect(() => {
-        Aos.init({
-          duration: 1000, // Animation duration in milliseconds
-          once: false,    // Allow animations to trigger multiple times
-          mirror: true,   // Trigger animations on scroll up
-        });
-      }, []);
+    // useEffect(() => {
+    //     Aos.init({
+    //       duration: 1000, // Animation duration in milliseconds
+    //       once: false,    // Allow animations to trigger multiple times
+    //       mirror: true,   // Trigger animations on scroll up
+    //     });
+    //   }, []);
     
 
     return (

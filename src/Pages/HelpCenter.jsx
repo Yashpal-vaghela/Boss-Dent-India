@@ -48,7 +48,7 @@ const HelpCenter = () => {
       };
   return (
     <div className="help-center container">
-      <div className='header'>
+      <div className='header' data-aos="fade-up">
         <h1>Help Center</h1>
         <BreadCrumbs></BreadCrumbs>
       </div>
