@@ -36,6 +36,7 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const [alertMessage, setAlertMessage] = useState("");
   const [selectedColor, setSelectedColor] = useState(null);
+  const [imageUrl, setImageUrl] = useState();
   const colors = [
     {
       blue: "#3385fc",
@@ -77,7 +78,8 @@ const SingleProduct = () => {
         if (response.data.yoast_head_json?.og_image?.[0]?.url) {
           const img = new Image();
           img.src = response.data.yoast_head_json.og_image[0].url;
-        } 
+          setImageUrl(img.src);
+        }
 
         // Extract and set variations if available
         if (response.data.variations) {
@@ -210,6 +212,7 @@ const SingleProduct = () => {
     }
   };
 
+  // let imageUrl = product.yoast_head_json.og_image[0].url;
   return (
     <>
       {loading ? (
@@ -235,7 +238,7 @@ const SingleProduct = () => {
                   className={`single-product-img ${
                     isImageLoaded ? "loaded" : ""
                   }`}
-                  src={product.yoast_head_json?.og_image?.[0]?.url}
+                  src={imageUrl.replace("https://", "https://admin.")}
                   alt={product.title?.rendered}
                   onLoad={() => setIsImageLoaded(true)}
                 />
@@ -258,7 +261,7 @@ const SingleProduct = () => {
                 Stock Status:{" "}
                 {stockStatus === "instock" ? "In Stock" : "Out of Stock"}
               </h4>
-             
+
               {variations.length > 0 &&
                 Object.keys(variations[0]?.attributes || {}).map(
                   (attribute, index) => {
@@ -453,40 +456,42 @@ const SingleProduct = () => {
                 },
               }}
             >
-              {relatedProducts.map((relatedProduct) => (
-                <SwiperSlide key={relatedProduct.id}>
-                  <div className="related-product-card">
-                    <a href={`/products/${relatedProduct.id}`}>
-                      <img
-                        src={relatedProduct.yoast_head_json?.og_image?.[0]?.url}
-                        alt={relatedProduct.title?.rendered}
-                      />
-                      <h4>{relatedProduct.title?.rendered}</h4>
-                      <p>
-                        {relatedProduct.price
-                          ? `Price: ${relatedProduct.price} ₹`
-                          : "Price not available"}
-                      </p>
-                    </a>
-                    <div className="related-icons">
-                      <span
-                        className={`heart-icon ${
-                          !watchlist.includes(relatedProduct.id)
-                            ? ""
-                            : "inactive-heart"
-                        }`}
-                        onClick={() => addToWatchlist(relatedProduct.id)}
-                      >
-                        {watchlist.includes(relatedProduct.id) ? (
-                          <FaHeart />
-                        ) : (
-                          <FaRegHeart />
-                        )}
-                      </span>
-                      <span
-                        className="add-to-cart-icon"
-                        onClick={
-                          () => {
+              {relatedProducts.map((relatedProduct) => {
+                let relatedImageUrl = relatedProduct.yoast_head_json?.og_image?.[0]?.url;
+                return (
+                  <SwiperSlide key={relatedProduct.id}>
+                    <div className="related-product-card">
+                      <a href={`/products/${relatedProduct.id}`}>
+                        <img
+                          src={
+                            relatedImageUrl.replace("https://","https://admin.")                          }
+                          alt={relatedProduct.title?.rendered}
+                        />
+                        <h4>{relatedProduct.title?.rendered}</h4>
+                        <p>
+                          {relatedProduct.price
+                            ? `Price: ${relatedProduct.price} ₹`
+                            : "Price not available"}
+                        </p>
+                      </a>
+                      <div className="related-icons">
+                        <span
+                          className={`heart-icon ${
+                            !watchlist.includes(relatedProduct.id)
+                              ? ""
+                              : "inactive-heart"
+                          }`}
+                          onClick={() => addToWatchlist(relatedProduct.id)}
+                        >
+                          {watchlist.includes(relatedProduct.id) ? (
+                            <FaHeart />
+                          ) : (
+                            <FaRegHeart />
+                          )}
+                        </span>
+                        <span
+                          className="add-to-cart-icon"
+                          onClick={() => {
                             dispatch(
                               Add({
                                 ...relatedProduct,
@@ -495,15 +500,15 @@ const SingleProduct = () => {
                               })
                             );
                             setAlertMessage("Product added to cart!");
-                          }
-                        }
-                      >
-                        <FaCartPlus />
-                      </span>
+                          }}
+                        >
+                          <FaCartPlus />
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </SwiperSlide>
-              ))}
+                  </SwiperSlide>
+                );
+              })}
             </Swiper>
           </div>
         </div>
