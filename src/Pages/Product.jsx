@@ -429,7 +429,7 @@ const Product = () => {
                         >
                           {imageUrl && (
                             <img
-                              src={imageUrl.replace("https://","https://admin.")}
+                              src={product.yoast_head_json.og_image[0].url}
                               alt={product.title.rendered}
                               className="product-image"
                               loading="lazy"

@@ -78,7 +78,7 @@ const SingleProduct = () => {
         if (response.data.yoast_head_json?.og_image?.[0]?.url) {
           const img = new Image();
           img.src = response.data.yoast_head_json.og_image[0].url;
-          setImageUrl(img.src);
+          // setImageUrl(img.src);
         }
 
         // Extract and set variations if available
@@ -238,7 +238,8 @@ const SingleProduct = () => {
                   className={`single-product-img ${
                     isImageLoaded ? "loaded" : ""
                   }`}
-                  src={imageUrl.replace("https://", "https://admin.")}
+                  src={product.yoast_head_json.og_image[0].url}
+                  // src={imageUrl.replace("https://", "https://admin.")}
                   alt={product.title?.rendered}
                   onLoad={() => setIsImageLoaded(true)}
                 />
@@ -457,14 +458,17 @@ const SingleProduct = () => {
               }}
             >
               {relatedProducts.map((relatedProduct) => {
-                let relatedImageUrl = relatedProduct.yoast_head_json?.og_image?.[0]?.url;
+                // let relatedImageUrl =
+                //   relatedProduct.yoast_head_json?.og_image?.[0]?.url;
                 return (
                   <SwiperSlide key={relatedProduct.id}>
                     <div className="related-product-card">
                       <a href={`/products/${relatedProduct.id}`}>
                         <img
                           src={
-                            relatedImageUrl.replace("https://","https://admin.")                          }
+                            relatedProduct.yoast_head_json?.og_image?.[0]?.url
+                            // relatedImageUrl.replace("https://","https://admin.")
+                          }
                           alt={relatedProduct.title?.rendered}
                         />
                         <h4>{relatedProduct.title?.rendered}</h4>

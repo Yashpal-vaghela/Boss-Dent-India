@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaTrashAlt } from "react-icons/fa";
 // import googlepay from "../images/Google-pay.png";
@@ -55,7 +55,7 @@ const NewCart = () => {
     );
   };
 
-  const deliveryChargeFunction = useCallback(() => {
+  const AdddeliveryCharge = () => {
     const count = cartData?.cartItems?.reduce((total, count) => {
       return total + (Number(count?.weight) * count.qty) / 1000;
     }, 0);
@@ -66,15 +66,15 @@ const NewCart = () => {
     } else if (count > 3) {
       setDeliveryCharge(65);
     }
-    console.log(deliveryCharge)
+    // console.log(deliveryCharge)
     dispatch(DeliveryCharge(deliveryCharge));
-  },[cartData, dispatch, deliveryCharge]);
+  };
 
   const handleAddQuantity = (e, product) => {
     e.preventDefault();
     // console.warn("cartitem", product, product.qty);
     dispatch(Add({ ...product, qty: product.qty }));
-    deliveryChargeFunction();
+    AdddeliveryCharge();
   };
 
   const handleSubtractQuantity = (e, product) => {
@@ -83,7 +83,7 @@ const NewCart = () => {
     if (product.qty >= 1) {
       dispatch(decreaseCart(product));
     }
-    deliveryChargeFunction();
+    AdddeliveryCharge();
   };
 
   const handleRemoveItem = (e, product) => {
@@ -104,9 +104,9 @@ const NewCart = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    deliveryChargeFunction();
-    console.log("deliveryCharge",deliveryCharge)
-  }, [deliveryCharge, dispatch, deliveryChargeFunction]);
+    AdddeliveryCharge();
+    // console.log("deliveryCharge",deliveryCharge)
+  }, [deliveryCharge]);
 
   const grandTotal = cartData?.cartTotalAmount + deliveryCharge;
 
@@ -134,7 +134,7 @@ const NewCart = () => {
           <div className="cart-items">
             {cartData.cartItems?.length !== 0 &&
               cartData.cartItems?.map((product) => {
-                let imageUrl = product?.yoast_head_json?.og_image?.[0]?.url
+                // let imageUrl = product?.yoast_head_json?.og_image?.[0]?.url
                 return (
                   <div
                     key={`${product.id}-${JSON.stringify(
@@ -144,7 +144,7 @@ const NewCart = () => {
                   >
                     <div className="cart-item-image-wrapper">
                       <img
-                        src={imageUrl.replace("https://","https://admin.")}
+                        src={product?.yoast_head_json?.og_image?.[0]?.url}
                         alt={product?.title?.rendered}
                         className={`cart-item-image ${
                           imageLoading[product.id] ? "loaded" : "loading"

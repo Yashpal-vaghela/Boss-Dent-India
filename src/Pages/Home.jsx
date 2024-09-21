@@ -183,7 +183,8 @@ const Home = () => {
             >
               <div className="banneer-img-main">
                 <img
-                  src="/asset/images/Bossdent-Web-banners-01.jpg"
+                 src="/asset/images/Bossdent ( Web banners )-01.gif"
+                  // src="/asset/images/Bossdent-Web-banners-01.jpg"
                   alt="banner1"
                   className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                   onLoad={handleImageLoad}
@@ -213,7 +214,8 @@ const Home = () => {
             >
               <div className="banneer-img-main">
                 <img
-                  src="/asset/images/Bossdent-Web-banners-02.jpg"
+                 src="/asset/images/Bossdent ( Web banners )-02.gif"
+                  // src="/asset/images/Bossdent-Web-banners-02.jpg"
                   alt="banner2"
                   className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                   onLoad={handleImageLoad}
@@ -233,7 +235,8 @@ const Home = () => {
             >
               <div className="banneer-img-main">
                 <img
-                  src="/asset/images/Bossdent-Web-banners-03.jpg"
+                  // src="/asset/images/Bossdent-Web-banners-03.jpg"
+                   src="/asset/images/Bossdent ( Web banners )-03.gif"
                   alt="banner3"
                   className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                   onLoad={handleImageLoad}
@@ -253,7 +256,8 @@ const Home = () => {
             >
               <div className="banneer-img-main">
                 <img
-                  src="/asset/images/Bossdent-Web-banners-04.jpg"
+                  src="/asset/images/Bossdent ( Web banners )-04.gif"
+                  // src="/asset/images/Bossdent-Web-banners-04.jpg"
                   alt="banner4"
                   className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                   onLoad={handleImageLoad}
@@ -274,6 +278,7 @@ const Home = () => {
           </SwiperSlide>
         </Swiper>
         {/* <SimpleSlider/> */}
+
         <button
           onClick={toggleAutoplay}
           style={{
@@ -409,7 +414,7 @@ const Home = () => {
                   data-aos-delay="0"><MdLocalShipping /></span>
               </div>
               <div className="other-card-title-main">
-                <h2 className="other-card-title" data-aos="fade-left"
+                <h2 className="other-card-title mb-0" data-aos="fade-left"
                   data-aos-delay="0">
                   FAST SHIPPING
                 </h2>
@@ -425,7 +430,7 @@ const Home = () => {
               </div>
               <div className="other-card-title-main" data-aos="fade-left"
                 data-aos-delay="200">
-                <h2 className="other-card-title">
+                <h2 className="other-card-title mb-0">
                   SECURE PAYMENT
                 </h2>
               </div>
@@ -439,7 +444,7 @@ const Home = () => {
                 </span>
               </div>
               <div className="other-card-title-main">
-                <h2 className="other-card-title" data-aos="fade-left"
+                <h2 className="other-card-title mb-0" data-aos="fade-left"
                   data-aos-delay="400">
                   BEST SUPPORT
                 </h2>
