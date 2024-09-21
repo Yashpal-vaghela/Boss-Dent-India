@@ -9,11 +9,11 @@ import BackToTopButton from "./component/BackToTopButton";
 import NewNav from "./component/NewNav";
 // import { AddCartProvider } from "./Pages/AddCartContext";
 import { WatchlistProvider } from "./Pages/WatchlistContext";
-import { BrowserRouter, useLocation, useNavigate, useRoutes } from "react-router-dom";
+import { BrowserRouter, useLocation } from "react-router-dom";
 import CartDefaultFuntion from "./component/CartDefaultFuntion";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Rings, RotatingLines } from "react-loader-spinner";
+import { RotatingLines } from "react-loader-spinner";
 import { useState, useEffect } from "react";
 import Aos from 'aos';
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 // import contact from "../images/contact.png";
 // import Aos from "aos";
 import axios from "axios";

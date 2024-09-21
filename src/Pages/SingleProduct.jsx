@@ -36,7 +36,7 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const [alertMessage, setAlertMessage] = useState("");
   const [selectedColor, setSelectedColor] = useState(null);
-  const [imageUrl, setImageUrl] = useState();
+  // const [imageUrl, setImageUrl] = useState();
   const colors = [
     {
       blue: "#3385fc",

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 // import AOS from 'aos';
 // import 'aos/dist/aos.css'; // Import AOS styles
 // import about1 from "../images/about-img_1.jpg";
