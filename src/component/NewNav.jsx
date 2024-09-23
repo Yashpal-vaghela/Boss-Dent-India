@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaUserAlt, FaHeart, FaCartPlus, FaSearch, FaPhoneAlt, FaTimes } from "react-icons/fa";
-// import logo from "../images/flogo.png";
 import axios from "axios";
 import { useWatchlist } from "../Pages/WatchlistContext";
-// import { useCart } from "../Pages/AddCartContext";
 import "../css/navbar.css";
-// import Aos from "aos";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -22,8 +19,7 @@ const NewNav = () => {
   const [showAltMenu, setShowAltMenu] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
-  const { watchlist } = useWatchlist(); 
-  // const { cart } = useCart(); 
+  const { watchlist } = useWatchlist();  
   const navigate = useNavigate();
   const cartData = useSelector((state)=>state.cart.cartItems)
 
@@ -263,7 +259,7 @@ const NewNav = () => {
                       </Link>
                     </li>
                     <li onClick={closeMenu}>
-                      <Link to="/my-account" className="menu-link">
+                      <Link to="/user" className="menu-link">
                         MY ACCOUNT
                       </Link>
                     </li>
@@ -316,12 +312,12 @@ const NewNav = () => {
                     </div>
                   )}
                   <div className="user-icon">
-                    <Link to="/your-data">
+                    <Link to="/my-account">
                       <FaUserAlt />
                     </Link>
                   </div>
                   <div className="watchlisticon">
-                    <Link to="/watchlist">
+                    <Link to="/wishlist">
                       <FaHeart />
                       <span>{watchlist.length}</span>
                     </Link>
@@ -366,7 +362,7 @@ const NewNav = () => {
                       </Link>
                     </li>
                     <li onClick={closeMenu}>
-                      <Link to="/my-account" className="menu-link">
+                      <Link to="/user" className="menu-link">
                         MY ACCOUNT
                       </Link>
                     </li>
@@ -382,12 +378,12 @@ const NewNav = () => {
                     {isMobile && (
                       <>
                         <div className="user-icon">
-                          <Link to="/your-data" onClick={closeMenu}>
+                          <Link to="/my-account" onClick={closeMenu}>
                             <FaUserAlt />
                           </Link>
                         </div>
                         <div className="watchlisticon">
-                          <Link to="/watchlist" onClick={closeMenu}>
+                          <Link to="/wishlist" onClick={closeMenu}>
                             <FaHeart />
                             <span>{watchlist.length}</span>
                           </Link>

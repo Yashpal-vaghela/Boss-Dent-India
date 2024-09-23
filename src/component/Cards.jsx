@@ -23,8 +23,8 @@ const Cards = () => {
     { capimage: "/asset/images/Green-surgon-cap.jpg", capname: "Tieon Surgeon Cap (Green)" },
   ];
   const airwater = [
-    { airimage: "/asset/images/All-airwater.jpg", airname: "Air Water Syringe" },
-    { airimage: "/asset/images/Airwater-1.jpg", airname: "Air Water Syringe (Radium)" },
+    { airimage: "/asset/images/All-airwater (2).jpg", airname: "Air Water Syringe" },
+    { airimage: "/asset/images/Airwater-11.jpg", airname: "Air Water Syringe (Radium)" },
     { airimage: "/asset/images/Airwater-9.jpg", airname: "Air Water Syringe (Purple)" },
     { airimage: "/asset/images/Airwater-8.jpg", airname: "Air Water Syringe (Yellow)" },
     { airimage: "/asset/images/Airwater-7.jpg", airname: "Air Water Syringe (Orange)" },

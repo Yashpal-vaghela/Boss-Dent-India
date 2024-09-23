@@ -125,19 +125,6 @@ const Product = () => {
     setIsLoggedIn(userLoggedIn);
   }, []);
 
-  useEffect(() => {
-    if (category !== undefined) {
-      fetchProducts();
-    }
-  }, [
-    currentPage,
-    productsPerPage,
-    category,
-    minPrice,
-    maxPrice,
-    fetchProducts,
-  ]);
-
   // useEffect(() => {
   //   if (alertMessage) {
   //     const timer = setTimeout(() => {
@@ -150,7 +137,7 @@ const Product = () => {
   // console.log(response.data);
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]);
+  }, [fetchProducts, currentPage]);
 
   useEffect(() => {
     if (alertMessage) {
@@ -455,7 +442,7 @@ const Product = () => {
                           }}
                         >
                           Price: {product.price} ₹
-                          <span
+                          {/* <span
                             style={{ color: "#bf8e22" }}
                             id="top_nav"
                           >
@@ -532,7 +519,7 @@ const Product = () => {
                                 </Link>
                               </div>
                             </div>
-                          </span>
+                          </span> */}
                         </h3>
                         <div className="product-actions" >
                           <button
@@ -555,7 +542,7 @@ const Product = () => {
                             data-placement="top"
                             title=""
                             data-original-title="Quick add"
-                            disabled={stockStatuses[product.id] !== "instock"}
+                            // disabled={stockStatuses[product.id] !== "instock"}
                             onClick={(e) => handleAddToCart(e, product)}
                           >
                             <FaCartPlus />
