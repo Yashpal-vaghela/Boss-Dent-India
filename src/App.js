@@ -7,7 +7,6 @@ import "./css/responsive.css";
 import "./css/product.css";
 import BackToTopButton from "./component/BackToTopButton";
 import NewNav from "./component/NewNav";
-// import { AddCartProvider } from "./Pages/AddCartContext";
 import { WatchlistProvider } from "./Pages/WatchlistContext";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import CartDefaultFuntion from "./component/CartDefaultFuntion";
@@ -15,33 +14,19 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { RotatingLines } from "react-loader-spinner";
 import { useState, useEffect } from "react";
-import Aos from 'aos';
+import Aos from "aos";
 
 // Main App Component
-const RouteChangeListener = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.log('Route changed to:', location.pathname);
-  }, [location]);
-
-  return null;
-};
-
 const App = () => {
   const [loading, setLoading] = useState(true);
-  // const location = useLocation();
   useEffect(() => {
-    // Simulate data fetching
-    // console.log('Route changed to:', location.pathname);
     setTimeout(() => {
-      // setData({ message: 'Data fetched successfully!' });
       setLoading(false);
-    }, 500); // Simulate a 2-second delay
+    }, 500); 
     Aos.init({
       duration: 1000, // Animation duration in milliseconds
-      once: false,    // Allow animations to trigger multiple times
-      mirror: true,   // Trigger animations on scroll up
+      once: false, // Allow animations to trigger multiple times
+      mirror: true, // Trigger animations on scroll up
     });
   }, []);
   return (
@@ -60,13 +45,12 @@ const App = () => {
             alignIems: "center",
             justifyContent: "center",
             backgroundcolot: "transparent",
-            color:"rgb(195, 148, 40)"
+            color: "rgb(195, 148, 40)",
           }}
           wrapperClass
         ></RotatingLines>
       ) : (
         <BrowserRouter>
-        <RouteChangeListener/>
           <WatchlistProvider>
             <CartDefaultFuntion></CartDefaultFuntion>
             <ToastContainer />

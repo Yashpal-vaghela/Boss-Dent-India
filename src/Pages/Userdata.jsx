@@ -235,11 +235,11 @@ const UserData = () => {
   }
 
   return (
-    <div className="user-data">
+    <div className="user-data container">
       <div className='header' data-aos="fade-up">
         <h1>User Data</h1>
-        <nav>
-          <a href='/'>Home</a> &gt; <span>User Data</span>
+        <nav className="bread-crumbs">
+          <a href='/'>Home</a>   <i className="fa-solid fa-angle-right"></i> <span>User Data</span>
         </nav>
       </div>
         <div className="user-data-container" data-aos="fade">

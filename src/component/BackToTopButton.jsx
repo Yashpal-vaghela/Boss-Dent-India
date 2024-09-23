@@ -48,6 +48,7 @@ const BackToTopButton = () => {
             padding: '13px 15px',
             cursor: 'pointer',
             transition: 'background-color 0.5s ease', 
+            zIndex:1
           }}
         >
           <span

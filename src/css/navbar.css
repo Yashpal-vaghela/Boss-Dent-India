@@ -498,6 +498,9 @@
 }
   
 @media (max-width: 991px) {
+  .top-nav{
+    display: none !important;
+  }
     .main-nav-sub {
         z-index: 1;
         position: fixed;

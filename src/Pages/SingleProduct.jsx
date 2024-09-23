@@ -12,8 +12,8 @@ import { Autoplay, Navigation } from "swiper/modules";
 import { FaCartPlus } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { Add, updateSize } from "../redux/Apislice/cartslice";
-import ReviewList from "./ReviewList";
-import ReviewForm from "./ReviewForm";
+import ReviewList from "../component/ReviewList";
+import ReviewForm from "../component/ReviewForm";
 import AlertSuccess from "../component/AlertSuccess";
 import { toast } from "react-toastify";
 
@@ -223,9 +223,12 @@ const SingleProduct = () => {
         <div className="single-product">
           <div className="header">
             <h1 className="shop-title">Shop</h1>
-            <nav>
-              <a href="/">Home</a> &gt; <a href="/products">Shop</a> &gt;{" "}
-              <a href={`/category/${category}`}>{category}</a> &gt;{" "}
+            <nav className="bread-crumbs">
+              <a href="/">Home</a> <i className="fa-solid fa-angle-right"></i>{" "}
+              <a href="/products">Shop</a>{" "}
+              <i className="fa-solid fa-angle-right"></i>
+              <a href={`/category/${category}`}>{category}</a>{" "}
+              <i className="fa-solid fa-angle-right"></i>
               <span>{product.title?.rendered}</span>
             </nav>
           </div>
@@ -441,7 +444,7 @@ const SingleProduct = () => {
               slidesPerView={1}
               navigation
               autoplay={{
-                delay: 2000, // Delay between slides in ms
+                delay: 9000, // Delay between slides in ms
                 disableOnInteraction: false, // Continue autoplay after user interactions
               }}
               loop={true}
@@ -471,7 +474,7 @@ const SingleProduct = () => {
                           }
                           alt={relatedProduct.title?.rendered}
                         />
-                        <h4>{relatedProduct.title?.rendered}</h4>
+                        <h4 className="related-product-title">{relatedProduct.title?.rendered}</h4>
                         <p>
                           {relatedProduct.price
                             ? `Price: ${relatedProduct.price} ₹`
