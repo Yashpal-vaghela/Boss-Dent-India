@@ -89,7 +89,7 @@ const Product = () => {
             [product.id]: allStockStatuses[index].stock_status || "unknown", // Default to "unknown" if not found
           };
         });
-        console.log('stcok',stockStatusesResults)
+        // console.log('stcok',stockStatusesResults)
 
         // const stockStatusPromises = paginatedProducts.map(async (product) => {
         //   try {
@@ -153,7 +153,9 @@ const Product = () => {
 
   const handleCategoryClick = (newCategory) => {
     // console.log("category", newCategory);
-    if (newCategory !== category) {
+    if (newCategory === null) {
+      navigate("/products");
+    } else if (newCategory !== category) {
       setCurrentPage(1);
       navigate(`?category=${newCategory}`);
     }
@@ -299,7 +301,7 @@ const Product = () => {
                       }`}
                       onClick={() => handleCategoryClick(116)}
                     >
-                      All Gloves
+                      Gloves
                     </li>
                     <li
                       className={`category ${
@@ -307,7 +309,7 @@ const Product = () => {
                       }`}
                       onClick={() => handleCategoryClick(117)}
                     >
-                      All Caps
+                      Caps
                     </li>
                     <li
                       className={`category ${
@@ -315,7 +317,7 @@ const Product = () => {
                       }`}
                       onClick={() => handleCategoryClick(118)}
                     >
-                      All Mask
+                      Masks
                     </li>
                     <li
                       className={`category ${
@@ -323,7 +325,7 @@ const Product = () => {
                       }`}
                       onClick={() => handleCategoryClick(119)}
                     >
-                      All Draps
+                      Draps
                     </li>
                     <li
                       className={`category ${
@@ -331,7 +333,7 @@ const Product = () => {
                       }`}
                       onClick={() => handleCategoryClick(122)}
                     >
-                      All Sleeve
+                      Sleeves
                     </li>
                     <li
                       className={`category ${
@@ -339,7 +341,7 @@ const Product = () => {
                       }`}
                       onClick={() => handleCategoryClick(125)}
                     >
-                      All Retractor
+                      Retractors
                     </li>
                     <li
                       className={`category ${
@@ -347,7 +349,7 @@ const Product = () => {
                       }`}
                       onClick={() => handleCategoryClick(123)}
                     >
-                      All Tips
+                      Tips
                     </li>
                     <li
                       className={`category ${
@@ -355,7 +357,7 @@ const Product = () => {
                       }`}
                       onClick={() => handleCategoryClick(124)}
                     >
-                      All Trays
+                      Trays
                     </li>
                     <li
                       className={`category ${
@@ -363,7 +365,7 @@ const Product = () => {
                       }`}
                       onClick={() => handleCategoryClick(126)}
                     >
-                      All Wedges
+                      Wedges
                     </li>
                     <li
                       className={`category ${

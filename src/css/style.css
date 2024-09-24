@@ -377,13 +377,13 @@ section.banner-section {
 }
 
 .home-cat-txt h1 {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 22px;
-  font-weight: 500;
+  font-weight: 550;
   text-align: center;
   color: black;
   cursor: pointer;
-  font-family: Source Sans Pro, sans-serif;
+  font-family: lato, sans-serif;
   transition: all 0.2s;
 }
 
