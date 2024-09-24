@@ -2,15 +2,17 @@
  .mySwiper-1{
   width: 240px;
   height: 320px;
+  margin: 0px;
  }
 
  .cards-main{
   margin-top: 90px;
-  margin-bottom: 100px;
+  margin-bottom: 5%;
  }
 
  .variable-cards-main{
   margin-top: 50px;
+  overflow: hidden;
  }
 
 .variable-cards-title{
@@ -27,7 +29,8 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  gap: 40px;
+  /* gap: 40px; */
+  margin-left: -40px;
 }
 .card-product-name {
   position: absolute;
@@ -190,4 +193,48 @@
   font-size: 22px;
   font-weight: bold;
   color: #fff;
+}
+
+/* cards responsive css */
+@media(max-width:1045px){
+  .cards-1-main{
+    margin-left: 40px;
+    gap: 30px;
+  }
+  .cards-1-main .cards-1{
+    width: 30%;
+    margin-bottom: 30px;
+  }
+}
+@media(max-width:990px){
+  .cards-1-main{
+    margin-left: 30px;
+  }
+  .cards-1-main .cards-1{
+    width: 34%;
+    margin-bottom: 50px;
+  }
+}
+@media(max-width:768px){
+  .cards-1-main{
+    margin-left: 20px;
+    gap: 50px;
+  }
+  .cards-1-main .cards-1{
+    width: 40%;
+  }
+}
+@media(max-width:650px){
+  .cards-1-main{
+    gap: 40px;
+  }
+  .cards-1-main .cards-1{
+    width: 50%;
+    margin-bottom: 10px;
+  }
+}
+@media(max-width:576px){
+  .cards-1-main{
+    margin-left: -35px;
+  }
 }

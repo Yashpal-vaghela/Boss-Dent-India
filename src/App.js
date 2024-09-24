@@ -5,6 +5,8 @@ import "./css/checkout.css";
 import "./css/style.css";
 import "./css/responsive.css";
 import "./css/product.css";
+import "./css/success.css";
+import "./css/navbar1.css";
 import BackToTopButton from "./component/BackToTopButton";
 import NewNav from "./component/NewNav";
 import { WatchlistProvider } from "./Pages/WatchlistContext";
@@ -15,6 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { RotatingLines } from "react-loader-spinner";
 import { useState, useEffect } from "react";
 import Aos from "aos";
+import NewNav1 from "./component/NewNav1";
 
 // Main App Component
 const App = () => {
@@ -54,6 +57,7 @@ const App = () => {
           <WatchlistProvider>
             <CartDefaultFuntion></CartDefaultFuntion>
             <ToastContainer />
+            {/* <NewNav1/> */}
             <NewNav />
             <Allroutes />
             <Footer />

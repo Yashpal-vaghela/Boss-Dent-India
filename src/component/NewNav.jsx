@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaUserAlt, FaHeart, FaCartPlus, FaSearch, FaPhoneAlt, FaTimes } from "react-icons/fa";
-// import logo from "../images/flogo.png";
 import axios from "axios";
 import { useWatchlist } from "../Pages/WatchlistContext";
-// import { useCart } from "../Pages/AddCartContext";
 import "../css/navbar.css";
-// import Aos from "aos";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -23,7 +20,6 @@ const NewNav = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
   const { watchlist } = useWatchlist(); 
-  // const { cart } = useCart(); 
   const navigate = useNavigate();
   const cartData = useSelector((state)=>state.cart.cartItems)
 
@@ -111,6 +107,7 @@ const NewNav = () => {
   }
 
   useEffect(() => {
+    // console.log("window",window)
     const handleScroll = () => {
       const topNav = document.querySelector(".top-nav");
       const menuSubElements = document.getElementsByClassName("menu-sub");
@@ -156,14 +153,7 @@ const NewNav = () => {
     const scrollFunction = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    // Aos.init({
-    //   duration: 1000, // Animation duration in milliseconds
-    //   once: false,    // Allow animations to trigger multiple times
-    //   mirror: true,   // Trigger animations on scroll up
-    // });
-
     window.addEventListener("scroll", scrollFunction);
-
     return () => {
       window.removeEventListener("scroll", scrollFunction);
     };
@@ -321,7 +311,7 @@ const NewNav = () => {
                     </Link>
                   </div>
                   <div className="watchlisticon">
-                    <Link to="/watchlist">
+                    <Link to="/wishlist">
                       <FaHeart />
                       <span>{watchlist.length}</span>
                     </Link>
