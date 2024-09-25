@@ -101,7 +101,7 @@ const Home = () => {
               </p>
             </div>
             <div className="other-banner-btn-main">
-              <Link to="/products/1158" className="other-banner-btn-0">
+              <Link to="/products/1185" className="other-banner-btn-0">
                 <button className="other-banner-btn">SEE COLLECTION</button>
               </Link>
             </div>
