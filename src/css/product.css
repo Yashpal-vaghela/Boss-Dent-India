@@ -87,6 +87,9 @@
   border: 1px solid #adb3b4;
 }
 
+.product-card .product-actions .disable-button {
+  opacity: 0.6 !important;
+}
 /* hover effect 1 */
 .product-card:hover .product-actions > button,
 .product-card:hover .product-actions .btn-quick-add,
@@ -107,11 +110,17 @@
 
 .product-card .item-product__wishlist:hover,
 .product-card .btnProductQuickview:hover,
-.product-card .btn-quick-add:hover ,
+.product-card .btn-quick-add:hover,
 .product-card .btn-quick-add:hover .product-actions button svg {
   color: #bf8e22 !important;
   background-color: #222;
   border-color: #222;
+}
+.product-card .disable-button:hover,
+.product-card .disable-button:hover .product-actions .disable-button svg {
+  background-color: transparent;
+  border-color: #adb3b4;
+  color: #222 !important;
 }
 
 .product-actions {
@@ -197,7 +206,10 @@
 .product-actions button svg:hover {
   color: #bf8e22;
 }
-.sc-egkSDF{
+.product-actions .disable-button svg:hover{
+  color:#222;
+}
+.sc-egkSDF {
   display: flex;
   align-items: center;
   justify-content: center;

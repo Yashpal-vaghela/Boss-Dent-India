@@ -54,12 +54,35 @@ const Cards = () => {
       </div>
       <div className="variable-cards-main">
         <div className="cards-1-main">
-          <Link to="/products/2159" className="cards-1">
+          <Link to="/products/2159" className="cards-1 ">
             <Swiper
               effect={"cards"}
               grabCursor={true}
               modules={[EffectCards]}
               className="mySwiper-1"
+              // slidesPerView={1}
+              // breakpoints={{
+              //   576:{
+              //     slidesPerView:1,
+              //     spaceBetween:30
+              //   },
+              //   768:{
+              //     slidesPerView:1,
+              //     spaceBetween:30
+              //   },
+              //   990:{
+              //     slidesPerView:2,
+              //     spaceBetween:10
+              //   },
+              //   1024:{
+              //     slidesPerView:2,
+              //     spaceBetween:20
+              //   },
+              //   1440:{
+              //     slidesPerView:3,
+              //     spaceBetween:20
+              //   }
+              // }}
             >
               {surgoncaps.map((product, index) => (
                 <SwiperSlide key={index} className="slide">
@@ -105,7 +128,7 @@ const Cards = () => {
               ))}
             </Swiper>
           </Link>
-          <Link to="/products/1698" className="cards-1">
+          <Link to="/products/1698" className="cards-1 ">
             <Swiper
               effect={"cards"}
               grabCursor={true}

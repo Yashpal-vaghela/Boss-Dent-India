@@ -602,8 +602,8 @@ body {
   /* banner section */
   .banner-img {
     width: 100%;
-    height: 35vh;
-    /* height: auto; */
+    /* height: 35vh; */
+    height: auto;
   }
   .banner-btn-shop {
     padding: 1px 5px;

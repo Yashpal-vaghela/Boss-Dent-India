@@ -21,7 +21,7 @@ import BreadCrumbs from "../component/BreadCrumbs";
 const NewCart = () => {
   const [canCheckout, setCanCheckout] = useState(false);
   const [imageLoading, setImageLoading] = useState({});
-  const [deliveryCharge, setDeliveryCharge] = useState("");
+  const [deliveryCharge, setDeliveryCharge] = useState(99);
   const cartData = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
@@ -90,7 +90,8 @@ const NewCart = () => {
     e.preventDefault();
     // removeFromCart(product.id);
     dispatch(Remove(product.id));
-    console.log("Removing product with ID:", product.id);
+    // console.log("Removing product with ID:", product.id);
+    AdddeliveryCharge();
   };
 
   const handleEmptyCart = () => {

@@ -107,6 +107,7 @@ const NewNav = () => {
   }
 
   useEffect(() => {
+    // console.log("window",window)
     const handleScroll = () => {
       const topNav = document.querySelector(".top-nav");
       const menuSubElements = document.getElementsByClassName("menu-sub");
@@ -152,14 +153,7 @@ const NewNav = () => {
     const scrollFunction = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    // Aos.init({
-    //   duration: 1000, // Animation duration in milliseconds
-    //   once: false,    // Allow animations to trigger multiple times
-    //   mirror: true,   // Trigger animations on scroll up
-    // });
-
     window.addEventListener("scroll", scrollFunction);
-
     return () => {
       window.removeEventListener("scroll", scrollFunction);
     };

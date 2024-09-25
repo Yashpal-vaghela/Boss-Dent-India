@@ -666,11 +666,13 @@
       color: #000;
       z-index: 1005;
       max-height: 200px;
-      overflow-y: auto;
+      overflow-y: scroll;
       list-style-type: none;
       padding: 0;
       margin: 0;
       text-align: left;
+      position: relative;
+      margin-left: 20px;
     }
     .suggested li{
       padding: 10px;
@@ -810,9 +812,9 @@
       font-size: 28px; 
       margin-right: auto;
     }
-    .search-icon {
+    /* .search-icon {
         display: none; 
-    }
+    } */
     .menu-main-div .search-icon {
         display: block; 
         position: static; 
@@ -977,6 +979,7 @@
       opacity: 1;
       transform: translateX(0);
       transition: transform 1s ease;
+      z-index: 1;
     }
     .menu-main-div .close {
       font-size: 18px;
