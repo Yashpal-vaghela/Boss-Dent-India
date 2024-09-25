@@ -29,9 +29,10 @@ const Allroutes = () => {
             <Route path='/contact' element={<Contact />}/>
             <Route path='/products' element={<Product/>}/>
             <Route path='/products/:id' element={<SingleProduct/>}/>
+            {/* <Route path='/products/:slug' element={<SingleProduct />} /> */}
             <Route path= '/cart' element={<NewCart />}/>
-            <Route path='/watchlist' element={<WatchList/>} />
-            <Route path='/your-data' element={<UserData/>} />
+            <Route path='/wishlist' element={<WatchList/>} />
+            <Route path='/user' element={<UserData/>} />
             <Route path='/help-center' element={<HelpCenter />}/>
             <Route path='/checkout' element={<CheckOut />}/>
             <Route path='/forgot-password' element={<ForgotPassword/>} />
@@ -41,7 +42,7 @@ const Allroutes = () => {
             <Route path= '/new-nav' element={ <NewNav />} />
         </Routes>
     </div>
-  )
+  );
 }
 
 export default Allroutes
