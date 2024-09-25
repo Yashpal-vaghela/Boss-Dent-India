@@ -22,25 +22,28 @@ const Cards = () => {
     { capimage: "/asset/images/Purple-surgon-cap.jpg", capname: "Tieon Surgeon Cap (Purple)" },
     { capimage: "/asset/images/Green-surgon-cap.jpg", capname: "Tieon Surgeon Cap (Green)" },
   ];
-  const airwater = [
-    { airimage: "/asset/images/All-airwater.jpg", airname: "Air Water Syringe" },
-    { airimage: "/asset/images/Airwater-11.jpg", airname: "Air Water Syringe (Radium)" },
-    { airimage: "/asset/images/Airwater-9.jpg", airname: "Air Water Syringe (Purple)" },
-    { airimage: "/asset/images/Airwater-8.jpg", airname: "Air Water Syringe (Yellow)" },
-    { airimage: "/asset/images/Airwater-7.jpg", airname: "Air Water Syringe (Orange)" },
-    { airimage: "/asset/images/Airwater-6.jpg", airname: "Air Water Syringe (Green)" },
-    { airimage: "/asset/images/Airwater-5.jpg", airname: "Air Water Syringe (Pink)" },
-    { airimage: "/asset/images/Airwater-4.jpg", airname: "Air Water Syringe (Blue)" },
-    { airimage: "/asset/images/Airwater-3.jpg", airname: "Air Water Syringe (SkyBlue)" },
-    { airimage: "/asset/images/Airwater-2.jpg", airname: "Air Water Syringe (White)" },
+  const masks = [
+    { airimage: "/asset/images/masc10.jpg", airname: "Masks (3ply & 4ply)" },
+    { airimage: "/asset/images/masc1.jpg", airname: "Masks (3ply & 4ply)" },
+    { airimage: "/asset/images/masc2.jpg", airname: "Orange" },
+    { airimage: "/asset/images/masc3.jpg", airname: "Green" },
+    { airimage: "/asset/images/masc4.jpg", airname: "Blue" },
+    { airimage: "/asset/images/masc5.jpg", airname: "Pink" },
+    { airimage: "/asset/images/masc6.jpg", airname: "yelllow" },
+    { airimage: "/asset/images/masc7.jpg", airname: "Black" },
+    { airimage: "/asset/images/masc8.jpg", airname: "White" },
+    { airimage: "/asset/images/masc11.jpg", airname: "White" },
+    { airimage: "/asset/images/masc15.jpg", airname: "Purple" },
   ];
 
   const applicators = [
-    { appimage: "/asset/images/Allapplicator.jpg", appname: "Micro Applicator Tips" },
-    { appimage: "/asset/images/Applicator-pink-1.jpg", appname: "Micro Applicator Tips (Pink)" },
-    { appimage: "/asset/images/Applicator-yellow-2.jpg", appname: "Micro Applicator Tips (Yellow)" },
-    { appimage: "/asset/images/Applicator-white-3.jpg", appname: "Micro Applicator Tips (White)" },
-    { appimage: "/asset/images/Applicator-green-4.jpg", appname: "Micro Applicator Tips (Green)" },
+    { appimage: "/asset/images/TIPS.jpg", appname: "Micro Applicator Tips" },
+    { appimage: "/asset/images/TIPS1.jpg", appname: "Micro Applicator Tips" },
+    { appimage: "/asset/images/TIPS2.jpg", appname: "Micro Applicator Tips" },
+    { appimage: "/asset/images/TIPS3.jpg", appname: "Micro Applicator Tips" },
+    { appimage: "/asset/images/TIPS4.jpg", appname: "Micro Applicator Tips" },
+    { appimage: "/asset/images/TIPS5.jpg", appname: "Micro Applicator Tips" },
+    { appimage: "/asset/images/TIPS6.jpg", appname: "Micro Applicator Tips" }
   ];
 
   const navigate = useNavigate();
@@ -77,14 +80,14 @@ const Cards = () => {
               ))}
             </Swiper>
           </Link>
-          <Link to="/products/1976" className="cards-1">
+          <Link to="/products?category=118" className="cards-1">
             <Swiper
               effect={"cards"}
               grabCursor={true}
               modules={[EffectCards]}
               className="mySwiper-1"
             >
-              {airwater.map((product, index) => (
+              {masks.map((product, index) => (
                 <SwiperSlide key={index} className="slide">
                   <img
                     src={product.airimage}
@@ -93,7 +96,7 @@ const Cards = () => {
                   />
                   <span
                     className="card-product-name"
-                    onClick={() => navigate("/products/2159")}
+                    onClick={() => navigate("/products/1913")}
                   >
                     {product.airname}
                   </span>
