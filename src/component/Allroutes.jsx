@@ -15,7 +15,8 @@ import WatchList from '../Pages/WatchList'
 import CheckOut from '../Pages/CheckOut'
 import UserData from '../Pages/Userdata'
 import ForgotPassword from './ForgotPassword'
-import NewNav from './NewNav'
+// import NewNav from './NewNav'
+import NewNav1 from './NewNav1'
 import NewCart from '../Pages/NewCart'
 
 const Allroutes = () => {
@@ -39,7 +40,7 @@ const Allroutes = () => {
             <Route path='/refund-and-returns-policy' element={<RefundPolicy />} />
             <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
             <Route path='/terms-and-conditions' element={ <TermAndCondition />}/>
-            <Route path= '/new-nav' element={ <NewNav />} />
+            <Route path= '/new-nav' element={ <NewNav1 />} />
         </Routes>
     </div>
   );

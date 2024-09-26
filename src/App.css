@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+
+.Loader-wrapper{
+  display: flex;
+  align-items: center;
+  margin: auto;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  animation: blinker 1.5s linear infinite;
+  background-color: transparent;
+  /* background-color:rgba(0,0,0,0.8); */
+}
+
+@keyframes blinker{
+  50%{
+   opacity: 0;
+   /* background-color:rgba(0,0,0,1); */
+  }
+}
