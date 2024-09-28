@@ -202,6 +202,7 @@ const WatchList = () => {
                 );
               })}
             </div>
+            {/* load more */}
             {watchlist.length > products.length && (
               <div className="load-more">
                 <button onClick={loadMoreProducts}>Load More</button>
