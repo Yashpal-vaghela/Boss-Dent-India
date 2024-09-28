@@ -18,6 +18,8 @@ import ForgotPassword from './ForgotPassword'
 // import NewNav from './NewNav'
 import NewNav1 from './NewNav1'
 import NewCart from '../Pages/NewCart'
+import ProtectedRoute from './ProtectedRoute'
+import ImageGallery from './ImageGallery'
 
 const Allroutes = () => {
   return (
@@ -31,16 +33,34 @@ const Allroutes = () => {
             <Route path='/products' element={<Product/>}/>
             <Route path='/products/:id' element={<SingleProduct/>}/>
             {/* <Route path='/products/:slug' element={<SingleProduct />} /> */}
-            <Route path= '/cart' element={<NewCart />}/>
+            {/* <Route path= '/cart' element={<NewCart />}/> */}
             <Route path='/wishlist' element={<WatchList/>} />
             <Route path='/user' element={<UserData/>} />
             <Route path='/help-center' element={<HelpCenter />}/>
-            <Route path='/checkout' element={<CheckOut />}/>
+            {/* <Route path='/checkout' element={<CheckOut />}/> */}
             <Route path='/forgot-password' element={<ForgotPassword/>} />
             <Route path='/refund-and-returns-policy' element={<RefundPolicy />} />
             <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
             <Route path='/terms-and-conditions' element={ <TermAndCondition />}/>
             <Route path= '/new-nav' element={ <NewNav1 />} />
+            {/* <Route path='/gallery' element={<ImageGallery />}/> */}
+
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute>
+                  <NewCart />
+                </ProtectedRoute>
+              }
+            />
+            <Route 
+              path='/checkout'
+              element={
+                <ProtectedRoute>
+                  <CheckOut />
+                </ProtectedRoute>
+              }
+            />
         </Routes>
     </div>
   );

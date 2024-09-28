@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
@@ -38,7 +38,7 @@ const SingleProduct = () => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-  const location = useLoaderData();
+  const location = useLocation();
   // const [imageUrl, setImageUrl] = useState();
   const colors = [
     {

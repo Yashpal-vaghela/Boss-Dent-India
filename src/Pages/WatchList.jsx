@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { Add } from "../redux/Apislice/cartslice";
 import BreadCrumbs from "../component/BreadCrumbs";
 import { toast } from "react-toastify";
+import Loader1 from "../component/Loader1";
 
 const WatchList = () => {
   const { watchlist, removeFromWatchlist } = useWatchlist();
@@ -18,22 +19,25 @@ const WatchList = () => {
   const [stockStatuses, setStockStatuses] = useState({});
   const [imageLoading, setImageLoading] = useState({});
   const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10; // Number of products to load per page
 
+  // useEffect(() => {
+  //   console.log("watchlist", watchlist);
+  //   const cachedProducts = localStorage.getItem("watchlistProducts");
+  //   const cachedStockStatuses = localStorage.getItem("stockStatuses");
+
+  //   if (cachedProducts && cachedStockStatuses) {
+  //     setProducts(JSON.parse(cachedProducts));
+  //     setStockStatuses(JSON.parse(cachedStockStatuses));
+  //     setLoading(false);
+  //   } else if (watchlist.length > 0) {
+  //     fetchProducts();
+  //   } else {
+  //     setLoading(false);
+  //   }
+  // }, [watchlist]);
   useEffect(() => {
-    // Check for cached products and stock statuses in localStorage
-    const cachedProducts = localStorage.getItem("watchlistProducts");
-    const cachedStockStatuses = localStorage.getItem("stockStatuses");
-
-    if (cachedProducts && cachedStockStatuses) {
-      setProducts(JSON.parse(cachedProducts));
-      setStockStatuses(JSON.parse(cachedStockStatuses));
-      setLoading(false);
-    } else if (watchlist.length > 0) {
+    if (watchlist.length > 0) {
       fetchProducts();
-    } else {
-      setLoading(false);
     }
   }, [watchlist]);
 
@@ -41,11 +45,8 @@ const WatchList = () => {
     setLoading(true);
     setError(null);
     try {
-      // Fetch products for the current page
-      const idsForPage = watchlist.slice(
-        (currentPage - 1) * pageSize,
-        currentPage * pageSize
-      );
+      const idsForPage = watchlist;
+      console.log("IDs For fetching:", idsForPage);
       const responses = await Promise.all(
         idsForPage.map((id) =>
           axios.get(
@@ -54,13 +55,10 @@ const WatchList = () => {
         )
       );
       const productsData = responses.map((response) => response.data);
-      setProducts((prevProducts) => [...prevProducts, ...productsData]);
-      localStorage.setItem(
-        "watchlistProducts",
-        JSON.stringify([...products, ...productsData])
-      );
+      // console.log("Fetched Products:", productsData);
+      setProducts(productsData);
+      localStorage.setItem("watchlistProducts", JSON.stringify(productsData));
 
-      // Fetch stock statuses for the current products
       const stockStatusPromises = productsData.map(async (product) => {
         try {
           const stockResponse = await axios.get(
@@ -75,16 +73,10 @@ const WatchList = () => {
 
       const stockStatusesResults = await Promise.all(stockStatusPromises);
       const combinedStockStatuses = Object.assign({}, ...stockStatusesResults);
-      setStockStatuses((prevStatuses) => ({
-        ...prevStatuses,
-        ...combinedStockStatuses,
-      }));
+      setStockStatuses(combinedStockStatuses);
       localStorage.setItem(
         "stockStatuses",
-        JSON.stringify({
-          ...stockStatuses,
-          ...combinedStockStatuses,
-        })
+        JSON.stringify(combinedStockStatuses)
       );
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -99,7 +91,6 @@ const WatchList = () => {
     setProducts((prevProducts) =>
       prevProducts.filter((product) => product.id !== id)
     );
-    // Update localStorage after removal
     localStorage.setItem(
       "watchlistProducts",
       JSON.stringify(products.filter((product) => product.id !== id))
@@ -122,96 +113,94 @@ const WatchList = () => {
     }));
   };
 
-  const loadMoreProducts = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-    fetchProducts();
-  };
-
-  if (loading) {
-    return <Loader />;
-  }
+  // if (loading) {
+  //   return <Loader />;ss
+  // }
 
   if (error) {
     return <div>{error}</div>;
   }
 
   return (
-    <div className="watchlist-page">
-      <div className="header" data-aos="fade-up">
-        <h1>Wishlist</h1>
-        <BreadCrumbs />
-      </div>
-      {products.length === 0 ? (
-        <div className="cart-page-empty">
-          <p>No products in your watchlist</p>
-          <button className="btn btn-dark">
-            <Link to="/products">Add Now</Link>
-          </button>
-        </div>
+    <>
+      {loading ? (
+        <>
+          <Loader1 />
+        </>
+
       ) : (
         <>
-          <div className="watchlist-content">
-            <div className="watchlist-items" data-aos="fade">
-              {products.map((product) => {
-                return (
-                  <div key={product.id} className="watchlist-item">
-                    <div className="watchlist-item-image-wrapper">
-                      <img
-                        src={product.yoast_head_json?.og_image?.[0]?.url}
-                        alt={product.title.rendered}
-                        className={`watchlist-item-image ${
-                          imageLoading[product.id] ? "loaded" : "loading"
-                        }`}
-                        loading="lazy"
-                        onLoad={() => handleImageLoad(product.id)}
-                      />
-                    </div>
-                    <div className="watchlist-item-details">
-                      <div className="watchlist-item-info">
-                        <Link
-                          to={`/products/${product.id}`}
-                          className="watchlist-item-link"
-                        >
-                          <h3>{product.title.rendered}</h3>
-                        </Link>
-                        <p className="watchlist-item-price">
-                          Price :- ₹{product.price}
-                        </p>
-                      </div>
-                      <div className="actions">
-                        <button
-                          className={`watchlist-add-to-cart ${
-                            stockStatuses[product.id] !== "instock"
-                              ? "disable-button"
-                              : ""
-                          }`}
-                          disabled={stockStatuses[product.id] !== "instock"}
-                          onClick={() => handleAddToCart(product)}
-                        >
-                          Add to Cart
-                        </button>
-                        <button
-                          className="watchlist-item-remove"
-                          onClick={() => handleRemove(product.id)}
-                        >
-                          <MdDelete />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+          <div className="watchlist-page">
+            <div className="header" data-aos="fade-up">
+              <h1>Wishlist</h1>
+              <BreadCrumbs />
             </div>
-            {/* load more */}
-            {watchlist.length > products.length && (
-              <div className="load-more">
-                <button onClick={loadMoreProducts}>Load More</button>
+            {products.length === 0 && watchlist.length === 0 ? (
+              <div className="cart-page-empty">
+                <p>No products in your watchlist</p>
+                <button className="btn btn-dark">
+                  <Link to="/products">Add Now</Link>
+                </button>
+              </div>
+            ) : (
+              <div className="watchlist-content">
+                <div className="watchlist-items" data-aos="fade">
+                  {products.map((product) => {
+                    return (
+                      <div key={product.id} className="watchlist-item">
+                        <div className="watchlist-item-image-wrapper">
+                          <img
+                            src={product.yoast_head_json?.og_image?.[0]?.url}
+                            alt={product.title.rendered}
+                            className={`watchlist-item-image ${imageLoading[product.id] ? "loaded" : "loading"
+                              }`}
+                            loading="lazy"
+                            onLoad={() => handleImageLoad(product.id)}
+                          />
+                        </div>
+                        <div className="watchlist-item-details">
+                          <div className="watchlist-item-info">
+                            <Link
+                              to={`/products/${product.id}`}
+                              className="watchlist-item-link"
+                            >
+                              <h3>{product.title.rendered}</h3>
+                            </Link>
+                            <p className="watchlist-item-price">
+                              Price :- ₹{product.price}
+                            </p>
+                          </div>
+                          <div className="actions">
+                            <button
+                              className={`watchlist-add-to-cart ${stockStatuses[product.id] !== "instock"
+                                ? "disable-button"
+                                : ""
+                                }`}
+                              disabled={stockStatuses[product.id] !== "instock"}
+                              onClick={() => handleAddToCart(product)}
+                            >
+                              Add to Cart
+                            </button>
+                            <button
+                              className="watchlist-item-remove"
+                              onClick={() => handleRemove(product.id)}
+                            >
+                              <MdDelete />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>
         </>
       )}
-    </div>
+
+    </>
+
   );
 };
 

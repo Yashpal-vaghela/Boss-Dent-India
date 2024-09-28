@@ -1,7 +1,3 @@
-.user-data {
-  padding-top: 150px;
-}
-
 .user-data-container {
   display: flex;
   padding: 20px;
@@ -161,6 +157,7 @@
 .address-form {
   max-width: 600px;
   margin: 0 auto;
+  text-align: left;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -373,9 +370,6 @@
 }
 
 @media (max-width: 991px) {
-  .user-data {
-    padding-top: 90px;
-  }
 
   .user-data-container {
     width: 90%;
@@ -405,9 +399,6 @@
 
 /* For screens less than 768px */
 @media (max-width: 768px) {
-  .user-data {
-    padding-top: 100px;
-  }
 
   .user-data-container {
     flex-direction: column;
@@ -441,9 +432,6 @@
 
 /* For screens less than 600px */
 @media (max-width: 600px) {
-  .user-data{
-    padding-top: 100px;
-  }
   .user-data-container {
     flex-direction: column;
     width: 100%;
@@ -484,9 +472,6 @@
 
 /* For screens less than 480px */
 @media (max-width: 480px) {
-  .user-data{
-    padding-top: 100px;
-  }
   .user-data-container {
     margin: 30px auto;
   }
