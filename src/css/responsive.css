@@ -156,8 +156,11 @@ body {
 
   .shop-content {
     flex-direction: row;
+    gap: 10px;
   }
-
+  .shop-sidebar{
+    padding: 10px;
+  }
   .shop-sidebar-menu {
     width: 30%;
   }
@@ -744,7 +747,107 @@ body {
     margin-left: 20px;
   }
   /* Product page */
-  .shop-sidebar-menu {
-    grid-template-columns: 1fr;
+  .shop-container {
+    padding: 10px;
+  }
+
+  /* Make the category list scrollable in a row for mobile */
+  /* .shop-sidebar {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .shop-sidebar h3 {
+    font-size: 16px;
+  }
+
+  .shop-sidebar ul {
+    display: flex;
+    gap: 10px;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+  }
+
+  .shop-sidebar ul li {
+    padding: 10px 15px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+  } */
+  .shop-sidebar ul {
+    display: block; /* Ensure list displays in block for mobile */
+  }
+
+  .shop-sidebar ul li {
+    padding: 8px; /* Adjust padding for mobile */
+  }
+
+  .shop-sidebar ul li.active {
+    background-color: #c89c31;
+    color: white;
+  }
+
+  /* Product grid adjustments for mobile */
+  .products-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .product-card {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-image {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .product-title {
+    font-size: 16px;
+    margin: 10px 0;
+    text-align: center;
+  }
+
+  .product-price {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .product-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+  }
+
+  /* Adjust buttons for mobile */
+  .product-button,
+  .btn-quick-add,
+  .item-product__wishlist {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  /* Pagination buttons */
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+  .pagination-list{
+    max-width: 90%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .paginate_button {
+    font-size: 10px;
+    padding: 5px 5px;
   }
 }

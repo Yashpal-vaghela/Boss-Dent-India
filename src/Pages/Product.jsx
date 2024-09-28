@@ -1,17 +1,16 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import Loader from "../component/Loader";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 import { useWatchlist } from "./WatchlistContext";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { BsFillGridFill } from "react-icons/bs";
-// import Aos from "aos";
 import AlertSuccess from "../component/AlertSuccess";
 import { useDispatch } from "react-redux";
 import { Add } from "../redux/Apislice/cartslice";
 import BreadCrumbs from "../component/BreadCrumbs";
-import { FaStar } from "react-icons/fa";
+import Loader1 from "../component/Loader1";
+import Category from "../component/Category"
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -19,9 +18,6 @@ const Product = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage] = useState(9);
   const [totalProducts, setTotalProducts] = useState(0);
-  // const [selectedCategory, setSelectedCategory] = useState(null);
-  const [minPrice] = useState(40);
-  const [maxPrice] = useState(12500);
   const [stockStatuses, setStockStatuses] = useState({});
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,6 +26,7 @@ const Product = () => {
   const category = searchParams.get("category");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const fetchProducts = useCallback(
     async (page = 1, prevProducts = []) => {
@@ -45,7 +42,6 @@ const Product = () => {
 
         const response = await axios.get(apiUrl, {
           params: {
-            // per_page: perPage,
             page: page,
           },
         });
@@ -56,23 +52,10 @@ const Product = () => {
         }
 
         // console.log('Full Product Response:', response.data);
-        const filteredProducts = allProducts.filter((product) => {
-          return (
-            parseFloat(product.price) >= minPrice &&
-            parseFloat(product.price) <= maxPrice
-          );
-        });
-        // console.log(
-        //   "response",
-        //   response.data,
-        //   "allProducts",
-        //   allProducts,
-        //   "filterDatA",
-        //   filteredProducts
-        // );
-        setTotalProducts(filteredProducts.length);
+
+        setTotalProducts(allProducts.length);
         const startIndex = (currentPage - 1) * productsPerPage;
-        const paginatedProducts = filteredProducts.slice(
+        const paginatedProducts = allProducts.slice(
           startIndex,
           startIndex + productsPerPage
         );
@@ -80,10 +63,10 @@ const Product = () => {
         const stockResponse = await axios.get(
           'https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/all'
         );
-  
+
         const allStockStatuses = stockResponse.data; // Adjust this based on your API response format
-  
-        const stockStatusesResults = paginatedProducts.map((product,index) => {
+
+        const stockStatusesResults = paginatedProducts.map((product, index) => {
           // console.log("product1",product.id,"asdx",[product.id],allStockStatuses[product.id],"response",stockResponse.data,"allStock",allStockStatuses[0])
           return {
             [product.id]: allStockStatuses[index].stock_status || "unknown", // Default to "unknown" if not found
@@ -118,23 +101,13 @@ const Product = () => {
       }
       // console.log("Fetching products for category:", category);
     },
-    [category, currentPage, minPrice, maxPrice, productsPerPage]
+    [category, currentPage, productsPerPage]
   );
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem("token");
     setIsLoggedIn(userLoggedIn);
   }, []);
-
-  // useEffect(() => {
-  //   if (alertMessage) {
-  //     const timer = setTimeout(() => {
-  //       setAlertMessage("");
-  //     }, 3000);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [alertMessage]);
-
-  // console.log(response.data);
+  
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts, currentPage]);
@@ -161,10 +134,6 @@ const Product = () => {
     }
   };
 
-  // const handlePriceRangeChange = () => {
-  //   setCurrentPage(1);
-  //   fetchProducts();
-  // };
   const handleAddToCart = async (e, product) => {
     // console.log("AddToCart")
     e.preventDefault();
@@ -188,11 +157,9 @@ const Product = () => {
           setAlertMessage("Error fetching product weight. Please try again.");
         }
 
-        // dispatch(Add({...product}))
-        // setAlertMessage("Product added to cart!");
       } else {
         setAlertMessage("Please log In! Thank you.");
-        navigate("/my-account");
+        navigate("/my-account", { state: { from: location.pathname } });
       }
     } else {
       setAlertMessage(
@@ -212,9 +179,11 @@ const Product = () => {
       }
     } else {
       setAlertMessage("Please log in! Thank you.");
-      navigate("/my-account");
+      navigate("/my-account", { state: { from: location.pathname } });
     }
   };
+  // console.log("Location-product", location);
+
   const handleImageLoad = (event) => {
     event.target.classList.add("loaded");
   };
@@ -230,9 +199,8 @@ const Product = () => {
       paginationButtons.push(
         <button
           key={i}
-          className={`paginate_button page-item ${
-            currentPage === i ? "active" : ""
-          }`}
+          className={`paginate_button page-item ${currentPage === i ? "active" : ""
+            }`}
           onClick={() => handlePageChange(i)}
         >
           {i}
@@ -247,17 +215,15 @@ const Product = () => {
     }
   }
 
-  if (loading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
-  }
-
   return (
     <>
-      <div className="shop-container">
+      {loading ? (
+        <>
+          <Loader1 />
+        </>
+      ) : (
+        <>
+          <div className="shop-container">
             <div className="header" data-aos="fade-up">
               <h1 className="shop-title">Shop</h1>
               <BreadCrumbs />
@@ -266,185 +232,179 @@ const Product = () => {
               {alertMessage && <AlertSuccess message={alertMessage} />}
             </div>
             <div className="shop-content">
-              <div className="shop-sidebar-menu" data-aos="fade">
+              {/* products catgeory component */}
+              <Category
+                handleCategoryClick={handleCategoryClick}
+                category={category}
+              />
+              {/* <div className="shop-sidebar-menu" data-aos="fade">
                 <div className="shop-sidebar">
                   <h3>Shop by Category</h3>
                   <hr />
                   <ul>
                     <li
-                      className={`category ${
-                        category === null ? "active" : ""
-                      }`}
+                      className={`category ${category === null ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(null)}
                     >
                       All
                     </li>
                     <li
-                      className={`category ${
-                        category === "46" ? "active" : ""
-                      }`}
+                      className={`category ${category === "46" ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(46)}
                     >
                       Accessories
                     </li>
                     <li
-                      className={`category ${
-                        category === "75" ? "active" : ""
-                      }`}
+                      className={`category ${category === "75" ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(75)}
                     >
                       General dentist
                     </li>
                     <li
-                      className={`category ${
-                        category === "116" ? "active" : ""
-                      }`}
+                      className={`category ${category === "116" ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(116)}
                     >
                       Gloves
                     </li>
                     <li
-                      className={`category ${
-                        category === "117" ? "active" : ""
-                      }`}
+                      className={`category ${category === "117" ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(117)}
                     >
                       Caps
                     </li>
                     <li
-                      className={`category ${
-                        category === "118" ? "active" : ""
-                      }`}
+                      className={`category ${category === "118" ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(118)}
                     >
                       Masks
                     </li>
                     <li
-                      className={`category ${
-                        category === "119" ? "active" : ""
-                      }`}
+                      className={`category ${category === "119" ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(119)}
                     >
                       Draps
                     </li>
                     <li
-                      className={`category ${
-                        category === "122" ? "active" : ""
-                      }`}
+                      className={`category ${category === "122" ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(122)}
                     >
                       Sleeves
                     </li>
                     <li
-                      className={`category ${
-                        category === "125" ? "active" : ""
-                      }`}
+                      className={`category ${category === "125" ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(125)}
                     >
                       Retractors
                     </li>
                     <li
-                      className={`category ${
-                        category === "123" ? "active" : ""
-                      }`}
+                      className={`category ${category === "123" ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(123)}
                     >
                       Tips
                     </li>
                     <li
-                      className={`category ${
-                        category === "124" ? "active" : ""
-                      }`}
+                      className={`category ${category === "124" ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(124)}
                     >
                       Trays
                     </li>
                     <li
-                      className={`category ${
-                        category === "126" ? "active" : ""
-                      }`}
+                      className={`category ${category === "126" ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(126)}
                     >
                       Wedges
                     </li>
                     <li
-                      className={`category ${
-                        category === "120" ? "active" : ""
-                      }`}
+                      className={`category ${category === "120" ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(120)}
                     >
                       Polishing Kits
                     </li>
                     <li
-                      className={`category ${
-                        category === "121" ? "active" : ""
-                      }`}
+                      className={`category ${category === "121" ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(121)}
                     >
                       Endo Categories
                     </li>
                     <li
-                      className={`category ${
-                        category === "127" ? "active" : ""
-                      }`}
+                      className={`category ${category === "127" ? "active" : ""
+                        }`}
                       onClick={() => handleCategoryClick(127)}
                     >
                       Vincismiles
                     </li>
                   </ul>
                 </div>
-              </div>
-              <div className="products-grid" data-aos="fade"> 
-                {/* fetch all product data in api */}
-                {products.map((product) => {
-                  let imageUrl = null;
-                  if (product.better_featured_image) {
-                    imageUrl = product.better_featured_image.source_url;
-                  } else if (
-                    product.yoast_head_json &&
-                    product.yoast_head_json.og_image &&
-                    product.yoast_head_json.og_image.length > 0
-                  ) {
-                    imageUrl = product.yoast_head_json.og_image[0].url;
-                  }
-                  // console.log("product",typeof(imageUrl),product,imageUrl.replace("https://","https://admin."))
-                  return (
-                    <div className="product-card" key={product.id}>
-                      <div className="product-card-link">
-                        <Link
-                          to={`/products/${product.id}`}
-                          className="product-link"
-                        >
-                          {imageUrl && (
-                            <img
-                              src={product.yoast_head_json.og_image[0].url}
-                              alt={product.title.rendered}
-                              className="product-image"
-                              loading="lazy"
-                              onLoad={handleImageLoad}
-                            />
-                          )}
-                          <h3 className="product-title" style={{
+              </div> */}
+              {/* fetch all product data in api */}
+              {products.length === 0 ? (
+                <Loader1 />
+              ) : (
+                <>
+                  <div className="products-grid" data-aos="fade">
+                    {products.map((product) => {
+                      let imageUrl = null;
+                      if (product.better_featured_image) {
+                        imageUrl = product.better_featured_image.source_url;
+                      } else if (
+                        product.yoast_head_json &&
+                        product.yoast_head_json.og_image &&
+                        product.yoast_head_json.og_image.length > 0
+                      ) {
+                        imageUrl = product.yoast_head_json.og_image[0].url;
+                      }
+                      // console.log("product",typeof(imageUrl),product,imageUrl.replace("https://","https://admin."))
+                      return (
+                        <div className="product-card" key={product.id}>
+                          <div className="product-card-link">
+                            <Link
+                              to={`/products/${product.id}`}
+                              className="product-link"
+                            >
+                              {imageUrl && (
+                                <img
+                                  src={product.yoast_head_json.og_image[0].url}
+                                  alt={product.title.rendered}
+                                  className="product-image"
+                                  loading="lazy"
+                                  onLoad={handleImageLoad}
+                                />
+                              )}
+                              <h3 className="product-title" style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                height: '60px'
+                              }}>
+                                {product.title.rendered}
+                              </h3>
+                            </Link>
+
+                          </div>
+                          <h3
+                            className="product-price"
+                            style={{
                               display: "flex",
                               justifyContent: "space-between",
                               alignItems: "center",
-                              height:'60px'
-                            }}>
-                            {product.title.rendered}
-                          </h3>
-                        </Link>
-                        
-                      </div>
-                      <h3
-                          className="product-price"
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
-                          Price: {product.price} ₹
-                          {/* <span
+                            }}
+                          >
+                            Price: {product.price} ₹
+                            {/* <span
                             style={{ color: "#bf8e22" }}
                             id="top_nav"
                           >
@@ -522,67 +482,65 @@ const Product = () => {
                               </div>
                             </div>
                           </span> */}
-                        </h3>
-                        <div className="product-actions" >
-                          <button
-                            className="btnProductQuickview"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            data-original-title="Quick view"
-                            onClick={()=>navigate(`/products/${product.id}`)}
-                          >
-                            <BsFillGridFill />
-                          </button>
-                          <button
-                            className={`btn-quick-add ${
-                              stockStatuses[product.id] !== "instock"
+                          </h3>
+                          <div className="product-actions" >
+                            <button
+                              className="btnProductQuickview"
+                              data-toggle="tooltip"
+                              data-placement="top"
+                              data-original-title="Quick view"
+                              onClick={() => navigate(`/products/${product.id}`)}
+                            >
+                              <BsFillGridFill />
+                            </button>
+                            <button
+                              className={`btn-quick-add ${stockStatuses[product.id] !== "instock"
                                 ? "disable-button"
                                 : ""
-                            }`}
-                            // className="btn-quick-add"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            title=""
-                            data-original-title="Quick add"
-                            // disabled={stockStatuses[product.id] !== "instock"}
-                            onClick={(e) => handleAddToCart(e, product)}
-                          >
-                            <FaCartPlus />
-                          </button>
-                          <button
-                            className={`item-product__wishlist ${
-                              !watchlist.includes(product.id)
+                                }`}
+                              // className="btn-quick-add"
+                              data-toggle="tooltip"
+                              data-placement="top"
+                              title=""
+                              data-original-title="Quick add"
+                              // disabled={stockStatuses[product.id] !== "instock"}
+                              onClick={(e) => handleAddToCart(e, product)}
+                            >
+                              <FaCartPlus />
+                            </button>
+                            <button
+                              className={`item-product__wishlist ${!watchlist.includes(product.id)
                                 ? ""
                                 : "inactive-heart"
-                            }`}
-                            // className="item-product__wishlist"
-                            data-toggle="tooltip"
-                            data-placement="top"
-                            data-original-title="Add to wishlist"
-                            onClick={() => handleAddToWatchlist(product)}
+                                }`}
+                              // className="item-product__wishlist"
+                              data-toggle="tooltip"
+                              data-placement="top"
+                              data-original-title="Add to wishlist"
+                              onClick={() => handleAddToWatchlist(product)}
+                            >
+                              {watchlist.includes(product.id) ? (
+                                <FaHeart />
+                              ) : (
+                                <FaRegHeart />
+                              )}
+                            </button>
+                          </div>
+
+                          <Link
+                            to={`/products/${product.id}`}
+                            className="product-button-main"
                           >
-                            {watchlist.includes(product.id) ? (
-                              <FaHeart />
-                            ) : (
-                              <FaRegHeart />
-                            )}
-                          </button>
-                        </div>
+                            <button className="product-button">Learn More</button>
+                          </Link>
 
-                        <Link
-                          to={`/products/${product.id}`}
-                          className="product-button-main"
-                        >
-                          <button className="product-button">Learn More</button>
-                        </Link>
-
-                      {/* <Link
+                          {/* <Link
                         to={`/products/${product.id}`}
                         className="product-button-main"
                       >
                         <button className="product-button">Learn more</button>
                       </Link> */}
-                      {/* <div className="product-actions">
+                          {/* <div className="product-actions">
                         <button
                           className={`add-to-cart-button ${
                             stockStatuses[product.id] !== "instock"
@@ -610,10 +568,13 @@ const Product = () => {
                           )}
                         </span>
                       </div> */}
-                    </div>
-                  );
-                })}
-              </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+
             </div>
             <div className="pagination">
               <button
@@ -631,6 +592,8 @@ const Product = () => {
               </button>
             </div>
           </div>
+        </>
+      )}
     </>
   );
 };

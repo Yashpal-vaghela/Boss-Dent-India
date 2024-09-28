@@ -1,16 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import axios from "axios";
-// import Aos from "aos";
 import AlertSuccess from "../component/AlertSuccess"; // Import the AlertSuccess component
 import { toast } from "react-toastify";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [userIdentifier, setUserIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showAlert, setShowAlert] = useState(false); // Add state for alert visibility
+  const [rememberMe, setRememberMe] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  // const redirectPath = location.state?.pathname
+  // console.log(redirectPath);
+  
+  useEffect(()=>{
+    const savedUsername = localStorage.getItem("userIdentifier");
+    const savedPasssword = localStorage.getItem("password");
 
+    if(savedUsername && savedPasssword){
+      setUserIdentifier(savedUsername);
+      setPassword(savedPasssword);
+      // setRememberMe(true); // Set rememberMe to true if saved credentials are present
+    }
+  },[]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -20,11 +35,18 @@ const Login = () => {
       });
       const token = response.data.token;
       localStorage.setItem('token', token);
-      setShowAlert(true); // Show alert on successful login
-      setTimeout(() => {
-        setShowAlert(false);
-        window.location.href = '/'; // Redirect after hiding alert
-      }, 3000); // Adjust the duration as needed
+      
+      if(rememberMe) {
+        localStorage.setItem("userIdentifier", userIdentifier);
+        localStorage.setItem("password", password);
+      } else {
+        localStorage.removeItem("userIdentifier");
+        localStorage.removeItem("password");
+      }
+
+      setShowAlert(true); // Show alert on successful login 
+      const redirectPath = location.state?.from || "/"; // Fallback to homepage if no previous path
+      navigate(redirectPath);
     } catch (error) {
       toast.error('Login failed. Please check your username and password.')
       console.error('Error logging in:', error);
@@ -81,10 +103,21 @@ const Login = () => {
             {showPassword ? <FaEye /> : <FaEyeSlash />}
           </span>
         </div>
-        <div>
-          <a href="/forgot-password" className="forgot-password-l">
-            Forgot Password?
-          </a>
+        <div className="form-group remember-me-row">
+          <div className="left-section">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            <label htmlFor="rememberMe">Remember Me</label>
+          </div>
+          <div>
+            <a href="/forgot-password" className="forgot-password-l">
+              Forgot Password?
+            </a>
+          </div>
         </div>
         <button type="submit" className="login-button">
           Log in

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
@@ -36,6 +36,9 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const [alertMessage, setAlertMessage] = useState("");
   const [selectedColor, setSelectedColor] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const location = useLoaderData();
   // const [imageUrl, setImageUrl] = useState();
   const colors = [
     {
@@ -63,6 +66,10 @@ const SingleProduct = () => {
       "white-meltblown": "#fff",
     },
   ];
+  useEffect(() => {
+    const userLoggedIn = !!localStorage.getItem("token");
+    setIsLoggedIn(userLoggedIn);
+  }, []);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -174,7 +181,6 @@ const SingleProduct = () => {
       [attribute]: value,
     };
     setSelectedColor(key);
-    console.log("updtae", updateSize);
     dispatch(updateSize({ ...product, selectedAttributes }));
     setSelectedAttributes(newSelectedAttributes);
 
@@ -199,6 +205,12 @@ const SingleProduct = () => {
 
   const handleAddToCart = (e) => {
     e.preventDefault();
+    if (!isLoggedIn) {
+      // User is not logged in, show alert and navigate to login page
+      setAlertMessage("Please log in to add products to your cart.");
+      navigate("/my-account", { state: { from: location.pathname }});
+      return; // Exit the function
+    }
     if (stockStatus === "instock") {
       // console.log("s", quantity, selectedAttributes);
       // addToCart({ ...product, quantity, selectedAttributes });
