@@ -3,76 +3,22 @@ import React, { useEffect, useState } from "react";
 const Category = (props) => {
   const [toggle, setToggle] = useState(false);
   const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 991);
-  const [tabletscreen, setTabletsScreen] = useState(false);
 
-  const handleScroll = () => {
-    // const collapedElement = document.getElementById("collapseExample");
-    // if (window.innerWidth >= 768) {
-    //   setTabletsScreen((prev)=>!prev);
-    //   // collapedElement.classList.add("show");
-    //   console.log("window1", window.screen.availWidth);
-    // } else {
-    //   setTabletsScreen((prev)=>!prev);
-    //   // collapedElement.classList.remove("show");
-    //   // console.log(
-    //   //   "window2",
-    //   //   collapedElement.classList[1] === "show",
-    //   //   collapedElement.classList.value,
-    //   //   "classList",
-    //   //   collapedElement.classList,
-    //   //   toggle
-    //   // );
-    //   // collapedElement.style.display = "none";
-    // }
-    // if (collapedElement.classList[1] === "show") {
-    //   // collapedElement.style.display = "none";
-    //   collapedElement.classList.remove("show");
-    // }else {
-    //   collapedElement.classList.add("show");
-    //   // toggle ?
-    //   // collapedElement.style.display = "none";
-    // }
-  };
-  // const handleDisplay = () =>{
-  //   const collapedElement = document.getElementById("collapseExample");
-  //   if (collapedElement.classList.value !== "collapsing") {
-  //     collapedElement.classList.remove("show");
-  //   }
-  // }
-  // const handleResize = () => {
-  //   handleScroll();
-  // };
   const handleToogle = () => {
     setToggle((prev) => !prev);
-    //  const collapedElement = document.getElementById("collapseExample");
-    //  console.log("collapedElement",collapedElement.classList);
-    // if(collapedElement.classList.value === "collapsing"){
-    //   setToggle(true);
-    // }
-    // else{
-    //   setToggle(false);
-    // }
-    // handleResize();
   };
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 768) {
-        const collapedElement = document.getElementById("collapseExample");
-        console.log("collapedElement",collapedElement);
-        setIsMobileView(true);
-        if (toggle === false) {
-          setToggle(true);
-        }
-      } else {
+      if (window.innerWidth >= 768) {
         setIsMobileView(false);
-        setToggle(false);
+      } else {
+        setIsMobileView(true);
+        // setToggle(false);
       }
     };
     window.addEventListener("resize", handleResize);
-    // window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
-      //  window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -82,10 +28,11 @@ const Category = (props) => {
         <div className="shop-sidebar">
           <div className="d-flex align-items-center justify-content-between">
             <h3 className="mb-0">Shop by Category</h3>
-            {console.log("tableSCreen", isMobileView, "toggle", toggle)}
-            {/* <i className="fa-solid fa-chevron-down"></i> */}
-            {toggle ? (
-              <i
+            {
+              isMobileView ? <>
+              {
+                !toggle ? <>
+                 <i
                 className="fa-solid fa-angle-down d-block d-lg-none d-md-none d-sm-block"
                 style={{ fontSize: "20px" }}
                 data-bs-toggle="collapse"
@@ -95,8 +42,7 @@ const Category = (props) => {
                 aria-controls="collapseExample"
                 onClick={() => handleToogle()}
               ></i>
-            ) : (
-              <i
+                </> : <><i
                 className="fa-solid fa-angle-up d-block d-lg-none d-md-none d-sm-block"
                 style={{ fontSize: "20px" }}
                 data-bs-toggle="collapse"
@@ -105,13 +51,14 @@ const Category = (props) => {
                 aria-expanded="false"
                 aria-controls="collapseExample"
                 onClick={() => handleToogle()}
-              ></i>
-            )}
+              ></i></>
+              }
+              </> : <></>
+            }
           </div>
 
           <ul
             className={`${isMobileView ? "collapse" : "collapse show"}`}
-            // className={`${!window.innerWidth > 768 ? "collapse d-none" : "collapse show"}`}
             // className="collapse show"
             id="collapseExample"
           >

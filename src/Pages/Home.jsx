@@ -4,13 +4,14 @@ import { MdLocalShipping, MdSecurity, MdSupportAgent } from "react-icons/md";
 import Cards from "../component/Cards";
 import HomeBanner from "../component/HomeBanner";
 import "../css/othercard.css";
-// import SimpleSlider from "../component/SimpleSlider";
+import OtherBanner from "../component/OtherBanner";
 
 const Home = () => {
   return (
     <div className="home-main">
       {/* home banner section */}
       <HomeBanner />
+
       {/* Category Section */}
       <section>
         <div className="home-cat-main">
@@ -86,7 +87,8 @@ const Home = () => {
           </div>
         </div>
       </section>
-
+      {/* other Banner section */}
+      {/* <OtherBanner /> */}
       {/* Other Banner */}
       <section>
         <div className="other-banner-main" data-aos="fade-down">
