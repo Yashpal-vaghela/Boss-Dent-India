@@ -1,6 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 import { useWatchlist } from "./WatchlistContext";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
@@ -10,7 +15,7 @@ import { useDispatch } from "react-redux";
 import { Add } from "../redux/Apislice/cartslice";
 import BreadCrumbs from "../component/BreadCrumbs";
 import Loader1 from "../component/Loader1";
-import Category from "../component/Category"
+import Category from "../component/Category";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -59,20 +64,39 @@ const Product = () => {
           startIndex,
           startIndex + productsPerPage
         );
+        // console.log("paginatedProducts",paginatedProducts)
 
         const stockResponse = await axios.get(
-          'https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/all'
+          "https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/all"
         );
 
         const allStockStatuses = stockResponse.data; // Adjust this based on your API response format
+        const paginatedAllStatuses = allStockStatuses.slice(startIndex,startIndex + productsPerPage)
+        // console.warn("paginatedALL",paginatedAllStatuses)
 
         const stockStatusesResults = paginatedProducts.map((product, index) => {
-          // console.log("product1",product.id,"asdx",[product.id],allStockStatuses[product.id],"response",stockResponse.data,"allStock",allStockStatuses[0])
-          return {
+          // console.log(
+          //   "product1",
+          //   product,
+          //   // "asdx",
+          //   // [product.id],
+          //   allStockStatuses[index].stock_status,
+          //   // "response",
+          //   // stockResponse.data,
+          //   // "allStock",
+          //   // allStockStatuses[0]
+          // );
+          // if(allStockStatuses[product.id])
+          //  return allStockStatuses[index].stock_status || "unknown";
+          // allStockStatuses.map((item,index)=>{
+          //   console.warn("item",item)
+          // })
+          return ({
             [product.id]: allStockStatuses[index].stock_status || "unknown", // Default to "unknown" if not found
-          };
+          });
         });
-        // console.log('stcok',stockStatusesResults)
+
+        // console.warn("stcok", stockStatusesResults);
 
         // const stockStatusPromises = paginatedProducts.map(async (product) => {
         //   try {
@@ -91,6 +115,7 @@ const Product = () => {
           {},
           ...stockStatusesResults
         );
+        // console.warn("combined",combinedStockStatuses)
         setStockStatuses(combinedStockStatuses);
 
         setProducts(paginatedProducts);
@@ -107,7 +132,7 @@ const Product = () => {
     const userLoggedIn = !!localStorage.getItem("token");
     setIsLoggedIn(userLoggedIn);
   }, []);
-  
+
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts, currentPage]);
@@ -135,9 +160,10 @@ const Product = () => {
   };
 
   const handleAddToCart = async (e, product) => {
-    // console.log("AddToCart")
+    // console.log("AddToCart",product)
     e.preventDefault();
     const stockStatus = stockStatuses[product.id];
+    // console.log("stock",stockStatuses)
     if (stockStatus === "instock") {
       if (isLoggedIn) {
         try {
@@ -156,7 +182,6 @@ const Product = () => {
           console.error("Error fetching product weight:", error);
           setAlertMessage("Error fetching product weight. Please try again.");
         }
-
       } else {
         setAlertMessage("Please log In! Thank you.");
         navigate("/my-account", { state: { from: location.pathname } });
@@ -199,8 +224,9 @@ const Product = () => {
       paginationButtons.push(
         <button
           key={i}
-          className={`paginate_button page-item ${currentPage === i ? "active" : ""
-            }`}
+          className={`paginate_button page-item ${
+            currentPage === i ? "active" : ""
+          }`}
           onClick={() => handlePageChange(i)}
         >
           {i}
@@ -237,126 +263,13 @@ const Product = () => {
                 handleCategoryClick={handleCategoryClick}
                 category={category}
               />
-              {/* <div className="shop-sidebar-menu" data-aos="fade">
-                <div className="shop-sidebar">
-                  <h3>Shop by Category</h3>
-                  <hr />
-                  <ul>
-                    <li
-                      className={`category ${category === null ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(null)}
-                    >
-                      All
-                    </li>
-                    <li
-                      className={`category ${category === "46" ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(46)}
-                    >
-                      Accessories
-                    </li>
-                    <li
-                      className={`category ${category === "75" ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(75)}
-                    >
-                      General dentist
-                    </li>
-                    <li
-                      className={`category ${category === "116" ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(116)}
-                    >
-                      Gloves
-                    </li>
-                    <li
-                      className={`category ${category === "117" ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(117)}
-                    >
-                      Caps
-                    </li>
-                    <li
-                      className={`category ${category === "118" ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(118)}
-                    >
-                      Masks
-                    </li>
-                    <li
-                      className={`category ${category === "119" ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(119)}
-                    >
-                      Draps
-                    </li>
-                    <li
-                      className={`category ${category === "122" ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(122)}
-                    >
-                      Sleeves
-                    </li>
-                    <li
-                      className={`category ${category === "125" ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(125)}
-                    >
-                      Retractors
-                    </li>
-                    <li
-                      className={`category ${category === "123" ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(123)}
-                    >
-                      Tips
-                    </li>
-                    <li
-                      className={`category ${category === "124" ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(124)}
-                    >
-                      Trays
-                    </li>
-                    <li
-                      className={`category ${category === "126" ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(126)}
-                    >
-                      Wedges
-                    </li>
-                    <li
-                      className={`category ${category === "120" ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(120)}
-                    >
-                      Polishing Kits
-                    </li>
-                    <li
-                      className={`category ${category === "121" ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(121)}
-                    >
-                      Endo Categories
-                    </li>
-                    <li
-                      className={`category ${category === "127" ? "active" : ""
-                        }`}
-                      onClick={() => handleCategoryClick(127)}
-                    >
-                      Vincismiles
-                    </li>
-                  </ul>
-                </div>
-              </div> */}
               {/* fetch all product data in api */}
               {products.length === 0 ? (
                 <Loader1 />
               ) : (
                 <>
                   <div className="products-grid" data-aos="fade">
-                    {products.map((product) => {
+                    {products.map((product, index) => {
                       let imageUrl = null;
                       if (product.better_featured_image) {
                         imageUrl = product.better_featured_image.source_url;
@@ -384,121 +297,47 @@ const Product = () => {
                                   onLoad={handleImageLoad}
                                 />
                               )}
-                              <h3 className="product-title" style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                                height: '60px'
-                              }}>
+                              <h3
+                                className="product-title"
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "center",
+                                  height: "60px",
+                                }}
+                              >
                                 {product.title.rendered}
                               </h3>
                             </Link>
-
                           </div>
                           <h3
                             className="product-price"
                             style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              alignItems: "center",
+                              textAlign: "center",
                             }}
                           >
                             Price: {product.price} ₹
-                            {/* <span
-                            style={{ color: "#bf8e22" }}
-                            id="top_nav"
-                          >
-                            <div className="dropdown has-border">
-                              <div
-                                className="dropdown-toggle align-self-center text-center w-100"
-                                data-bs-toggle="dropdown"
-                              >
-                                <span
-                                  style={{
-                                    fontSize: "12px",
-                                    marginRight: "5px",
-                                    color: "#222",
-                                  }}
-                                >
-                                  5
-                                </span>
-                                <FaStar size={10} />
-                                <FaStar size={10} />
-                                <FaStar size={10} />
-                                <FaStar size={10} />
-                                <FaStar size={10} />
-                              </div>
-                              <div className="dropdown-menu dropdown-menu-right">
-                                <Link
-                                  className="dropdown-item"
-                                  href="#"
-                                  title="Open a Support Ticket"
-                                >
-                                  5&nbsp;
-                                  <FaStar size={10} />
-                                  <FaStar size={10} />
-                                  <FaStar size={10} />
-                                  <FaStar size={10} />
-                                  <FaStar size={10} />
-                                </Link>
-                                <Link
-                                  href="#"
-                                  className="dropdown-item"
-                                  title="Order Status Update"
-                                >
-                                  4&nbsp;
-                                  <FaStar size={10} />
-                                  <FaStar size={10} />
-                                  <FaStar size={10} />
-                                  <FaStar size={10} />
-                                </Link>
-                                <Link
-                                  className="dropdown-item"
-                                  href="#"
-                                  title="FAQs"
-                                >
-                                  3&nbsp;
-                                  <FaStar size={10} />
-                                  <FaStar size={10} />
-                                  <FaStar size={10} />
-                                </Link>
-                                <Link
-                                  className="dropdown-item"
-                                  href="#"
-                                  title="Chat With Us"
-                                >
-                                  2&nbsp;
-                                  <FaStar size={10} />
-                                  <FaStar size={10} />
-                                </Link>
-                                <Link
-                                  className="dropdown-item"
-                                  href="#"
-                                  title="Email Us"
-                                >
-                                  1&nbsp;
-                                  <FaStar size={10} />
-                                </Link>
-                              </div>
-                            </div>
-                          </span> */}
                           </h3>
-                          <div className="product-actions" >
+                          <div className="product-actions">
                             <button
                               className="btnProductQuickview"
                               data-toggle="tooltip"
                               data-placement="top"
                               data-original-title="Quick view"
-                              onClick={() => navigate(`/products/${product.id}`)}
+                              onClick={() =>
+                                navigate(`/products/${product.id}`)
+                              }
                             >
                               <BsFillGridFill />
                             </button>
+                            {/* {console.log("stcock",stockStatuses[index] ,stockStatuses)} */}
                             <button
-                              className={`btn-quick-add ${stockStatuses[product.id] !== "instock"
-                                ? "disable-button"
-                                : ""
-                                }`}
-                              // className="btn-quick-add"
+                              // className={`btn-quick-add ${
+                              //   stockStatuses[product.id] !== "instock"
+                              //     ? "disable-button"
+                              //     : ""
+                              // }`}
+                              className="btn-quick-add"
                               data-toggle="tooltip"
                               data-placement="top"
                               title=""
@@ -509,10 +348,11 @@ const Product = () => {
                               <FaCartPlus />
                             </button>
                             <button
-                              className={`item-product__wishlist ${!watchlist.includes(product.id)
-                                ? ""
-                                : "inactive-heart"
-                                }`}
+                              className={`item-product__wishlist ${
+                                !watchlist.includes(product.id)
+                                  ? ""
+                                  : "inactive-heart"
+                              }`}
                               // className="item-product__wishlist"
                               data-toggle="tooltip"
                               data-placement="top"
@@ -531,7 +371,9 @@ const Product = () => {
                             to={`/products/${product.id}`}
                             className="product-button-main"
                           >
-                            <button className="product-button">Learn More</button>
+                            <button className="product-button">
+                              Learn More
+                            </button>
                           </Link>
 
                           {/* <Link
@@ -574,7 +416,6 @@ const Product = () => {
                   </div>
                 </>
               )}
-
             </div>
             <div className="pagination">
               <button

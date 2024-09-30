@@ -164,9 +164,9 @@ const WatchList = () => {
                               to={`/products/${product.id}`}
                               className="watchlist-item-link"
                             >
-                              <h3>{product.title.rendered}</h3>
+                              <h5 className="mb-0">{product.title.rendered}</h5>
                             </Link>
-                            <p className="watchlist-item-price">
+                            <p className="watchlist-item-price mb-0">
                               Price :- ₹{product.price}
                             </p>
                           </div>

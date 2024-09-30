@@ -13,7 +13,7 @@ const Category = (props) => {
         setIsMobileView(false);
       } else {
         setIsMobileView(true);
-        // setToggle(false);
+        // setToggle((prev)=>!prev);
       }
     };
     window.addEventListener("resize", handleResize);

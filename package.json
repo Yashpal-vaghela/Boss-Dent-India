@@ -28,6 +28,7 @@
     "swiper": "^11.1.9",
     "url": "^0.11.3",
     "web-vitals": "^2.1.4",
+    "yet-another-react-lightbox": "^3.21.6",
     "yup": "^1.4.0"
   },
   "scripts": {
