@@ -150,10 +150,6 @@ const WatchlistItem = React.memo(
       }));
     };
 
-    useEffect(() => {
-      console.log("Selected Attributes:", selectedAttributes); // Debugging selectedAttributes
-    }, [selectedAttributes]);
-
     return (
       <div className="watchlist-item">
         <div className="watchlist-item-image-wrapper">
@@ -179,19 +175,32 @@ const WatchlistItem = React.memo(
               {Object.keys(product.variations[0].attributes).map((attribute) => (
                 <div key={attribute} className="variation-cart-main">
                   <h4>{attribute.replace(/attribute_pa_|attribute_/, "")}: </h4>
-                  <div className="variation-buttons">
-                    {product.variations.map((variation, index) => (
-                      <button
-                        key={index}
-                        className={`variation-button ${selectedAttributes[attribute] === variation.attributes[attribute] ? "selected" : ""}`}
-                        onClick={() => handleAttributeSelect(attribute, variation.attributes[attribute])}
-                      >
-                        {typeof variation.attributes[attribute] === "string"
-                          ? variation.attributes[attribute]
-                          : JSON.stringify(variation.attributes[attribute])}
-                      </button>
-                    ))}
-                  </div>
+                  {attribute === "attribute_pa_color" ? (
+                    <div style={{ display: "flex" }}>
+                      {product.variations.map((variation, index) => (
+                        <div
+                          key={index}
+                          className={`color-option ${Object.values(variation?.attributes)[0]}
+                            ${selectedAttributes[attribute] === variation.attributes[attribute] ? "selected" : ""}`}
+                          onClick={() => handleAttributeSelect(attribute, variation.attributes[attribute])}
+                        ></div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="variation-buttons">
+                      {product.variations.map((variation, index) => (
+                        <button
+                          key={index}
+                          className={`variation-button ${selectedAttributes[attribute] === variation.attributes[attribute] ? "selected" : ""}`}
+                          onClick={() => handleAttributeSelect(attribute, variation.attributes[attribute])}
+                        >
+                          {typeof variation.attributes[attribute] === "string"
+                            ? variation.attributes[attribute]
+                            : JSON.stringify(variation.attributes[attribute])}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
