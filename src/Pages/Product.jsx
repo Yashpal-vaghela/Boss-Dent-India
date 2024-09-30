@@ -16,6 +16,7 @@ import { Add } from "../redux/Apislice/cartslice";
 import BreadCrumbs from "../component/BreadCrumbs";
 import Loader1 from "../component/Loader1";
 import Category from "../component/Category";
+import Loader from "../component/Loader";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -38,9 +39,7 @@ const Product = () => {
       setLoading(true);
       try {
         let apiUrl = `https://admin.bossdentindia.com/wp-json/wp/v2/product?per_page=100`;
-        // const baseurl = "https://bossdentindia.com/wp-json/wp/v2/product";
         const perPage = 100;
-        // console.log(`Fetching products for category: ${category}`);
         if (category) {
           apiUrl += `&product_cat=${category}`;
         }
@@ -57,47 +56,50 @@ const Product = () => {
         }
 
         // console.log('Full Product Response:', response.data);
-
         setTotalProducts(allProducts.length);
         const startIndex = (currentPage - 1) * productsPerPage;
         const paginatedProducts = allProducts.slice(
           startIndex,
           startIndex + productsPerPage
         );
-        // console.log("paginatedProducts",paginatedProducts)
-
         const stockResponse = await axios.get(
           "https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/all"
         );
 
         const allStockStatuses = stockResponse.data; // Adjust this based on your API response format
-        const paginatedAllStatuses = allStockStatuses.slice(startIndex,startIndex + productsPerPage)
-        // console.warn("paginatedALL",paginatedAllStatuses)
+        const paginatedAllStatuses = allStockStatuses.slice(
+          startIndex,
+          startIndex + productsPerPage
+        );
+        // console.warn("paginatedALL",paginatedAllStatuses,stockResponse.data)
 
-        const stockStatusesResults = paginatedProducts.map((product, index) => {
+        const stockStatusesResults = allStockStatuses.map((product, index) => {
           // console.log(
           //   "product1",
-          //   product,
+          //   product.product_id,
           //   // "asdx",
           //   // [product.id],
-          //   allStockStatuses[index].stock_status,
+          //   allStockStatuses[index].id,
           //   // "response",
           //   // stockResponse.data,
           //   // "allStock",
           //   // allStockStatuses[0]
           // );
+          // if(allStockStatuses[index].id == product.product_id){
+          //   console.log("products2")
+          // }
           // if(allStockStatuses[product.id])
           //  return allStockStatuses[index].stock_status || "unknown";
           // allStockStatuses.map((item,index)=>{
           //   console.warn("item",item)
           // })
-          return ({
-            [product.id]: allStockStatuses[index].stock_status || "unknown", // Default to "unknown" if not found
-          });
+          return {
+            [product.product_id]:
+              allStockStatuses[index].stock_status || "unknown", // Default to "unknown" if not found
+          };
         });
 
         // console.warn("stcok", stockStatusesResults);
-
         // const stockStatusPromises = paginatedProducts.map(async (product) => {
         //   try {
         //     const stockResponse = await axios.get(
@@ -117,7 +119,6 @@ const Product = () => {
         );
         // console.warn("combined",combinedStockStatuses)
         setStockStatuses(combinedStockStatuses);
-
         setProducts(paginatedProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -150,7 +151,6 @@ const Product = () => {
   };
 
   const handleCategoryClick = (newCategory) => {
-    // console.log("category", newCategory);
     if (newCategory === null) {
       navigate("/products");
     } else if (newCategory !== category) {
@@ -160,10 +160,8 @@ const Product = () => {
   };
 
   const handleAddToCart = async (e, product) => {
-    // console.log("AddToCart",product)
     e.preventDefault();
     const stockStatus = stockStatuses[product.id];
-    // console.log("stock",stockStatuses)
     if (stockStatus === "instock") {
       if (isLoggedIn) {
         try {
@@ -175,7 +173,6 @@ const Product = () => {
             ...product,
             weight: productWeight,
           };
-
           dispatch(Add(prodcutWithWeight));
           setAlertMessage("Product added to cart!");
         } catch (error) {
@@ -207,7 +204,6 @@ const Product = () => {
       navigate("/my-account", { state: { from: location.pathname } });
     }
   };
-  // console.log("Location-product", location);
 
   const handleImageLoad = (event) => {
     event.target.classList.add("loaded");
@@ -265,11 +261,11 @@ const Product = () => {
               />
               {/* fetch all product data in api */}
               {products.length === 0 ? (
-                <Loader1 />
+                <Loader></Loader>
               ) : (
                 <>
                   <div className="products-grid" data-aos="fade">
-                    {products.map((product, index) => {
+                    {products.map((product) => {
                       let imageUrl = null;
                       if (product.better_featured_image) {
                         imageUrl = product.better_featured_image.source_url;
@@ -280,7 +276,6 @@ const Product = () => {
                       ) {
                         imageUrl = product.yoast_head_json.og_image[0].url;
                       }
-                      // console.log("product",typeof(imageUrl),product,imageUrl.replace("https://","https://admin."))
                       return (
                         <div className="product-card" key={product.id}>
                           <div className="product-card-link">
@@ -330,14 +325,12 @@ const Product = () => {
                             >
                               <BsFillGridFill />
                             </button>
-                            {/* {console.log("stcock",stockStatuses[index] ,stockStatuses)} */}
                             <button
-                              // className={`btn-quick-add ${
-                              //   stockStatuses[product.id] !== "instock"
-                              //     ? "disable-button"
-                              //     : ""
-                              // }`}
-                              className="btn-quick-add"
+                              className={`btn-quick-add ${
+                                stockStatuses[product.id] !== "instock"
+                                  ? "disable-button"
+                                  : ""
+                              }`}
                               data-toggle="tooltip"
                               data-placement="top"
                               title=""
@@ -353,7 +346,6 @@ const Product = () => {
                                   ? ""
                                   : "inactive-heart"
                               }`}
-                              // className="item-product__wishlist"
                               data-toggle="tooltip"
                               data-placement="top"
                               data-original-title="Add to wishlist"
@@ -375,41 +367,6 @@ const Product = () => {
                               Learn More
                             </button>
                           </Link>
-
-                          {/* <Link
-                        to={`/products/${product.id}`}
-                        className="product-button-main"
-                      >
-                        <button className="product-button">Learn more</button>
-                      </Link> */}
-                          {/* <div className="product-actions">
-                        <button
-                          className={`add-to-cart-button ${
-                            stockStatuses[product.id] !== "instock"
-                              ? "disable-button"
-                              : ""
-                          }`}
-                          disabled={stockStatuses[product.id] !== "instock"}
-                          onClick={(e) => handleAddToCart(e, product)}
-                        >
-                          <FaCartPlus />
-                        </button>
-
-                        <span
-                          className={`watchlist-icon ${
-                            !watchlist.includes(product.id)
-                              ? ""
-                              : "inactive-heart"
-                          }`}
-                          onClick={() => handleAddToWatchlist(product)}
-                        >
-                          {watchlist.includes(product.id) ? (
-                            <FaHeart />
-                          ) : (
-                            <FaRegHeart />
-                          )}
-                        </span>
-                      </div> */}
                         </div>
                       );
                     })}

@@ -4,7 +4,7 @@ import "./css/style.css";
 import "./css/responsive.css";
 import "./css/product.css";
 import "./css/success.css";
-// import "./css/navbar.css";
+import "./css/navbar.css";
 import "./css/navbar1.css";
 import "./css/otherBanner.css";
 import Allroutes from "./component/Allroutes";
@@ -25,6 +25,7 @@ import Loader1 from "./component/Loader1";
 // Main App Component
 const App = () => {
   const [loading, setLoading] = useState(true);
+  
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);

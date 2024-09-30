@@ -11,9 +11,7 @@ const Home = () => {
     <div className="home-main">
       {/* home banner section */}
       <HomeBanner />
-      {/* other Banner section */}
-      <OtherBanner />
-      {/* Category Section */}  
+      {/* Category Section */}
       <section>
         <div className="home-cat-main">
           <div className="home-cat-sub">
@@ -88,7 +86,8 @@ const Home = () => {
           </div>
         </div>
       </section>
-
+      {/* other Banner section */}
+      {/* <OtherBanner /> */}
       {/* Other Banner */}
       <section>
         <div className="other-banner-main" data-aos="fade-down">

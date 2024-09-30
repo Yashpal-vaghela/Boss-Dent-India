@@ -5,6 +5,7 @@
   z-index: 1001;
   background-color: transparent;
   transition: all 0.3s ease;
+  padding-right: 0px !important;
 }
 
 .newnavbar1 {

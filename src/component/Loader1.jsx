@@ -8,7 +8,7 @@ const Loader1 = () => {
         className="img-fluid loader-img"
         width={200}
         height={100}
-        alt="loader-image"
+        alt="loader-image1"
       ></img>
     </div>
   );

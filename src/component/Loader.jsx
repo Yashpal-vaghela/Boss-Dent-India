@@ -1,45 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import './spiner.css';
-
-const colors = ['#c89c31'];
-
+import React from "react";
 
 const Loader = () => {
-    const [colorIndex, setColorIndex] = useState(0);
+  return (
+    <div
+      className="Loader-wrapper"
+      style={{ height: "0px", margin: "10% auto" }}
+    >
+      <img
+        src="/asset/images/BOSS-DENT-LOGO-01.png"
+        className="img-fluid loader-img"
+        width={200}
+        height={100}
+        alt="loader-image"
+      ></img>
+    </div>
+  );
+};
 
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
-      }, 1000);
-  
-      return () => clearInterval(interval);
-    }, []);
-  
-    return (
-      <div style={styles.wrapper}>
-        <div style={{ ...styles.circle, backgroundColor: colors[colorIndex] }} />
-        <div style={{ ...styles.circle, backgroundColor: colors[(colorIndex + 1) % colors.length] }} />
-        <div style={{ ...styles.circle, backgroundColor: colors[(colorIndex + 2) % colors.length] }} />
-        <div style={{ ...styles.circle, backgroundColor: colors[(colorIndex + 3) % colors.length] }} />
-      </div>
-    );
-  };
-  
-  const styles = {
-    wrapper: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-    },
-    circle: {
-      width: '20px',
-      height: '20px',
-      borderRadius: '50%',
-      margin: '10px',
-      animation: 'pulse 1.2s infinite ease-in-out',
-    },
-  
-}
-
-export default Loader
+export default Loader;

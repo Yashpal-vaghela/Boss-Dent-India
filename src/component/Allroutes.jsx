@@ -15,7 +15,6 @@ import WatchList from "../Pages/WatchList";
 import CheckOut from "../Pages/CheckOut";
 import UserData from "../Pages/Userdata";
 import ForgotPassword from "./ForgotPassword";
-// import NewNav from './NewNav'
 import NewNav1 from "./NewNav1";
 import NewCart from "../Pages/NewCart";
 import ProtectedRoute from "./ProtectedRoute";
@@ -24,7 +23,7 @@ import ErrorPage from "../Pages/404";
 
 const Allroutes = () => {
   return (
-    <div>
+    <>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<About />} />
@@ -45,25 +44,11 @@ const Allroutes = () => {
         <Route path="/terms-and-conditions" element={<TermAndCondition />} />
         <Route path="/new-nav" element={<NewNav1 />} />
         {/* <Route path='/gallery' element={<ImageGallery />}/> */}
-        <Route path="/*" element={<ErrorPage></ErrorPage>}></Route>
-        <Route
-          path="/cart"
-          element={
-            <ProtectedRoute>
-              <NewCart />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/checkout"
-          element={
-            <ProtectedRoute>
-              <CheckOut />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/cart" element={<ProtectedRoute><NewCart/></ProtectedRoute>}/>
+        <Route path="/checkout" element={<ProtectedRoute><CheckOut/></ProtectedRoute>}/>
+        <Route path="*" element={<ErrorPage></ErrorPage>}></Route>
       </Routes>
-    </div>
+    </>
   );
 };
 
