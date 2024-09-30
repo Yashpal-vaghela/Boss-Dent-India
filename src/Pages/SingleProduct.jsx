@@ -16,6 +16,7 @@ import ReviewList from "../component/ReviewList";
 import ReviewForm from "../component/ReviewForm";
 import AlertSuccess from "../component/AlertSuccess";
 import { toast } from "react-toastify";
+import Loader1 from "../component/Loader1";
 
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
@@ -228,7 +229,7 @@ const SingleProduct = () => {
   return (
     <>
       {loading ? (
-        <Loader />
+        <Loader1 />
       ) : error ? (
         { error }
       ) : (
