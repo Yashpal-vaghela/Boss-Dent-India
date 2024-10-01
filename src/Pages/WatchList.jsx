@@ -21,16 +21,16 @@ const WatchList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const cachedProducts = localStorage.getItem("watchlistProducts");
-    const cachedStockStatuses = localStorage.getItem("stockStatuses");
+    // const cachedProducts = localStorage.getItem("watchlistProducts");
+    // const cachedStockStatuses = localStorage.getItem("stockStatuses");
 
-    if (cachedProducts && cachedStockStatuses) {
-      setProducts(JSON.parse(cachedProducts));
-      setStockStatuses(JSON.parse(cachedStockStatuses));
-      setLoading(false);
-    } else if (watchlist.length > 0) {
-      fetchProducts();
-    }
+    // if (cachedProducts && cachedStockStatuses) {
+    //   setProducts(JSON.parse(cachedProducts));
+    //   setStockStatuses(JSON.parse(cachedStockStatuses));
+    //   setLoading(false);
+    // } else if (watchlist.length > 0) {
+    fetchProducts();
+    // }
   }, [watchlist]);
 
   // Function to fetch product and stock status data
@@ -40,22 +40,35 @@ const WatchList = () => {
 
     try {
       // Batch request for products
-      const productResponse = await axios.post(
-        `https://admin.bossdentindia.com/wp-json/custom/v1/batch-products`,
-        { ids: watchlist }
+      const productResponses = await Promise.all(
+        watchlist.map((id) =>
+          axios.get(
+            `https://admin.bossdentindia.com/wp-json/wp/v2/product/${id}`
+          )
+        )
       );
-      const productsData = productResponse.data;
+      const productsData = productResponses.map((response) => response.data);
       setProducts(productsData);
       localStorage.setItem("watchlistProducts", JSON.stringify(productsData));
 
       // Batch request for stock statuses
-      const stockResponse = await axios.post(
-        `https://admin.bossdentindia.com/wp-json/custom/v1/batch-stock-statuses`,
-        { ids: watchlist }
-      );
-      const stockStatusesData = stockResponse.data;
-      setStockStatuses(stockStatusesData);
-      localStorage.setItem("stockStatuses", JSON.stringify(stockStatusesData));
+      const stockStatusPromises = productsData.map(async (product) => {
+        try {
+          const stockResponse = await axios.get(
+            `https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/${product.id}`
+          );
+          return { [product.id]: stockResponse.data.stock_status };
+        } catch (error) {
+          console.error("Error fetching stock status:", error);
+          return { [product.id]: "unknown" };
+        }
+      });
+
+      // Combine stock statuses into a single object
+      const stockStatusesResults = await Promise.all(stockStatusPromises);
+      const combinedStockStatuses = Object.assign({}, ...stockStatusesResults);
+      setStockStatuses(combinedStockStatuses);
+      localStorage.setItem("stockStatuses", JSON.stringify(combinedStockStatuses));
     } catch (error) {
       setError("Failed to fetch watchlist products. Please try again later.");
     } finally {
@@ -162,49 +175,52 @@ const WatchlistItem = React.memo(
           />
         </div>
         <div className="watchlist-item-details">
-          <div className="watchlist-item-info">
-            <Link to={`/products/${product.id}`} className="watchlist-item-link">
-              <h5 className="mb-0">{product.title.rendered}</h5>
-            </Link>
-            <p className="watchlist-item-price mb-0">Price: ₹{product.price}</p>
+          <div className="d-block">
+            <div className="watchlist-item-info">
+              <Link to={`/products/${product.id}`} className="watchlist-item-link">
+                <h5 className="mb-0">{product.title.rendered}</h5>
+              </Link>
+              <p className="watchlist-item-price mb-0">Price: ₹{product.price}</p>
+            </div>
+            {/* Render product variations */}
+            {product.variations && product.variations[0]?.attributes && (
+              <div className="cart-item-attributes">
+                {Object.keys(product.variations[0].attributes).map((attribute) => (
+                  <div key={attribute} className="variation-cart-main">
+                    <h4>{attribute.replace(/attribute_pa_|attribute_/, "")}: </h4>
+                    {attribute === "attribute_pa_color" ? (
+                      <div style={{ display: "flex" }}>
+                        {product.variations.map((variation, index) => (
+                          <div
+                            key={index}
+                            className={`color-option ${Object.values(variation?.attributes)[0]}
+                            ${selectedAttributes[attribute] === variation.attributes[attribute] ? "selected" : ""}`}
+                            onClick={() => handleAttributeSelect(attribute, variation.attributes[attribute])}
+                          ></div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="variation-buttons">
+                        {product.variations.map((variation, index) => (
+                          <button
+                            key={index}
+                            className={`variation-button ${selectedAttributes[attribute] === variation.attributes[attribute] ? "selected" : ""}`}
+                            onClick={() => handleAttributeSelect(attribute, variation.attributes[attribute])}
+                          >
+                            {typeof variation.attributes[attribute] === "string"
+                              ? variation.attributes[attribute]
+                              : JSON.stringify(variation.attributes[attribute])}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
-          {/* Render product variations */}
-          {product.variations && product.variations[0]?.attributes && (
-            <div className="cart-item-attributes">
-              {Object.keys(product.variations[0].attributes).map((attribute) => (
-                <div key={attribute} className="variation-cart-main">
-                  <h4>{attribute.replace(/attribute_pa_|attribute_/, "")}: </h4>
-                  {attribute === "attribute_pa_color" ? (
-                    <div style={{ display: "flex" }}>
-                      {product.variations.map((variation, index) => (
-                        <div
-                          key={index}
-                          className={`color-option ${Object.values(variation?.attributes)[0]}
-                            ${selectedAttributes[attribute] === variation.attributes[attribute] ? "selected" : ""}`}
-                          onClick={() => handleAttributeSelect(attribute, variation.attributes[attribute])}
-                        ></div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="variation-buttons">
-                      {product.variations.map((variation, index) => (
-                        <button
-                          key={index}
-                          className={`variation-button ${selectedAttributes[attribute] === variation.attributes[attribute] ? "selected" : ""}`}
-                          onClick={() => handleAttributeSelect(attribute, variation.attributes[attribute])}
-                        >
-                          {typeof variation.attributes[attribute] === "string"
-                            ? variation.attributes[attribute]
-                            : JSON.stringify(variation.attributes[attribute])}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+
 
           <div className="actions">
             <button
