@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
 
 const WatchlistContext = createContext();
 
 export const useWatchlist = () => useContext(WatchlistContext);
 
 export const WatchlistProvider = ({ children }) => {
+  const location = useLocation();
   const [watchlist, setWatchlist] = useState(() => {
     const savedWatchlist = localStorage.getItem('watchlist');
     return savedWatchlist ? JSON.parse(savedWatchlist) : [];
@@ -23,8 +25,12 @@ export const WatchlistProvider = ({ children }) => {
   const ensureAuthenticated = () => {
     if (!isAuthenticated()) {
       
-      window.alert("Please Log In! Thank you.");
-      navigate('/my-account');
+      toast.error("Please Log In! Thank you.",{
+        autoClose:3000
+      });
+      setTimeout(() =>{
+        navigate('/my-account', { state: {from: location.pathname}});
+      },3000);
       return false;
     }
     return true;

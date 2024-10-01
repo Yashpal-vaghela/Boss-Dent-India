@@ -188,21 +188,19 @@ const Product = () => {
         "This product is out of stock and cannot be added to the cart."
       );
     }
+    
   };
+  
+  
 
   const handleAddToWatchlist = (product) => {
-    if (isLoggedIn) {
       if (watchlist.includes(product.id)) {
         removeFromWatchlist(product.id);
         setAlertMessage("Product removed from watchlist.");
       } else {
         addToWatchlist(product.id);
-        setAlertMessage("Product added to watchlist!");
+        // setAlertMessage("Product added to watchlist!");
       }
-    } else {
-      setAlertMessage("Please log in! Thank you.");
-      navigate("/my-account", { state: { from: location.pathname } });
-    }
   };
 
   const handleImageLoad = (event) => {

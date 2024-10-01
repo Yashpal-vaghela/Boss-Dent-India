@@ -88,11 +88,24 @@ const WatchList = () => {
   };
 
   // Handle adding product to cart based on stock status
-  const handleAddToCart = (product, selectedAttributes) => {
+  const handleAddToCart = async(product, selectedAttributes) => {
+
     const stockStatus = stockStatuses[product.id];  
     
     if (stockStatus === "instock") {
-      dispatch(Add({ ...product, quantity: 1, selectedAttributes }));
+      try {
+        const weightResponse = await axios.get(
+          `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${product.id}`
+        );
+        const productWeight = weightResponse.data.weight || 0;
+        
+        dispatch(Add({ ...product, quantity: 1, selectedAttributes, weight: productWeight }));
+        removeFromWatchlist(product.id);
+        toast.success("Product added to cart!");
+      } catch (error) {
+        console.error("Error fetching product weight:", error);
+      toast.error("Failed to fetch product weight. Please try again.");
+      }    
     } else {
       toast.info("This product is Out of stock.");
     }

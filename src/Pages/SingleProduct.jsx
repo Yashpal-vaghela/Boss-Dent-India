@@ -207,8 +207,12 @@ const SingleProduct = () => {
     e.preventDefault();
     if (!isLoggedIn) {
       // User is not logged in, show alert and navigate to login page
-      setAlertMessage("Please log in to add products to your cart.");
-      navigate("/my-account", { state: { from: location.pathname }});
+      toast.error("Please! log-in befor add products into your cart.",{
+        autoClose: 3000,
+      });
+      setTimeout(()=>{
+        navigate("/my-account", { state: { from: location.pathname }});
+      },3000);
       return; // Exit the function
     }
     if (stockStatus === "instock") {
@@ -223,7 +227,7 @@ const SingleProduct = () => {
       toast.info("Product is out of stock");
     }
   };
-
+ 
   // let imageUrl = product.yoast_head_json.og_image[0].url;
   return (
     <>
