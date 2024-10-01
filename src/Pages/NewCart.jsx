@@ -95,10 +95,11 @@ const NewCart = () => {
   };
 
   useEffect(() => {
-    return () => {
-      console.log("dispatch");
-      dispatch(getTotal());
-    };
+    console.log("dispatch");
+    dispatch(getTotal());
+    // return () => {
+     
+    // };
   }, []);
   
 
