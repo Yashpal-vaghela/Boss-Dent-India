@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaTrashAlt } from "react-icons/fa";
-// import googlepay from "../images/Google-pay.png";
-// import phonepe from "../images/Phone-pe.png";
-// import banktransfer from "../images/bank-transfer.png";
 import "../css/cartresponsive.css";
-// import Aos from "aos";
 import { useDispatch, useSelector } from "react-redux";
 // import CartDefaultFuntion from "../component/CartDefaultFuntion";
 import {
@@ -100,9 +96,11 @@ const NewCart = () => {
 
   useEffect(() => {
     return () => {
+      console.log("dispatch");
       dispatch(getTotal());
     };
-  }, [dispatch]);
+  }, []);
+  
 
   useEffect(() => {
     AdddeliveryCharge();
