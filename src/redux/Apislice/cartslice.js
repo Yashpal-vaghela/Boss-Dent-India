@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   cartItems: [],
-  cartItems1:[],
   cartTotalAmount: 0,
   deliveryCharge:0
 };
@@ -80,7 +79,7 @@ export const cartSlice = createSlice({
       const SizeIndex = state.cartItems.findIndex(
         (item) => item.id === action.payload.id
       );
-      // console.warn("state#######", state.cartItems, action.payload, SizeIndex);
+      console.warn("state#######", state.cartItems, action.payload);
       if (SizeIndex !== -1) {
         state.cartItems[SizeIndex].selectedAttributes = {
           ...action.payload.selectedAttributes,

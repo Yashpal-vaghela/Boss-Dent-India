@@ -89,7 +89,8 @@ const WatchList = () => {
 
   // Handle adding product to cart based on stock status
   const handleAddToCart = (product, selectedAttributes) => {
-    const stockStatus = stockStatuses[product.id];
+    const stockStatus = stockStatuses[product.id];  
+    
     if (stockStatus === "instock") {
       dispatch(Add({ ...product, quantity: 1, selectedAttributes }));
     } else {
@@ -174,7 +175,7 @@ const WatchlistItem = React.memo(
           />
         </div>
         <div className="watchlist-item-details">
-          <div className="d-block">
+          <div className="d-lg-block d-md-block">
             <div className="watchlist-item-info">
               <Link to={`/products/${product.id}`} className="watchlist-item-link">
                 <h5 className="mb-0">{product.title.rendered}</h5>
@@ -183,7 +184,7 @@ const WatchlistItem = React.memo(
             </div>
             {/* Render product variations */}
             {product.variations && product.variations[0]?.attributes && (
-              <div className="cart-item-attributes">
+              <div className="wishlist-item-attributes">
                 {Object.keys(product.variations[0].attributes).map((attribute) => (
                   <div key={attribute} className="variation-cart-main">
                     <h4>{attribute.replace(/attribute_pa_|attribute_/, "")}: </h4>

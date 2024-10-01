@@ -33,13 +33,6 @@ const NewCart = () => {
     setCanCheckout(allAttributesSelected);
   }, [cartData]);
 
-  // useEffect(() => {
-  //   Aos.init({
-  //     duration: 1000, // Animation duration in milliseconds
-  //     once: false, // Allow animations to trigger multiple times
-  //     mirror: true, // Trigger animations on scroll up
-  //   });
-  // }, []);
 
   const handleAttributeSelect = (product, attribute, value) => {
     // console.log("update", attribute, value, product);
@@ -53,8 +46,10 @@ const NewCart = () => {
 
   const AdddeliveryCharge = () => {
     const count = cartData?.cartItems?.reduce((total, count) => {
-      return total + (Number(count?.weight) * count.qty) / 1000;
+      // console.log("total",total,"v====",count?.weight, count.qty /1000)
+      return total + ((count?.weight) * count.qty) / 1000;
     }, 0);
+    // console.log("count",count)
     if (count < 1) {
       setDeliveryCharge(99);
     } else if (count > 1 && count < 3) {
@@ -62,7 +57,7 @@ const NewCart = () => {
     } else if (count > 3) {
       setDeliveryCharge(65);
     }
-    // console.log(deliveryCharge)
+    // console.log("deliveryCharge",deliveryCharge);
     dispatch(DeliveryCharge(deliveryCharge));
   };
 
@@ -85,9 +80,10 @@ const NewCart = () => {
   const handleRemoveItem = (e, product) => {
     e.preventDefault();
     // removeFromCart(product.id);
+    AdddeliveryCharge();
     dispatch(Remove(product.id));
     // console.log("Removing product with ID:", product.id);
-    AdddeliveryCharge();
+    
   };
 
   const handleEmptyCart = () => {
@@ -95,11 +91,7 @@ const NewCart = () => {
   };
 
   useEffect(() => {
-    console.log("dispatch");
     dispatch(getTotal());
-    // return () => {
-     
-    // };
   }, []);
   
 
@@ -168,8 +160,14 @@ const NewCart = () => {
                             return (
                               <div
                                 key={attribute}
-                                className="variation-cart-main"
+                                className={`${
+                                  !canCheckout
+                                    ? "cart-variation-main variation-cart-main"
+                                    : "variation-cart-main"
+                                }`}
+                                // className="variation-cart-main"
                               >
+                                <div className="d-flex align-items-center">
                                 <h4>
                                   {attribute.replace(
                                     /attribute_pa_|attribute_/,
@@ -177,7 +175,7 @@ const NewCart = () => {
                                   )}
                                   :
                                 </h4>
-
+                                
                                 {attribute === "attribute_pa_color" ? (
                                   <div style={{ display: "flex" }}>
                                     {product?.variations?.map(
@@ -250,6 +248,9 @@ const NewCart = () => {
                                     )}
                                   </div>
                                 )}
+                                </div>
+                              
+
 
                                 {!canCheckout &&
                                   !product.selectedAttributes?.[attribute] && (

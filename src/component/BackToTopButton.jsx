@@ -45,7 +45,7 @@ const BackToTopButton = () => {
             color: '#fff',
             border: 'none',
             borderRadius: '50%',
-            padding: '13px 15px',
+            padding: '10px 15px 13px 15px',
             cursor: 'pointer',
             transition: 'background-color 0.5s ease', 
             zIndex:1

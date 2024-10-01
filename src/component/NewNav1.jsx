@@ -517,18 +517,18 @@ const NewNav1 = () => {
                 id="navbar-social-icon"
                 className="d-flex d-sm-none d-md-none d-lg-flex navbar-social-icon align-items-center"
               >
-                <div className="user-icon icon">
-                  <Link to="/user">
+                <div className="user-icon icon" onClick={handleOffcanvas1}>
+                  <Link to="/user" >
                     <FaUserAlt />
                   </Link>
                 </div>
-                <div className="wishlist-icon icon">
+                <div className="wishlist-icon icon" onClick={handleOffcanvas1}>
                   <Link to="/wishlist">
                     <FaHeart />
                     <span>{watchlist?.length}</span>
                   </Link>
                 </div>
-                <div className="cart-icon icon">
+                <div className="cart-icon icon" onClick={handleOffcanvas1}>
                   <Link to="/cart">
                     <FaCartPlus />
                     <span>{cartData?.length}</span>

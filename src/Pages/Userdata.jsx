@@ -227,9 +227,9 @@ const UserData = () => {
     setShowNewPassword(!showNewPassword);
   };
 
-  if (!user) {
-    return <Loader />;
-  }
+  // if (!user) {
+  //   return <Loader />;
+  // }
 
   return !user ? (
     <Loader1></Loader1>

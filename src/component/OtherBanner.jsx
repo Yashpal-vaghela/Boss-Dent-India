@@ -6,21 +6,21 @@ import {FaChevronLeft,FaChevronRight} from 'react-icons/fa6'
 
 const OtherBanner = () => {
   const BannerImageData = [
-    {
-      id: 1,
-      src: "/asset/images/Composite finishing spiral discs.jpg",
-      alt: "Composite-finishing-spiral-disc",
-    },
-    {
-      id: 2,
-      src: "/asset/images/4 PLY MASK.jpg",
-      alt: "4-Ply-Mask",
-    },
-    {
-      id: 3,
-      src: "/asset/images/MIxing Tips.jpg",
-      alt: "Mixing-Tips",
-    },
+    // {
+    //   id: 1,
+    //   src: "/asset/images/Composite finishing spiral discs.jpg",
+    //   alt: "Composite-finishing-spiral-disc",
+    // },
+    // {
+    //   id: 2,
+    //   src: "/asset/images/4 PLY MASK.jpg",
+    //   alt: "4-Ply-Mask",
+    // },
+    // {
+    //   id: 3,
+    //   src: "/asset/images/MIxing Tips.jpg",
+    //   alt: "Mixing-Tips",
+    // },
     {
       id: 4,
       src: "/asset/images/Prophy cups and brushes.jpg",
@@ -31,21 +31,21 @@ const OtherBanner = () => {
     //   src: "/asset/images/Tieon Surgeon Cap.jpg",
     //   alt: "Tieon-surgeon-cap",
     // },
-    // {
-    //   id:6,
-    //   src: "/asset/images/Suction Tips_.jpg",
-    //   alt: "Suction-tips",
-    // },
+    {
+      id:6,
+      src: "/asset/images/Suction Tips_.jpg",
+      alt: "Suction-tips",
+    },
     // {
     //   id:7,
     //   src: "/asset/images/Dispensing Gun.jpg",
     //   alt: "Dispensing-gun",
     // },
-    // {
-    //   id:8,
-    //   src: "/asset/images/Comp Polishing kit & wheel.jpg",
-    //   alt: "Comp-Polishing-kit-and-wheel",
-    // },
+    {
+      id:8,
+      src: "/asset/images/Comp Polishing kit & wheel.jpg",
+      alt: "Comp-Polishing-kit-and-wheel",
+    },
     // {
     //   id:9,
     //   src: "/asset/images/Starilaization.jpg",
@@ -56,11 +56,11 @@ const OtherBanner = () => {
     //   src: "/asset/images/Patient Bibs.jpg",
     //   alt: "Patient-Bibs",
     // },
-    // {
-    //   id:11,
-    //   src: "/asset/images/Veneer Box and Veneer Glue Stick.jpg",
-    //   alt: "Venner-box-and-veneer-glue-stick",
-    // },
+    {
+      id:11,
+      src: "/asset/images/Veneer Box and Veneer Glue Stick.jpg",
+      alt: "Venner-box-and-veneer-glue-stick",
+    },
     // {
     //   id:12,
     //   src: "/asset/images/Patient Draps.jpg",
@@ -113,6 +113,9 @@ const OtherBanner = () => {
     setClickedImg([{src:newItem}])
     setCurrentIndex(newIndex)
   }
+  const handleClick = () =>{
+    console.log("click")
+  }
   return (
     <section className="OtherBanner-section">
       <div className="container-fluid mb-3">
@@ -136,6 +139,7 @@ const OtherBanner = () => {
               close={() => setModelOpen(false)}
               slides={clickedImg}
               index={currentIndex}
+              on={{ slideChange: handleClick() }}
               render={{
                 // Custom Previous Button
                 buttonPrev: () => (

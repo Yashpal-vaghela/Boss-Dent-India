@@ -69,77 +69,77 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  return (
-    <div className="login-container" data-aos="fade">
-      {loading ? (
-        <>
-          <Loader1></Loader1>
-        </>
-      ) : (
-        <>
-          <h2 className="login-title">Login</h2>
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label className="form-label" htmlFor="email">
-                Username or Email
-              </label>
-              <input
-                type="text"
-                id="userIdentifier"
-                className="form-input"
-                placeholder="Enter Username / Email"
-                value={userIdentifier}
-                onChange={(e) => setUserIdentifier(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="password">
-                Password
-              </label>
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                className="form-input"
-                placeholder="Enter Your Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <span
-                className="password-toggle-icon"
-                onClick={handleShowPassword}
-              >
-                {showPassword ? <FaEye /> : <FaEyeSlash />}
-              </span>
-            </div>
-            <div className="form-group remember-me-row">
-              <div className="left-section">
+  return loading ? (
+    <>
+      <Loader1></Loader1>
+    </>
+  ) : (
+    <>
+      <div className="login-container" data-aos="fade">
+      <h2 className="login-title">Login</h2>
+            <form className="login-form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label className="form-label" htmlFor="email">
+                  Username or Email
+                </label>
                 <input
-                  type="checkbox"
-                  id="rememberMe"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
+                  type="text"
+                  id="userIdentifier"
+                  className="form-input"
+                  placeholder="Enter Username / Email"
+                  value={userIdentifier}
+                  onChange={(e) => setUserIdentifier(e.target.value)}
+                  required
                 />
-                <label htmlFor="rememberMe">Remember Me</label>
               </div>
-              <div>
-                <a href="/forgot-password" className="forgot-password-l">
-                  Forgot Password?
-                </a>
+              <div className="form-group">
+                <label className="form-label" htmlFor="password">
+                  Password
+                </label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  className="form-input"
+                  placeholder="Enter Your Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <span
+                  className="password-toggle-icon"
+                  onClick={handleShowPassword}
+                >
+                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+                </span>
               </div>
-            </div>
-            <button type="submit" className="login-button">
-              Log in
-            </button>
-            <p className="login-text">
-              Don't have an account? <a href="/sign-up">Sign Up</a>
-            </p>
-          </form>
-          {showAlert && <AlertSuccess message="You are login successfully." />}
-        </>
-      )}
-    </div>
+              <div className="form-group remember-me-row">
+                <div className="left-section">
+                  <input
+                    type="checkbox"
+                    id="rememberMe"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                  />
+                  <label htmlFor="rememberMe">Remember Me</label>
+                </div>
+                <div>
+                  <a href="/forgot-password" className="forgot-password-l">
+                    Forgot Password?
+                  </a>
+                </div>
+              </div>
+              <button type="submit" className="login-button">
+                Log in
+              </button>
+              <p className="login-text">
+                Don't have an account? <a href="/sign-up">Sign Up</a>
+              </p>
+            </form>
+            {showAlert && (
+              <AlertSuccess message="You are login successfully." />
+            )}
+      </div>
+    </>
   );
 };
 
