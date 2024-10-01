@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useWatchlist } from "./WatchlistContext";
 import axios from "axios";
-import Loader from "../component/Loader";
 import { MdDelete } from "react-icons/md";
 import "../css/wishlistresponsive.css";
 import { useDispatch } from "react-redux";

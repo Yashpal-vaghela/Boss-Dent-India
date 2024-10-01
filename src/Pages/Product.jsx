@@ -67,10 +67,10 @@ const Product = () => {
         );
 
         const allStockStatuses = stockResponse.data; // Adjust this based on your API response format
-        const paginatedAllStatuses = allStockStatuses.slice(
-          startIndex,
-          startIndex + productsPerPage
-        );
+        // const paginatedAllStatuses = allStockStatuses.slice(
+        //   startIndex,
+        //   startIndex + productsPerPage
+        // );
         // console.warn("paginatedALL",paginatedAllStatuses,stockResponse.data)
 
         const stockStatusesResults = allStockStatuses.map((product, index) => {

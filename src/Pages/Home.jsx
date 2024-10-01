@@ -4,7 +4,7 @@ import { MdLocalShipping, MdSecurity, MdSupportAgent } from "react-icons/md";
 import Cards from "../component/Cards";
 import HomeBanner from "../component/HomeBanner";
 import "../css/othercard.css";
-import OtherBanner from "../component/OtherBanner";
+// import OtherBanner from "../component/OtherBanner";
 
 const Home = () => {
   return (

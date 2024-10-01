@@ -5,7 +5,6 @@ import "react-medium-image-zoom/dist/styles.css";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { useWatchlist } from "./WatchlistContext";
 import axios from "axios";
-import Loader from "../component/Loader";
 import "../css/productview.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
