@@ -28,13 +28,30 @@
     border-radius: 40px;
     text-align: start;
 }
-.single-product-img img {
+.single-product-img .image-options-div{
+  white-space: nowrap;
+  max-width: 80px;
+}
+.scrollbar-nav{
+  overflow: auto !important;
+  width:100% !important;
+}
+
+.single-product-img .image-options-div img{
+  box-shadow: 1px 1px 10px #999;
+  margin: 2px;
+  max-height: 50px;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: top;
+}
+/* .single-product-img img {
     width: 100%;
     display: block;
     filter: blur(10px);
     transition: filter 0.3s ease, opacity 0.3s ease;
     opacity: 0;
-}
+} */
 
 .single-product-img img.loaded {
     filter: blur(0);

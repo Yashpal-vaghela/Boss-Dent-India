@@ -60,6 +60,8 @@ export const WatchlistProvider = ({ children }) => {
     setWatchlist((prevWatchlist) => {
       const updatedWatchlist = prevWatchlist.filter((itemId) => itemId !== id);
       localStorage.setItem('watchlist', JSON.stringify(updatedWatchlist));
+      const attributesKey = `selectedAttributes_${id}`;
+      localStorage.removeItem(attributesKey);
       return updatedWatchlist;
     });
   };

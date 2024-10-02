@@ -4,6 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 // import Aos from "aos";
+import * as yup from "yup";
 import AlertSuccess from "../component/AlertSuccess"; // Adjust the path as needed
 import Loader1 from "../component/Loader1";
 
@@ -13,6 +14,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [otp, setOTP] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
@@ -38,6 +40,13 @@ const Signup = () => {
     validatePassword(value);
   };
 
+  const handlePhoneChange = (e) => {
+    if (phone.length !== 10) {
+      setPhone(e.target.value);
+    }else{
+      setPhone()
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (error) {
@@ -191,26 +200,54 @@ const Signup = () => {
                 />
               </div>
               <div className="form-group">
+                <label className="form-label" htmlFor="phone">
+                  Phone Number
+                </label>
+                <input
+                  type="phone"
+                  id="phone"
+                  placeholder="Enter Your Phone Number"
+                  className="form-input"
+                  value={phone || ""}
+                  maxLength={10}
+                  minLength={9}
+                  onChange={(e) => handlePhoneChange(e)}
+                  // min={10}
+                  required
+                ></input>
+              </div>
+              <div className="form-group">
                 <label className="form-label" htmlFor="password">
                   Create Your Password
                 </label>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  placeholder="Create Your Password"
-                  className="form-input"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  required
-                />
-                <span
-                  className="password-toggle-icon"
-                  onClick={togglePasswordVisibility}
+                <div className="d-flex">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    placeholder="Create Your Password"
+                    className="form-input"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    required
+                  />
+
+                  <span
+                    className="password-toggle-icon"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? <FaEye /> : <FaEyeSlash />}
+                  </span>
+                </div>
+                {error && (
+                <p
+                  style={{ color: "red" }}
+                  className={`${error ? "error" : ""} `}
                 >
-                  {showPassword ? <FaEye /> : <FaEyeSlash />}
-                </span>
-                {error && <p style={{ color: "red" }}>{error}</p>}
+                  {error}
+                </p>
+              )}
               </div>
+            
               <button type="submit" className="signup-button">
                 Sign Up
               </button>

@@ -113,7 +113,7 @@ const Category = (props) => {
             </li>
             <li
               className={`category ${props.category === "125" ? "active" : ""}`}
-              onClick={() => props.andleCategoryClick(125)}
+              onClick={() => props.handleCategoryClick(125)}
             >
               Retractors
             </li>

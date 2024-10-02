@@ -671,10 +671,13 @@ section.banner-section {
 }
 
 .password-toggle-icon {
-  position: absolute;
-  right: 13px;
+  position: relative;
+  top: 46px;
+  left:-32px;
+  /* position: absolute; */
+  /* right: 13px;
   top: 76%;
-  transform: translateY(-50%);
+  transform: translateY(-50%); */
   cursor: pointer;
   font-size: 1.2rem;
   color: #000;

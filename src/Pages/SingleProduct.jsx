@@ -40,32 +40,7 @@ const SingleProduct = () => {
   const navigate = useNavigate();
   const location = useLocation();
   // const [imageUrl, setImageUrl] = useState();
-  const colors = [
-    {
-      blue: "#3385fc",
-    },
-    {
-      green: "#22EDF7",
-    },
-    {
-      orange: "#F66006",
-    },
-    {
-      "pink-meltblown": "#FF3C76",
-    },
-    {
-      "purple-meltblown": "#560587",
-    },
-    {
-      black: "#000",
-    },
-    {
-      yellow: "#FFFF00",
-    },
-    {
-      "white-meltblown": "#fff",
-    },
-  ];
+
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem("token");
     setIsLoggedIn(userLoggedIn);
@@ -175,7 +150,8 @@ const SingleProduct = () => {
     setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
   };
 
-  const handleAttributeSelect = (attribute, key,value) => {
+  const handleAttributeSelect = (attribute, value, key) => {
+    // console.log("value",attribute,value,key);
     const newSelectedAttributes = {
       ...selectedAttributes,
       [attribute]: value,
@@ -198,23 +174,21 @@ const SingleProduct = () => {
   const handleWatchlistToggle = () => {
     if (watchlist.includes(product.id)) {
       removeFromWatchlist(product.id);
-
     } else {
       addToWatchlist(product.id, selectedAttributes);
-      
     }
   };
-  console.log(selectedAttributes);
+  // console.log(selectedAttributes);
   const handleAddToCart = (e) => {
     e.preventDefault();
     if (!isLoggedIn) {
       // User is not logged in, show alert and navigate to login page
-      toast.error("Please! log-in befor add products into your cart.",{
+      toast.error("Please! log-in befor add products into your cart.", {
         autoClose: 3000,
       });
-      setTimeout(()=>{
-        navigate("/my-account", { state: { from: location.pathname }});
-      },3000);
+      setTimeout(() => {
+        navigate("/my-account", { state: { from: location.pathname } });
+      }, 3000);
       return; // Exit the function
     }
     if (stockStatus === "instock") {
@@ -229,7 +203,34 @@ const SingleProduct = () => {
       toast.info("Product is out of stock");
     }
   };
- 
+
+  // const image = [
+  //   {
+  //     id: 1,
+  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+  //   },
+  //   {
+  //     id: 2,
+  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+  //   },
+  //   {
+  //     id: 3,
+  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+  //   },
+  //   {
+  //     id: 4,
+  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+  //   },
+  //   {
+  //     id: 5,
+  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+  //   },
+  //   {
+  //     id: 6,
+  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+  //   },
+    
+  // ];
   // let imageUrl = product.yoast_head_json.og_image[0].url;
   return (
     <>
@@ -242,10 +243,15 @@ const SingleProduct = () => {
           <div className="header">
             <h1 className="shop-title">Shop</h1>
             <nav className="bread-crumbs">
-              <a href="/">Home</a> <i className="fa-solid fa-angle-right"></i>{" "}
+              {/* {console.log("category", category, product.product_cat[0])} */}
+              <a href="/">
+                Home
+              </a> <i className="fa-solid fa-angle-right"></i>{" "}
               <a href="/products">Shop</a>{" "}
               <i className="fa-solid fa-angle-right"></i>
-              <a href={`/category/${category}`}>{category}</a>{" "}
+              <a href={`/products?category=${product.product_cat[0]}`}>
+                {category}
+              </a>{" "}
               <i className="fa-solid fa-angle-right"></i>
               <span>{product.title?.rendered}</span>
             </nav>
@@ -265,6 +271,21 @@ const SingleProduct = () => {
                   onLoad={() => setIsImageLoaded(true)}
                 />
               </Zoom>
+              {/* <div className="image-options-div custom-scroll scrollbar-outer mt-2">
+                  {image?.map((image, index) => {
+                    return (
+                      <img
+                        src={image?.img}
+                        key={index}
+                        // onClick={() => handleselctimage(image?.img)}
+                        alt="Custom Neon Light"
+                        className="preview-img-option lazy"
+                        width={100}
+                        height={100}
+                      ></img>
+                    );
+                  })}
+                </div> */}
             </div>
             <div className="single-product-details">
               <h2 className="single-product-title">
@@ -293,8 +314,9 @@ const SingleProduct = () => {
                         .map((variation) => variation.attributes[attribute])
                         .filter((value) => value !== undefined)
                     );
-                    const uniqueValuesArray = Array.from(uniqueValues);
 
+                    const uniqueValuesArray = Array.from(uniqueValues);
+                    // console.log("unique",uniqueValues,uniqueValuesArray)
                     return (
                       <div
                         key={attribute}
@@ -307,28 +329,22 @@ const SingleProduct = () => {
                         {attribute === "attribute_pa_color" ? (
                           <div style={{ display: "flex" }}>
                             {variations.map((color, index) => {
-                              // console.log(
-                              //   "color",
-                              //   color,
-                              //   attribute,
-                              //   selectedColor
-                              // );
                               return (
                                 <div
-                                  className={`color-option ${Object.values(color.attributes)[0]} ${
-                                    selectedColor === Object.values(color.attributes)[0]
+                                  className={`color-option ${
+                                    Object.values(color.attributes)[0]
+                                  } ${
+                                    selectedColor ===
+                                    Object.values(color.attributes)[0]
                                       ? "selected"
                                       : ""
                                   }`}
-                                  // style={{
-                                  //   backgroundColor: Object.values(color)[0],
-                                  // }}
                                   key={index}
                                   onClick={() =>
                                     handleAttributeSelect(
                                       attribute,
-                                      Object.keys(color.attributes)[0],
-                                      Object.values(color.attributes)[0]
+                                      Object.values(color.attributes)[0],
+                                      Object.keys(color.attributes)[0]
                                     )
                                   }
                                 ></div>
@@ -337,21 +353,23 @@ const SingleProduct = () => {
                           </div>
                         ) : (
                           <div className="variation-buttons">
-                            {uniqueValuesArray.map((value, index) => (
-                              <button
-                                key={index}
-                                className={`variation-button ${
-                                  selectedAttributes[attribute] === value
-                                    ? "selected"
-                                    : ""
-                                }`}
-                                onClick={() =>
-                                  handleAttributeSelect(attribute, value)
-                                }
-                              >
-                                {value}
-                              </button>
-                            ))}
+                            {uniqueValuesArray.map((value, index) => {
+                              return (
+                                <button
+                                  key={index}
+                                  className={`variation-button ${
+                                    selectedAttributes[attribute] === value
+                                      ? "selected"
+                                      : ""
+                                  }`}
+                                  onClick={() =>
+                                    handleAttributeSelect(attribute, value)
+                                  }
+                                >
+                                  {value}
+                                </button>
+                              );
+                            })}
                           </div>
                         )}
                       </div>
@@ -492,7 +510,9 @@ const SingleProduct = () => {
                           }
                           alt={relatedProduct.title?.rendered}
                         />
-                        <h4 className="related-product-title">{relatedProduct.title?.rendered}</h4>
+                        <h4 className="related-product-title">
+                          {relatedProduct.title?.rendered}
+                        </h4>
                         <p>
                           {relatedProduct.price
                             ? `Price: ${relatedProduct.price} ₹`

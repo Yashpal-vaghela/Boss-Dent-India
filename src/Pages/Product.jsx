@@ -198,7 +198,7 @@ const Product = () => {
         removeFromWatchlist(product.id);
         setAlertMessage("Product removed from watchlist.");
       } else {
-        addToWatchlist(product.id);
+        addToWatchlist(product.id,{});
         // setAlertMessage("Product added to watchlist!");
       }
   };
