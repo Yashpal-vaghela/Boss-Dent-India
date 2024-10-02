@@ -175,12 +175,12 @@ const SingleProduct = () => {
     setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
   };
 
-  const handleAttributeSelect = (attribute, value, key) => {
+  const handleAttributeSelect = (attribute, key,value) => {
     const newSelectedAttributes = {
       ...selectedAttributes,
       [attribute]: value,
     };
-    setSelectedColor(key);
+    setSelectedColor(value);
     dispatch(updateSize({ ...product, selectedAttributes }));
     setSelectedAttributes(newSelectedAttributes);
 
@@ -198,11 +198,13 @@ const SingleProduct = () => {
   const handleWatchlistToggle = () => {
     if (watchlist.includes(product.id)) {
       removeFromWatchlist(product.id);
+
     } else {
-      addToWatchlist(product.id);
+      addToWatchlist(product.id, selectedAttributes);
+      
     }
   };
-
+  console.log(selectedAttributes);
   const handleAddToCart = (e) => {
     e.preventDefault();
     if (!isLoggedIn) {
@@ -304,7 +306,7 @@ const SingleProduct = () => {
                         {/* color theme */}
                         {attribute === "attribute_pa_color" ? (
                           <div style={{ display: "flex" }}>
-                            {colors.map((color, index) => {
+                            {variations.map((color, index) => {
                               // console.log(
                               //   "color",
                               //   color,
@@ -313,20 +315,20 @@ const SingleProduct = () => {
                               // );
                               return (
                                 <div
-                                  className={`color-option ${
-                                    selectedColor === Object.values(color)[0]
+                                  className={`color-option ${Object.values(color.attributes)[0]} ${
+                                    selectedColor === Object.values(color.attributes)[0]
                                       ? "selected"
                                       : ""
                                   }`}
-                                  style={{
-                                    backgroundColor: Object.values(color)[0],
-                                  }}
+                                  // style={{
+                                  //   backgroundColor: Object.values(color)[0],
+                                  // }}
                                   key={index}
                                   onClick={() =>
                                     handleAttributeSelect(
                                       attribute,
-                                      Object.keys(color)[0],
-                                      Object.values(color)[0]
+                                      Object.keys(color.attributes)[0],
+                                      Object.values(color.attributes)[0]
                                     )
                                   }
                                 ></div>

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { FaTrashAlt } from "react-icons/fa";
 import "../css/cartresponsive.css";
 import { useDispatch, useSelector } from "react-redux";
-// import CartDefaultFuntion from "../component/CartDefaultFuntion";
 import {
   decreaseCart,
   Remove,
@@ -52,7 +51,7 @@ const NewCart = () => {
     // console.log("count",count)
     if (count < 1) {
       setDeliveryCharge(99);
-    } else if (count > 1 && count < 3) {
+    } else if (count >= 1 && count <= 3) {
       setDeliveryCharge(125);
     } else if (count > 3) {
       setDeliveryCharge(65);
@@ -80,10 +79,9 @@ const NewCart = () => {
   const handleRemoveItem = (e, product) => {
     e.preventDefault();
     // removeFromCart(product.id);
-    AdddeliveryCharge();
     dispatch(Remove(product.id));
     // console.log("Removing product with ID:", product.id);
-    
+    AdddeliveryCharge();
   };
 
   const handleEmptyCart = () => {
@@ -98,7 +96,7 @@ const NewCart = () => {
   useEffect(() => {
     AdddeliveryCharge();
     // console.log("deliveryCharge",deliveryCharge)
-  }, [deliveryCharge]);
+  }, [cartData.cartItems]);
 
   const grandTotal = cartData?.cartTotalAmount + deliveryCharge;
 
@@ -165,7 +163,6 @@ const NewCart = () => {
                                     ? "cart-variation-main variation-cart-main"
                                     : "variation-cart-main"
                                 }`}
-                                // className="variation-cart-main"
                               >
                                 <div className="d-flex align-items-center">
                                 <h4>
@@ -250,8 +247,6 @@ const NewCart = () => {
                                 )}
                                 </div>
                               
-
-
                                 {!canCheckout &&
                                   !product.selectedAttributes?.[attribute] && (
                                     <p className="checkout-warning">

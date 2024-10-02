@@ -36,12 +36,22 @@ export const WatchlistProvider = ({ children }) => {
     return true;
   };
 
-  const addToWatchlist = (id) => {
+  const addToWatchlist = (id, selectedAttributes) => {
     if (!ensureAuthenticated()) return;
+
+    // Only add the product ID to the watchlist if it doesn't already exist
     setWatchlist((prevWatchlist) => {
-      const updatedWatchlist = [...prevWatchlist, id];
-      localStorage.setItem('watchlist', JSON.stringify(updatedWatchlist));
-      return updatedWatchlist;
+      if (!prevWatchlist.includes(id)) {
+        const updatedWatchlist = [...prevWatchlist, id];
+        localStorage.setItem('watchlist', JSON.stringify(updatedWatchlist));
+
+        // Store selected attributes separately for this product
+        const attributesKey = `selectedAttributes_${id}`;
+        localStorage.setItem(attributesKey, JSON.stringify(selectedAttributes));
+
+        return updatedWatchlist;
+      }
+      return prevWatchlist; // No change if ID already exists
     });
   };
 

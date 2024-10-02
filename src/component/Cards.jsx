@@ -5,7 +5,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-cards";
-
 import "../css/cards.css";
 
 // import required modules
@@ -50,7 +49,7 @@ const Cards = () => {
   return (
     <div className="cards-main">
       <div className="variable-cards-title-main">
-        <h2 className="variable-cards-title">Our Packeges Products</h2>
+        <h2 className="variable-cards-title">Our Products</h2>
       </div>
       <div className="variable-cards-main">
         <div className="cards-1-main">

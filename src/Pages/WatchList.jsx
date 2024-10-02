@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useWatchlist } from "./WatchlistContext";
 import axios from "axios";
 import { MdDelete } from "react-icons/md";
@@ -18,19 +18,48 @@ const WatchList = () => {
   const [stockStatuses, setStockStatuses] = useState({});
   const [imageLoading, setImageLoading] = useState({});
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   // const cachedProducts = localStorage.getItem("watchlistProducts");
+  //   // const cachedStockStatuses = localStorage.getItem("stockStatuses");
+
+  //   // if (cachedProducts && cachedStockStatuses) {
+  //   //   setProducts(JSON.parse(cachedProducts));
+  //   //   setStockStatuses(JSON.parse(cachedStockStatuses));
+  //   //   setLoading(false);
+  //   // } else if (watchlist.length > 0) {
+  //   fetchProducts();
+  //   // }
+  // }, [watchlist]);
+  // useEffect(() => {
+  //   if (watchlist.length > 0) {
+  //     fetchProducts();
+  //   } else {
+  //     setProducts([]);
+  //     setLoading(false);
+  //   }
+  // }, [watchlist]);
 
   useEffect(() => {
-    // const cachedProducts = localStorage.getItem("watchlistProducts");
-    // const cachedStockStatuses = localStorage.getItem("stockStatuses");
+    const cachedProducts = JSON.parse(localStorage.getItem("watchlistProducts"));
+    const cachedStockStatuses = JSON.parse(localStorage.getItem("stockStatuses"));
+    const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
 
-    // if (cachedProducts && cachedStockStatuses) {
-    //   setProducts(JSON.parse(cachedProducts));
-    //   setStockStatuses(JSON.parse(cachedStockStatuses));
-    //   setLoading(false);
-    // } else if (watchlist.length > 0) {
-    fetchProducts();
-    // }
+    if (watchlist.length > 0) {
+      if (cachedProducts && cachedStockStatuses && cachedProducts.length === watchlist.length) {
+        setProducts(cachedProducts);
+        setStockStatuses(cachedStockStatuses);
+        setLoading(false);
+      } else {
+        fetchProducts();
+      }
+    } else {
+      setProducts([]);
+      setLoading(false);
+    }
   }, [watchlist]);
+
 
   // Function to fetch product and stock status data
   const fetchProducts = async () => {
@@ -81,6 +110,7 @@ const WatchList = () => {
     setProducts((prevProducts) =>
       prevProducts.filter((product) => product.id !== id)
     );
+    localStorage.removeItem(`selectedAttributes_${id}`);
     localStorage.setItem(
       "watchlistProducts",
       JSON.stringify(products.filter((product) => product.id !== id))
@@ -88,24 +118,25 @@ const WatchList = () => {
   };
 
   // Handle adding product to cart based on stock status
-  const handleAddToCart = async(product, selectedAttributes) => {
+  const handleAddToCart = async (product, selectedAttributes) => {
 
-    const stockStatus = stockStatuses[product.id];  
-    
+    const stockStatus = stockStatuses[product.id];
+
     if (stockStatus === "instock") {
       try {
         const weightResponse = await axios.get(
           `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${product.id}`
         );
         const productWeight = weightResponse.data.weight || 0;
-        
+
         dispatch(Add({ ...product, quantity: 1, selectedAttributes, weight: productWeight }));
         removeFromWatchlist(product.id);
         toast.success("Product added to cart!");
+        navigate("/cart");
       } catch (error) {
         console.error("Error fetching product weight:", error);
-      toast.error("Failed to fetch product weight. Please try again.");
-      }    
+        toast.error("Failed to fetch product weight. Please try again.");
+      }
     } else {
       toast.info("This product is Out of stock.");
     }
@@ -143,17 +174,22 @@ const WatchList = () => {
           ) : (
             <div className="watchlist-content">
               <div className="watchlist-items" data-aos="fade">
-                {products.map((product) => (
-                  <WatchlistItem
-                    key={product.id}
-                    product={product}
-                    stockStatus={stockStatuses[product.id]}
-                    handleAddToCart={handleAddToCart}
-                    handleRemove={handleRemove}
-                    handleImageLoad={handleImageLoad}
-                    imageLoading={imageLoading[product.id]}
-                  />
-                ))}
+                {products.map((product) => {
+                  const watchlistItem = watchlist.find((item) => item.id === product.id);
+                  const selectedAttributes = watchlistItem?.selectedAttributes || {};
+                  return (
+                    <WatchlistItem
+                      key={product.id}
+                      product={product}
+                      stockStatus={stockStatuses[product.id]}
+                      handleAddToCart={handleAddToCart}
+                      handleRemove={handleRemove}
+                      handleImageLoad={handleImageLoad}
+                      imageLoading={imageLoading[product.id]}
+                      selectedAttributes={selectedAttributes}
+                    />
+                  )
+                })}
               </div>
             </div>
           )}
@@ -166,14 +202,20 @@ const WatchList = () => {
 // Memoized Watchlist Item to prevent unnecessary re-renders
 const WatchlistItem = React.memo(
   ({ product, stockStatus, handleAddToCart, handleRemove, handleImageLoad, imageLoading }) => {
-    const [selectedAttributes, setSelectedAttributes] = useState({});
+    const [selectedAttributes, setSelectedAttributes] = useState(() => {
+      const storedAttributes = localStorage.getItem(`selectedAttributes_${product.id}`);
+      return storedAttributes ? JSON.parse(storedAttributes) : {};
+    });
 
     // Function to handle attribute selection
     const handleAttributeSelect = (attribute, value) => {
-      setSelectedAttributes((prev) => ({
-        ...prev,
+      const updatedAttributes = {
+        ...selectedAttributes,
         [attribute]: value,
-      }));
+      };
+      setSelectedAttributes(updatedAttributes);
+      // Store the updated attributes in localStorage
+      localStorage.setItem(`selectedAttributes_${product.id}`, JSON.stringify(updatedAttributes));
     };
 
     return (
