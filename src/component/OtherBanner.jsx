@@ -2,70 +2,30 @@ import React, { useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import {FaChevronLeft,FaChevronRight} from 'react-icons/fa6'
-// import "../css/otherBanner.css";
+
 
 const OtherBanner = () => {
   const BannerImageData = [
-    // {
-    //   id: 1,
-    //   src: "/asset/images/Composite finishing spiral discs.jpg",
-    //   alt: "Composite-finishing-spiral-disc",
-    // },
-    // {
-    //   id: 2,
-    //   src: "/asset/images/4 PLY MASK.jpg",
-    //   alt: "4-Ply-Mask",
-    // },
-    // {
-    //   id: 3,
-    //   src: "/asset/images/MIxing Tips.jpg",
-    //   alt: "Mixing-Tips",
-    // },
     {
-      id: 4,
-      src: "/asset/images/Prophy cups and brushes.jpg",
+      id: 1,
+      src: "/asset/images/Prophy-cups-and-brushes.jpg",
       alt: "Prophy-cups-and-brushes",
     },
-    // {
-    //   id:5,
-    //   src: "/asset/images/Tieon Surgeon Cap.jpg",
-    //   alt: "Tieon-surgeon-cap",
-    // },
     {
-      id:6,
-      src: "/asset/images/Suction Tips_.jpg",
+      id:2,
+      src: "/asset/images/Suction-Tips_.jpg",
       alt: "Suction-tips",
     },
-    // {
-    //   id:7,
-    //   src: "/asset/images/Dispensing Gun.jpg",
-    //   alt: "Dispensing-gun",
-    // },
     {
-      id:8,
-      src: "/asset/images/Comp Polishing kit & wheel.jpg",
+      id:3,
+      src: "/asset/images/Comp-Polishing-kit-&-wheel.jpg",
       alt: "Comp-Polishing-kit-and-wheel",
     },
-    // {
-    //   id:9,
-    //   src: "/asset/images/Starilaization.jpg",
-    //   alt: "Starilaization",
-    // },
-    // {
-    //   id:10,
-    //   src: "/asset/images/Patient Bibs.jpg",
-    //   alt: "Patient-Bibs",
-    // },
     {
-      id:11,
-      src: "/asset/images/Veneer Box and Veneer Glue Stick.jpg",
+      id:4,
+      src: "/asset/images/Veneer-Box-and-Veneer-Glue-Stick.jpg",
       alt: "Venner-box-and-veneer-glue-stick",
     },
-    // {
-    //   id:12,
-    //   src: "/asset/images/Patient Draps.jpg",
-    //   alt: "Patient-Draps",
-    // },
   ];
   const [ModelOpen, setModelOpen] = useState(false);
   const [clickedImg, setClickedImg] = useState([]);
@@ -113,12 +73,13 @@ const OtherBanner = () => {
     setClickedImg([{src:newItem}])
     setCurrentIndex(newIndex)
   }
-  const handleClick = () =>{
-    console.log("click")
-  }
+  // const handleClick = () =>{
+  //   console.log("click")
+  // }
+ 
   return (
     <section className="OtherBanner-section">
-      <div className="container-fluid mb-3">
+      <div className="container-fluid">
         {/* <h1>Image Gallery</h1> */}
         <div className="row OtherBanner-wrapper">
           {BannerImageData.map((item, index) => {
@@ -137,9 +98,18 @@ const OtherBanner = () => {
             <Lightbox
               open={ModelOpen}
               close={() => setModelOpen(false)}
-              slides={clickedImg}
+              slides={BannerImageData}
               index={currentIndex}
-              on={{ slideChange: handleClick() }}
+              // plugins={[Inline]}
+              // inline={{
+              //   style: { width: "100%", maxWidth: "900px", aspectRatio: "3 / 2" },
+              // }}
+              // on={{slideChange:handleClick()}}
+              // on={{view:({index:currentIndex})=>setCurrentIndex(currentIndex) }}
+              // onIndexChange={(index)=>console.log("index",index)}
+              // on={{view:({index})}}
+              // animation={{ fade: 0 }}
+              // slideshow={{ autoPlay: true, delay: 3000 }}
               render={{
                 // Custom Previous Button
                 buttonPrev: () => (

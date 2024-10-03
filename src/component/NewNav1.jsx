@@ -93,10 +93,11 @@ const NewNav1 = () => {
   useEffect(() => {
     const handleScroll = () => {
       const topNav = document.querySelector(".navbar-top");
-      const menuSubElements = document.getElementsByClassName("newnavbar1");
+      const menuSubElements = document.getElementsByClassName("newnavbar-sub");
       const searchElements = document.getElementById("search-icon");
       const showSearchElements = document.getElementById("navbar-social-icon");
-      const alertMessageElements = document.getElementsByClassName('success-alert')
+      const alertMessageElements = document.getElementsByClassName('success-alert');
+      const bannerElements = document.getElementsByClassName('banner-section');
       // console.log("searchElement", searchElements,"topnav",topNav,"menuElement",menuSubElements);
     
       if (window.innerWidth >= 991) {
@@ -110,16 +111,22 @@ const NewNav1 = () => {
           Array.from(menuSubElements).forEach((element) => {
             element.style.top = "0";
           });
+          Array.from(bannerElements).forEach((element)=>{
+            element.style.paddingTop = "20px"
+          })
         } else {
           showSearchElements.classList.remove("show-search-icon");
           searchElements.style.display = "none";
           topNav.style.display = "flex";
           Array.from(menuSubElements).forEach((element) => {
-            element.style.top = "0px";
+            element.style.top = "70px";
           });
           Array.from(alertMessageElements).forEach((element) => {
             element.style.top = "130px";
           });
+          Array.from(bannerElements).forEach((element)=>{
+            element.style.paddingTop = "0px"
+          })
         }
       } else {
         // setSeachIcon(false);
@@ -127,8 +134,11 @@ const NewNav1 = () => {
         showSearchElements.style.display = "none";
         topNav.style.display = "flex";
         Array.from(menuSubElements).forEach((element) => {
-          element.style.top = "0px";
+          element.style.top = "70px";
         });
+        Array.from(bannerElements).forEach((element)=>{
+          element.style.paddingTop = "0px"
+        })
       }
     };
 
@@ -263,7 +273,7 @@ const NewNav1 = () => {
 
       {/* navbar */}
       <nav className="newnavbar1 navbar navbar-dark bg-dark navbar-expand-lg">
-        <div className="container-fluid">
+        <div className="container-fluid newnavbar-sub">
           <div className="navbarlogo">
             <Link to="/">
               <img

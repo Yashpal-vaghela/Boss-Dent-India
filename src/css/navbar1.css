@@ -9,14 +9,14 @@
 }
 
 .newnavbar1 {
-  background-color: #222 !important;
-  top: 0;
+  background-color: transparent !important;
+  /* top: 0; */
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
-
+  /* transition: top 0.3s ease-in-out; */
   transition: transform 0.3s ease;
   /* height: 100%; */
 }
@@ -25,7 +25,14 @@
   /* width: 100%;
     z-index: 999;
     position: fixed; */
-  height: 65px;
+  background-color: #222;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  height: 70px;
   transition: top 0.3s ease-in-out;
 }
 .navbarlogo {
@@ -65,17 +72,17 @@
   position: relative;
   display: flex;
 }
-.navbar-social-icon .user-icon{
+.navbar-social-icon .user-icon {
   cursor: pointer;
-    border: none;
-    padding: 10px 10px;
-    border-radius: 50%;
+  border: none;
+  padding: 10px 10px;
+  border-radius: 50%;
 }
-.navbar-social-icon .cart-icon{
+.navbar-social-icon .cart-icon {
   position: relative;
-    cursor: pointer;
-    padding: 10px 10px;
-    border-radius: 50%;
+  cursor: pointer;
+  padding: 10px 10px;
+  border-radius: 50%;
 }
 .navbar-social-icon div a {
   text-decoration: none;
@@ -91,12 +98,12 @@
 }
 
 /* search icon */
-.newnavbar1 .search-icon{
+.newnavbar1 .search-icon {
   position: relative;
-    cursor: pointer;
-    padding: 10px 10px;
-    font-size: 25px;
-    border-radius: 50%;
+  cursor: pointer;
+  padding: 10px 10px;
+  font-size: 25px;
+  border-radius: 50%;
 }
 .newnavbar1 .search-icon .search-input {
   position: relative;
@@ -254,7 +261,7 @@
     font-size: 15px;
   }
 }
-@media(max-width:992px){
+@media (max-width: 992px) {
   .newnavbar1 .navbar-offcanvas .offcanvas-header {
     margin-left: auto;
     border-bottom: 0px;
@@ -296,9 +303,7 @@
   .newnavbar1 .search-icon {
     margin-left: auto;
   }
-  
 
- 
   .newnavbar1 .search-icon {
     display: flex;
   }
@@ -307,13 +312,13 @@
     right: 0%;
   }
   /* suggestion-box */
-  .suggestion-box .suggestion-sub{
+  .suggestion-box .suggestion-sub {
     right: 21%;
   }
-  .suggestion-sub .suggested li{
+  .suggestion-sub .suggested li {
     padding: 10px;
-        cursor: pointer;
-        border-bottom: 1px solid #eee;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
   }
 }
 
@@ -610,7 +615,7 @@
     margin-left: auto;
     /* display: none !important; */
   }
-  .navbar-offcanvas .search-icon{
+  .navbar-offcanvas .search-icon {
     display: none !important;
   }
 }

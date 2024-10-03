@@ -5,3 +5,6 @@
 /* .OtherBanner-wrapper{
     gap: 10px;
 } */
+ .OtherBanner-section .container-fluid{
+    margin-bottom: 3.4rem;
+ }

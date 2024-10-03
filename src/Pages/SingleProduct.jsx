@@ -17,6 +17,7 @@ import AlertSuccess from "../component/AlertSuccess";
 import { toast } from "react-toastify";
 import Loader1 from "../component/Loader1";
 
+
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,7 @@ const SingleProduct = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [selectedColor, setSelectedColor] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectimg, setselectimg] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   // const [imageUrl, setImageUrl] = useState();
@@ -66,6 +68,8 @@ const SingleProduct = () => {
         // Extract and set variations if available
         if (response.data.variations) {
           setVariations(response.data.variations);
+        }else{
+          setVariations([]);
         }
 
         // Fetch related products based on category
@@ -204,33 +208,36 @@ const SingleProduct = () => {
     }
   };
 
-  // const image = [
-  //   {
-  //     id: 1,
-  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-  //   },
-  //   {
-  //     id: 2,
-  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-  //   },
-  //   {
-  //     id: 3,
-  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-  //   },
-  //   {
-  //     id: 4,
-  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-  //   },
-  //   {
-  //     id: 5,
-  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-  //   },
-  //   {
-  //     id: 6,
-  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-  //   },
-    
-  // ];
+  const image = [
+    {
+      id: 1,
+      img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+    },
+    {
+      id: 2,
+      img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+    },
+    {
+      id: 3,
+      img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+    },
+    {
+      id: 4,
+      img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+    },
+    {
+      id: 5,
+      img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+    },
+    {
+      id: 6,
+      img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+    },
+  ];
+  const handleselectimage = (value) => {
+    console.log("select-image", value);
+    setselectimg(value);
+  };
   // let imageUrl = product.yoast_head_json.og_image[0].url;
   return (
     <>
@@ -244,9 +251,7 @@ const SingleProduct = () => {
             <h1 className="shop-title">Shop</h1>
             <nav className="bread-crumbs">
               {/* {console.log("category", category, product.product_cat[0])} */}
-              <a href="/">
-                Home
-              </a> <i className="fa-solid fa-angle-right"></i>{" "}
+              <a href="/">Home</a> <i className="fa-solid fa-angle-right"></i>{" "}
               <a href="/products">Shop</a>{" "}
               <i className="fa-solid fa-angle-right"></i>
               <a href={`/products?category=${product.product_cat[0]}`}>
@@ -260,32 +265,59 @@ const SingleProduct = () => {
           <div className="single-product-main">
             <div className="single-product-img">
               <Zoom>
+                {/* {selectimg?.length !== 0 ? (
+                  <>
+                    <img
+                      id={`product-image-${id}`}
+                      className={`single-product-img ${
+                        isImageLoaded ? "loaded" : ""
+                      }`}
+                      src={product.yoast_head_json.og_image[0].url}
+                      // src={imageUrl.replace("https://", "https://admin.")}
+                      alt={product.title?.rendered}
+                      onLoad={() => setIsImageLoaded(true)}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <img
+                      id={`product-image-${id}`}
+                      className={`single-product-img ${
+                        isImageLoaded ? "loaded" : ""
+                      }`}
+                      src={product.yoast_head_json.og_image[0].url}
+                      // src={imageUrl.replace("https://", "https://admin.")}
+                      alt={product.title?.rendered}
+                      onLoad={() => setIsImageLoaded(true)}
+                    />
+                  </>
+                )} */}
                 <img
-                  id={`product-image-${id}`}
-                  className={`single-product-img ${
-                    isImageLoaded ? "loaded" : ""
-                  }`}
-                  src={product.yoast_head_json.og_image[0].url}
-                  // src={imageUrl.replace("https://", "https://admin.")}
-                  alt={product.title?.rendered}
-                  onLoad={() => setIsImageLoaded(true)}
-                />
+                      id={`product-image-${id}`}
+                      className={`single-product-img ${
+                        isImageLoaded ? "loaded" : ""
+                      }`}
+                      src={product.yoast_head_json.og_image[0].url}
+                      // src={imageUrl.replace("https://", "https://admin.")}
+                      alt={product.title?.rendered}
+                      onLoad={() => setIsImageLoaded(true)}
+                    />
               </Zoom>
-              {/* <div className="image-options-div custom-scroll scrollbar-outer mt-2">
-                  {image?.map((image, index) => {
-                    return (
-                      <img
-                        src={image?.img}
-                        key={index}
-                        // onClick={() => handleselctimage(image?.img)}
-                        alt="Custom Neon Light"
-                        className="preview-img-option lazy"
-                        width={100}
-                        height={100}
-                      ></img>
-                    );
-                  })}
-                </div> */}
+              {/* <div className="single-product-view d-flex align-items-center">
+                {image?.map((image, index) => {
+                  return (
+                    <img
+                      src={image?.img}
+                      key={index}
+                      onClick={() => handleselectimage(image?.img)}
+                      alt="Custom Neon Light"
+                      className="preview-img-option lazy"
+                      width={100}
+                      height={100}
+                    ></img>
+                  );
+                })}
+              </div> */}
             </div>
             <div className="single-product-details">
               <h2 className="single-product-title">
@@ -316,7 +348,7 @@ const SingleProduct = () => {
                     );
 
                     const uniqueValuesArray = Array.from(uniqueValues);
-                    // console.log("unique",uniqueValues,uniqueValuesArray)
+                    console.log("unique",variations)
                     return (
                       <div
                         key={attribute}

@@ -377,7 +377,7 @@ section.banner-section {
 }
 
 .home-cat-txt {
-  margin: 20px 0;
+  margin: 20px 0 0;
 }
 
 .home-cat-txt h1 {
@@ -672,8 +672,16 @@ section.banner-section {
 
 .password-toggle-icon {
   position: relative;
-  top: 46px;
-  left:-32px;
+  /* top: 46px; */
+  /* left:-32px; */
+    top: -35px;
+    left: 92%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #000;
+    right: 0px;
+    transform: none;
+    /* right: 73px;
   /* position: absolute; */
   /* right: 13px;
   top: 76%;
