@@ -84,7 +84,7 @@ const OtherBanner = () => {
         <div className="row OtherBanner-wrapper">
           {BannerImageData.map((item, index) => {
             return (
-              <div key={index} className="col-lg-3 col-12">
+              <div key={index} className="col-lg-3 col-md-6  col-sm-6 col-12 mb-lg-0 mb-4 ">
                 <img
                   src={item.src}
                   className="img-fluid"

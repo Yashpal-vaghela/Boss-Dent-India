@@ -3,7 +3,8 @@ import BreadCrumbs from '../component/BreadCrumbs'
 
 const TermAndCondition = () => {
   return (
-    <div className='terms-container'>
+    <div className='container'>
+  <div className='terms-container'>
         <div className='header' data-aos="fade-up">
             <h1>Terms & Conditions</h1>
             <BreadCrumbs></BreadCrumbs>
@@ -74,6 +75,8 @@ const TermAndCondition = () => {
             <p>Most interactive websites use cookies to let us retrieve the user’s details for each visit. Cookies are used by our website to enable the functionality of certain areas to make it easier for people visiting our website. Some of our affiliate/advertising partners may also use cookies.</p>
         </div>
     </div>
+    </div>
+  
   )
 }
 

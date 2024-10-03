@@ -484,7 +484,7 @@ section.banner-section {
   background-color: #fff;
   width: 100%;
   max-width: 400px;
-  margin: 150px auto;
+  margin: 60px auto 70px;
   padding: 20px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
   border-radius: 10px;
@@ -767,7 +767,7 @@ section.banner-section {
 /* Contact page */
 .container {
   padding: 20px 20px 0px 20px;
-  margin-top: 130px;
+  margin-top: 140px;
   text-align: left;
 }
 
@@ -1045,8 +1045,8 @@ section.banner-section {
 
 .help-center {
   font-family: Roboto, sans-serif;
-  padding-top: 150px;
-  margin: 50px auto;
+  padding-top: 0px;
+  margin: 0px auto;
   color: rgb(100, 100, 100);
   text-align: left;
 }
@@ -1109,8 +1109,8 @@ section.banner-section {
 /* RefundPolicy*/
 .refund-policy {
   font-family: Roboto, sans-serif;
-  padding-top: 150px;
-  margin: 20px;
+  padding-top: 0px;
+  margin: 0px auto;
   color: rgb(100, 100, 100);
   text-align: left;
 }
@@ -1178,8 +1178,8 @@ a {
 
 .privacy-policy {
   font-family: Lato, sans-serif;
-  padding-top: 150px;
-  margin: 20px;
+  padding-top: 0px;
+  margin: 0px auto;
   color: rgb(100, 100, 100);
   text-align: left;
 }
@@ -1223,8 +1223,8 @@ a {
 
 /* terms and conditions */
 .terms-container {
-  padding-top: 150px;
-  margin: 20px;
+  /* padding-top: 150px; */
+  margin: 0px auto 10px;
   font-family: Source Sans Pro, sans-serif;
   color: rgb(100, 100, 100);
   text-align: left;
@@ -1232,13 +1232,15 @@ a {
 
 .term-info {
   margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 .term-info h2 {
   font-family: Source Sans Pro, sans-serif;
   font-size: 32px;
-  margin-left: 30px;
+  margin-left: 27px;
   margin-top: 20px;
+  font-weight: bold;
 }
 
 .term-info h3 {
@@ -1318,7 +1320,7 @@ a {
 }
 
 .shop-container {
-  padding-top: 130px;
+  padding-top: 140px;
   margin: 20px;
   color: rgb(0, 0, 0);
   text-align: left;
@@ -1358,7 +1360,7 @@ a {
   margin-right: 10px;
 } */
 .shop-sidebar-menu {
-  flex: 1;
+  /* flex: 1; */
   max-width: 300px;
   background-color: #ffffff;
   padding: 15px;
@@ -1869,15 +1871,46 @@ input {
 }
 
 @media(max-width:991px) {
-  .refund-policy {
-    padding-top: 80px;
+  .help-center {
+    padding-top: 35px;
   }
-
+  .refund-policy {
+    padding-top: 35px;
+  }
+  .privacy-policy {
+    padding-top: 35px;
+  }
+  .terms-container{
+    padding-top: 35px;
+  }
   .home-main {
     margin-top: 90px;
   }
 
   .shop-sidebar h3 {
     font-size: 16px;
+  }
+  /* login page */
+  .login-container{
+    margin: 90px auto;
+  }
+}
+@media(max-width:768px){
+  .home-main {
+    margin-top: 20px;
+  }
+  /* login page */
+  .login-container{
+    margin: 20px auto 90px;
+  }
+}
+@media(max-width:576px){
+  /* login page */
+  .login-container{
+    margin: 10px auto 90px;
+  }
+  /* term-condition */
+  .term-info {
+    margin-bottom: 12%;
   }
 }

@@ -21,7 +21,7 @@ const NewNav1 = () => {
   const [searchQuery, setSeachQuery] = useState("");
   const [suggested, setSuggested] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
-  
+
   const navigate = useNavigate();
 
   const handleSearchInputChangeSub = async (e) => {
@@ -93,13 +93,14 @@ const NewNav1 = () => {
   useEffect(() => {
     const handleScroll = () => {
       const topNav = document.querySelector(".navbar-top");
-      const menuSubElements = document.getElementsByClassName("newnavbar-sub");
+      const menuSubElements = document.getElementsByClassName("newnavbar1");
       const searchElements = document.getElementById("search-icon");
       const showSearchElements = document.getElementById("navbar-social-icon");
-      const alertMessageElements = document.getElementsByClassName('success-alert');
-      const bannerElements = document.getElementsByClassName('banner-section');
+      const alertMessageElements =
+        document.getElementsByClassName("success-alert");
+      const bannerElements = document.getElementsByClassName("banner-section");
       // console.log("searchElement", searchElements,"topnav",topNav,"menuElement",menuSubElements);
-    
+
       if (window.innerWidth >= 991) {
         if (window.scrollY >= 20) {
           searchElements.style.display = "flex";
@@ -111,22 +112,22 @@ const NewNav1 = () => {
           Array.from(menuSubElements).forEach((element) => {
             element.style.top = "0";
           });
-          Array.from(bannerElements).forEach((element)=>{
-            element.style.paddingTop = "20px"
-          })
+          Array.from(bannerElements).forEach((element) => {
+            element.style.paddingTop = "20px";
+          });
         } else {
           showSearchElements.classList.remove("show-search-icon");
           searchElements.style.display = "none";
           topNav.style.display = "flex";
           Array.from(menuSubElements).forEach((element) => {
-            element.style.top = "70px";
+            element.style.top = "0px";
           });
           Array.from(alertMessageElements).forEach((element) => {
             element.style.top = "130px";
           });
-          Array.from(bannerElements).forEach((element)=>{
-            element.style.paddingTop = "0px"
-          })
+          Array.from(bannerElements).forEach((element) => {
+            element.style.paddingTop = "0px";
+          });
         }
       } else {
         // setSeachIcon(false);
@@ -134,11 +135,11 @@ const NewNav1 = () => {
         showSearchElements.style.display = "none";
         topNav.style.display = "flex";
         Array.from(menuSubElements).forEach((element) => {
-          element.style.top = "70px";
+          element.style.top = "0px";
         });
-        Array.from(bannerElements).forEach((element)=>{
-          element.style.paddingTop = "0px"
-        })
+        Array.from(bannerElements).forEach((element) => {
+          element.style.paddingTop = "0px";
+        });
       }
     };
 
@@ -528,7 +529,7 @@ const NewNav1 = () => {
                 className="d-flex d-sm-none d-md-none d-lg-flex navbar-social-icon align-items-center"
               >
                 <div className="user-icon icon" onClick={handleOffcanvas1}>
-                  <Link to="/user" >
+                  <Link to="/user">
                     <FaUserAlt />
                   </Link>
                 </div>
@@ -586,7 +587,10 @@ const NewNav1 = () => {
         )}
       </div>
       {/* suggestion box mobile and tablet screen */}
-      <div className="d-lg-none d-sm-block d-block d-md-block suggestion-box">
+      <div
+        className="d-lg-none d-sm-block d-block d-md-block suggestion-box"
+        // style={{ top: "54px" }}
+      >
         {searchQuery ? (
           <>
             {suggested.length !== 0 ? (

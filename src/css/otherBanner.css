@@ -8,3 +8,25 @@
  .OtherBanner-section .container-fluid{
     margin-bottom: 3.4rem;
  }
+
+ @media(max-width:992px){
+    .OtherBanner-section .container-fluid{
+        margin-bottom: 3.3rem;
+    }
+ }
+ @media(max-width:768px){
+    .OtherBanner-section .container-fluid{
+        margin-bottom: 3.1rem;
+    }
+ }
+ @media(max-width:576px){
+    .OtherBanner-wrapper .col-12{
+        margin-bottom: 0.9rem !important;
+    }
+    .OtherBanner-wrapper img{
+        height: 400px;
+    }
+    .OtherBanner-section .container-fluid{
+        margin-bottom: 3.7rem;
+    }
+ }

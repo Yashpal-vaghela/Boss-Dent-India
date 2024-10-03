@@ -74,7 +74,7 @@ const Contact = () => {
   // }, []);
 
   return (
-    <div className="container">
+    <div className="container contact-container">
       <div className="header" data-aos="fade-up">
         <h1>Contact</h1>
         <BreadCrumbs />

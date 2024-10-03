@@ -80,7 +80,7 @@ body {
 
   /* Contact page */
   .container {
-    margin-top: 130px;
+    margin-top: 140px;
   }
 }
 
@@ -170,8 +170,11 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
   /* Contact page */
+  .contact-container{
+    margin-top: 70px !important;
+  }
   .container {
-    margin-top: 75px;
+    margin-top: 35px;
   }
   .contact-info,
   .contact-form {
@@ -216,8 +219,15 @@ body {
 
 @media only screen and (max-width: 768px) {
   /* Contact page */
+  /* .container {
+    margin-top: 0px;
+  } */
   .container {
-    margin-top: 75px;
+    margin-top: 5px;
+}
+   /* contact page */
+   .contact-container{
+    margin-top: 0px !important;
   }
   .contact-info,
   .contact-form {
@@ -261,9 +271,9 @@ body {
   /* help center and return policy */
   .help-center,
   .refund-policy {
-    padding-top: 60px;
+    padding-top: 0px;
     /* margin: 30px auto; */
-    margin-top: 30px;
+    margin-top: 0px;
     margin-bottom: 30px;
   }
 
@@ -295,8 +305,9 @@ body {
   }
   /* pravicy policy */
   .privacy-policy {
-    padding-top: 100px;
-    margin: 15px;
+    padding-top: 0px;
+    margin: 0px auto;
+    /* margin: 15px; */
   }
 
   .policy-info h2,
@@ -318,8 +329,8 @@ body {
 
   /* terms-and- conditions */
   .terms-container {
-    padding-top: 100px;
-    margin: 10px;
+    padding-top: 0px;
+    margin: 0px auto;
   }
 
   .term-info h2 {
@@ -358,7 +369,7 @@ body {
     flex-direction: column;
   }
   .shop-container {
-    padding-top: 75px;
+    padding-top: 5px;
   }
   .shop-sidebar-menu {
     width: 100%;
@@ -374,9 +385,9 @@ body {
 
 @media only screen and (max-width: 600px) {
   /* Home page */
-  .home-main {
+  /* .home-main {
     margin-top: 90px;
-}
+} */
   .banner-btn-icon {
     font-size: 16px;;
 }
@@ -403,9 +414,9 @@ body {
   }
 
   /* contact page   */
-  .container {
+  /* .container {
     margin-top: 75px;
-  }
+  } */
   .contact-info,
   .contact-form {
     flex-direction: column;
@@ -446,9 +457,9 @@ body {
   /* help center and return policy */
   .help-center,
   .refund-policy {
-    padding-top: 70px;
+    padding-top: 0px;
     /* margin: 20px auto; */
-    margin-top: 20px;
+    margin-top: 0px;
     margin-bottom: 20px;
   }
 
@@ -481,8 +492,8 @@ body {
   }
   /* pravicy policy */
   .privacy-policy {
-    padding-top: 80px;
-    margin: 10px;
+    padding-top: 0px;
+    /* margin: 0px auto; */
   }
 
   .policy-info p {
@@ -506,10 +517,10 @@ body {
     margin-top: 5px;
   }
   /* term and conditions */
-  .terms-container {
+  /* .terms-container {
     padding-top: 80px;
     margin: 10px;
-  }
+  } */
 
   .term-info h2 {
     font-size: 24px;
@@ -568,10 +579,10 @@ body {
     padding: 8px 16px;
     font-size: 14px;
   }
-
+/* 
   .shop-container {
     padding-top: 75px;
-  }
+  } */
 
   .shop-title {
     font-size: 28px;
@@ -645,9 +656,9 @@ body {
     padding-top: 75px;
   }
   /* contact page */
-  .container {
+  /* .container {
     margin-top: 75px;
-  }
+  } */
   .details-title,
   .contact-content h2 {
     font-size: 24px;
@@ -676,8 +687,8 @@ body {
   /* help center and return policy */
   .help-center,
   .refund-policy {
-    padding-top: 75px;
-    margin: 10px auto;
+    padding-top: 0px;
+    margin: 0px auto;
   }
 
   .help-center h1,
@@ -708,8 +719,8 @@ body {
   }
   /* pravicy policy */
   .privacy-policy {
-    padding-top: 60px;
-    margin: 5px;
+    padding-top: 0px;
+    /* margin: 5px; */
   }
 
   .policy-info h2,
@@ -728,10 +739,10 @@ body {
     margin-left: 20px;
     margin-top: 5px;
   }
-  .terms-container {
+  /* .terms-container {
     padding-top: 60px;
     margin: 5px;
-  }
+  } */
 
   .term-info h2 {
     font-size: 20px;
@@ -748,7 +759,7 @@ body {
   }
   /* Product page */
   .shop-container {
-    padding: 10px;
+    padding: 5px;
   }
 
   /* Make the category list scrollable in a row for mobile */

@@ -12,6 +12,7 @@
   position: sticky;
   top: 80px;
   height: 100%;
+  width: 100%;
 }
 
 .shop-sidebar {
@@ -322,4 +323,41 @@
 .dropdown-item svg {
   margin: 0px 5px;
   color: #bf8e22;
+}
+
+
+
+
+/* new product design */
+.product-content{
+  display: flex;
+  width: 100%;
+  gap: 20px;
+}
+/* .products-main-content */
+.products-main-content .product-cards {
+  background: white;
+  border-radius: 10px;
+  height: 100%;
+  width: 100%;
+  padding: 12px;
+  overflow: unset;
+  position: relative;
+  text-decoration: none;
+  color: #222;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.products-main-content .product-cards-link{
+  display: block;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  color: #222;
+  transition: all 0.3s;
+}
+
+.products-main-content .product-link{
+   text-decoration: none;
 }

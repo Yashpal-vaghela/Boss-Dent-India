@@ -74,7 +74,7 @@ const Login = () => {
       <Loader1></Loader1>
     </>
   ) : (
-    <>
+    <div className="container">
       <div className="login-container" data-aos="fade">
       <h2 className="login-title">Login</h2>
             <form className="login-form" onSubmit={handleSubmit}>
@@ -139,7 +139,7 @@ const Login = () => {
               <AlertSuccess message="You are login successfully." />
             )}
       </div>
-    </>
+    </div>
   );
 };
 

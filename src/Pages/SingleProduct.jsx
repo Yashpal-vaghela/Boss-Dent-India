@@ -348,7 +348,7 @@ const SingleProduct = () => {
                     );
 
                     const uniqueValuesArray = Array.from(uniqueValues);
-                    console.log("unique",variations)
+                    // console.log("unique",variations)
                     return (
                       <div
                         key={attribute}

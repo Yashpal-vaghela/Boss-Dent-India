@@ -9,8 +9,8 @@
 }
 
 .newnavbar1 {
-  background-color: transparent !important;
-  /* top: 0; */
+  background-color: #222!important;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -25,14 +25,15 @@
   /* width: 100%;
     z-index: 999;
     position: fixed; */
-  background-color: #222;
+  /* background-color: #222;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   position: fixed;
   z-index: 999;
   width: 100%;
-  height: 70px;
+  height: 70px; */
+  height: 65px;
   transition: top 0.3s ease-in-out;
 }
 .navbarlogo {
@@ -148,7 +149,7 @@
   position: relative;
   width: 100%;
   background-color: #fff;
-  box-shadow: 0px 0px 6px 2px #ccc;
+  box-shadow: 0px 0px 4px 1px #ccc;
   /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); */
   border-radius: 7px;
   color: #000;
@@ -229,6 +230,7 @@
   }
   .navbar-expand-lg .navbar-link {
     flex-direction: row;
+    margin-left: auto !important;
   }
   /* .navbar-expand-lg .offcanvas {
     position: static;
@@ -261,6 +263,11 @@
     font-size: 15px;
   }
 }
+@media(min-width:992px) and(max-width:991px){
+  .newnavbar1 .navbar-social-icon{
+    margin-left: auto;
+  }
+}
 @media (max-width: 992px) {
   .newnavbar1 .navbar-offcanvas .offcanvas-header {
     margin-left: auto;
@@ -288,6 +295,9 @@
   .modal-backdrop {
     background-color: transparent !important;
   }
+  
+}
+@media (max-width: 991px) {
   .newnavbar1 .navbar-offcanvas .navbar-link .nav-item a {
     color: #fff !important;
     padding: 10px 0px !important;
@@ -295,18 +305,15 @@
     line-height: 24px;
     font-weight: 700;
   }
-}
-@media (max-width: 991px) {
+  
   .newnavbar1 .search-icon .search-input {
     margin-right: 0px;
   }
   .newnavbar1 .search-icon {
+    display: flex;
     margin-left: auto;
   }
 
-  .newnavbar1 .search-icon {
-    display: flex;
-  }
   .newnavbar1 .suggestion-sub {
     /* margin-right: 0%; */
     right: 0%;
@@ -323,6 +330,9 @@
 }
 
 @media (max-width: 768px) {
+  .navbar-main{
+    position:sticky;
+  }
   .newnavbar1 .navbar-offcanvas .navbar-link .nav-item {
     margin: 12px auto;
   }
@@ -348,6 +358,8 @@
     align-items: center;
     padding: 10px 20px;
     margin: 10px 0px;
+    /* top: 60px;
+    position: relative; */
   }
   .searchbar-wrapper .search-input {
     flex: 1;
@@ -616,8 +628,9 @@
     /* display: none !important; */
   }
   .navbar-offcanvas .search-icon {
-    display: none !important;
+    display: none;
   }
+  
 }
 @media (max-width: 991px) {
   .navbar-top {
