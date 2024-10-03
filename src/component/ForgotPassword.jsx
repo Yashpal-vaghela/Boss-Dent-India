@@ -16,6 +16,7 @@ const ForgotPassword = () => {
     const [step, setStep] = useState(1);
     const [error, setError] = useState('');
     const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("")
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -34,10 +35,10 @@ const ForgotPassword = () => {
             const response = await axios.post('https://admin.bossdentindia.com/wp-json/custom/v1/forgot-password', {
                 email
             });
-            if (response.data.success){
+            if (response.data.success) {
                 setLoading(false);
-                setShowAlert(true);    
-                // alert('Password reset email sent successfully!');
+                setShowAlert(true);
+                setAlertMessage('Password reset email sent successfully! Please check your inbox.');
                 setStep(2); // Move to the next step
             } else {
                 throw new Error('Failed to send reset password email');
@@ -52,7 +53,7 @@ const ForgotPassword = () => {
         } finally {
             setLoading(false);
         }
-    };  
+    };
 
     const handleVerifyOtp = async () => {
         try {
@@ -61,21 +62,22 @@ const ForgotPassword = () => {
                 email,
                 otp
             });
-            if (response.data.success){
+            if (response.data.success) {
                 setLoading(false);
-                setShowAlert(true);
-                // alert('OTP verified successfully!');
+                // setShowAlert(true);
+                setAlertMessage('OTP verified successfully! You can now reset your password.');
+                
                 setStep(3); // Move to the next step
-            } else{
-                throw new Error('Invalid OTP'); 
+            } else {
+                throw new Error('Invalid OTP');
             }
-            setTimeout(() => {
-                setShowAlert(false);
-            }, 3000);
+            // setTimeout(() => {
+            //     setShowAlert(false);
+            // }, 3000);
         } catch (error) {
             console.error('Error verifying OTP:', error);
-            toast.error(error.response?.data?.message || 'Invalid OTP');
-            // alert(error.response?.data?.message || 'Invalid OTP');
+            // toast.error(error.response?.data?.message || 'Invalid OTP');
+            setAlertMessage('Invalid OTP. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -88,20 +90,27 @@ const ForgotPassword = () => {
                 email,
                 password: newPassword
             });
-            if (response.data.success){
+            if (response.data.success) {
+                setAlertMessage('Password changed successfully!');
                 setLoading(false);
                 setShowAlert(true);
-                // alert('Password changed successfully!');
-                navigate('/my-account');
+                // setAlertMessage('OTP verified successfully! You can now reset your password.');
+                // setTimeout(() => {
+                //     navigate('/my-account');
+                // }, 3000)
+                // navigate('/my-account');
             } else {
                 throw new Error('Failed to change password');
             }
             setTimeout(() =>{
                 setShowAlert(false);
+                navigate('/my-account');
             }, 3000);
         } catch (error) {
             console.error('Error changing password:', error);
             setError(error.response?.data?.message || 'Failed to change password');
+        } finally {
+            setLoading(false);
         }
     };
     const togglePasswordVisibility = () => {
@@ -112,6 +121,8 @@ const ForgotPassword = () => {
         setNewPassword(value);
         validatePassword(value);
     };
+    console.log("message", alertMessage);
+    
 
     // useEffect(() => {
     //     Aos.init({
@@ -120,11 +131,12 @@ const ForgotPassword = () => {
     //       mirror: true,   // Trigger animations on scroll up
     //     });
     //   }, []);
-    
+
 
     return (
         <div className="forgot-password-container" data-aos="fade">
-            {error && <div className="error-message">{error}</div>}
+            
+            {/* {error && <div className="error-message">{error}</div>} */}
             {step === 1 && (
                 <div className="step-1">
                     <h2>Forgot Password</h2>
@@ -139,19 +151,20 @@ const ForgotPassword = () => {
                         />
                     </div>
                     <button type="button" onClick={handleForgotPassword}>Request For OTP</button>
+                    {alertMessage && <AlertSuccess message={alertMessage} />}
                     {loading && (
                         <div className="loader-overlay">
                             <div>
                                 <div className="loader-spinner"></div>
                                 <div className="loader-message">
-                                Please wait, while OTP will send to your mail...
+                                    Please wait, while OTP is being sent to your mail...
                                 </div>
                             </div>
                         </div>
                     )}
-                    {showAlert && <AlertSuccess  message='OTP is sucessfully send to Entered Email Address'/>}
                 </div>
             )}
+
             {step === 2 && (
                 <div className="step-2" data-aos="fade">
                     <label>Enter the OTP sent to your registered email address:</label>
@@ -165,30 +178,31 @@ const ForgotPassword = () => {
                         />
                     </div>
                     <button type="button" onClick={handleVerifyOtp}>Verify OTP</button>
+                    {alertMessage && <AlertSuccess message={alertMessage} />}
                     {loading && (
                         <div className='loader-overlay'>
                             <div>
-                               <div className='loader-spinner'></div>
-                               <div className='loader-message'>
-                                please wait, while OTP is verifying...
-                               </div>
+                                <div className='loader-spinner'></div>
+                                <div className='loader-message'>
+                                    Please wait, while OTP is verifying...
+                                </div>
                             </div>
                         </div>
                     )}
-                    {showAlert && <AlertSuccess message ="OTP verified succesfully" />}
                 </div>
             )}
+
             {step === 3 && (
                 <div className="step-3" data-aos="fade">
                     <h2>Set New Password</h2>
                     <div>
                         <label>New Password:</label>
                         <input
-                            type={showPassword ? "text" :"password"}
+                            type={showPassword ? "text" : "password"}
                             value={newPassword}
                             placeholder='Enter Your Password'
                             onChange={handlePasswordChange}
-                            required    
+                            required
                         />
                         <span className='password-icon' onClick={togglePasswordVisibility}>
                             {showPassword ? <FaEye /> : <FaEyeSlash />}
@@ -201,12 +215,12 @@ const ForgotPassword = () => {
                             <div>
                                 <div className='loader-spinner'></div>
                                 <div className='loader-message'>
-                                    Your password has been Changing...
+                                    Your password is being changed...
                                 </div>
                             </div>
                         </div>
                     )}
-                    {showAlert && <AlertSuccess message ="Your password changed Successfully." />}
+                    {showAlert && <AlertSuccess message={alertMessage} />}
                 </div>
             )}
         </div>
