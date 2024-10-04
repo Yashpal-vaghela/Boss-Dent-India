@@ -43,8 +43,8 @@ const Signup = () => {
   const handlePhoneChange = (e) => {
     if (phone.length !== 10) {
       setPhone(e.target.value);
-    }else{
-      setPhone()
+    } else {
+      setPhone();
     }
   };
   const handleSubmit = async (e) => {
@@ -67,6 +67,7 @@ const Signup = () => {
           username,
           email,
           password,
+          "phone_number":phone
         }
       );
 
@@ -160,140 +161,142 @@ const Signup = () => {
   };
 
   return (
-    <div className="signup-container" data-aos="fade">
-      {loading ? (
-        <Loader1></Loader1>
-      ) : (
-        <>
-          <h2 className="signup-title">Sign Up</h2>
-          {alertMessage && (
-            <AlertSuccess message="Otp sent in your email succesfully." />
-          )}
-          {step === 1 ? (
-            <form className="signup-form" onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label className="form-label" htmlFor="username">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  placeholder="Enter Your Username"
-                  className="form-input"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label" htmlFor="email">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  placeholder="Enter Your E-mail"
-                  className="form-input"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label" htmlFor="phone">
-                  Phone Number
-                </label>
-                <input
-                  type="phone"
-                  id="phone"
-                  placeholder="Enter Your Phone Number"
-                  className="form-input"
-                  value={phone || ""}
-                  maxLength={10}
-                  minLength={9}
-                  onChange={(e) => handlePhoneChange(e)}
-                  // min={10}
-                  required
-                ></input>
-              </div>
-              <div className="form-group">
-                <label className="form-label" htmlFor="password">
-                  Create Your Password
-                </label>
-                <div className="d-flex">
+    <div className="container">
+      <div className="signup-container" data-aos="fade">
+        {loading ? (
+          <Loader1></Loader1>
+        ) : (
+          <>
+            <h2 className="signup-title">Sign Up</h2>
+            {alertMessage && (
+              <AlertSuccess message="Otp sent in your email succesfully." />
+            )}
+            {step === 1 ? (
+              <form className="signup-form" onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label className="form-label" htmlFor="username">
+                    Username
+                  </label>
                   <input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    placeholder="Create Your Password"
+                    type="text"
+                    id="username"
+                    placeholder="Enter Your Username"
                     className="form-input"
-                    value={password}
-                    onChange={handlePasswordChange}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     required
                   />
-
-                  <span
-                    className="password-toggle-icon"
-                    onClick={togglePasswordVisibility}
-                  >
-                    {showPassword ? <FaEye /> : <FaEyeSlash />}
-                  </span>
                 </div>
-                {error && (
-                <p
-                  style={{ color: "red" }}
-                  className={`${error ? "error" : ""} `}
-                >
-                  {error}
-                </p>
-              )}
-              </div>
-            
-              <button type="submit" className="signup-button">
-                Sign Up
-              </button>
-              <p className="login-text">
-                I already have an account? <a href="/my-account">Log in</a>
-              </p>
-            </form>
-          ) : (
-            <form className="otp-form" onSubmit={handleVerifyOTP}>
-              {alertMessage && (
-                <AlertSuccess message="You are signup successfully." />
-              )}
-              <div className="form-group">
-                <label className="form-label" htmlFor="otp">
-                  Enter OTP
-                </label>
-                <small className="form-text">
-                  A one-time password (OTP) has been sent to{" "}
-                  <span className="from-txt-otp">{email}</span>. Please enter it
-                  above to complete your registration.
-                </small>
-                <input
-                  type="text"
-                  id="otp"
-                  placeholder="Enter OTP"
-                  className="form-input"
-                  value={otp}
-                  onChange={(e) => setOTP(e.target.value)}
-                  required
-                />
-                <button
-                  type="button"
-                  className="resend-otp-button"
-                  onClick={handleResendOTP}
-                >
-                  Valid for 5 minutes only?{" "}
-                  <span className="resend-txt">Resend OTP</span>
+                <div className="form-group">
+                  <label className="form-label" htmlFor="email">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter Your E-mail"
+                    className="form-input"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label" htmlFor="phone">
+                    Phone Number
+                  </label>
+                  <input
+                    type="phone"
+                    id="phone"
+                    placeholder="Enter Your Phone Number"
+                    className="form-input"
+                    value={phone || ""}
+                    maxLength={10}
+                    minLength={9}
+                    onChange={(e) => handlePhoneChange(e)}
+                    // min={10}
+                    required
+                  ></input>
+                </div>
+                <div className="form-group">
+                  <label className="form-label" htmlFor="password">
+                    Create Your Password
+                  </label>
+                  <div className="d-flex " style={{width:'106%'}}>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      placeholder="Create Your Password"
+                      className="form-input"
+                      value={password}
+                      onChange={handlePasswordChange}
+                      required
+                    />
+
+                    <span
+                      className="signup-password-toggle-icon"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? <FaEye /> : <FaEyeSlash />}
+                    </span>
+                  </div>
+                  {error && (
+                    <p
+                      style={{ color: "red" }}
+                      className={`${error ? "error" : ""} `}
+                    >
+                      {error}
+                    </p>
+                  )}
+                </div>
+
+                <button type="submit" className="signup-button">
+                  Sign Up
                 </button>
-              </div>
-              <button type="submit" className="verify-otp-button">
-                Verify OTP
-              </button>
-            </form>
-          )}
-        </>
-      )}
+                <p className="login-text">
+                  I already have an account? <a href="/my-account">Log in</a>
+                </p>
+              </form>
+            ) : (
+              <form className="otp-form" onSubmit={handleVerifyOTP}>
+                {alertMessage && (
+                  <AlertSuccess message="You are signup successfully." />
+                )}
+                <div className="form-group">
+                  <label className="form-label" htmlFor="otp">
+                    Enter OTP
+                  </label>
+                  <small className="form-text">
+                    A one-time password (OTP) has been sent to{" "}
+                    <span className="from-txt-otp">{email}</span>. Please enter
+                    it above to complete your registration.
+                  </small>
+                  <input
+                    type="text"
+                    id="otp"
+                    placeholder="Enter OTP"
+                    className="form-input"
+                    value={otp}
+                    onChange={(e) => setOTP(e.target.value)}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="resend-otp-button"
+                    onClick={handleResendOTP}
+                  >
+                    Valid for 5 minutes only?{" "}
+                    <span className="resend-txt">Resend OTP</span>
+                  </button>
+                </div>
+                <button type="submit" className="verify-otp-button">
+                  Verify OTP
+                </button>
+              </form>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };
