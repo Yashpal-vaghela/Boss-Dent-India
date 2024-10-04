@@ -32,7 +32,6 @@ const NewCart = () => {
     setCanCheckout(allAttributesSelected);
   }, [cartData]);
 
-
   const handleAttributeSelect = (product, attribute, value) => {
     // console.log("update", attribute, value, product);
     dispatch(
@@ -46,7 +45,7 @@ const NewCart = () => {
   const AdddeliveryCharge = () => {
     const count = cartData?.cartItems?.reduce((total, count) => {
       // console.log("total",total,"v====",count?.weight, count.qty /1000)
-      return total + ((count?.weight) * count.qty) / 1000;
+      return total + (count?.weight * count.qty) / 1000;
     }, 0);
     // console.log("count",count)
     if (count < 1) {
@@ -91,7 +90,6 @@ const NewCart = () => {
   useEffect(() => {
     dispatch(getTotal());
   }, []);
-  
 
   useEffect(() => {
     AdddeliveryCharge();
@@ -107,228 +105,245 @@ const NewCart = () => {
     }));
   };
   return (
-    <div className="cart-page container">
-      <div className="header" data-aos="fade-up">
-        <h1 className="cart-title">Cart</h1>
-        <BreadCrumbs></BreadCrumbs>
-      </div>
-      {cartData?.cartItems?.length === 0 ? (
-        <div className="cart-page-empty">
-          <p className="">Your Cart is Empty </p>
-          <button className="btn btn-dark">
-            <Link to="/products">Shop Now</Link>
-          </button>
+    <div className="container">
+      <div className="cart-page">
+        <div className="header" data-aos="fade-up">
+          <h1 className="cart-title">Cart</h1>
+          <BreadCrumbs></BreadCrumbs>
         </div>
-      ) : (
-        <div className="cart-content">
-          <div className="cart-items">
-            {cartData.cartItems?.length !== 0 &&
-              cartData.cartItems?.map((product) => {
-                // let imageUrl = product?.yoast_head_json?.og_image?.[0]?.url
-                return (
-                  <div
-                    key={`${product.id}-${JSON.stringify(
-                      product.selectedAttributes || {}
-                    )}`}
-                    className="cart-item"
-                  >
-                    <div className="cart-item-image-wrapper">
-                      <img
-                        src={product?.yoast_head_json?.og_image?.[0]?.url}
-                        alt={product?.title?.rendered}
-                        className={`cart-item-image ${
-                          imageLoading[product.id] ? "loaded" : "loading"
-                        }`}
-                        loading="lazy"
-                        onLoad={() => handleImageLoad(product.id)}
-                      />
-                    </div>
-                    <div className="cart-item-details">
-                      <Link
-                        to={`/products/${product.id}`}
-                        className="cart-item-link"
-                      >
-                        <h3>{product?.title?.rendered}</h3>
-                      </Link>
-                      {product.variations && (
-                        <div className="cart-item-attributes">
-                          {Object.keys(
-                            product.variations[0].attributes || {}
-                          ).map((attribute) => {
-                            return (
-                              <div
-                                key={attribute}
-                                className={`${
-                                  !canCheckout
-                                    ? "cart-variation-main variation-cart-main"
-                                    : "variation-cart-main"
-                                }`}
-                              >
-                                <div className="d-flex align-items-center">
-                                <h4>
-                                  {attribute.replace(
-                                    /attribute_pa_|attribute_/,
-                                    ""
-                                  )}
-                                  :
-                                </h4>
-                                
-                                {attribute === "attribute_pa_color" ? (
-                                  <div style={{ display: "flex" }}>
-                                    {product?.variations?.map(
-                                      (variation, index) => {
-                                        return (
-                                          <div
-                                            className={`color-option ${
-                                              Object.values(
-                                                variation?.attributes
-                                              )[0]
-                                            } ${
-                                              Object.values(
-                                                variation?.attributes
-                                              )[0] ===
-                                              Object.values(
-                                                product.selectedAttributes
-                                              )[0]
-                                                ? `selected `
-                                                : ""
-                                            }`}
-                                            key={index}
-                                            onClick={() =>
-                                              handleAttributeSelect(
-                                                product,
-                                                attribute,
-                                                variation.attributes[attribute]
-                                              )
-                                            }
-                                          ></div>
-                                        );
-                                      }
-                                    )}
-                                  </div>
-                                ) : (
-                                  <div className="variation-buttons">
-                                    {product?.variations?.map(
-                                      (variation, index) => {
-                                        return (
-                                          <button
-                                            key={index}
-                                            className={`variation-button ${
-                                              product.selectedAttributes &&
-                                              Object.values(
-                                                product.selectedAttributes
-                                              )[0] ===
-                                                variation.attributes[attribute]
-                                                ? "selected"
-                                                : ""
-                                            }`}
-                                            onClick={() =>
-                                              handleAttributeSelect(
-                                                product,
-                                                attribute,
-                                                variation.attributes[attribute]
-                                              )
-                                            }
-                                          >
-                                            {typeof variation.attributes[
-                                              attribute
-                                            ] === "string"
-                                              ? variation.attributes[attribute]
-                                              : JSON.stringify(
-                                                  variation.attributes[
-                                                    attribute
-                                                  ]
-                                                )}
-                                          </button>
-                                        );
-                                      }
-                                    )}
-                                  </div>
-                                )}
-                                </div>
-                              
-                                {!canCheckout &&
-                                  !product.selectedAttributes?.[attribute] && (
-                                    <p className="checkout-warning">
-                                      * Please select above attribute values to
-                                      proceed to checkout.
-                                    </p>
-                                  )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                    <div className="cart-item-quantity">
-                      <button
-                        onClick={(e) => handleSubtractQuantity(e, product)}
-                      >
-                        -
-                      </button>
-                      <span>
-                        {product?.qty !== undefined ? product?.qty : null}
-                      </span>
-                      <button onClick={(e) => handleAddQuantity(e, product)}>
-                        +
-                      </button>
-                    </div>
-                    <div className="cart-price">
-                      <p className="cart-item-price">₹{product.price}.00</p>
-                      <p className="cart-item-total">
-                        ₹
-                        {product.qty !== undefined
-                          ? product.price * product.qty
-                          : 0}
-                        .00
-                      </p>
-                    </div>
-                    <button
-                      className="cart-item-remove"
-                      onClick={(e) => handleRemoveItem(e, product)}
-                    >
-                      <FaTrashAlt />
-                    </button>
-                  </div>
-                );
-              })}
-          </div>
-          <div className="cart-summary">
-            <button className="clear-cart" onClick={handleEmptyCart}>
-              Clear Cart
+        {cartData?.cartItems?.length === 0 ? (
+          <div className="cart-page-empty">
+            <p className="">Your Cart is Empty </p>
+            <button className="btn btn-dark">
+              <Link to="/products">Shop Now</Link>
             </button>
-            <div className="cart-summary-item">
-              <h2>Total</h2>
-              <span>₹{cartData?.cartTotalAmount}.00</span>
-            </div>
+          </div>
+        ) : (
+          <div className="cart-content">
+            <div className="cart-items">
+              {cartData.cartItems?.length !== 0 &&
+                cartData.cartItems?.map((product) => {
+                  // let imageUrl = product?.yoast_head_json?.og_image?.[0]?.url
+                  return (
+                    <div
+                      key={`${product.id}-${JSON.stringify(
+                        product.selectedAttributes || {}
+                      )}`}
+                      className="cart-item"
+                    >
+                      <div className="cart-item-image-wrapper">
+                        <img
+                          src={product?.yoast_head_json?.og_image?.[0]?.url}
+                          alt={product?.title?.rendered}
+                          className={`cart-item-image ${
+                            imageLoading[product.id] ? "loaded" : "loading"
+                          }`}
+                          loading="lazy"
+                          onLoad={() => handleImageLoad(product.id)}
+                        />
+                      </div>
+                      <div className="cart-item-details">
+                        <Link
+                          to={`/products/${product.id}`}
+                          className="cart-item-link"
+                        >
+                          <h3>{product?.title?.rendered}</h3>
+                        </Link>
+                        {product.variations && (
+                          <div className="cart-item-attributes">
+                            {Object.keys(
+                              product.variations[0].attributes || {}
+                            ).map((attribute) => {
+                              return (
+                                <div
+                                  key={attribute}
+                                  className={`${
+                                    !canCheckout
+                                      ? "cart-variation-main variation-cart-main"
+                                      : "variation-cart-main"
+                                  }`}
+                                >
+                                  <div className="d-flex align-items-center">
+                                    <h4>
+                                      {attribute.replace(
+                                        /attribute_pa_|attribute_/,
+                                        ""
+                                      )}
+                                      :
+                                    </h4>
 
-            <div className="cart-summary-item">
-              <span>Delivery Charge</span>
-              <span>
-                {deliveryCharge === 0 ? "Free Delivery" : `₹${deliveryCharge}`}
-              </span>
+                                    {attribute === "attribute_pa_color" ? (
+                                      <div style={{ display: "flex" }}>
+                                        {product?.variations?.map(
+                                          (variation, index) => {
+                                            return (
+                                              <div
+                                                className={`color-option ${
+                                                  Object.values(
+                                                    variation?.attributes
+                                                  )[0]
+                                                } ${
+                                                  Object.values(
+                                                    variation?.attributes
+                                                  )[0] ===
+                                                  Object.values(
+                                                    product.selectedAttributes
+                                                  )[0]
+                                                    ? `selected `
+                                                    : ""
+                                                }`}
+                                                key={index}
+                                                onClick={() =>
+                                                  handleAttributeSelect(
+                                                    product,
+                                                    attribute,
+                                                    variation.attributes[
+                                                      attribute
+                                                    ]
+                                                  )
+                                                }
+                                              ></div>
+                                            );
+                                          }
+                                        )}
+                                      </div>
+                                    ) : (
+                                      <div className="variation-buttons">
+                                        {product?.variations?.map(
+                                          (variation, index) => {
+                                            return (
+                                              <button
+                                                key={index}
+                                                className={`variation-button ${
+                                                  product.selectedAttributes &&
+                                                  Object.values(
+                                                    product.selectedAttributes
+                                                  )[0] ===
+                                                    variation.attributes[
+                                                      attribute
+                                                    ]
+                                                    ? "selected"
+                                                    : ""
+                                                }`}
+                                                onClick={() =>
+                                                  handleAttributeSelect(
+                                                    product,
+                                                    attribute,
+                                                    variation.attributes[
+                                                      attribute
+                                                    ]
+                                                  )
+                                                }
+                                              >
+                                                {typeof variation.attributes[
+                                                  attribute
+                                                ] === "string"
+                                                  ? variation.attributes[
+                                                      attribute
+                                                    ]
+                                                  : JSON.stringify(
+                                                      variation.attributes[
+                                                        attribute
+                                                      ]
+                                                    )}
+                                              </button>
+                                            );
+                                          }
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  {!canCheckout &&
+                                    !product.selectedAttributes?.[
+                                      attribute
+                                    ] && (
+                                      <p className="checkout-warning">
+                                        * Please select above attribute values
+                                        to proceed to checkout.
+                                      </p>
+                                    )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                      <div className="cart-item-quantity">
+                        <button
+                          onClick={(e) => handleSubtractQuantity(e, product)}
+                        >
+                          -
+                        </button>
+                        <span>
+                          {product?.qty !== undefined ? product?.qty : null}
+                        </span>
+                        <button onClick={(e) => handleAddQuantity(e, product)}>
+                          +
+                        </button>
+                      </div>
+                      <div className="cart-price">
+                        <p className="cart-item-price">₹{product.price}.00</p>
+                        <p className="cart-item-total">
+                          ₹
+                          {product.qty !== undefined
+                            ? product.price * product.qty
+                            : 0}
+                          .00
+                        </p>
+                      </div>
+                      <button
+                        className="cart-item-remove"
+                        onClick={(e) => handleRemoveItem(e, product)}
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </div>
+                  );
+                })}
             </div>
-            <div className="cart-summary-item">
-              <span>Grand Total</span>
-              <span>₹{grandTotal}.00</span>
-            </div>
-            <Link to="/checkout">
-              <button className="checkout-button" disabled={!canCheckout}>
-                Check Out
+            <div className="cart-summary">
+              <button className="clear-cart" onClick={handleEmptyCart}>
+                Clear Cart
               </button>
-            </Link>
+              <div className="cart-summary-item">
+                <h2>Total</h2>
+                <span>₹{cartData?.cartTotalAmount}.00</span>
+              </div>
 
-            <div className="cart-payment-methods">
-              <p>We Accept</p>
-              <div className="payment-logos">
-                <img src="/asset/images/Google-pay.png" alt="googlepay" />
-                <img src="/asset/images/Phone-pe.png" alt="phone-pe" />
-                <img src="/asset/images/bank-transfer.png" alt="banktransfer" />
+              <div className="cart-summary-item">
+                <span>Delivery Charge</span>
+                <span>
+                  {deliveryCharge === 0
+                    ? "Free Delivery"
+                    : `₹${deliveryCharge}`}
+                </span>
+              </div>
+              <div className="cart-summary-item">
+                <span>Grand Total</span>
+                <span>₹{grandTotal}.00</span>
+              </div>
+              <Link to="/checkout">
+                <button className="checkout-button" disabled={!canCheckout}>
+                  Check Out
+                </button>
+              </Link>
+
+              <div className="cart-payment-methods">
+                <p>We Accept</p>
+                <div className="payment-logos">
+                  <img src="/asset/images/Google-pay.png" alt="googlepay" />
+                  <img src="/asset/images/Phone-pe.png" alt="phone-pe" />
+                  <img
+                    src="/asset/images/bank-transfer.png"
+                    alt="banktransfer"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

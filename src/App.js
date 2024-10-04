@@ -25,38 +25,22 @@ import Loader1 from "./component/Loader1";
 // Main App Component
 const App = () => {
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 500);
     Aos.init({
-      duration: 1000, // Animation duration in milliseconds
-      once: false, // Allow animations to trigger multiple times
-      mirror: true, // Trigger animations on scroll up
+      duration: 1000,
+      once: false,
+      mirror: true,
     });
   }, []);
+
   return (
     <>
       {loading ? (
-        // <RotatingLines
-        //   visible={true}
-        //   height="100vh"
-        //   width="50"
-        //   color="rgb(195, 148, 40)"
-        //   ariaLabel="rings-loading"
-        //   strokeColor="#222"
-        //   wrapperStyle={{
-        //     margin: "auto",
-        //     display: "flex",
-        //     alignIems: "center",
-        //     justifyContent: "center",
-        //     backgroundcolot: "transparent",
-        //     color: "rgb(195, 148, 40)",
-        //   }}
-        //   wrapperClass
-        // ></RotatingLines>
-        <Loader1/>
+        <Loader1 />
       ) : (
         <BrowserRouter>
           <WatchlistProvider>
@@ -65,8 +49,6 @@ const App = () => {
             <NewNav1 />
             {/* <NewNav /> */}
             <Allroutes />
-            {/* <NewNav1></NewNav1>
-            <br/> */}
             <Footer />
             <BackToTopButton />
           </WatchlistProvider>

@@ -186,8 +186,8 @@ const CheckOut = () => {
           <Loader1></Loader1>
         </>
       ) : (
-        <>
-          <div className="checkout-page1 container">
+        <div className="container">
+          <div className="checkout-page1">
             <div className="header" data-aos="fade-up">
               <h1 className="checkout-title">Checkout</h1>
               <BreadCrumbs></BreadCrumbs>
@@ -510,7 +510,7 @@ const CheckOut = () => {
               </div>
             </form>
           </div>
-        </>
+        </div>
       )}
     </>
   );

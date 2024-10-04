@@ -282,14 +282,16 @@ section.banner-section {
   font-weight: 600;
   color: rgb(21, 48, 42);
   background: rgb(203, 145, 21) !important;
-  background: linear-gradient(130deg,
-      #c3942f 0%,
-      #d89c27 18%,
-      #dfc86f 37%,
-      #e7dc96 50%,
-      #dfc86f 64%,
-      #d89c27 82%,
-      #c99c30 100%) !important;
+  background: linear-gradient(
+    130deg,
+    #c3942f 0%,
+    #d89c27 18%,
+    #dfc86f 37%,
+    #e7dc96 50%,
+    #dfc86f 64%,
+    #d89c27 82%,
+    #c99c30 100%
+  ) !important;
 }
 
 .banner-btn-icon {
@@ -297,8 +299,6 @@ section.banner-section {
   font-weight: 600;
   padding-top: 3px;
 }
-
-
 
 /* .banner-2-main {
 }
@@ -627,9 +627,9 @@ section.banner-section {
   background-color: #fff;
   width: 100%;
   max-width: 400px;
-  margin: 150px auto;
+  margin: 80px auto 120px;
   padding: 20px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.4);
   border-radius: 10px;
   text-align: center;
   font-family: "Source Sans Pro", sans-serif;
@@ -674,14 +674,15 @@ section.banner-section {
   position: relative;
   /* top: 46px; */
   /* left:-32px; */
-    top: -35px;
-    left: 92%;
-    cursor: pointer;
-    font-size: 1.2rem;
-    color: #000;
-    right: 0px;
-    transform: none;
-    /* right: 73px;
+  /* top: 19px; */
+  top: -35px;
+  left: 92%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #000;
+  /* right: 0px; */
+  transform: none;
+  /* right: 73px;
   /* position: absolute; */
   /* right: 13px;
   top: 76%;
@@ -690,7 +691,21 @@ section.banner-section {
   font-size: 1.2rem;
   color: #000;
 }
-
+.signup-password-toggle-icon{
+  position: relative;
+  /* top: 46px; */
+  left:-32px;
+  top: 19px;
+  /* top: -35px;
+  left: 92%; */
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #000;
+  transform: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #000;
+}
 .signup-button {
   background-color: #000;
   color: #fff;
@@ -766,7 +781,7 @@ section.banner-section {
 
 /* Contact page */
 .container {
-  padding: 20px 20px 0px 20px;
+  padding: 20px 0px 0px 0px;
   margin-top: 140px;
   text-align: left;
 }
@@ -1042,7 +1057,6 @@ section.banner-section {
 }
 
 /* Help center */
-
 .help-center {
   font-family: Roboto, sans-serif;
   padding-top: 0px;
@@ -1108,7 +1122,7 @@ section.banner-section {
 
 /* RefundPolicy*/
 .refund-policy {
-  font-family: Roboto, sans-serif;
+  font-family: Lato, sans-serif;
   padding-top: 0px;
   margin: 0px auto;
   color: rgb(100, 100, 100);
@@ -1140,14 +1154,22 @@ a {
 }
 
 .content {
-  padding-top: 4%;
+  margin-top: 3%;
+  margin-bottom: 5%;
+  /* padding-top: 3%; */
   text-align: justify;
 }
 
+.content h1 {
+  color: #222;
+  font-weight: bold;
+  font-size: 35px;
+  line-height: 60px;
+}
 .content h2 {
   font-family: Source Sans Pro, sans-serif;
-  font-size: 26px;
-  color: #000;
+  font-size: 22px;
+  color: #222;
   font-weight: 600;
   margin-top: 20px;
   margin-bottom: 10px;
@@ -1155,23 +1177,28 @@ a {
 }
 
 .content h3 {
-  font-size: 16px;
+  font-size: 18px;
   margin-top: 15px;
   margin-bottom: 5px;
   margin-left: 30px;
+  color: #222;
+  /* font-weight: 500; */
 }
 
 .content p {
-  margin: 25px;
+  /* margin: 25px; */
+  margin: 0px 20px 20px;
 }
 
 .content ul {
   margin: 15px;
+  text-align: left;
 }
 
 .content ul {
   list-style: disc;
   margin-left: 50px;
+  margin-top: 0px;
 }
 
 /* privacy policy */
@@ -1180,6 +1207,7 @@ a {
   font-family: Lato, sans-serif;
   padding-top: 0px;
   margin: 0px auto;
+  /* color: #222; */
   color: rgb(100, 100, 100);
   text-align: left;
 }
@@ -1196,19 +1224,28 @@ a {
 }
 
 .policy-info {
-  margin-top: 5%;
+  margin-top: 3%;
+  margin-bottom: 5%;
 }
-
+.policy-info h1 {
+  color: #222;
+  line-height: 60px;
+  font-weight: bold;
+  font-size: 35px;
+}
 .policy-info h2 {
-  font-size: 20px;
+  font-size: 22px;
   margin-left: 30px;
   margin-top: 20px;
+  color: #222;
+  font-weight: bold;
 }
 
 .policy-info h3 {
   font-size: 18px;
-  margin-left: 30px;
+  margin-left: 50px;
   margin-top: 20px;
+  color: #222;
 }
 
 .policy-info ul {
@@ -1220,23 +1257,34 @@ a {
   margin-left: 40px;
   margin-top: 10px;
 }
-
+.policy-info li strong {
+  color: #666;
+}
 /* terms and conditions */
 .terms-container {
   /* padding-top: 150px; */
   margin: 0px auto 10px;
-  font-family: Source Sans Pro, sans-serif;
+  font-family: Lato, sans-serif;
   color: rgb(100, 100, 100);
   text-align: left;
 }
 
 .term-info {
-  margin-top: 5%;
+  margin-top: 3%;
   margin-bottom: 5%;
 }
-
+.term-info a {
+  color: #bf8e22;
+  font-weight: bold;
+}
+.term-info h1 {
+  color: #222;
+  line-height: 60px;
+  font-weight: bold;
+  font-size: 35px;
+}
 .term-info h2 {
-  font-family: Source Sans Pro, sans-serif;
+  font-family: Lato, sans-serif;
   font-size: 32px;
   margin-left: 27px;
   margin-top: 20px;
@@ -1244,19 +1292,21 @@ a {
 }
 
 .term-info h3 {
-  margin-top: 50px;
+  margin-top: 40px;
   margin-left: 20px;
+  color: #222;
 }
 
 .term-info p {
   font-family: Lato, sans-serif;
   margin-left: 30px;
-  margin-top: 20px;
+  margin-top: 0px;
 }
 
 .term-info h4 {
-  margin-top: 40px;
+  margin-top: 30px;
   margin-left: 20px;
+  color: #222;
 }
 
 .term-info ul li {
@@ -1870,7 +1920,7 @@ input {
   }
 }
 
-@media(max-width:991px) {
+@media (max-width: 991px) {
   .help-center {
     padding-top: 35px;
   }
@@ -1880,7 +1930,7 @@ input {
   .privacy-policy {
     padding-top: 35px;
   }
-  .terms-container{
+  .terms-container {
     padding-top: 35px;
   }
   .home-main {
@@ -1891,31 +1941,98 @@ input {
     font-size: 16px;
   }
   /* login page */
-  .login-container{
+  .login-container {
     margin: 90px auto;
   }
+  /* UserData */
+  .user-data {
+    padding-top: 35px;
+  }
 }
-@media(max-width:768px){
+@media (max-width: 768px) {
   .home-main {
     margin-top: 20px;
   }
   /* login page */
-  .login-container{
+  .login-container {
     margin: 20px auto 90px;
   }
+  /* user-data page */
+  .user-data {
+    padding-top: 0px;
+  }
+  /* term-page */
+  .term-info h3 {
+    margin-left: 18px;
+    margin-top: 30px;
+  }
+  /* singup page */
+  .signup-container{
+    margin: 40px auto 80px;
+  }
 }
-@media(max-width:576px){
+@media (max-width: 576px) {
   /* login page */
-  .login-container{
+  .login-container {
     margin: 10px auto 90px;
   }
   /* term-condition */
+  .term-info h1 {
+    font-size: 32px;
+  }
+  .term-info h3 {
+    margin-left: 0px;
+    margin-top: 30px;
+  }
+  .term-info h4 {
+    margin-left: 10px;
+    margin-top: 20px;
+  }
+  .term-info ul {
+    padding-left: 1.5rem !important;
+  }
+  /* .term-info {
+    margin-bottom: 25%;
+  } */
+  /* privacy-policy page */
+  /* .policy-info{
+    margin-top: 5%;
+    margin-bottom: 25%;
+  } */
+  .privacy-policy h1 {
+    font-size: 32px;
+  }
+  /* refund and return page */
+  .content h1 {
+    font-size: 32px;
+  }
+
+  /* footer info link page */
+  .content,
+  .policy-info,
   .term-info {
-    margin-bottom: 12%;
+    margin-top: 5%;
+    margin-bottom: 25%;
+  }
+  .content h3{
+
+    font-size: 17px;
   }
   /* product-page */
-  .product-button{
+  .product-button {
     margin: 10px 0;
   }
-  
+  .container {
+    padding: 20px 20px 0 20px;
+  }
+  /* user-data page */
+  /* .user-data{
+    padding: 0px 20px;
+  } */
+}
+
+@media(max-width:420px){
+  .content h1 {
+    font-size: 28px;
+  }
 }

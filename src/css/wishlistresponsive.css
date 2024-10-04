@@ -146,7 +146,7 @@
 
 @media (max-width: 991px) {
   .watchlist-page {
-    padding-top: 100px;
+    padding-top: 40px;
   }
   .watchlist-item {
     display: flex;
@@ -187,7 +187,7 @@
 
 @media (max-width: 768px) {
   .watchlist-page {
-    padding-top: 100px;
+    padding-top: 0px;
   }
   .watchlist-item {
     flex-direction: column;
@@ -236,9 +236,10 @@
 }
 
 @media (max-width: 600px) {
-  .watchlist-page {
+  /* .watchlist-page {
     padding-top: 100px;
-  }
+    padding: 0px 20px;
+  } */
   /* .watchlist-item {
     flex-direction: column;
     align-items: flex-start;
@@ -278,9 +279,9 @@
   }
 }
 @media (max-width: 480px) {
-  .watchlist-page {
+  /* .watchlist-page {
     padding-top: 100px;
-  }
+  } */
   .watchlist-item {
     flex-direction: column;
     align-items: flex-start;

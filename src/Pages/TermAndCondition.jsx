@@ -9,8 +9,9 @@ const TermAndCondition = () => {
             <h1>Terms & Conditions</h1>
             <BreadCrumbs></BreadCrumbs>
         </div>
-        <div className="term-info">
-            <h2>Terms and Conditions</h2>
+        <div className="term-info" data-aos="zoom-in-up">
+            <h1>Terms and Conditions</h1>
+            {/* <h2>Terms and Conditions</h2> */}
 
             <p>Welcome to bossdentindia.com!</p>
             <p>

@@ -390,6 +390,9 @@
   .cart-item-detail h6 {
     font-size: 12px;
   } */
+  .checkout-page1 {
+    padding-top: 40px;
+  }
   .order-coupon-code .form-control {
     font-size: 15px;
   }
@@ -410,5 +413,8 @@
   .cart-item-detail h6 {
     font-size: 14px;
     padding: 0px 5px;
-}
+  }
+  .checkout-page1 {
+    padding-top: 0px;
+  }
 }

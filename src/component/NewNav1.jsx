@@ -111,6 +111,7 @@ const NewNav1 = () => {
           });
           Array.from(menuSubElements).forEach((element) => {
             element.style.top = "0";
+            // element.setAttribute('data-aos','fade-up')
           });
           Array.from(bannerElements).forEach((element) => {
             element.style.paddingTop = "20px";
@@ -121,6 +122,7 @@ const NewNav1 = () => {
           topNav.style.display = "flex";
           Array.from(menuSubElements).forEach((element) => {
             element.style.top = "0px";
+            // element.setAttribute('data-aos','fade-up')
           });
           Array.from(alertMessageElements).forEach((element) => {
             element.style.top = "130px";
@@ -136,6 +138,7 @@ const NewNav1 = () => {
         topNav.style.display = "flex";
         Array.from(menuSubElements).forEach((element) => {
           element.style.top = "0px";
+          // element.setAttribute('data-aos','zoom-in')
         });
         Array.from(bannerElements).forEach((element) => {
           element.style.paddingTop = "0px";
@@ -273,7 +276,7 @@ const NewNav1 = () => {
       </div>
 
       {/* navbar */}
-      <nav className="newnavbar1 navbar navbar-dark bg-dark navbar-expand-lg">
+      <nav className="newnavbar1 navbar navbar-dark bg-dark navbar-expand-lg" >
         <div className="container-fluid newnavbar-sub">
           <div className="navbarlogo">
             <Link to="/">

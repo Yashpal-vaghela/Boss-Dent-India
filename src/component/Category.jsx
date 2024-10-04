@@ -24,7 +24,7 @@ const Category = (props) => {
 
   return (
     <>
-      <div className="shop-sidebar-menu" data-aos="fade">
+      <div className="shop-sidebar-menu w-100" data-aos="fade">
         <div className="shop-sidebar">
           <div className="d-flex align-items-center justify-content-between">
             <h3 className="mb-0">Shop by Category</h3>

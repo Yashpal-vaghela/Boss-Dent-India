@@ -1,7 +1,7 @@
 .cart-page {
   padding-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
+  /* padding-left: 20px;
+  padding-right: 20px; */
 }
 
 .cart-page-empty {
@@ -275,6 +275,7 @@
   .cart-page{
     padding-left: 0px;
     padding-right: 0px;
+    padding-top: 40px;
   }
   .cart-items {
     margin-right: 0;
@@ -376,6 +377,11 @@
     text-align: left;
     font-size: 12px;
   }
+  .cart-page{
+    padding-left: 20px;
+    padding-right: 20px;
+    /* padding-top: 40px; */
+  }
 }
 
 @media (max-width: 480px) {
@@ -420,12 +426,17 @@
     font-size: 13px;
     margin-bottom: 5px;
   }
+  .cart-page{
+    padding-left: 20px;
+    padding-right: 20px;
+    /* padding-top: 40px; */
+  }
 }
 
 /* new responsive css for empty car */
 @media (max-width: 576px) {
   .cart-page-empty p {
-    font-size: 25px;
+    font-size: 22px;
   }
   .cart-page-empty .btn a {
     font-size: 14px;

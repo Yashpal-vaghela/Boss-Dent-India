@@ -9,8 +9,9 @@ const PrivacyPolicy = () => {
           <h1>Privacy Policy</h1>
           <BreadCrumbs></BreadCrumbs>
         </div>
-        <div className="policy-info">
-          <p>
+        <div className="policy-info" data-aos="zoom-in-up">
+        <h1>Privacy Policy</h1>
+          <p style={{marginLeft:'20px'}}>
             At <strong>BossDentIndia</strong>, we value and prioritize the
             privacy of our users and are committed to protecting their personal
             information. This Privacy Policy outlines how we collect, use, and
@@ -144,7 +145,7 @@ const PrivacyPolicy = () => {
               information.
             </li>
           </ul>
-          <h3>6. Updates to this Policy </h3>
+          <h2>6. Updates to this Policy </h2>
           <ul>
             <li>
               We may update this Privacy Policy from time to time to reflect
@@ -154,7 +155,7 @@ const PrivacyPolicy = () => {
               periodically to stay informed about our privacy practices.
             </li>
           </ul>
-          <h3>7. Contact Us</h3>
+          <h2>7. Contact Us</h2>
           <ul>
             <li>
               If you have any questions, concerns, or requests regarding this

@@ -145,6 +145,7 @@ const Product = () => {
       setAlertMessage("Product removed from watchlist.");
     } else {
       addToWatchlist(product.id, {});
+      setAlertMessage("Product add from watchlist.");
       // setAlertMessage("Product added to watchlist!");
     }
   };
@@ -181,7 +182,7 @@ const Product = () => {
                 <Loader></Loader>
               ) : (
                 <>
-                  <div className="products-grid" data-aos="fade">
+                  <div className="products-grid" data-aos="fade-up">
                     {products.map((product) => {
                       let imageUrl = null;
                       if (product.better_featured_image) {
