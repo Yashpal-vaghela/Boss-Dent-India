@@ -137,7 +137,7 @@ body {
   }
 
   .shop-container {
-    padding-top: 75px;
+    padding-top: 70px;
     margin: 20px;
   }
 
@@ -156,7 +156,7 @@ body {
 
   .shop-content {
     flex-direction: row;
-    gap: 10px;
+    gap: 20px;
   }
   .shop-sidebar{
     padding: 10px;
@@ -369,7 +369,7 @@ body {
     flex-direction: column;
   }
   .shop-container {
-    padding-top: 5px;
+    padding-top: 0px;
   }
   .shop-sidebar-menu {
     width: 100%;
@@ -567,9 +567,9 @@ body {
     font-size: 18px;
   }
 
-  .product-price {
+  /* .product-price {
     font-size: 16px;
-  }
+  } */
 
   .product-description {
     font-size: 12px;
@@ -609,6 +609,14 @@ body {
 
   .products-grid {
     grid-template-columns: 1fr;
+  }
+  .product-title{
+    /* height: 50px !important; */
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  .product-price{
+    margin-bottom: 20px;
   }
 }
 
@@ -759,7 +767,7 @@ body {
   }
   /* Product page */
   .shop-container {
-    padding: 5px;
+    padding: 0px;
   }
 
   /* Make the category list scrollable in a row for mobile */
@@ -823,12 +831,13 @@ body {
 
   .product-title {
     font-size: 16px;
-    margin: 10px 0;
+    margin: 0px 0;
     text-align: center;
+    /* height: 40px !important; */
   }
 
   .product-price {
-    font-size: 14px;
+    font-size: 15px;
     text-align: center;
   }
 

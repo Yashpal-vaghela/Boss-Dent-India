@@ -42,12 +42,20 @@ const WatchList = () => {
   // }, [watchlist]);
 
   useEffect(() => {
-    const cachedProducts = JSON.parse(localStorage.getItem("watchlistProducts"));
-    const cachedStockStatuses = JSON.parse(localStorage.getItem("stockStatuses"));
+    const cachedProducts = JSON.parse(
+      localStorage.getItem("watchlistProducts")
+    );
+    const cachedStockStatuses = JSON.parse(
+      localStorage.getItem("stockStatuses")
+    );
     const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
 
     if (watchlist.length > 0) {
-      if (cachedProducts && cachedStockStatuses && cachedProducts.length === watchlist.length) {
+      if (
+        cachedProducts &&
+        cachedStockStatuses &&
+        cachedProducts.length === watchlist.length
+      ) {
         setProducts(cachedProducts);
         setStockStatuses(cachedStockStatuses);
         setLoading(false);
@@ -59,7 +67,6 @@ const WatchList = () => {
       setLoading(false);
     }
   }, [watchlist]);
-
 
   // Function to fetch product and stock status data
   const fetchProducts = async () => {
@@ -96,7 +103,10 @@ const WatchList = () => {
       const stockStatusesResults = await Promise.all(stockStatusPromises);
       const combinedStockStatuses = Object.assign({}, ...stockStatusesResults);
       setStockStatuses(combinedStockStatuses);
-      localStorage.setItem("stockStatuses", JSON.stringify(combinedStockStatuses));
+      localStorage.setItem(
+        "stockStatuses",
+        JSON.stringify(combinedStockStatuses)
+      );
     } catch (error) {
       setError("Failed to fetch watchlist products. Please try again later.");
     } finally {
@@ -119,7 +129,6 @@ const WatchList = () => {
 
   // Handle adding product to cart based on stock status
   const handleAddToCart = async (product, selectedAttributes) => {
-
     const stockStatus = stockStatuses[product.id];
 
     if (stockStatus === "instock") {
@@ -129,7 +138,14 @@ const WatchList = () => {
         );
         const productWeight = weightResponse.data.weight || 0;
 
-        dispatch(Add({ ...product, quantity: 1, selectedAttributes, weight: productWeight }));
+        dispatch(
+          Add({
+            ...product,
+            quantity: 1,
+            selectedAttributes,
+            weight: productWeight,
+          })
+        );
         removeFromWatchlist(product.id);
         toast.success("Product added to cart!");
         navigate("/cart");
@@ -159,40 +175,45 @@ const WatchList = () => {
       {loading ? (
         <Loader1 />
       ) : (
-        <div className="watchlist-page">
-          <div className="header" data-aos="fade-up">
-            <h1>Wishlist</h1>
-            <BreadCrumbs />
-          </div>
-          {products.length === 0 && watchlist.length === 0 ? (
-            <div className="cart-page-empty">
-              <p>No products in your watchlist</p>
-              <button className="btn btn-dark">
-                <Link to="/products">Add Now</Link>
-              </button>
+        <div className="container">
+          <div className="watchlist-page">
+            <div className="header" data-aos="fade-up">
+              <h1>Wishlist</h1>
+              <BreadCrumbs />
             </div>
-          ) : (
-            <div className="watchlist-content">
-              <div className="watchlist-items" data-aos="fade">
-                {products.map((product) => {
-                  const watchlistItem = watchlist.find((item) => item.id === product.id);
-                  const selectedAttributes = watchlistItem?.selectedAttributes || {};
-                  return (
-                    <WatchlistItem
-                      key={product.id}
-                      product={product}
-                      stockStatus={stockStatuses[product.id]}
-                      handleAddToCart={handleAddToCart}
-                      handleRemove={handleRemove}
-                      handleImageLoad={handleImageLoad}
-                      imageLoading={imageLoading[product.id]}
-                      selectedAttributes={selectedAttributes}
-                    />
-                  )
-                })}
+            {products.length === 0 && watchlist.length === 0 ? (
+              <div className="cart-page-empty">
+                <p>No products in your watchlist</p>
+                <button className="btn btn-dark">
+                  <Link to="/products">Add Now</Link>
+                </button>
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="watchlist-content">
+                <div className="watchlist-items" data-aos="fade">
+                  {products.map((product) => {
+                    const watchlistItem = watchlist.find(
+                      (item) => item.id === product.id
+                    );
+                    const selectedAttributes =
+                      watchlistItem?.selectedAttributes || {};
+                    return (
+                      <WatchlistItem
+                        key={product.id}
+                        product={product}
+                        stockStatus={stockStatuses[product.id]}
+                        handleAddToCart={handleAddToCart}
+                        handleRemove={handleRemove}
+                        handleImageLoad={handleImageLoad}
+                        imageLoading={imageLoading[product.id]}
+                        selectedAttributes={selectedAttributes}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </>
@@ -201,9 +222,18 @@ const WatchList = () => {
 
 // Memoized Watchlist Item to prevent unnecessary re-renders
 const WatchlistItem = React.memo(
-  ({ product, stockStatus, handleAddToCart, handleRemove, handleImageLoad, imageLoading }) => {
+  ({
+    product,
+    stockStatus,
+    handleAddToCart,
+    handleRemove,
+    handleImageLoad,
+    imageLoading,
+  }) => {
     const [selectedAttributes, setSelectedAttributes] = useState(() => {
-      const storedAttributes = localStorage.getItem(`selectedAttributes_${product.id}`);
+      const storedAttributes = localStorage.getItem(
+        `selectedAttributes_${product.id}`
+      );
       return storedAttributes ? JSON.parse(storedAttributes) : {};
     });
 
@@ -215,7 +245,10 @@ const WatchlistItem = React.memo(
       };
       setSelectedAttributes(updatedAttributes);
       // Store the updated attributes in localStorage
-      localStorage.setItem(`selectedAttributes_${product.id}`, JSON.stringify(updatedAttributes));
+      localStorage.setItem(
+        `selectedAttributes_${product.id}`,
+        JSON.stringify(updatedAttributes)
+      );
     };
 
     return (
@@ -224,7 +257,9 @@ const WatchlistItem = React.memo(
           <img
             src={product.yoast_head_json?.og_image?.[0]?.url}
             alt={product.title.rendered}
-            className={`watchlist-item-image ${imageLoading ? "loaded" : "loading"}`}
+            className={`watchlist-item-image ${
+              imageLoading ? "loaded" : "loading"
+            }`}
             loading="lazy"
             onLoad={() => handleImageLoad(product.id)}
           />
@@ -232,54 +267,88 @@ const WatchlistItem = React.memo(
         <div className="watchlist-item-details">
           <div className="d-lg-block d-md-block">
             <div className="watchlist-item-info">
-              <Link to={`/products/${product.id}`} className="watchlist-item-link">
+              <Link
+                to={`/products/${product.id}`}
+                className="watchlist-item-link"
+              >
                 <h5 className="mb-0">{product.title.rendered}</h5>
               </Link>
-              <p className="watchlist-item-price mb-0">Price: ₹{product.price}</p>
+              <p className="watchlist-item-price mb-0">
+                Price: ₹{product.price}
+              </p>
             </div>
             {/* Render product variations */}
             {product.variations && product.variations[0]?.attributes && (
               <div className="wishlist-item-attributes">
-                {Object.keys(product.variations[0].attributes).map((attribute) => (
-                  <div key={attribute} className="variation-cart-main">
-                    <h4>{attribute.replace(/attribute_pa_|attribute_/, "")}: </h4>
-                    {attribute === "attribute_pa_color" ? (
-                      <div style={{ display: "flex" }}>
-                        {product.variations.map((variation, index) => (
-                          <div
-                            key={index}
-                            className={`color-option ${Object.values(variation?.attributes)[0]}
-                            ${selectedAttributes[attribute] === variation.attributes[attribute] ? "selected" : ""}`}
-                            onClick={() => handleAttributeSelect(attribute, variation.attributes[attribute])}
-                          ></div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="variation-buttons">
-                        {product.variations.map((variation, index) => (
-                          <button
-                            key={index}
-                            className={`variation-button ${selectedAttributes[attribute] === variation.attributes[attribute] ? "selected" : ""}`}
-                            onClick={() => handleAttributeSelect(attribute, variation.attributes[attribute])}
-                          >
-                            {typeof variation.attributes[attribute] === "string"
-                              ? variation.attributes[attribute]
-                              : JSON.stringify(variation.attributes[attribute])}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
+                {Object.keys(product.variations[0].attributes).map(
+                  (attribute) => (
+                    <div key={attribute} className="variation-cart-main">
+                      <h4>
+                        {attribute.replace(/attribute_pa_|attribute_/, "")}:{" "}
+                      </h4>
+                      {attribute === "attribute_pa_color" ? (
+                        <div style={{ display: "flex" }}>
+                          {product.variations.map((variation, index) => (
+                            <div
+                              key={index}
+                              className={`color-option ${
+                                Object.values(variation?.attributes)[0]
+                              }
+                            ${
+                              selectedAttributes[attribute] ===
+                              variation.attributes[attribute]
+                                ? "selected"
+                                : ""
+                            }`}
+                              onClick={() =>
+                                handleAttributeSelect(
+                                  attribute,
+                                  variation.attributes[attribute]
+                                )
+                              }
+                            ></div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="variation-buttons">
+                          {product.variations.map((variation, index) => (
+                            <button
+                              key={index}
+                              className={`variation-button ${
+                                selectedAttributes[attribute] ===
+                                variation.attributes[attribute]
+                                  ? "selected"
+                                  : ""
+                              }`}
+                              onClick={() =>
+                                handleAttributeSelect(
+                                  attribute,
+                                  variation.attributes[attribute]
+                                )
+                              }
+                            >
+                              {typeof variation.attributes[attribute] ===
+                              "string"
+                                ? variation.attributes[attribute]
+                                : JSON.stringify(
+                                    variation.attributes[attribute]
+                                  )}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )
+                )}
               </div>
             )}
           </div>
 
-
-
           <div className="actions">
             <button
-              className={`watchlist-add-to-cart ${stockStatus !== "instock" ? "disable-button" : ""}`}
+              className={`watchlist-add-to-cart ${
+                stockStatus !== "instock" ? "disable-button" : ""
+              }`}
               disabled={stockStatus !== "instock"}
               onClick={() => handleAddToCart(product, selectedAttributes)}
             >
@@ -297,6 +366,5 @@ const WatchlistItem = React.memo(
     );
   }
 );
-
 
 export default WatchList;

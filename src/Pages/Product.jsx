@@ -17,14 +17,16 @@ import BreadCrumbs from "../component/BreadCrumbs";
 import Loader1 from "../component/Loader1";
 import Category from "../component/Category";
 import Loader from "../component/Loader";
+import ProductPagination from "../component/ProductPagination";
+// import { parseInt } from "yet-another-react-lightbox";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(9);
   const [totalProducts, setTotalProducts] = useState(0);
   const [stockStatuses, setStockStatuses] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(9);
   const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -35,91 +37,38 @@ const Product = () => {
   const location = useLocation();
 
   const fetchProducts = useCallback(
-    async (page = 1, prevProducts = []) => {
+    async (page = 1) => {
       setLoading(true);
       try {
-        let apiUrl = `https://admin.bossdentindia.com/wp-json/wp/v2/product?per_page=100`;
-        const perPage = 100;
+        let apiUrl = `https://admin.bossdentindia.com/wp-json/wp/v2/product?per_page=${itemsPerPage}&page=${page}`;
+        // const perPage = 100;
         if (category) {
           apiUrl += `&product_cat=${category}`;
         }
 
-        const response = await axios.get(apiUrl, {
-          params: {
-            page: page,
-          },
-        });
+        const response = await axios.get(apiUrl);
         const newProducts = response.data;
-        const allProducts = [...prevProducts, ...newProducts];
-        if (newProducts.length === perPage) {
-          return fetchProducts(page + 1, allProducts);
-        }
-
-        // console.log('Full Product Response:', response.data);
-        setTotalProducts(allProducts.length);
-        const startIndex = (currentPage - 1) * productsPerPage;
-        const paginatedProducts = allProducts.slice(
-          startIndex,
-          startIndex + productsPerPage
-        );
+        setTotalProducts(parseInt(response.headers["x-wp-total"], 10));
+        setProducts(newProducts);
         const stockResponse = await axios.get(
           "https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/all"
         );
 
         const allStockStatuses = stockResponse.data; // Adjust this based on your API response format
-        // const paginatedAllStatuses = allStockStatuses.slice(
-        //   startIndex,
-        //   startIndex + productsPerPage
-        // );
-        // console.warn("paginatedALL",paginatedAllStatuses,stockResponse.data)
 
         const stockStatusesResults = allStockStatuses.map((product, index) => {
-          // console.log(
-          //   "product1",
-          //   product.product_id,
-          //   // "asdx",
-          //   // [product.id],
-          //   allStockStatuses[index].id,
-          //   // "response",
-          //   // stockResponse.data,
-          //   // "allStock",
-          //   // allStockStatuses[0]
-          // );
-          // if(allStockStatuses[index].id == product.product_id){
-          //   console.log("products2")
-          // }
-          // if(allStockStatuses[product.id])
-          //  return allStockStatuses[index].stock_status || "unknown";
-          // allStockStatuses.map((item,index)=>{
-          //   console.warn("item",item)
-          // })
           return {
             [product.product_id]:
               allStockStatuses[index].stock_status || "unknown", // Default to "unknown" if not found
           };
         });
-
-        // console.warn("stcok", stockStatusesResults);
-        // const stockStatusPromises = paginatedProducts.map(async (product) => {
-        //   try {
-        //     const stockResponse = await axios.get(
-        //       `https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/${product.id}`
-        //     );
-        //     return { [product.id]: stockResponse.data.stock_status };
-        //   } catch (error) {
-        //     console.error("Error fetching stock status:", error);
-        //     return { [product.id]: "unknown" };
-        //   }
-        // });
-
-        // const stockStatusesResults = await Promise.all(stockStatusPromises);
         const combinedStockStatuses = Object.assign(
           {},
           ...stockStatusesResults
         );
         // console.warn("combined",combinedStockStatuses)
         setStockStatuses(combinedStockStatuses);
-        setProducts(paginatedProducts);
+        // setProducts(paginatedProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -127,7 +76,7 @@ const Product = () => {
       }
       // console.log("Fetching products for category:", category);
     },
-    [category, currentPage, productsPerPage]
+    [category, itemsPerPage]
   );
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem("token");
@@ -135,7 +84,7 @@ const Product = () => {
   }, []);
 
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(currentPage);
   }, [fetchProducts, currentPage]);
 
   useEffect(() => {
@@ -188,52 +137,21 @@ const Product = () => {
         "This product is out of stock and cannot be added to the cart."
       );
     }
-    
   };
-  
-  
 
   const handleAddToWatchlist = (product) => {
-      if (watchlist.includes(product.id)) {
-        removeFromWatchlist(product.id);
-        setAlertMessage("Product removed from watchlist.");
-      } else {
-        addToWatchlist(product.id,{});
-        // setAlertMessage("Product added to watchlist!");
-      }
+    if (watchlist.includes(product.id)) {
+      removeFromWatchlist(product.id);
+      setAlertMessage("Product removed from watchlist.");
+    } else {
+      addToWatchlist(product.id, {});
+      // setAlertMessage("Product added to watchlist!");
+    }
   };
 
   const handleImageLoad = (event) => {
     event.target.classList.add("loaded");
   };
-  const totalPages = Math.ceil(totalProducts / productsPerPage);
-  const paginationButtons = [];
-  for (let i = 1; i <= totalPages; i++) {
-    if (
-      i === 1 ||
-      i === currentPage ||
-      i === totalPages ||
-      (i >= currentPage - 1 && i <= currentPage + 1)
-    ) {
-      paginationButtons.push(
-        <button
-          key={i}
-          className={`paginate_button page-item ${
-            currentPage === i ? "active" : ""
-          }`}
-          onClick={() => handlePageChange(i)}
-        >
-          {i}
-        </button>
-      );
-    } else if (i === currentPage - 2 || i === currentPage + 2) {
-      paginationButtons.push(
-        <span key={i} className="ellipsis">
-          ...
-        </span>
-      );
-    }
-  }
 
   return (
     <>
@@ -251,6 +169,7 @@ const Product = () => {
             <div className="shop-header">
               {alertMessage && <AlertSuccess message={alertMessage} />}
             </div>
+          
             <div className="shop-content">
               {/* products catgeory component */}
               <Category
@@ -294,7 +213,7 @@ const Product = () => {
                                 className="product-title"
                                 style={{
                                   display: "flex",
-                                  justifyContent: "space-between",
+                                  justifyContent: "center",
                                   alignItems: "center",
                                   height: "60px",
                                 }}
@@ -304,7 +223,7 @@ const Product = () => {
                             </Link>
                           </div>
                           <h3
-                            className="product-price"
+                            className="product-price "
                             style={{
                               textAlign: "center",
                             }}
@@ -372,21 +291,12 @@ const Product = () => {
                 </>
               )}
             </div>
-            <div className="pagination">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </button>
-              <div className="pagination-list">{paginationButtons}</div>
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              >
-                Next
-              </button>
-            </div>
+            <ProductPagination
+              totalProducts={totalProducts}
+              productsPerPage={itemsPerPage}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
           </div>
         </>
       )}
