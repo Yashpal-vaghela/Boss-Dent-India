@@ -67,6 +67,7 @@ const Signup = () => {
           username,
           email,
           password,
+          "phone_number": phone
         }
       );
 
