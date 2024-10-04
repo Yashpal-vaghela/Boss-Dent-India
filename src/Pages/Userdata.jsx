@@ -234,7 +234,7 @@ const UserData = () => {
     <Loader1></Loader1>
   ) : (
     <div className="container">
-      <div className="user-data">
+      <div className="user-data overflow-hidden">
         <div className="header" data-aos="fade-up">
           <h1>User Data</h1>
           <nav className="bread-crumbs">

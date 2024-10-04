@@ -17,7 +17,7 @@ const About = () => {
 
   return (
     <div className="container ">
-      <div className="about-container mb-5">
+      <div className="about-container mb-5 overflow-hidden">
         <div className="header" data-aos="fade-up">
           <h1 className="cart-title">About us</h1>
           <BreadCrumbs></BreadCrumbs>
