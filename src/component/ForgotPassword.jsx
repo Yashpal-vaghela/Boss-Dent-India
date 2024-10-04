@@ -5,7 +5,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 // import Aos from 'aos';
 import AlertSuccess from './AlertSuccess';
 import "../css/forgotpassword.css";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -121,7 +121,7 @@ const ForgotPassword = () => {
         setNewPassword(value);
         validatePassword(value);
     };
-    console.log("message", alertMessage);
+    // console.log("message", alertMessage);
     
 
     // useEffect(() => {
@@ -136,7 +136,7 @@ const ForgotPassword = () => {
     return (
         <div className="forgot-password-container" data-aos="fade">
             
-            {/* {error && <div className="error-message">{error}</div>} */}
+            {error && <div className="error-message">{error}</div>}
             {step === 1 && (
                 <div className="step-1">
                     <h2>Forgot Password</h2>

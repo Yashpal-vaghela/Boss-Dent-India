@@ -4,7 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 // import Aos from "aos";
-import * as yup from "yup";
+// import * as yup from "yup";
 import AlertSuccess from "../component/AlertSuccess"; // Adjust the path as needed
 import Loader1 from "../component/Loader1";
 

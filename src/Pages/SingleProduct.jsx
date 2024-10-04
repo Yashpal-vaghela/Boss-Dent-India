@@ -38,7 +38,7 @@ const SingleProduct = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [selectedColor, setSelectedColor] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [selectimg, setselectimg] = useState([]);
+  // const [selectimg, setselectimg] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   // const [imageUrl, setImageUrl] = useState();
@@ -208,36 +208,36 @@ const SingleProduct = () => {
     }
   };
 
-  const image = [
-    {
-      id: 1,
-      img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-    },
-    {
-      id: 2,
-      img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-    },
-    {
-      id: 3,
-      img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-    },
-    {
-      id: 4,
-      img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-    },
-    {
-      id: 5,
-      img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-    },
-    {
-      id: 6,
-      img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-    },
-  ];
-  const handleselectimage = (value) => {
-    console.log("select-image", value);
-    setselectimg(value);
-  };
+  // const image = [
+  //   {
+  //     id: 1,
+  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+  //   },
+  //   {
+  //     id: 2,
+  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+  //   },
+  //   {
+  //     id: 3,
+  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+  //   },
+  //   {
+  //     id: 4,
+  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+  //   },
+  //   {
+  //     id: 5,
+  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+  //   },
+  //   {
+  //     id: 6,
+  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
+  //   },
+  // ];
+  // const handleselectimage = (value) => {
+  //   console.log("select-image", value);
+  //   setselectimg(value);
+  // };
   // let imageUrl = product.yoast_head_json.og_image[0].url;
   return (
     <>
