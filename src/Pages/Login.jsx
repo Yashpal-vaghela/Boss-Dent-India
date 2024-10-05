@@ -43,7 +43,10 @@ const Login = () => {
         }
       );
       const token = response.data.token;
+      const userId = response.data.user_id;
+      // console.log(userId)
       localStorage.setItem("token", token);
+      localStorage.setItem("user_id", userId);
       if (rememberMe) {
         localStorage.setItem("userIdentifier", userIdentifier);
         localStorage.setItem("password", password);
