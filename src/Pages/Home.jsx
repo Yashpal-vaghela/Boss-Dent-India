@@ -8,7 +8,7 @@ import OtherBanner from "../component/OtherBanner";
 
 const Home = () => {
   return (
-    <div className="home-main">
+    <div className="home-main overflow-hidden">
       {/* home banner section */}
       <HomeBanner />
       {/* Category Section */}
