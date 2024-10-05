@@ -64,6 +64,7 @@ const NewCart = () => {
     // console.warn("cartitem", product, product.qty);
     dispatch(Add({ ...product, qty: product.qty }));
     AdddeliveryCharge();
+    dispatch(getTotal());
   };
 
   const handleSubtractQuantity = (e, product) => {
@@ -73,6 +74,7 @@ const NewCart = () => {
       dispatch(decreaseCart(product));
     }
     AdddeliveryCharge();
+    dispatch(getTotal())
   };
 
   const handleRemoveItem = (e, product) => {
@@ -81,6 +83,7 @@ const NewCart = () => {
     dispatch(Remove(product.id));
     // console.log("Removing product with ID:", product.id);
     AdddeliveryCharge();
+   
   };
 
   const handleEmptyCart = () => {
@@ -119,7 +122,7 @@ const NewCart = () => {
             </button>
           </div>
         ) : (
-          <div className="cart-content">
+          <div className="cart-content" data-aos="filp-left">
             <div className="cart-items">
               {cartData.cartItems?.length !== 0 &&
                 cartData.cartItems?.map((product) => {
@@ -308,6 +311,9 @@ const NewCart = () => {
               </button>
               <div className="cart-summary-item">
                 <h2>Total</h2>
+                {/* {
+                  console.log("cart",cartData?.cartTotalAmount)
+                } */}
                 <span>₹{cartData?.cartTotalAmount}.00</span>
               </div>
 
