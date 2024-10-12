@@ -7,6 +7,8 @@ import "../css/responsiveuserdata.css";
 import AlertSuccess from "../component/AlertSuccess";
 import { toast } from "react-toastify";
 import Loader1 from "../component/Loader1";
+import { useDispatch } from "react-redux";
+import { Add } from "../redux/Apislice/cartslice";
 
 const UserData = () => {
   const [user, setUser] = useState(null);
@@ -22,6 +24,7 @@ const UserData = () => {
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const fetchUserData = useCallback(async () => {
     const token = localStorage.getItem("token");
@@ -215,6 +218,10 @@ const UserData = () => {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("cart")
+    // localStorage.setItem("UserData",JSON.parse({}));
+    // localStorage.getItem('car')
+    dispatch(Add([]))
     toast("Logged out!");
     // alert("Logged out!");
     navigate("/my-account");

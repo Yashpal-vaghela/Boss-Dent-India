@@ -9,7 +9,8 @@ import Indian_states_cities_list from "indian-states-cities-list";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import Loader1 from "../component/Loader1";
-import Loader from '../component/Loader';
+import Loader from "../component/Loader";
+import axios from "axios";
 
 const checkoutSchema = yup.object().shape({
   name: yup.string().required("Name field is required"),
@@ -38,14 +39,26 @@ const CheckOut = () => {
   const [States, setStates] = useState([]);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [getCouponData, setGetCouponData] = useState([]);
   const token = localStorage.getItem("token");
 
+  const getCoupon = async () =>{
+   await axios
+    .get("https://admin.bossdentindia.com/wp-json/custom/v1/coupons")
+    .then((res) => {
+      console.log("res", res.data);
+      setGetCouponData(res.data);
+      localStorage.setItem('couponData',JSON.stringify(res.data))
+    })
+    .catch((err) => console.log("err", err));
+  }
   useEffect(() => {
     setStates(Indian_states_cities_list?.STATES_OBJECT);
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 500);
+   getCoupon();
   }, []);
 
   // new form validation
@@ -146,9 +159,30 @@ const CheckOut = () => {
       }
     },
   });
+  //Applied coupon code
+  const handleCouponChange = (e) => {
+    setCoupon(e.target.value);
+  };
 
+  const handleApplyCouponCode = () => {
+    const filtercoupon = getCouponData.filter((item)=>item.post_title === coupon);
+    console.log("couo", getCouponData,coupon,filtercoupon,finalTotal);
+    if(filtercoupon && finalTotal > 2000){
+      const total = finalTotal-( finalTotal * 10 /100);
+      console.log("couo1", finalTotal,total);
+      // dispatch(getTotal(total))
+      setFinalTotal(total)
+    }
+    formik?.setErrors("Total ")
+    // if (coupon === "DISCOUNT10") {
+    //   setAppliedCoupon(coupon);
+    //   setFinalTotal(finalTotal - 10);
+    // }
+  };
   useEffect(() => {
     setFinalTotal(cartTotal + Number(deliveryChargData));
+    handleApplyCouponCode();
+    // const coupondata = localStorage.getItem('couponData')
   }, [cartTotal, deliveryChargData]);
 
   useEffect(() => {
@@ -157,17 +191,7 @@ const CheckOut = () => {
     };
   }, [cartData, dispatch]);
 
-  //Applied coupon code
-  const handleCouponChange = (e) => {
-    setCoupon(e.target.value);
-  };
 
-  // const handleApplyCouponCode = () => {
-  //   if (coupon === "DISCOUNT10") {
-  //     setAppliedCoupon(coupon);
-  //     setFinalTotal(finalTotal - 10);
-  //   }
-  // };
   // const applyCoupon = () => {
   //   if (coupon === "DISCOUNT10") {
   //     setAppliedCoupon(coupon);
@@ -187,7 +211,7 @@ const CheckOut = () => {
         </>
       ) : (
         <div className="container">
-          <div className="checkout-page1">
+          <div className="checkout-page1 overflow-hidden">
             <div className="header" data-aos="fade-up">
               <h1 className="checkout-title">Checkout</h1>
               <BreadCrumbs></BreadCrumbs>
@@ -456,7 +480,7 @@ const CheckOut = () => {
                       ></input>
                       <button
                         className="btn btn-ApplyCouponCode"
-                        // onClick={handleApplyCouponCode}
+                        onClick={handleApplyCouponCode}
                       >
                         Apply
                       </button>
@@ -501,7 +525,7 @@ const CheckOut = () => {
                           }
                         />
                       </div>
-                      <button type="submit" className="payment-button">
+                      <button type="button" className="payment-button">
                         Proceed to payment
                       </button>
                     </div>

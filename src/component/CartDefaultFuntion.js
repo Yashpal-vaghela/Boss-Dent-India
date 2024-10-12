@@ -9,7 +9,7 @@ const CartDefaultFuntion = () => {
 
   const DefaultFunction = useCallback(() => {
   
-    if (SavedData1 !== null && SavedData1.length !== 0 ) {
+    if (SavedData1 !== null && SavedData1.cart_items.length !== 0 ) {
       if (cartData.length === 0 ) {
         dispatch(Add(SavedData1));
       }
