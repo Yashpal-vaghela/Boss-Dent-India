@@ -15,6 +15,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+ 
   // const redirectPath = location.state?.pathname
   // console.log(redirectPath);
 
@@ -30,6 +31,7 @@ const Login = () => {
     setTimeout(() => {
       setLoading(false);
     }, [500]);
+    
   }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,10 +45,19 @@ const Login = () => {
         }
       );
       const token = response.data.token;
-      const userId = response.data.user_id;
+     
+      // const userId = response.data.user_id;
       // console.log(userId)
+      const ObjectUserData = {
+        user_dispaly_name:response.data.user_display_name,
+        user_email:response.data.user_email,
+        user_id:response.data.user_id,
+        user_nicename:response.data.user_nicename
+      }
+      // console.log("res==",response,ObjectUserData)
       localStorage.setItem("token", token);
-      localStorage.setItem("user_id", userId);
+      localStorage.setItem('UserData',JSON.stringify(ObjectUserData))
+      // localStorage.setItem("user_id", userId);
       if (rememberMe) {
         localStorage.setItem("userIdentifier", userIdentifier);
         localStorage.setItem("password", password);
@@ -71,7 +82,7 @@ const Login = () => {
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
+  
   return loading ? (
     <>
       <Loader1></Loader1>

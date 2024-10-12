@@ -25,7 +25,7 @@ import Loader1 from "./component/Loader1";
 // Main App Component
 const App = () => {
   const [loading, setLoading] = useState(true);
-
+ 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -44,7 +44,6 @@ const App = () => {
       ) : (
         <BrowserRouter>
           <WatchlistProvider>
-            {/* <CartDefaultFuntion></CartDefaultFuntion> */}
             <ToastContainer />
             <NewNav1 />
             {/* <NewNav /> */}
