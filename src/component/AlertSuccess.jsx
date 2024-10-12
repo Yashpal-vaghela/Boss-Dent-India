@@ -10,7 +10,7 @@ const AlertSuccess = ({ message = "Success! Your action was completed." }) => {
     setShowAlert(true);
 
     // Hide the alert after 3 seconds
-    const timer = setTimeout(() => setShowAlert(false), 3000);
+    const timer = setTimeout(() => setShowAlert(false), 2000);
 
     // Cleanup the timer when the component unmounts
     return () => clearTimeout(timer);

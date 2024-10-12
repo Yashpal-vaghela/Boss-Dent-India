@@ -44,7 +44,7 @@ const App = () => {
       ) : (
         <BrowserRouter>
           <WatchlistProvider>
-            <CartDefaultFuntion></CartDefaultFuntion>
+            {/* <CartDefaultFuntion></CartDefaultFuntion> */}
             <ToastContainer />
             <NewNav1 />
             {/* <NewNav /> */}

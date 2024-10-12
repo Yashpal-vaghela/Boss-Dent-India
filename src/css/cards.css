@@ -16,7 +16,7 @@
  }
 
 .variable-cards-title{
-  font-size: 30px;
+  font-size: 34px;
   margin-bottom: 0px;
   color: #333;
   border-bottom: 2px solid #c39428;
@@ -238,5 +238,10 @@
 @media(max-width:576px){
   .cards-1-main{
     margin-left: -35px;
+  }
+}
+@media(max-width:480px){
+  .variable-cards-title{
+    font-size: 25px;
   }
 }

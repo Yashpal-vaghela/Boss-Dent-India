@@ -84,7 +84,7 @@ const OtherBanner = () => {
         <div className="row OtherBanner-wrapper">
           {BannerImageData.map((item, index) => {
             return (
-              <div key={index} className="col-lg-3 col-md-6  col-sm-6 col-12 mb-lg-0 mb-4 ">
+              <div key={index} className="col-lg-3 col-md-6 col-sm-6 col-12 mb-lg-0 mb-4 " data-aos="zoom-out">
                 <img
                   src={item.src}
                   className="img-fluid"
@@ -100,16 +100,6 @@ const OtherBanner = () => {
               close={() => setModelOpen(false)}
               slides={BannerImageData}
               index={currentIndex}
-              // plugins={[Inline]}
-              // inline={{
-              //   style: { width: "100%", maxWidth: "900px", aspectRatio: "3 / 2" },
-              // }}
-              // on={{slideChange:handleClick()}}
-              // on={{view:({index:currentIndex})=>setCurrentIndex(currentIndex) }}
-              // onIndexChange={(index)=>console.log("index",index)}
-              // on={{view:({index})}}
-              // animation={{ fade: 0 }}
-              // slideshow={{ autoPlay: true, delay: 3000 }}
               render={{
                 // Custom Previous Button
                 buttonPrev: () => (
@@ -133,7 +123,6 @@ const OtherBanner = () => {
                     }}
                   >
                     <FaChevronLeft></FaChevronLeft>
-                    {/* <FaArrowLeft size={30} color="white" /> */}
                   </button>
                 ),
                 // Custom Next Button
@@ -162,108 +151,9 @@ const OtherBanner = () => {
                   </button>
                 ),
               }}
-              // render={{
-              //   buttonPrev: () => {
-              //     <div>
-              //       <button
-              //         type="button"
-              //         title="Previous"
-              //         aria-label="Previous"
-              //         className="yarl__button yarl__navigation_prev"
-              //         style={{
-              //           position: "absolute",
-              //           top: "50%",
-              //           left: "20px",
-              //           transform: "translateY(-50%)",
-              //           backgroundColor: "transparent",
-              //           border: "none",
-              //           cursor: "pointer",
-              //           zIndex: 1000,
-              //         }}
-              //         onClick={handleRotationLeft}
-              //       >
-              //         <svg
-              //           xmlns="http://www.w3.org/2000/svg"
-              //           viewBox="0 0 24 24"
-              //           width="24"
-              //           height="24"
-              //           aria-hidden="true"
-              //           focusable="false"
-              //           class="yarl__icon"
-              //         >
-              //           <g fill="currentColor">
-              //             <path d="M0 0h24v24H0z" fill="none"></path>
-              //             <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
-              //           </g>
-              //         </svg>
-              //       </button>
-              //     </div>;
-              //   },
-              //   buttonNext: () => {
-              //     <button
-              //       // onClick={handleNext}
-              //       aria-label="Next"
-              //       style={{
-              //         position: "absolute",
-              //         top: "50%",
-              //         right: "20px",
-              //         transform: "translateY(-50%)",
-              //         backgroundColor: "rgba(0, 0, 0, 0.5)",
-              //         border: "none",
-              //         cursor: "pointer",
-              //         padding: "10px",
-              //         zIndex: 1000,
-              //       }}
-              //     >
-              //       Right
-              //       {/* <FaArrowRight size={30} color="white" /> */}
-              //     </button>;
-              //   },
-              // }}
             ></Lightbox>
           )}
-          {/* {clickedImg && (
-            <>
-              <LightBox
-                setModelOpen={setModelOpen}
-                modalopen={ModelOpen}
-                currentIndex={BannerImageData.length}
-                // clickedImg={clickedImg}
-                handleRotationRight={handleRotationRight}
-                setClickedImg={setClickedImg}
-                handleRotationLeft={handleRotationLeft}
-              ></LightBox>
-            </>
-          )} */}
-          {/* <div className="col-lg-4 col-12">
-            <img
-              src="/asset/images/Suction Tips_.jpg"
-              className="img-fluid"
-              alt="suction-tips"
-            ></img>
-          </div>
-          <div className="col-lg-4 col-12">
-            <img
-              src="/asset/images/Prophy cups and brushes.jpg"
-              className="img-fluid"
-              alt="prophy-cups-and-brushes"
-            ></img>
-          </div> */}
         </div>
-        {/* <div className="d-flex align-items-center justify-content-between OtherBanner-wrapper">
-          <img
-            src="/asset/images/Comp Polishing kit & wheel.jpg"
-            className="img-fluid"
-          ></img>
-          <img
-            src="/asset/images/Suction Tips_.jpg"
-            className="img-fluid"
-          ></img>
-          <img
-            src="/asset/images/Prophy cups and brushes.jpg"
-            className="img-fluid"
-          ></img>
-        </div> */}
       </div>
     </section>
   );

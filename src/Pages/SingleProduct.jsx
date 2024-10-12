@@ -16,7 +16,7 @@ import ReviewForm from "../component/ReviewForm";
 import AlertSuccess from "../component/AlertSuccess";
 import { toast } from "react-toastify";
 import Loader1 from "../component/Loader1";
-
+import { FaCheckCircle } from "react-icons/fa";
 
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
@@ -29,7 +29,15 @@ const SingleProduct = () => {
   const [variations, setVariations] = useState([]);
   const [selectedAttributes, setSelectedAttributes] = useState({});
   const [stockStatus, setStockStatus] = useState("unknown");
-  const { watchlist, addToWatchlist, removeFromWatchlist } = useWatchlist();
+  const {
+    watchlist,
+    addToWatchlist,
+    removeFromWatchlist,
+    cartList,
+    addToCartList,
+    // alertMessage,
+    // updateAlertMessage
+  } = useWatchlist();
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [weight, setWeight] = useState(null);
   const [activeSection, setActivesection] = useState("description");
@@ -38,10 +46,14 @@ const SingleProduct = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [selectedColor, setSelectedColor] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [selectimg, setselectimg] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   // const [imageUrl, setImageUrl] = useState();
+  const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
+  const [getCartData] = useState(
+    JSON.parse(localStorage.getItem("cart_productId"))
+  );
+  const [getWishList] = useState(JSON.parse(localStorage.getItem("watchlist")));
 
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem("token");
@@ -68,7 +80,7 @@ const SingleProduct = () => {
         // Extract and set variations if available
         if (response.data.variations) {
           setVariations(response.data.variations);
-        }else{
+        } else {
           setVariations([]);
         }
 
@@ -90,12 +102,7 @@ const SingleProduct = () => {
           // const a = relatedProductsResponse.data.filter((item)=>console.log("filterdara",item.title))
           setRelatedProducts(shuffledProducts.slice(0, 10));
         }
-        // Determine sale price
-        // if (response.data.sale_price) {
-        //   setSalePrice(response.data.sale_price);
-        // } else {
-        //   setSalePrice(response.data.price);
-        // }
+  
         setSalePrice(response.data.sale_price || response.data.price);
         const weightData = await axios.get(
           `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${id}`
@@ -119,9 +126,6 @@ const SingleProduct = () => {
     };
 
     fetchProduct();
-  }, [id]);
-
-  useEffect(() => {
     const imgElement = document.getElementById(`product-imagr-${id}`);
 
     const observer = new IntersectionObserver(
@@ -146,16 +150,24 @@ const SingleProduct = () => {
     };
   }, [id]);
 
-  const handleIncrease = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
+  useEffect(() => {
+    if (alertMessage) {
+      const timer = setTimeout(() => {
+        setAlertMessage("");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [alertMessage]);
+
+  const handleUpdateqty = (e, action) => {
+      action === "PLUS"
+        ? setQuantity((prevQuantity) => prevQuantity + 1)
+        : setQuantity((prevQuantity) => prevQuantity - 1);
   };
 
-  const handleDecrease = () => {
-    setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
-  };
 
   const handleAttributeSelect = (attribute, value, key) => {
-    // console.log("value",attribute,value,key);
+    // console.log("value", attribute, value, key);
     const newSelectedAttributes = {
       ...selectedAttributes,
       [attribute]: value,
@@ -175,70 +187,211 @@ const SingleProduct = () => {
     }
   };
 
-  const handleWatchlistToggle = () => {
-    if (watchlist.includes(product.id)) {
-      removeFromWatchlist(product.id);
-    } else {
-      addToWatchlist(product.id, selectedAttributes);
-    }
-  };
-  // console.log(selectedAttributes);
-  const handleAddToCart = (e) => {
-    e.preventDefault();
+  const ensureAuthenticated = () => {
     if (!isLoggedIn) {
-      // User is not logged in, show alert and navigate to login page
-      toast.error("Please! log-in befor add products into your cart.", {
+      toast.error("Please Log In! Thank you.", {
         autoClose: 3000,
       });
       setTimeout(() => {
         navigate("/my-account", { state: { from: location.pathname } });
       }, 3000);
-      return; // Exit the function
+      return false;
     }
+    return true;
+  };
+
+  // watchlist delete api integrate
+  const handleWatchlistToggle = async (product) => {
+    if (watchlist.includes(product.id)) {
+      const deleteData = await axios
+        .delete(
+          `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/delete`,
+          {
+            data: {
+              user_id: getUserData.user_id,
+              product_id: product.id,
+            },
+          }
+        )
+        .then((response) => {
+          // console.log("delete", response.data);
+          removeFromWatchlist(product.id);
+          setAlertMessage("Product removed from watchlist.");
+        })
+        .catch((error) => console.log("error", error));
+    } else {
+      const postData = await axios
+        .post(
+          "https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/add",
+          {
+            user_id: getUserData.user_id,
+            product_id: product.id,
+            product_quantity: quantity,
+            product_title: product.title.rendered,
+            product_image: product.yoast_head_json.og_image[0].url,
+            product_variations: product.variations,
+            product_price: product.price,
+            product_weight: weight,
+            selected_attribute: selectedAttributes,
+          }
+        )
+        .then((response) => {
+          // console.log("add", response.data);
+          addToWatchlist(product.id, selectedAttributes);
+          setAlertMessage("Product add from watchlist.");
+        })
+        .catch((error) => console.log("product-page-error", error));
+    }
+  };
+
+  // Addtocart product and related product api integrate
+  const handleAddToCart = async (e, relatedProduct) => {
+    // console.log("related", relatedProductId);
+    e.preventDefault();
+    if (!ensureAuthenticated()) return;
     if (stockStatus === "instock") {
-      // console.log("s", quantity, selectedAttributes);
-      // addToCart({ ...product, quantity, selectedAttributes });
-      dispatch(
-        Add({ ...product, qty: quantity, selectedAttributes, weight: weight })
-      );
-      setAlertMessage("Product added to cart!");
+      const userData = JSON.parse(localStorage.getItem("UserData"));
+      let filterCartProduct = [];
+      let GetCartProduct = [];
+      let RelatedCartProduct = [];
+
+      if (userData) {
+        await axios
+          .get(
+            `https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${getUserData.user_id}`
+          )
+          .then((response) => {
+            localStorage.setItem("cart", JSON.stringify(response.data));
+            GetCartProduct = response.data.cart_items;
+            filterCartProduct = response.data.cart_items.filter(
+              (item) => item.product_id == product.id
+            );
+            RelatedCartProduct = response.data.cart_items.filter(
+              (item) => item.product_id == relatedProduct.id
+            );
+            // console.log("response-cart", response, filterCartProduct);
+          })
+          .catch((error) => console.log("error-cart", error));
+        // console.log("filterCartProduct", filterCartProduct, RelatedCartProduct);
+        if (filterCartProduct.length === 0 && relatedProduct === undefined) {
+          handleAddToCartApi(product, userData);
+        } else if (relatedProduct === undefined) {
+          // console.warn("update-pro-----");
+          handleUpdateCartApi(filterCartProduct, product, GetCartProduct);
+        }
+
+        if (relatedProduct !== undefined) {
+          let RelatedCartProductWeight = null;
+          const weightResponse = axios
+            .get(
+              `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${relatedProduct.id}`
+            )
+            .then((response) => {
+              RelatedCartProductWeight = response.data.weight;
+              // console.log("response-weight", response.data);
+              if (RelatedCartProduct.length === 0) {
+                // console.warn("weight", RelatedCartProductWeight);
+                axios
+                  .post(
+                    `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
+                    {
+                      user_id: userData.user_id,
+                      product_id: relatedProduct.id,
+                      product_quantity: quantity,
+                      product_title: relatedProduct.title.rendered,
+                      product_image:
+                        relatedProduct.yoast_head_json.og_image[0].url,
+                      product_attributes: relatedProduct.variations,
+                      product_weight: response.data.weight,
+                      product_price: relatedProduct.price,
+                      selected_attribute: {},
+                    }
+                  )
+                  .then((res) => {
+                    // console.log("response----", res.data);
+                    setAlertMessage("Product added to cart!");
+                    addToCartList(relatedProduct.id, {});
+                    localStorage.setItem("cart_length", res.data.cart_length);
+                  })
+                  .catch((err) => console.log("err", err));
+              } else {
+                const UpdatedProduct = RelatedCartProduct[0].product_quantity;
+                // console.warn("update-pro1-----",quantity,"updateProduct",UpdatedProduct);
+                axios
+                  .post(
+                    `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
+                    {
+                      user_id: getUserData.user_id,
+                      product_id: relatedProduct.id,
+                      product_quantity: Number(UpdatedProduct) + 1,
+                    }
+                  )
+                  .then((res) => {
+                    // updateAlertMessage();
+                    setAlertMessage("Product update from cart!");
+                    // console.log("res=========", res.data, alertMessage);
+                  })
+                  .catch((err) => console.log("err", err));
+                // console.log("product",  product, "updateCartList", UpdatedProduct);
+              }
+              // setRelatedProductWeight(response.data.weight);
+            });
+          // console.log("related-product-weight", RelatedCartProductWeight);
+        }
+      }
       // alert("Product added to cart!");
     } else {
       toast.info("Product is out of stock");
     }
   };
+  // product addtocart api  integrate
+  const handleAddToCartApi = async (product, userData) => {
+    // console.log("product", product, userData);
+    axios
+      .post(`https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`, {
+        user_id: userData.user_id,
+        product_id: product.id,
+        product_quantity: quantity,
+        product_title: product.title.rendered,
+        product_image: product.yoast_head_json.og_image[0].url,
+        product_attributes: product.variations,
+        product_weight: weight,
+        product_price: product.price,
+        selected_attribute: selectedAttributes,
+      })
+      .then((res) => {
+        // console.log("response----", res.data);
+        setAlertMessage("Product added to cart!");
+        addToCartList(product.id, selectedAttributes);
+        localStorage.setItem("cart_length", res.data.cart_length);
+      })
+      .catch((err) => console.log("err", err));
+  };
+  // product updatetocart api integarte
+  const handleUpdateCartApi = async (filter, product, GetCartProduct) => {
+    const UpdatedProduct = filter[0].product_quantity;
+    await axios
+      .post(`https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`, {
+        user_id: getUserData.user_id,
+        product_id: product.id,
+        product_quantity: Number(UpdatedProduct) + quantity,
+      })
+      .then((res) => {
+        // updateAlertMessage();
+        setAlertMessage("Product update from cart!");
+        // console.log("res=========", res.data, alertMessage);
+      })
+      .catch((err) => console.log("err", err));
+    // console.log("product", filter, product, "updateCartList", UpdatedProduct);
+    // filter.map(async (item) => {
+    //   // console.log("item",item)
+    //   if (item.product_quantity >= 1) {
+    //     const a = Number(item.product_quantity) + quantity;
+    //     console.log("item", item.product_quantity, "a", a);
+    //   }
+    // });
+  };
 
-  // const image = [
-  //   {
-  //     id: 1,
-  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-  //   },
-  //   {
-  //     id: 2,
-  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-  //   },
-  //   {
-  //     id: 3,
-  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-  //   },
-  //   {
-  //     id: 4,
-  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-  //   },
-  //   {
-  //     id: 5,
-  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-  //   },
-  //   {
-  //     id: 6,
-  //     img: "https://admin.bossdentindia.com/wp-content/uploads/2024/09/101.jpg",
-  //   },
-  // ];
-  // const handleselectimage = (value) => {
-  //   console.log("select-image", value);
-  //   setselectimg(value);
-  // };
-  // let imageUrl = product.yoast_head_json.og_image[0].url;
   return (
     <>
       {loading ? (
@@ -261,7 +414,14 @@ const SingleProduct = () => {
               <span>{product.title?.rendered}</span>
             </nav>
           </div>
+          {/* {console.log("alertMessage1", alertMessage)} */}
           {alertMessage && <AlertSuccess message={alertMessage} />}
+          {/* {alertMessage && (
+            <div className="success-alert">
+              <FaCheckCircle className="alert-icon" />
+              {alertMessage}
+            </div>
+          )} */}
           <div className="single-product-main">
             <div className="single-product-img">
               <Zoom>
@@ -293,15 +453,15 @@ const SingleProduct = () => {
                   </>
                 )} */}
                 <img
-                      id={`product-image-${id}`}
-                      className={`single-product-img ${
-                        isImageLoaded ? "loaded" : ""
-                      }`}
-                      src={product.yoast_head_json.og_image[0].url}
-                      // src={imageUrl.replace("https://", "https://admin.")}
-                      alt={product.title?.rendered}
-                      onLoad={() => setIsImageLoaded(true)}
-                    />
+                  id={`product-image-${id}`}
+                  className={`single-product-img ${
+                    isImageLoaded ? "loaded" : ""
+                  }`}
+                  src={product.yoast_head_json.og_image[0].url}
+                  // src={imageUrl.replace("https://", "https://admin.")}
+                  alt={product.title?.rendered}
+                  onLoad={() => setIsImageLoaded(true)}
+                />
               </Zoom>
               {/* <div className="single-product-view d-flex align-items-center">
                 {image?.map((image, index) => {
@@ -415,12 +575,15 @@ const SingleProduct = () => {
                 className="single-product-pcs"
               />
               <div className="quantity-controls">
-                <button onClick={handleIncrease} className="ind-btn">
+                <button
+                  onClick={(e) => handleUpdateqty(e, "PLUS")}
+                  className="ind-btn"
+                >
                   +
                 </button>
 
                 <span className="quantity">{quantity}</span>
-                <button onClick={handleDecrease} className="ind-btn">
+                <button onClick={(e) => handleUpdateqty(e, "MINUS")} className="ind-btn">
                   -
                 </button>
               </div>
@@ -441,8 +604,13 @@ const SingleProduct = () => {
                     className={`like-icon ${
                       !watchlist.includes(product.id) ? "" : "inactive-heart"
                     }`}
-                    onClick={handleWatchlistToggle}
+                    onClick={() => handleWatchlistToggle(product)}
                   >
+                    {/* {WishList.includes(product.id) ? (
+                      <FaHeart />
+                    ) : (
+                      <FaRegHeart />
+                    )} */}
                     {watchlist.includes(product.id) ? (
                       <FaHeart />
                     ) : (
@@ -515,6 +683,7 @@ const SingleProduct = () => {
                 delay: 9000, // Delay between slides in ms
                 disableOnInteraction: false, // Continue autoplay after user interactions
               }}
+              // centeredSlides="false"
               loop={true}
               breakpoints={{
                 640: {
@@ -558,7 +727,7 @@ const SingleProduct = () => {
                               ? ""
                               : "inactive-heart"
                           }`}
-                          onClick={() => addToWatchlist(relatedProduct.id)}
+                          onClick={() => handleWatchlistToggle(relatedProduct)}
                         >
                           {watchlist.includes(relatedProduct.id) ? (
                             <FaHeart />
@@ -568,16 +737,7 @@ const SingleProduct = () => {
                         </span>
                         <span
                           className="add-to-cart-icon"
-                          onClick={() => {
-                            dispatch(
-                              Add({
-                                ...relatedProduct,
-                                // qty: undefined,
-                                selectedAttributes,
-                              })
-                            );
-                            setAlertMessage("Product added to cart!");
-                          }}
+                          onClick={(e) => handleAddToCart(e, relatedProduct)}
                         >
                           <FaCartPlus />
                         </span>

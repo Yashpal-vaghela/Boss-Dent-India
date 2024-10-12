@@ -182,7 +182,7 @@ const HomeBanner = () => {
           right: "17px",
           zIndex: 10,
           padding: "10px",
-          backgroundColor: "transparent",
+          backgroundColor: "#f6f6f6",
           color: "#c89c31",
           border: "none",
           borderRadius: "5px",
