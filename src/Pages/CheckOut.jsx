@@ -29,36 +29,40 @@ const checkoutSchema = yup.object().shape({
 });
 
 const CheckOut = () => {
-  const cartData = useSelector((state) => state.cart?.cartItems);
+  // const cartData = useSelector((state) => state.cart?.cartItems);
   const cartTotal = useSelector((state) => state.cart?.cartTotalAmount);
   const deliveryChargData = localStorage.getItem("deliveryCharge");
   const [coupon, setCoupon] = useState("");
   // const [appliedCoupon, setAppliedCoupon] = useState("");
-  const [finalTotal, setFinalTotal] = useState(cartTotal);
+  
   const [paymentMethod, setPaymentMethod] = useState("");
   const [States, setStates] = useState([]);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [getCouponData, setGetCouponData] = useState([]);
   const token = localStorage.getItem("token");
+  const [getCartData] = useState(JSON.parse(localStorage.getItem("cart")));
+  const [finalTotal, setFinalTotal] = useState();
+  const getCoupon = async () => {
+    await axios
+      .get("https://admin.bossdentindia.com/wp-json/custom/v1/coupons")
+      .then((res) => {
+        console.log("res", res.data);
+        setGetCouponData(res.data);
+        localStorage.setItem("couponData", JSON.stringify(res.data));
+      })
+      .catch((err) => console.log("err", err));
+  };
 
-  const getCoupon = async () =>{
-   await axios
-    .get("https://admin.bossdentindia.com/wp-json/custom/v1/coupons")
-    .then((res) => {
-      console.log("res", res.data);
-      setGetCouponData(res.data);
-      localStorage.setItem('couponData',JSON.stringify(res.data))
-    })
-    .catch((err) => console.log("err", err));
-  }
   useEffect(() => {
     setStates(Indian_states_cities_list?.STATES_OBJECT);
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 500);
-   getCoupon();
+    getCoupon();
+    setFinalTotal(getCartData?.cart_total.total_price + Number(deliveryChargData))
+    // console.log("getCart", getCartData);
   }, []);
 
   // new form validation
@@ -93,7 +97,7 @@ const CheckOut = () => {
             body: JSON.stringify({
               amount: finalTotal,
               customerDetails: formik?.values,
-              items: cartData?.map((item) => ({
+              items: getCartData.cart_items?.map((item) => ({
                 product_id: item?.id,
                 quantity: item?.quantity,
               })),
@@ -165,20 +169,23 @@ const CheckOut = () => {
   };
 
   const handleApplyCouponCode = () => {
-    const filtercoupon = getCouponData.filter((item)=>item.post_title === coupon);
-    console.log("couo", getCouponData,coupon,filtercoupon,finalTotal);
-    if(filtercoupon && finalTotal > 2000){
-      const total = finalTotal-( finalTotal * 10 /100);
-      console.log("couo1", finalTotal,total);
+    const filtercoupon = getCouponData.filter(
+      (item) => item.post_title === coupon
+    );
+    console.log("couo", getCouponData, coupon, filtercoupon, finalTotal);
+    if (filtercoupon && finalTotal > 2000) {
+      const total = finalTotal - (finalTotal * 10) / 100;
+      console.log("couo1", finalTotal, total);
       // dispatch(getTotal(total))
-      setFinalTotal(total)
+      setFinalTotal(total);
     }
-    formik?.setErrors("Total ")
+    formik?.setErrors("Total ");
     // if (coupon === "DISCOUNT10") {
     //   setAppliedCoupon(coupon);
     //   setFinalTotal(finalTotal - 10);
     // }
   };
+
   useEffect(() => {
     setFinalTotal(cartTotal + Number(deliveryChargData));
     handleApplyCouponCode();
@@ -189,16 +196,9 @@ const CheckOut = () => {
     return () => {
       dispatch(getTotal());
     };
-  }, [cartData, dispatch]);
+  }, [getCartData, dispatch]);
 
-
-  // const applyCoupon = () => {
-  //   if (coupon === "DISCOUNT10") {
-  //     setAppliedCoupon(coupon);
-  //     setFinalTotal(finalTotal - 10);
-  //   }
-  // };
-
+  const grandTotal = getCartData?.cart_total.total_price + Number(deliveryChargData);
   const handlePaymentSelect = (method) => {
     setPaymentMethod(method);
   };
@@ -400,13 +400,14 @@ const CheckOut = () => {
 
                     {/* order summary content */}
                     <div className="order-summary-content row">
-                      {cartData.length === 0 ? (
+                      {getCartData.cart_items.length === 0 ? (
                         <>
                           <Loader></Loader>
                         </>
                       ) : (
                         <>
-                          {cartData?.map((product, index) => {
+                          {getCartData.cart_items?.map((product, index) => {
+                            console.log("produt", product);
                             return (
                               <div
                                 className="order-summary-product-wrapper"
@@ -414,22 +415,19 @@ const CheckOut = () => {
                               >
                                 <div className="col-lg-3 col-md-3 col-3 ps-0 product-cart-img">
                                   <img
-                                    src={
-                                      product?.yoast_head_json?.og_image?.[0]
-                                        ?.url
-                                    }
+                                    src={product?.product_image}
                                     className="mx-auto img-fluid"
-                                    alt={product?.yoast_head_json?.og_title}
+                                    alt={product?.product_title}
                                   ></img>
                                 </div>
                                 <div className="col-lg-6 col-md-6 col-6 cart-item-detail">
-                                  <h1>{product?.title?.rendered}</h1>
+                                  <h1>{product?.product_title}</h1>
 
-                                  {product?.selectedAttributes ? (
+                                  {product?.selected_attribute ? (
                                     <>
                                       <div className="d-flex align-items-center justify-content-center">
                                         {Object.keys(
-                                          product?.selectedAttributes
+                                          product?.selected_attribute
                                         ).map((attribute, index) => {
                                           return (
                                             <h6 key={index}>
@@ -441,7 +439,7 @@ const CheckOut = () => {
                                               <b>
                                                 {
                                                   Object.values(
-                                                    product?.selectedAttributes
+                                                    product?.selected_attribute
                                                   )[0]
                                                 }
                                               </b>
@@ -458,11 +456,11 @@ const CheckOut = () => {
                                 <div className="col-lg-1 col-md-1 col-1 cart-item-qty">
                                   <p className="mb-0">
                                     <i className="fa-solid fa-xmark"></i>&nbsp;
-                                    {product?.qty}
+                                    {product?.product_quantity}
                                   </p>
                                 </div>
                                 <div className="col-lg-2 col-md-2 col-2 cart-remove-item">
-                                  <p className="mb-0">{product?.price}</p>
+                                  <p className="mb-0">{product?.product_price}</p>
                                 </div>
                               </div>
                             );
@@ -488,7 +486,8 @@ const CheckOut = () => {
                     <div className="order-summary-total mb-4">
                       <div className="d-flex justify-content-between ">
                         <h6 className="order_title">Subtotal</h6>
-                        <p>₹{cartTotal}.00</p>
+                        <p>₹{getCartData?.cart_total.total_price}.00</p>
+                        {/* <p>₹{cartTotal}.00</p> */}
                       </div>
                       <div className="d-flex justify-content-between ">
                         <h6 className="order_title">Shipping </h6>
@@ -500,7 +499,8 @@ const CheckOut = () => {
                       </div>
                       <div className="d-flex justify-content-between ">
                         <h5 className="order_total_title">Total</h5>
-                        <p> ₹{finalTotal}.00</p>
+                        <p> ₹{grandTotal}.00</p>
+                        {/* <p> ₹{finalTotal}.00</p> */}
                       </div>
                     </div>
                   </div>
