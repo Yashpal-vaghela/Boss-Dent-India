@@ -9,6 +9,7 @@ import { Add } from "../redux/Apislice/cartslice";
 import BreadCrumbs from "../component/BreadCrumbs";
 import { toast } from "react-toastify";
 import Loader1 from "../component/Loader1";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 const WatchList = () => {
   const { watchlist, removeFromWatchlist } = useWatchlist();
@@ -21,11 +22,8 @@ const WatchList = () => {
   const navigate = useNavigate();
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
   const [getCartData] = useState(JSON.parse(localStorage.getItem("cart")));
-  // console.log("getCartData",getCartData)
-  const [getWatchListData] = useState(
-    JSON.parse(localStorage.getItem("wishlist"))
-  );
   const [WatchListData, setWatchListData] = useState([]);
+  const [ModalOpen, setModalOpen] = useState(false);
 
   // Function to fetch product and stock status data
   const fetchWatchlistData = async () => {
@@ -114,8 +112,6 @@ const WatchList = () => {
 
   // Handle removing item from watchlist
   const handleRemove = async (product) => {
-    console.log("id", product, getUserData.user_id);
-    // removeFromWatchlist(product.product_id);
     const deleteData = await axios
       .delete(
         `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/delete`,
@@ -130,20 +126,13 @@ const WatchList = () => {
         const deleteProduct = WatchListData.filter(
           (item) => item.product_id !== product.product_id
         );
-        console.log("remove", response.data, "delete-product", deleteProduct);
+        // console.log("remove", response.data, "delete-product", deleteProduct);
         removeFromWatchlist(product.product_id);
         setWatchListData(deleteProduct);
+        setModalOpen(true);
         // setWatchListData((preProducts)=>preProducts.filter((product)=>product.product_id !== product.product_id));
       })
       .catch((error) => console.log("error", error));
-    // setProducts((prevProducts) =>
-    //   prevProducts.filter((product) => product.id !== product.product_id)
-    // );
-    // localStorage.removeItem(`selectedAttributes_${id}`);
-    // localStorage.setItem(
-    //   "watchlistProducts",
-    //   JSON.stringify(products.filter((product) => product.id !== id))
-    // );
   };
 
   // Handle adding product to cart based on stock status
@@ -205,14 +194,21 @@ const WatchList = () => {
                 console.log("watchlist-error", err);
               });
           } else {
-            console.log("update",product,product.product_quantity,filterCartData[0].product_quantity);
+            console.log(
+              "update",
+              product,
+              product.product_quantity,
+              filterCartData[0].product_quantity
+            );
             await axios
               .post(
                 `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
                 {
                   user_id: getUserData.user_id,
                   product_id: product.product_id,
-                  product_quantity: (Number(product.product_quantity)+Number(filterCartData[0].product_quantity)),
+                  product_quantity:
+                    Number(product.product_quantity) +
+                    Number(filterCartData[0].product_quantity),
                 }
               )
               .then((res) => {
@@ -225,11 +221,6 @@ const WatchList = () => {
                 toast.success("Product updated to cart!");
               })
               .catch((err) => console.log("err", err));
-            // filterCartData.map(async (item) => {
-            //   if (item.product_quantity >= 1) {
-            //     const a = Number(item.product_quantity) + 1;
-            //   }
-            // });
           }
         }
         // dispatch(
@@ -265,7 +256,8 @@ const WatchList = () => {
       )
       .then((res) => {
         removeFromWatchlist(product.product_id);
-        console.log("delete-watchlist-product", res.data)})
+        console.log("delete-watchlist-product", res.data);
+      })
       .catch((error) => console.log("error", error));
   };
   // Handle image load event to update loading state for images
@@ -307,13 +299,6 @@ const WatchList = () => {
                     );
                     const selectedAttributes =
                       watchlistItem?.selected_attribute || {};
-                    // console.log(
-                    //   "product",
-                    //   product
-                    //   // stockStatuses[product.product_id],
-                    //   // "wishlist-display",
-                    //   // WatchListData
-                    // );
                     return (
                       <WatchlistItem
                         key={product.id}
@@ -325,31 +310,63 @@ const WatchList = () => {
                         imageLoading={imageLoading[product.product_id]}
                         selectedAttributes={selectedAttributes}
                         getUserData={getUserData}
+                        setModalOpen={setModalOpen}
+                        ModalOpen={ModalOpen}
                       ></WatchlistItem>
                     );
                   })}
-                  {/* {products.map((product) => {
-                    const watchlistItem = watchlist.find(
-                      (item) => item.id === product.id
-                    );
-                    const selectedAttributes =
-                      watchlistItem?.selectedAttributes || {};
-                    return (
-                      <WatchlistItem
-                        key={product.id}
-                        product={product}
-                        stockStatus={stockStatuses[product.id]}
-                        handleAddToCart={handleAddToCart}
-                        handleRemove={handleRemove}
-                        handleImageLoad={handleImageLoad}
-                        imageLoading={imageLoading[product.id]}
-                        selectedAttributes={selectedAttributes}
-                      />
-                    );
-                  })} */}
                 </div>
               </div>
             )}
+            <div
+              className="modal fade"
+              tabIndex="-1"
+              id="exampleModal"
+              data-bs-backdrop="static"
+              data-bs-keyboard="false"
+              aria-hidden="true"
+              aria-labelledby="exampleModalLabel"
+            >
+              <div
+                className="modal-dialog modal-dialog-centered"
+                role="document"
+              >
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Confirm Deletion</h5>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div className="modal-body">
+                    <p>
+                      Are you sure you want to remove this product from your
+                      watchlist?
+                    </p>
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                      // onClick={() => setModalOpen(false)}
+                    >
+                      cancel
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={()=>handleRemove()}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -367,6 +384,8 @@ const WatchlistItem = React.memo(
     handleImageLoad,
     imageLoading,
     getUserData,
+    setModalOpen,
+    ModalOpen,
   }) => {
     const [selectedAttributes, setSelectedAttributes] = useState(() => {
       const storedAttributes = product.selected_attribute;
@@ -394,7 +413,6 @@ const WatchlistItem = React.memo(
           }
         )
         .then((response) => {
-          // console.log("update-response", response);
           localStorage.setItem(
             `selectedAttributes_${product.id}`,
             JSON.stringify(updatedAttributes)
@@ -403,8 +421,7 @@ const WatchlistItem = React.memo(
         .catch((error) => console.log("update-error", error));
       // Store the updated attributes in localStorage
     };
-    // const Product_variations = JSON.parse(product.Product_variations);
-    // console.log("pro",productVariations,selectedAttributes);
+
     return (
       <div className="watchlist-item">
         <div className="watchlist-item-image-wrapper">
@@ -528,11 +545,64 @@ const WatchlistItem = React.memo(
             </button>
             <button
               className="watchlist-item-remove"
-              onClick={() => handleRemove(product)}
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+              onClick={() => handleRemove( product)}
             >
               <MdDelete />
             </button>
           </div>
+
+          {/* {ModalOpen && (
+              <div
+                className="modal fade"
+                tabIndex="-1"
+                id="exampleModal"
+                 data-bs-backdrop="static" data-bs-keyboard="false"
+                aria-hidden="true"
+              
+                aria-labelledby="exampleModalLabel"
+              >
+                <div
+                  className="modal-dialog modal-dialog-centered"
+                  role="document"
+                >
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title">Confirm Deletion</h5>
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div className="modal-body">
+                      <p>
+                        Are you sure you want to remove this product from your
+                        watchlist?
+                      </p>
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={() => setModalOpen(false)}
+                      >
+                        cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={handleRemove}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )} */}
         </div>
       </div>
     );
