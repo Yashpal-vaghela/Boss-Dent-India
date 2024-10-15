@@ -65,14 +65,6 @@ const Contact = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   Aos.init({
-  //     duration: 1000,
-  //     once: false,
-  //     mirror: true,
-  //   });
-  // }, []);
-
   return (
     <div className="container">
       <div className="contact-container overflow-hidden">

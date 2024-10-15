@@ -1,42 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useWatchlist } from "./WatchlistContext";
 import axios from "axios";
 import { MdDelete } from "react-icons/md";
 import "../css/wishlistresponsive.css";
-import { useDispatch } from "react-redux";
-import { Add } from "../redux/Apislice/cartslice";
 import BreadCrumbs from "../component/BreadCrumbs";
 import { toast } from "react-toastify";
 import Loader1 from "../component/Loader1";
-import { IoIosCloseCircleOutline } from "react-icons/io";
+import ConfirmationDialog from "../component/ConfirmationDialog";
 
 const WatchList = () => {
   const { watchlist, removeFromWatchlist } = useWatchlist();
-  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [stockStatuses, setStockStatuses] = useState({});
   const [imageLoading, setImageLoading] = useState({});
-  // const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
   const [getCartData] = useState(JSON.parse(localStorage.getItem("cart")));
   const [WatchListData, setWatchListData] = useState([]);
-  const [ModalOpen, setModalOpen] = useState(false);
 
   // Function to fetch product and stock status data
   const fetchWatchlistData = async () => {
     setLoading(true);
     setError(null);
-    const fetchwatchlist = await axios
+     await axios
       .get(
         `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist?user_id=${getUserData.user_id}`
       )
       .then(async (response) => {
         setWatchListData(response.data);
-        // localStorage.setItem("wishListProducts", JSON.stringify(response.data));
-        // console.log("watchlist-get-Response", response.data);
         fetchStockStatuses(response);
         setLoading(false);
       })
@@ -49,12 +41,10 @@ const WatchList = () => {
   const fetchStockStatuses = async (response) => {
     // Batch request for stock statuses
     const stockStatusPromises = response.data.map(async (product) => {
-      // console.log("stock-api", product);
       try {
         const stockResponse = await axios.get(
           `https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/${product.product_id}`
         );
-        // console.log("stockResponse", stockResponse);
         return { [product.product_id]: stockResponse.data.stock_status };
       } catch (error) {
         console.error("Error fetching stock status:", error);
@@ -65,14 +55,6 @@ const WatchList = () => {
     // Combine stock statuses into a single object
     const stockStatusesResults = await Promise.all(stockStatusPromises);
     const combinedStockStatuses = Object.assign({}, ...stockStatusesResults);
-    // console.log(
-    //   "combineedStock",
-    //   combinedStockStatuses,
-    //   "stockStatuses",
-    //   stockStatusesResults,
-    //   "sto",
-    //   stockStatusPromises
-    // );
     setStockStatuses(combinedStockStatuses);
     localStorage.setItem(
       "stockStatuses",
@@ -88,21 +70,15 @@ const WatchList = () => {
       localStorage.getItem("stockStatuses")
     );
     const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
-    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
     if (watchlist.length > 0) {
       if (
         cachedWishListProdcts &&
         cachedStockStatuses &&
         cachedWishListProdcts.length === watchlist.length
       ) {
-        // console.log("stockStatuses", cachedStockStatuses);
         setStockStatuses(cachedStockStatuses);
         setLoading(false);
       }
-      // else {
-      //   console.log("fetch2")
-      //   fetchWatchlistData();
-      // }
       fetchWatchlistData();
     } else {
       setWatchListData([]);
@@ -110,8 +86,9 @@ const WatchList = () => {
     }
   }, []);
 
-  // Handle removing item from watchlist
+  // Handle removing item from watchlistf
   const handleRemove = async (product) => {
+    // removeFromWatchlist(product.product_id);
     const deleteData = await axios
       .delete(
         `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/delete`,
@@ -126,10 +103,8 @@ const WatchList = () => {
         const deleteProduct = WatchListData.filter(
           (item) => item.product_id !== product.product_id
         );
-        // console.log("remove", response.data, "delete-product", deleteProduct);
         removeFromWatchlist(product.product_id);
         setWatchListData(deleteProduct);
-        setModalOpen(true);
         // setWatchListData((preProducts)=>preProducts.filter((product)=>product.product_id !== product.product_id));
       })
       .catch((error) => console.log("error", error));
@@ -184,8 +159,7 @@ const WatchList = () => {
                 const filterData = WatchListData.filter(
                   (item) => item.product_id !== product.product_id
                 );
-                console.log("watchlist-add-to-cart", res.data, filterData);
-                deleteWatchListProduct(product);
+                handleRemove(product);
                 setWatchListData(filterData);
                 toast.success("Product added to cart!");
                 localStorage.setItem("cart_length", res.data.cart_length);
@@ -194,46 +168,26 @@ const WatchList = () => {
                 console.log("watchlist-error", err);
               });
           } else {
-            console.log(
-              "update",
-              product,
-              product.product_quantity,
-              filterCartData[0].product_quantity
-            );
             await axios
               .post(
                 `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
                 {
                   user_id: getUserData.user_id,
                   product_id: product.product_id,
-                  product_quantity:
-                    Number(product.product_quantity) +
-                    Number(filterCartData[0].product_quantity),
+                  product_quantity: (Number(product.product_quantity)+Number(filterCartData[0].product_quantity)),
                 }
               )
               .then((res) => {
                 const filterData = WatchListData.filter(
                   (item) => item.product_id !== product.product_id
                 );
-                console.log("watchlist-update-to-cart", res.data, filterData);
-                deleteWatchListProduct(product);
+                handleRemove(product);
                 setWatchListData(filterData);
                 toast.success("Product updated to cart!");
               })
               .catch((err) => console.log("err", err));
           }
         }
-        // dispatch(
-        //   Add({
-        //     ...product,
-        //     quantity: 1,
-        //     selectedAttributes,
-        //     weight: productWeight,
-        //   })
-        // );
-        // removeFromWatchlist(product.id);
-
-        // navigate("/cart");
       } catch (error) {
         console.error("Error fetching product weight:", error);
         toast.error("Failed to fetch product weight. Please try again.");
@@ -243,23 +197,6 @@ const WatchList = () => {
     }
   };
 
-  const deleteWatchListProduct = async (product) => {
-    await axios
-      .delete(
-        `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/delete`,
-        {
-          data: {
-            user_id: getUserData.user_id,
-            product_id: product.product_id,
-          },
-        }
-      )
-      .then((res) => {
-        removeFromWatchlist(product.product_id);
-        console.log("delete-watchlist-product", res.data);
-      })
-      .catch((error) => console.log("error", error));
-  };
   // Handle image load event to update loading state for images
   const handleImageLoad = (productId) => {
     setImageLoading((prevState) => ({
@@ -299,6 +236,7 @@ const WatchList = () => {
                     );
                     const selectedAttributes =
                       watchlistItem?.selected_attribute || {};
+                    
                     return (
                       <WatchlistItem
                         key={product.id}
@@ -310,63 +248,12 @@ const WatchList = () => {
                         imageLoading={imageLoading[product.product_id]}
                         selectedAttributes={selectedAttributes}
                         getUserData={getUserData}
-                        setModalOpen={setModalOpen}
-                        ModalOpen={ModalOpen}
                       ></WatchlistItem>
                     );
                   })}
                 </div>
               </div>
             )}
-            <div
-              className="modal fade"
-              tabIndex="-1"
-              id="exampleModal"
-              data-bs-backdrop="static"
-              data-bs-keyboard="false"
-              aria-hidden="true"
-              aria-labelledby="exampleModalLabel"
-            >
-              <div
-                className="modal-dialog modal-dialog-centered"
-                role="document"
-              >
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title">Confirm Deletion</h5>
-                    <button
-                      type="button"
-                      className="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    ></button>
-                  </div>
-                  <div className="modal-body">
-                    <p>
-                      Are you sure you want to remove this product from your
-                      watchlist?
-                    </p>
-                  </div>
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                      // onClick={() => setModalOpen(false)}
-                    >
-                      cancel
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-danger"
-                      onClick={()=>handleRemove()}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       )}
@@ -384,8 +271,6 @@ const WatchlistItem = React.memo(
     handleImageLoad,
     imageLoading,
     getUserData,
-    setModalOpen,
-    ModalOpen,
   }) => {
     const [selectedAttributes, setSelectedAttributes] = useState(() => {
       const storedAttributes = product.selected_attribute;
@@ -395,6 +280,7 @@ const WatchlistItem = React.memo(
       const storedProdcutvariation = product.product_variations;
       return storedProdcutvariation ? product.product_variations : {};
     });
+    const [showDialog, setShowDialog] = useState(false);
 
     // Function to handle attribute selection
     const handleAttributeSelect = async (attribute, value) => {
@@ -419,11 +305,26 @@ const WatchlistItem = React.memo(
           );
         })
         .catch((error) => console.log("update-error", error));
-      // Store the updated attributes in localStorage
     };
-
+    
+    const confirmDelete = () =>{
+      setShowDialog(true);
+    };
+    const handleConfirmRemove = () => {
+      handleRemove(product);
+      setShowDialog(false);
+    }
+    const handleCancel = () => {
+      setShowDialog(false);
+    };
     return (
       <div className="watchlist-item">
+        {showDialog && (
+          <ConfirmationDialog 
+            onConfirm = {handleConfirmRemove}
+            onCancel = {handleCancel}
+          />
+        )}
         <div className="watchlist-item-image-wrapper">
           <img
             src={product.product_image}
@@ -452,10 +353,6 @@ const WatchlistItem = React.memo(
             {productVariations.length !== 0 &&
               productVariations[0].attributes !== undefined && (
                 <div className="wishlist-item-attributes">
-                  {/* {console.log(
-                      "Object-attributes",
-                      Object.keys(productVariations[0].attributes)
-                    )} */}
                   {Object.keys(productVariations[0].attributes).map(
                     (attribute) => {
                       return (
@@ -467,12 +364,6 @@ const WatchlistItem = React.memo(
                           {attribute === "attribute_pa_color" ? (
                             <div style={{ display: "flex" }}>
                               {productVariations.map((variation, index) => {
-                                // console.log(
-                                //   "variation",
-                                //   variation,
-                                //   Object.values(variation?.attributes)[0],
-                                //   selectedAttributes
-                                // );
                                 return (
                                   <div
                                     key={index}
@@ -545,64 +436,11 @@ const WatchlistItem = React.memo(
             </button>
             <button
               className="watchlist-item-remove"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-              onClick={() => handleRemove( product)}
+              onClick={confirmDelete}
             >
               <MdDelete />
             </button>
           </div>
-
-          {/* {ModalOpen && (
-              <div
-                className="modal fade"
-                tabIndex="-1"
-                id="exampleModal"
-                 data-bs-backdrop="static" data-bs-keyboard="false"
-                aria-hidden="true"
-              
-                aria-labelledby="exampleModalLabel"
-              >
-                <div
-                  className="modal-dialog modal-dialog-centered"
-                  role="document"
-                >
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title">Confirm Deletion</h5>
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div className="modal-body">
-                      <p>
-                        Are you sure you want to remove this product from your
-                        watchlist?
-                      </p>
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        onClick={() => setModalOpen(false)}
-                      >
-                        cancel
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-danger"
-                        onClick={handleRemove}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )} */}
         </div>
       </div>
     );

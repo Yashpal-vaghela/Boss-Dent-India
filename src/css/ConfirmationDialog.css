@@ -1,0 +1,60 @@
+/* Overlay to cover the screen */
+.confirmation-dialog-overlay {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  /* The dialog box itself */
+  .confirmation-dialog {
+    background: #222;
+    padding: 20px 30px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    max-height: 250px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Action buttons in the dialog */
+  .confirmation-dialog-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  /* Styling for Remove button */
+  .btn-remove {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* Styling for Cancel button */
+  .btn-cancel {
+    background-color: gray;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* Button hover effect */
+  .btn-remove:hover,
+  .btn-cancel:hover {
+    opacity: 0.9;
+  }
+  

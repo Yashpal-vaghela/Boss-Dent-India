@@ -10,13 +10,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 import { FaCartPlus } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
-import { Add, updateSize } from "../redux/Apislice/cartslice";
+import { updateSize } from "../redux/Apislice/cartslice";
 import ReviewList from "../component/ReviewList";
 import ReviewForm from "../component/ReviewForm";
 import AlertSuccess from "../component/AlertSuccess";
 import { toast } from "react-toastify";
 import Loader1 from "../component/Loader1";
-import { FaCheckCircle } from "react-icons/fa";
 
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
@@ -35,8 +34,6 @@ const SingleProduct = () => {
     removeFromWatchlist,
     cartList,
     addToCartList,
-    // alertMessage,
-    // updateAlertMessage
   } = useWatchlist();
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [weight, setWeight] = useState(null);
@@ -48,7 +45,6 @@ const SingleProduct = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  // const [imageUrl, setImageUrl] = useState();
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
   const [getCartData] = useState(
     JSON.parse(localStorage.getItem("cart_productId"))
@@ -216,7 +212,8 @@ const SingleProduct = () => {
         .then((response) => {
           // console.log("delete", response.data);
           removeFromWatchlist(product.id);
-          setAlertMessage("Product removed from watchlist.");
+          // setAlertMessage("Product removed from watchlist.");
+          toast.success("Product removed from watchlist successfully.");
         })
         .catch((error) => console.log("error", error));
     } else {
@@ -238,7 +235,8 @@ const SingleProduct = () => {
         .then((response) => {
           // console.log("add", response.data);
           addToWatchlist(product.id, selectedAttributes);
-          setAlertMessage("Product add from watchlist.");
+          // setAlertMessage("Product add from watchlist.");
+          toast.success("Product add into the wishlist!.")
         })
         .catch((error) => console.log("product-page-error", error));
     }
@@ -309,7 +307,8 @@ const SingleProduct = () => {
                   )
                   .then((res) => {
                     // console.log("response----", res.data);
-                    setAlertMessage("Product added to cart!");
+                    // setAlertMessage("Product added to cart!");
+                    toast.success("Product added to cart successfully!")
                     addToCartList(relatedProduct.id, {});
                     localStorage.setItem("cart_length", res.data.cart_length);
                   })

@@ -28,7 +28,7 @@ footer {
 }
 
 .footer-section {
-  margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 .footer-section h3 {
@@ -164,15 +164,6 @@ footer {
     align-items: normal;
 }
 }
-
-/* 1024px */
-/* @media (max-width: 1024px) {
-  .footer-container {
-    max-width: 800px;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-  }
-} */
 
 /* 991px */
 @media (max-width: 991px) {

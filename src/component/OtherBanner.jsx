@@ -160,5 +160,3 @@ const OtherBanner = () => {
 };
 
 export default OtherBanner;
-
-// <button onClick={handleRotationLeft} className="yarl__button yarl__navigation_prev" type="button" title="Prev">❮</button>

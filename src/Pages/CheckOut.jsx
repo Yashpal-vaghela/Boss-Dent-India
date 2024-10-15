@@ -448,9 +448,7 @@ const CheckOut = () => {
                                         })}
                                       </div>
                                     </>
-                                  ) : // <button className="variation-button selected">
-                                  //   {product?.selectedAttributes?.attribute_pa_size}
-                                  // </button>
+                                  ) :
                                   null}
                                 </div>
                                 <div className="col-lg-1 col-md-1 col-1 cart-item-qty">
@@ -500,7 +498,6 @@ const CheckOut = () => {
                       <div className="d-flex justify-content-between ">
                         <h5 className="order_total_title">Total</h5>
                         <p> ₹{grandTotal}.00</p>
-                        {/* <p> ₹{finalTotal}.00</p> */}
                       </div>
                     </div>
                   </div>
