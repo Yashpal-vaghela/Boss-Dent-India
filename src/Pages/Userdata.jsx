@@ -26,7 +26,7 @@ const UserData = () => {
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {LogoutUserCartList} = useWatchlist();
+  const {LogoutUserCartList,LogoutUserWatchList} = useWatchlist();
 
   const fetchUserData = useCallback(async () => {
     const token = localStorage.getItem("token");
@@ -229,6 +229,7 @@ const UserData = () => {
       JSON.stringify({ cart_items: [], cart_total: {} })
     );
     LogoutUserCartList();
+    LogoutUserWatchList();
     toast("Logged out!");
     // alert("Logged out!");
     navigate("/my-account");

@@ -79,7 +79,7 @@ const Category = (props) => {
               className={`category ${props.category === "75" ? "active" : ""}`}
               onClick={() => props.handleCategoryClick(75)}
             >
-              General dentist
+              General Dentistry
             </li>
             <li
               className={`category ${props.category === "116" ? "active" : ""}`}

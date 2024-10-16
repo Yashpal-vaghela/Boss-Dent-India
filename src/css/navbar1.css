@@ -109,7 +109,6 @@
 .newnavbar1 .search-icon .search-input {
   position: relative;
   color: #ccc;
-  /* top: 0px; */
   right: 5px;
   width: 170px;
   padding: 5px;
@@ -492,7 +491,7 @@
 }
 
 .navbar-contact-link p {
-  font-size: 14px;
+  font-size: 16x;
   line-height: 14px;
   font-weight: 500;
   color: rgb(100, 100, 100);
@@ -500,7 +499,7 @@
   margin-right: 10px;
 }
 .navbar-contact-link hr {
-  width: 10px;
+  width: 15px;
   height: 2px;
   margin: 0 10px;
   border: 0;
@@ -509,6 +508,7 @@
 .navbar-contact-link .navbar-contact-link-icon {
   display: flex;
   align-items: center;
+  font-size: large;
   gap: 10px;
   margin-right: 10px;
   transition: all 0.3s ease-in-out;

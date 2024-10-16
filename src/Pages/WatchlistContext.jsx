@@ -19,6 +19,7 @@ export const WatchlistProvider = ({ children }) => {
     return savedCartlist ? JSON.parse(savedCartlist) : [];
   });
   const [getCartId, setgetCartId] = useState([]);
+  const [getWishlistId, setWishlistId] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -172,7 +173,40 @@ export const WatchlistProvider = ({ children }) => {
     setCartList([]);
     localStorage.setItem('cart_productId',JSON.stringify([]))
   }
+  const LoginUserWatchList = async (fetchuserdata, selectedAttributes) => {
+    try {
+      const response = await axios.get(
+        `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist?user_id=${fetchuserdata}`
+      );
+  
+      localStorage.setItem("wishlist", JSON.stringify(response.data));
 
+      const id = response.data.map((item)=>{
+        if(!watchlist.includes(item.product_id)){
+          setWatchlist((prevWatchlist) => {
+            if (!prevWatchlist.includes(item.product_id)) {
+              const updatedWatchlist = [...prevWatchlist,Number(item.product_id)];
+              localStorage.setItem("wishlist_productId", JSON.stringify(updatedWatchlist));
+              const attributesKey = `selectedAttribute_${item.product_id}`;
+              localStorage.setItem(attributesKey, JSON.stringify(selectedAttributes));
+              return updatedWatchlist;
+            }
+            return prevWatchlist;
+          });
+          return getWishlistId.push(Number(item.product_id))
+        }
+      })
+      localStorage.setItem('wishlist_productId', JSON.stringify(getWishlistId))
+      // console.log("Login-user-watchList", response.data);
+    } catch (error) {
+      console.error("Error fetching wishlist", error);
+    }
+  };
+  const LogoutUserWatchList = () =>{
+    setWishlistId([]);
+    setWatchlist([]);
+    localStorage.setItem('wishlist_productId', JSON.stringify([]))
+  }  
   return (
     <WatchlistContext.Provider
       value={{
@@ -184,7 +218,9 @@ export const WatchlistProvider = ({ children }) => {
         addToCartListProduct,
         removeFromCartList,
         LoginUserCartList,
-        LogoutUserCartList
+        LogoutUserCartList,
+        LoginUserWatchList,
+        LogoutUserWatchList
       }}
     >
       {children}

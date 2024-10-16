@@ -16,7 +16,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const {LoginUserCartList} = useWatchlist();
+  const {LoginUserCartList, LoginUserWatchList} = useWatchlist();
+ 
   // const redirectPath = location.state?.pathname
   // console.log(redirectPath);
 
@@ -55,6 +56,7 @@ const Login = () => {
         user_nicename:response.data.user_nicename
       }
       LoginUserCartList(response.data.user_id)
+      LoginUserWatchList(response.data.user_id)
       // console.log("res==",response,ObjectUserData)
       localStorage.setItem("token", token);
       localStorage.setItem('UserData',JSON.stringify(ObjectUserData))

@@ -46,7 +46,7 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="home-cat-txt">
-                  <h1>General Dentist</h1>
+                  <h1>General Dentistry</h1>
                 </div>
               </Link>
             </div>

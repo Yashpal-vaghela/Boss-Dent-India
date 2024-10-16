@@ -6,7 +6,7 @@ const faqData = [
     question: "How to place an order?",
     answer: [
       "For the product order follow the below instructions:",
-
+      "1. Click on shop on the site header part.",
       "1. Select your product",
       "2. Select size and quantity",
       "3. Click on add to cart",
@@ -21,7 +21,7 @@ const faqData = [
     answer: [
       "For create an account follow the below instructions.",
 
-      "1. Click on User icon on the site header part.",
+      "1. Click on my account on the site header part.",
       "2. You can see login & register form on the my account page.",
       "3. Enter your details and click on register button.",
       "If you already have an account then you can enter your email/username and password in the login form on the my-account page.",

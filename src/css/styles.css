@@ -82,7 +82,7 @@ footer {
 
 .social-media p {
   margin-right: 10px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 14px;
   color: rgb(205, 205, 205);
 }
@@ -98,7 +98,7 @@ footer {
 .social-media a {
   color: rgb(181, 185, 190);
   margin: 0 5px;
-  font-size: 18px;
+  font-size: large;
 }
 
 .social-media a:hover {
