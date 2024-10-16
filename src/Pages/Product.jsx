@@ -12,7 +12,7 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { BsFillGridFill } from "react-icons/bs";
 import AlertSuccess from "../component/AlertSuccess";
 import { useDispatch } from "react-redux";
-import { Add } from "../redux/Apislice/cartslice";
+// import { Add } from "../redux/Apislice/cartslice";
 import BreadCrumbs from "../component/BreadCrumbs";
 import Loader1 from "../component/Loader1";
 import Category from "../component/Category";
@@ -27,21 +27,25 @@ const Product = () => {
   const [stockStatuses, setStockStatuses] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(9);
-  const { watchlist, addToWatchlist, removeFromWatchlist,addToCartList } = useWatchlist();
+  const {
+    watchlist,
+    addToWatchlist,
+    removeFromWatchlist,
+    addToCartList,
+    addToCartListProduct,
+  } = useWatchlist();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const location = useLocation();
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
-  const [getWatchListData] = useState(
-    JSON.parse(localStorage.getItem("watchlist"))
-  );
   const [qty, setQty] = useState(1);
-  const [wishList, setWishList] = useState([]);
-  const [getWishlist] = useState(JSON.parse(localStorage.getItem("watchlist")));
+  const [getcartProductData,setgetcartProductData] = useState(
+    JSON.parse(localStorage.getItem("cart"))
+  );
   const [getCartList] = useState(
     JSON.parse(localStorage.getItem("cart_productId"))
   );
@@ -64,11 +68,11 @@ const Product = () => {
           "https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/all"
         );
 
-        const allStockStatuses = stockResponse.data; 
+        const allStockStatuses = stockResponse.data;
         const stockStatusesResults = allStockStatuses.map((product, index) => {
           return {
             [product.product_id]:
-              allStockStatuses[index].stock_status || "unknown", 
+              allStockStatuses[index].stock_status || "unknown",
           };
         });
         const combinedStockStatuses = Object.assign(
@@ -90,14 +94,6 @@ const Product = () => {
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem("token");
     setIsLoggedIn(userLoggedIn);
-    // setQty(1);
-    // wishlist product Id
-    // console.log("getWishlist",getWishlist)
-    if (getWishlist) {
-      setWishList(getWishlist);
-    }
-    // cart product Id
-    // console.log("getCartList",getCartList)
     if (getCartList) {
       setCartProductId(getCartList);
     }
@@ -114,7 +110,9 @@ const Product = () => {
       }, 3000);
       return () => clearTimeout(timer);
     }
+    setgetcartProductData(JSON.parse(localStorage.getItem("cart")))
   }, [alertMessage]);
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -129,94 +127,106 @@ const Product = () => {
   };
 
   const handleAddToCart = async (e, product) => {
-    console.log("product", product, product.variations);
+    console.log("product", product, product.id);
     e.preventDefault();
-    const stockStatus = stockStatuses[product.id];
-    if (stockStatus === "instock") {
-      if (isLoggedIn) {
-        try {
-          const weightResponse = await axios.get(
-            `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${product.id}`
-          );
-          const productWeight = weightResponse.data.weight;
-          const userData = JSON.parse(localStorage.getItem("UserData"));
-          if (userData) {
-            const filterCartData = cartProductId.filter((item) => {
-              // console.log("product-=================",Number(item.product_id),item,product);
-              return item === product.id;
-            });
-            // console.log("filterData", filterCartData, cartProductId);
-
-            if (filterCartData.length === 0) {
-              await axios
-                .post(
-                  `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
-                  {
-                    user_id: userData.user_id,
-                    product_id: product.id,
-                    product_quantity: qty,
-                    product_title: product.title.rendered,
-                    product_image: product.yoast_head_json.og_image[0].url,
-                    product_attributes: product.variations,
-                    product_weight: productWeight,
-                    product_price: product.price,
-                    selected_attribute: {},
-                  }
-                )
-                .then((res) => {
-                  setCartProductId((prevCartProductId) => {
-                    if (!prevCartProductId.includes(product.id)) {
-                      const updateCartProductId = [
-                        ...prevCartProductId,
-                        product.id,
-                      ];
-                      localStorage.setItem(
-                        "cart_productId",
-                        JSON.stringify(updateCartProductId)
-                      );
-                      return updateCartProductId;
+    if(getUserData){
+      const stockStatus = stockStatuses[product.id];
+      if (stockStatus === "instock") {
+        if (isLoggedIn) {
+          try {
+            const weightResponse = await axios.get(
+              `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${product.id}`
+            );
+            const productWeight = weightResponse.data.weight;
+            const userData = JSON.parse(localStorage.getItem("UserData"));
+            if (userData) {
+              const filterCartData = cartProductId.filter((item) => {
+                return item === product.id;
+              });
+              // console.log("filterData", filterCartData, cartProductId);
+              const filterCartProduct = getcartProductData.cart_items.filter((item) => item.product_id == product.id);
+              // console.log("filter",filterCartProduct)
+              if (filterCartData.length === 0) {
+                await axios
+                  .post(
+                    `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
+                    {
+                      user_id: userData.user_id,
+                      product_id: product.id,
+                      product_quantity: qty,
+                      product_title: product.title.rendered,
+                      product_image: product.yoast_head_json.og_image[0].url,
+                      product_attributes: product.variations,
+                      product_weight: productWeight,
+                      product_price: product.price,
+                      selected_attribute: {},
                     }
-                    return prevCartProductId;
+                  )
+                  .then((res) => {
+                    setCartProductId((prevCartProductId) => {
+                      if (!prevCartProductId.includes(product.id)) {
+                        const updateCartProductId = [
+                          ...prevCartProductId,
+                          product.id,
+                        ];
+                        localStorage.setItem(
+                          "cart_productId",
+                          JSON.stringify(updateCartProductId)
+                        );
+                        return updateCartProductId;
+                      }
+                      return prevCartProductId;
+                    });
+                    addToCartListProduct(product.id, {}, userData);
+                    // addToCartList(product.id,{},userData);
+                    localStorage.setItem("cart_length", res.data.cart_length);
+                    toast.success("Product added to cart!");
                   });
-                  addToCartList(product.id,{});
-                  localStorage.setItem("cart_length", res.data.cart_length);
-                  // setAlertMessage("Product added to cart!");
-                  toast.success("Product added to cart!")
-                });
-            } else {
-              await axios
-                .post(
-                  `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
-                  {
-                    user_id: getUserData.user_id,
-                    product_id: product.id,
-                    product_quantity: qty + 1,
-                  }
-                )
-                .then((res) => {
-                  // setAlertMessage("Product update from cart!");
-                  toast.success("Product update from cart!")
-                })
-                .catch((err) => console.log("err", err));
+              } else {
+                console.log("update-cart",getcartProductData,filterCartProduct)
+                await axios
+                  .post(
+                    `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
+                    {
+                      user_id: getUserData.user_id,
+                      product_id: product.id,
+                      product_quantity:
+                        Number(filterCartProduct[0].product_quantity) + 1,
+                    }
+                  )
+                  .then((res) => {
+                    // setAlertMessage("Product update from cart!");
+                    toast.success("Product update from cart!");
+                    addToCartListProduct(product.id, {}, userData);
+                  })
+                  .catch((err) => console.log("err", err));
+              }
             }
+          } catch (error) {
+            console.error("Error fetching product weight:", error);
+            // setAlertMessage("Error fetching product weight. Please try again.");
+            toast.error("Error fetching product weight.");
           }
-        } catch (error) {
-          console.error("Error fetching product weight:", error);
-          // setAlertMessage("Error fetching product weight. Please try again.");
-          toast.error("Error fetching product weight.")
+        } else {
+          toast.error("Please log In! Thank you!");
+          // setAlertMessage("Please log In! Thank you.");
+          setTimeout(() => {
+            navigate("/my-account", { state: { from: location.pathname } });
+          }, 2000);
         }
       } else {
-        toast.error("Please log In! Thank you!")
-        // setAlertMessage("Please log In! Thank you.");
-        setTimeout(()=>{
-          navigate("/my-account", { state: { from: location.pathname } });
-        },2000);  
+        // setAlertMessage(
+        //   "This product is out of stock and cannot be added to the cart."
+        // );
+        toast.error(
+          "This product is out of stock and cannot be added to the cart."
+        );
       }
-    } else {
-      // setAlertMessage(
-      //   "This product is out of stock and cannot be added to the cart."
-      // );
-      toast.error("This product is out of stock and cannot be added to the cart.")
+    }else{
+      toast.error("Please login to add product to cart!");
+      setTimeout(() => {
+        navigate("/my-account", { state: { from: location.pathname } });
+      }, 2000);
     }
   };
 
@@ -271,7 +281,7 @@ const Product = () => {
           );
         })
         .catch((error) => console.log("product-page-error", error));
-      addToWatchlist(product.id, {});
+      addToWatchlist(product.id, {}, getUserData);
       // setAlertMessage("Product add from watchlist.");
       toast.success("Product added to wishlist!");
       // setAlertMessage("Product added to watchlist!");

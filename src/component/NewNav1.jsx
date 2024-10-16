@@ -552,7 +552,7 @@ const NewNav1 = () => {
                   <Link to="/cart">
                     <FaCartPlus />
                     {/* {
-                      console.log("cartList",cartList,"loginData",loginData)
+                      console.log("cartList",cartList)
                     } */}
                     <span>{cartList?.length}</span>
                   </Link>
@@ -569,8 +569,6 @@ const NewNav1 = () => {
             ? "d-lg-none d-md-none d-sm-flex d-flex searchbar-wrapper"
             : "d-none d-lg-none d-md-none d-sm-none searchbar-wrapper"
         }`}
-        // data-aos="fade-down"
-        // "d-lg-none d-md-none d-sm-flex d-flex searchbar-wrapper"
       >
         <input
           className="form-control search-input"
@@ -621,7 +619,7 @@ const NewNav1 = () => {
               </div>
             ) : (
               <div className="suggestion-sub w-25">
-                <ul className="suggested ">
+                <ul className="suggested">
                   <li>
                     <h2
                       className="d-flex m-auto align-items-center justify-content-center"

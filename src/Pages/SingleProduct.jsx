@@ -34,6 +34,7 @@ const SingleProduct = () => {
     removeFromWatchlist,
     cartList,
     addToCartList,
+    addToCartListProduct
   } = useWatchlist();
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [weight, setWeight] = useState(null);
@@ -183,18 +184,6 @@ const SingleProduct = () => {
     }
   };
 
-  const ensureAuthenticated = () => {
-    if (!isLoggedIn) {
-      toast.error("Please Log In! Thank you.", {
-        autoClose: 3000,
-      });
-      setTimeout(() => {
-        navigate("/my-account", { state: { from: location.pathname } });
-      }, 3000);
-      return false;
-    }
-    return true;
-  };
 
   // watchlist delete api integrate
   const handleWatchlistToggle = async (product) => {
@@ -223,7 +212,7 @@ const SingleProduct = () => {
           {
             user_id: getUserData.user_id,
             product_id: product.id,
-            product_quantity: quantity,
+            product_quantity: 1,
             product_title: product.title.rendered,
             product_image: product.yoast_head_json.og_image[0].url,
             product_variations: product.variations,
@@ -244,9 +233,7 @@ const SingleProduct = () => {
 
   // Addtocart product and related product api integrate
   const handleAddToCart = async (e, relatedProduct) => {
-    // console.log("related", relatedProductId);
     e.preventDefault();
-    if (!ensureAuthenticated()) return;
     if (stockStatus === "instock") {
       const userData = JSON.parse(localStorage.getItem("UserData"));
       let filterCartProduct = [];
@@ -309,7 +296,8 @@ const SingleProduct = () => {
                     // console.log("response----", res.data);
                     // setAlertMessage("Product added to cart!");
                     toast.success("Product added to cart successfully!")
-                    addToCartList(relatedProduct.id, {});
+                    // addToCartList(relatedProduct.id, {});
+                    addToCartListProduct(relatedProduct.id,selectedAttributes,getUserData)
                     localStorage.setItem("cart_length", res.data.cart_length);
                   })
                   .catch((err) => console.log("err", err));
@@ -323,11 +311,14 @@ const SingleProduct = () => {
                       user_id: getUserData.user_id,
                       product_id: relatedProduct.id,
                       product_quantity: Number(UpdatedProduct) + 1,
+                      selected_attribute:selectedAttributes,
                     }
                   )
                   .then((res) => {
                     // updateAlertMessage();
-                    setAlertMessage("Product update from cart!");
+                    addToCartListProduct(relatedProduct.id,selectedAttributes,getUserData)
+                    toast.success("Product update to cart successfully!")
+                    // setAlertMessage("Product update from cart!");
                     // console.log("res=========", res.data, alertMessage);
                   })
                   .catch((err) => console.log("err", err));
@@ -360,8 +351,10 @@ const SingleProduct = () => {
       })
       .then((res) => {
         // console.log("response----", res.data);
-        setAlertMessage("Product added to cart!");
-        addToCartList(product.id, selectedAttributes);
+        toast.success("product added to cart successfully!")
+        // setAlertMessage("Product added to cart!");
+        addToCartListProduct(product.id,selectedAttributes,getUserData)
+        // addToCartList(product.id, selectedAttributes);
         localStorage.setItem("cart_length", res.data.cart_length);
       })
       .catch((err) => console.log("err", err));
@@ -374,21 +367,14 @@ const SingleProduct = () => {
         user_id: getUserData.user_id,
         product_id: product.id,
         product_quantity: Number(UpdatedProduct) + quantity,
+        selected_attribute:selectedAttributes
       })
       .then((res) => {
-        // updateAlertMessage();
-        setAlertMessage("Product update from cart!");
-        // console.log("res=========", res.data, alertMessage);
+        addToCartListProduct(product.id,selectedAttributes,getUserData);
+        toast.success("Product update to cart successfully!")
+        // setAlertMessage("Product update from cart!");
       })
       .catch((err) => console.log("err", err));
-    // console.log("product", filter, product, "updateCartList", UpdatedProduct);
-    // filter.map(async (item) => {
-    //   // console.log("item",item)
-    //   if (item.product_quantity >= 1) {
-    //     const a = Number(item.product_quantity) + quantity;
-    //     console.log("item", item.product_quantity, "a", a);
-    //   }
-    // });
   };
 
   return (
@@ -605,11 +591,6 @@ const SingleProduct = () => {
                     }`}
                     onClick={() => handleWatchlistToggle(product)}
                   >
-                    {/* {WishList.includes(product.id) ? (
-                      <FaHeart />
-                    ) : (
-                      <FaRegHeart />
-                    )} */}
                     {watchlist.includes(product.id) ? (
                       <FaHeart />
                     ) : (

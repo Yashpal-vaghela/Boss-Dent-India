@@ -5,6 +5,7 @@ import AlertSuccess from "../component/AlertSuccess"; // Import the AlertSuccess
 import { toast } from "react-toastify";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loader1 from "../component/Loader1";
+import { useWatchlist } from "./WatchlistContext";
 
 const Login = () => {
   const [userIdentifier, setUserIdentifier] = useState("");
@@ -15,7 +16,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
- 
+  const {LoginUserCartList} = useWatchlist();
   // const redirectPath = location.state?.pathname
   // console.log(redirectPath);
 
@@ -31,7 +32,6 @@ const Login = () => {
     setTimeout(() => {
       setLoading(false);
     }, [500]);
-    
   }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,6 +54,7 @@ const Login = () => {
         user_id:response.data.user_id,
         user_nicename:response.data.user_nicename
       }
+      LoginUserCartList(response.data.user_id)
       // console.log("res==",response,ObjectUserData)
       localStorage.setItem("token", token);
       localStorage.setItem('UserData',JSON.stringify(ObjectUserData))

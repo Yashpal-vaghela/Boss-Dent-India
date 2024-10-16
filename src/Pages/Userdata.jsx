@@ -8,7 +8,8 @@ import AlertSuccess from "../component/AlertSuccess";
 import { toast } from "react-toastify";
 import Loader1 from "../component/Loader1";
 import { useDispatch } from "react-redux";
-import { Add } from "../redux/Apislice/cartslice";
+import { useWatchlist } from "./WatchlistContext";
+// import { Add } from "../redux/Apislice/cartslice";
 
 const UserData = () => {
   const [user, setUser] = useState(null);
@@ -25,6 +26,7 @@ const UserData = () => {
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {LogoutUserCartList} = useWatchlist();
 
   const fetchUserData = useCallback(async () => {
     const token = localStorage.getItem("token");
@@ -218,10 +220,15 @@ const UserData = () => {
 
   const logout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("cart")
+    localStorage.removeItem("cart");
     // localStorage.setItem("UserData",JSON.parse({}));
     // localStorage.getItem('car')
-    dispatch(Add([]))
+    // dispatch(Add([]));
+    localStorage.setItem(
+      "cart",
+      JSON.stringify({ cart_items: [], cart_total: {} })
+    );
+    LogoutUserCartList();
     toast("Logged out!");
     // alert("Logged out!");
     navigate("/my-account");

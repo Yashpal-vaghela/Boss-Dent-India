@@ -10,7 +10,7 @@ import Loader1 from "../component/Loader1";
 import ConfirmationDialog from "../component/ConfirmationDialog";
 
 const WatchList = () => {
-  const { watchlist, removeFromWatchlist } = useWatchlist();
+  const { watchlist, removeFromWatchlist,addToCartList } = useWatchlist();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [stockStatuses, setStockStatuses] = useState({});
@@ -128,6 +128,7 @@ const WatchList = () => {
         );
         const productWeight = weightResponse.data.weight || 0;
         if (getUserData) {
+
           const filterCartData = getCartData.cart_items.filter((item) => {
             // console.log("sds",item,product  ,weightResponse)
             return item.product_id === product.product_id;
@@ -161,6 +162,7 @@ const WatchList = () => {
                 );
                 handleRemove(product);
                 setWatchListData(filterData);
+                addToCartList(product.product_id,{})
                 toast.success("Product added to cart!");
                 localStorage.setItem("cart_length", res.data.cart_length);
               })
@@ -168,13 +170,16 @@ const WatchList = () => {
                 console.log("watchlist-error", err);
               });
           } else {
+            const updateQty =
+                Number(product.product_quantity) +
+                Number(filterCartData[0].product_quantity);
             await axios
               .post(
                 `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
                 {
                   user_id: getUserData.user_id,
                   product_id: product.product_id,
-                  product_quantity: (Number(product.product_quantity)+Number(filterCartData[0].product_quantity)),
+                  product_quantity: updateQty
                 }
               )
               .then((res) => {
@@ -318,13 +323,15 @@ const WatchlistItem = React.memo(
       setShowDialog(false);
     };
     return (
-      <div className="watchlist-item">
-        {showDialog && (
+      <>
+      {showDialog && (
           <ConfirmationDialog 
             onConfirm = {handleConfirmRemove}
             onCancel = {handleCancel}
           />
         )}
+        <div className="watchlist-item">
+        
         <div className="watchlist-item-image-wrapper">
           <img
             src={product.product_image}
@@ -443,6 +450,8 @@ const WatchlistItem = React.memo(
           </div>
         </div>
       </div>
+      </>
+    
     );
   }
 );
