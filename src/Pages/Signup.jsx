@@ -3,8 +3,6 @@ import { FaEyeSlash, FaEye } from "react-icons/fa";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-// import Aos from "aos";
-// import * as yup from "yup";
 import AlertSuccess from "../component/AlertSuccess"; // Adjust the path as needed
 import Loader1 from "../component/Loader1";
 
@@ -13,9 +11,11 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
+  const  [passwordError, setPasswordError] = useState('')
   const [otp, setOTP] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,6 +38,15 @@ const Signup = () => {
     const value = e.target.value;
     setPassword(value);
     validatePassword(value);
+  };
+  const handleConfirmPasswordChange = (e) => {
+    const value = e.target.value;
+    setConfirmPassword(value);
+    if (value !== password) {
+      setPasswordError("Password is not match with your created password.");
+    } else {
+      setPasswordError("");
+    }
   };
 
   const handlePhoneChange = (e) => {
@@ -100,7 +109,36 @@ const Signup = () => {
       });
     }
   };
-
+  const handleLogin = async () =>{
+    try {
+      const loginResponse = await axios.post (
+        "https://admin.bossdentindia.com/wp-json/jwt-auth/v1/token",{
+          username,
+          password,
+        }
+      );
+      if (loginResponse.status === 200) {
+        const token = loginResponse.data.token;
+        localStorage.setItem("token", token);
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful",
+          text: "You are now logged in.",
+          showConfirmButton: false,
+        });
+        navigate("/");
+      }
+  
+    }catch (error) {
+      console.error("Error logging in:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Login Failed. Please try again.",
+        showConfirmButton: true,
+      });
+    }
+  };
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
     try {
@@ -115,8 +153,8 @@ const Signup = () => {
 
       if (response.status === 200) {
         setLoading(false);
-        setAlertMessage("OTP verified successfully. Registration completed.");
-        navigate("/my-account");
+        setAlertMessage("OTP verified successfully. Loggin in....");
+        await handleLogin();
       }
     } catch (error) {
       setLoading(false);
@@ -216,7 +254,7 @@ const Signup = () => {
                     onChange={(e) => handlePhoneChange(e)}
                     // min={10}
                     required
-                  ></input>
+                  />
                 </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="password">
@@ -246,6 +284,36 @@ const Signup = () => {
                       className={`${error ? "error" : ""} `}
                     >
                       {error}
+                    </p>
+                  )}
+                </div>
+                <div className="form-group">
+                  <label className="form-label" htmlFor="confirm-password">
+                    Confirm Your Password
+                  </label>
+                  <div className="d-flex " style={{width:'106%'}}>
+                    <input 
+                      type={showPassword ? 'text' : "password"}
+                      id="confirm-password"
+                      placeholder="Confirm Your Password"
+                      className="form-input"
+                      value={confirmPassword}
+                      onChange={handleConfirmPasswordChange}
+                      required
+                    />
+                    <span
+                      className="signup-password-toggle-icon"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? <FaEye/> : <FaEyeSlash />}
+                    </span>
+                  </div>
+                  {passwordError && (
+                    <p
+                      style={{ color: "red" }}
+                      className={`${passwordError? "error" : ""} `}
+                    >
+                      {passwordError}
                     </p>
                   )}
                 </div>

@@ -1,15 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-// import avtar from '../images/avtar.png';
 import AddressForm from "../component/AddressForm";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../css/responsiveuserdata.css";
 import AlertSuccess from "../component/AlertSuccess";
 import { toast } from "react-toastify";
 import Loader1 from "../component/Loader1";
-import { useDispatch } from "react-redux";
 import { useWatchlist } from "./WatchlistContext";
-// import { Add } from "../redux/Apislice/cartslice";
+
 
 const UserData = () => {
   const [user, setUser] = useState(null);
@@ -25,14 +23,12 @@ const UserData = () => {
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const {LogoutUserCartList,LogoutUserWatchList} = useWatchlist();
+  const { LogoutUserCartList, LogoutUserWatchList } = useWatchlist();
 
   const fetchUserData = useCallback(async () => {
     const token = localStorage.getItem("token");
     if (!token) {
       toast.error("Not logged in!");
-      // alert("Not logged in!");
       navigate("/my-account");
       return;
     }
@@ -50,13 +46,11 @@ const UserData = () => {
 
       if (response.status === 401) {
         toast("Please log in!");
-        // alert("Please log in!");
         navigate("/my-account");
         return;
       }
 
       if (!response.ok) throw new Error("Failed to fetch user data");
-      // const userData = await response.json();
 
       // Fetch detailed user info
       const userDetailResponse = await fetch(
@@ -90,7 +84,6 @@ const UserData = () => {
     } catch (error) {
       console.error("Error fetching user data:", error);
       toast.error("Error fetching user data");
-      // alert("Error fetching user data");
       navigate("/my-account");
     }
   }, [navigate]);
@@ -120,7 +113,6 @@ const UserData = () => {
     const token = localStorage.getItem("token");
     if (!token) {
       toast.warn("Not logged in!");
-      // alert("Not logged in!");
       navigate("/my-account");
       return;
     }
@@ -152,18 +144,46 @@ const UserData = () => {
       const updatedUserData = await response.json();
       setUser(updatedUserData);
       toast.success("User data updated successfully!");
-      // alert("User data updated successfully!");
     } catch (error) {
       toast.error("Error updating user data");
       console.error("Error updating user data:", error);
-      // alert("Error updating user data");
     }
   };
-
+  const handleLogin = async (username, password) =>{
+    try {
+      const loginResponse = await fetch("https://admin.bossdentindia.com/wp-json/jwt-auth/v1/token",{
+        method: "POST",
+        headers: {
+          "content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password})
+      });
+      const loginResult = await loginResponse.json();
+      if (loginResponse.ok) {
+        localStorage.setItem("token", loginResult.token);
+        return true;
+      } else {
+        toast.error(loginResult.message || "Login failed.");
+        return false; 
+      }
+    }catch (error) {
+    toast.error("An error occurred while logging in.");
+    return false; 
+  }
+  }
   const handleChangePassword = async (e) => {
     e.preventDefault();
     setLoading(true);
+    let username = "";
+    const storeUserData = localStorage.getItem("UserData");
+    if (storeUserData) {
+      const userData = JSON.parse(storeUserData);
+      username = userData.user_email;
+    }
+    console.log("userName :::::", username);
+    
     const token = localStorage.getItem("token");
+
     if (!token) {
       toast.warn("Not logged in!");
       // alert("Not logged in!");
@@ -189,7 +209,6 @@ const UserData = () => {
       );
       if (response.status === 401) {
         toast.error("Incorrect old password!");
-        // alert("Incorrect old password!");
         return;
       }
       if (!response.ok) {
@@ -200,20 +219,19 @@ const UserData = () => {
       setShowAlert(true);
       setOldPassword("");
       setNewPassword("");
+      const loginSuccess = await handleLogin(username, newPassword);
+        if (loginSuccess) {
+          toast.success("Logged in successfully with the new password!");
+        } else {
+          toast.error("Automatic login failed. Please log in manually.");
+        }
     } catch (error) {
       console.error("Error changing password:", error);
       toast.error("Error changing password");
-      // alert("Error changing password");
     } finally {
       setLoading(false);
     }
-
-    setTimeout(() => {
-      setShowAlert(false);
-      navigate("/my-account");
-    }, 3000);
   };
-
   const linkToProduct = () => {
     navigate("/products");
   };
@@ -221,9 +239,6 @@ const UserData = () => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("cart");
-    // localStorage.setItem("UserData",JSON.parse({}));
-    // localStorage.getItem('car')
-    // dispatch(Add([]));
     localStorage.setItem(
       "cart",
       JSON.stringify({ cart_items: [], cart_total: {} })
@@ -231,7 +246,6 @@ const UserData = () => {
     LogoutUserCartList();
     LogoutUserWatchList();
     toast("Logged out!");
-    // alert("Logged out!");
     navigate("/my-account");
   };
   const togglePasswordVisibility = () => {
@@ -241,12 +255,8 @@ const UserData = () => {
     setShowNewPassword(!showNewPassword);
   };
 
-  // if (!user) {
-  //   return <Loader />;
-  // }
-
   return !user ? (
-    <Loader1></Loader1>
+    <Loader1 />
   ) : (
     <div className="container">
       <div className="user-data overflow-hidden">
