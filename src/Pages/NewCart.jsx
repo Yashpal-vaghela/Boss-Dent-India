@@ -1,75 +1,56 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaTrashAlt } from "react-icons/fa";
 import "../css/cartresponsive.css";
-import { useDispatch, useSelector } from "react-redux";
 import BreadCrumbs from "../component/BreadCrumbs";
 import axios from "axios";
 import { useWatchlist } from "./WatchlistContext";
 import { FaCheckCircle } from "react-icons/fa";
-import Loader1 from "../component/Loader1";
+// import Loader1 from "../component/Loader1";
 import ConfirmationDialog from "../component/ConfirmationDialog";
+import Loader from "../component/Loader";
 
 const NewCart = () => {
   const [canCheckout, setCanCheckout] = useState(false);
   const [imageLoading, setImageLoading] = useState({});
   const [deliveryCharge, setDeliveryCharge] = useState(99);
-  const cartData = useSelector((state) => state.cart);
   const [CartData, setCartData] = useState([]);
   const [CartgetTotal, setCartgetTotal] = useState([]);
-  const { alertMessage, removeFromCartList } = useWatchlist();
+  const { alertMessage, removeFromCartList, addToCartList } = useWatchlist();
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const AllAttributesSelected = CartData.every((product) => {
-      if (product.product_attributes && product.variation.length > 0) {
-        return Object.keys(product.variation[0].attribute).every(
-          (key) => product.selected_attribute && product.selected_attribute[key]
-        );
-      }
-      return true;
-    });
-    // console.log("cartData", CartData, "AllAttributes", AllAttributesSelected);
-    // const allAttributesSelected = cartData?.cartItems.every((product) => {
-    //   if (product.variations && product.variations.length > 0) {
-    //     return Object.keys(product.variations[0].attributes).every(
-    //       (key) => product.selectedAttributes && product.selectedAttributes[key]
-    //     );
-    //   }
-    //   return true;
-    // });
-    setCanCheckout(AllAttributesSelected);
-  }, [cartData]);
+ 
+
   useEffect(() => {
     fetchCartData();
   }, []);
 
   // fetchCartData
   const fetchCartData = async () => {
-    const fetchuserdata = JSON.parse(localStorage.getItem("UserData"));
-    // console.log("fetuser", fetchuserdata);
+    setLoading(true);
     const cartdata = await axios
       .get(
-        `https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${fetchuserdata.user_id}`
+        `https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${getUserData.user_id}`
       )
       .then((res) => {
-        // console.log("get-res", res.data);
+        const filter = res.data.cart_items.map((item) => {
+          addToCartList(Number(item.product_id));
+        });
         localStorage.setItem("cart", JSON.stringify(res.data));
         localStorage.setItem("cart_length", res.data.cart_items.length);
-        // const getTotal = res.data.cart_total[0].total_price;
+        setLoading(false);
         setCartData(res.data.cart_items);
         setCartgetTotal(res.data.cart_total);
-        // return res.data;
         AdddeliveryCharge(res.data.cart_total, res.data.cart_items);
       })
       .catch((err) => {
+        setLoading(false);
         localStorage.setItem(
           "cart",
           JSON.stringify({ cart_items: [], cart_total: {} })
         );
         localStorage.setItem("cart_length", 0);
-        // console.log("err", err);
       });
   };
 
@@ -85,23 +66,20 @@ const NewCart = () => {
       })
       .then((res) => {
         // console.log("response-delete-data-cart--------", res.data);
-        const cartList = JSON.parse(localStorage.getItem("cart_productId"));
-        const updateList = cartList.filter(
-          (item) => item !== Number(product.product_id)
-        );
+        // const cartList = JSON.parse(localStorage.getItem("cart_productId"));
         const filterData = CartData.filter((item) => item.id !== product.id);
         setCartData(filterData);
         setCartgetTotal(res.data.cart_total);
         AdddeliveryCharge(res.data.cart_total, CartData);
         removeFromCartList(product.product_id);
         // localStorage.setItem('cart',JSON.stringify(filterData))
-        console.log("cartDtaa", CartData, grandTotal, CartgetTotal);
+        // console.log("cartDtaa", CartData, grandTotal, CartgetTotal);
         // localStorage.setItem("cart_productId", JSON.stringify(updateList));
         localStorage.setItem(
           "cart",
           JSON.stringify({ cart_items: filterData, cart_total: CartgetTotal })
         );
-        localStorage.setItem("cart_length", res.data.cart_items.length);
+        localStorage.setItem("cart_length", filterData.length);
       })
       .catch((error) => {
         console.log("Removing product with ID:", product.product_id);
@@ -128,8 +106,7 @@ const NewCart = () => {
       .catch((error) => console.log("error-delete-all", error));
   };
 
-  const AdddeliveryCharge = (CartTotal, CartItems) => {
-    // console.log("count1--------", CartTotal, CartItems);
+  const AdddeliveryCharge = (CartTotal) => {
     const getTotalWeight = CartTotal.total_weight / 1000;
     // console.log("getTotalWeight", getTotalWeight);
     if (getTotalWeight < 1) {
@@ -153,30 +130,32 @@ const NewCart = () => {
 
   return (
     <div className="container">
-      {loading ? (
-        <>
-          <Loader1></Loader1>
-        </>
-      ) : (
-        <>
-          <div className="cart-page">
-            <div className="header" data-aos="fade-up">
-              <h1 className="cart-title">Cart</h1>
-              <BreadCrumbs></BreadCrumbs>
-            </div>
-            {alertMessage && (
-              <div className="success-alert">
-                <FaCheckCircle className="alert-icon" />
-                {alertMessage}
-              </div>
-            )}
+      <div className="cart-page">
+        <div className="header" data-aos="fade-up">
+          <h1 className="cart-title">Cart</h1>
+          <BreadCrumbs></BreadCrumbs>
+        </div>
+        {alertMessage && (
+          <div className="success-alert">
+            <FaCheckCircle className="alert-icon" />
+            {alertMessage}
+          </div>
+        )}
+        {loading ? (
+          <>
+            <Loader></Loader>
+          </>
+        ) : (
+          <>
             {CartData?.length === 0 ? (
-              <div className="cart-page-empty">
-                <p className="">Your Cart is Empty </p>
-                <button className="btn btn-dark">
-                  <Link to="/products">Shop Now</Link>
-                </button>
-              </div>
+              <>
+                <div className="cart-page-empty">
+                  <p className="">Your Cart is Empty </p>
+                  <button className="btn btn-dark">
+                    <Link to="/products">Shop Now</Link>
+                  </button>
+                </div>
+              </>
             ) : (
               <div className="cart-content" data-aos="filp-left">
                 <div className="cart-items">
@@ -197,6 +176,7 @@ const NewCart = () => {
                           setCartData={setCartData}
                           setCartgetTotal={setCartgetTotal}
                           getUserData={getUserData}
+                          setCanCheckout={setCanCheckout}
                         ></CartListItem>
                       );
                     })}
@@ -222,6 +202,7 @@ const NewCart = () => {
                     <span>Grand Total</span>
                     <span>₹{grandTotal}.00</span>
                   </div>
+                  {console.log("checkout", canCheckout)}
                   <Link to="/checkout">
                     <button className="checkout-button" disabled={!canCheckout}>
                       Check Out
@@ -242,9 +223,9 @@ const NewCart = () => {
                 </div>
               </div>
             )}
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </div>
     </div>
   );
 };
@@ -264,6 +245,7 @@ const CartListItem = React.memo(
     setCartData,
     setCartgetTotal,
     getUserData,
+    setCanCheckout
   }) => {
     const [productVariations, setProductVariations] = useState(() => {
       return product.product_attributes ? product.product_attributes : {};
@@ -344,12 +326,26 @@ const CartListItem = React.memo(
     const handleCancel = () => {
       setShowDialogBox(false);
     };
+    useEffect(() => {
+      const AllAttributesSelected = CartData.every((product) => {
+        if (product.product_attributes && product.product_attributes.length > 0) {
+          console.log("pro",product.product_attributes[0])
+          return Object.keys(product.product_attributes[0].attributes).every(
+            (key) => product.selected_attribute && product.selected_attribute[key]
+          );
+        }
+        return true;
+      });
+      console.log("All",AllAttributesSelected)
+      setCanCheckout(AllAttributesSelected);
+    }, [CartData]);
     return (
       <>
         {showDialogBox && (
           <ConfirmationDialog
             onConfirm={handleConfirmRemove}
             onCancel={handleCancel}
+            title={product?.product_title}
           />
         )}
         <div key={index} className="cart-item">
@@ -358,7 +354,7 @@ const CartListItem = React.memo(
               src={product?.product_image}
               alt={product?.product_title}
               className={`cart-item-image 
-          ${imageLoading[product.product_id] ? "loaded" : "loading"}`}
+              ${imageLoading[product.product_id] ? "loaded" : "loading"}`}
               loading="lazy"
               onLoad={() => handleImageLoad(product.product_id)}
             />
@@ -452,6 +448,13 @@ const CartListItem = React.memo(
                             </>
                           )}
                         </div>
+                        {!canCheckout &&
+                          !product.selected_attribute?.[attribute] && (
+                            <p className="checkout-warning">
+                              * Please select above attribute values to proceed
+                              to checkout.
+                            </p>
+                          )}
                       </div>
                     );
                   }
