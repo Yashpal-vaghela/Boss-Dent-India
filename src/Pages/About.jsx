@@ -43,14 +43,14 @@ const About = () => {
             <p
               className="about-sub-title"
               data-aos="fade-right"
-              data-aos-delay="0"
+              // data-aos-delay="0"
             >
               What We Are Doing For Our Business
             </p>
             <h2
               className="about-title"
               data-aos="fade-right"
-              data-aos-delay="200"
+              // data-aos-delay="200"
             >
               Bossdentindia Create Unique High-quality Product.
             </h2>
@@ -58,7 +58,7 @@ const About = () => {
               <p
                 className="about-txt"
                 data-aos="fade-right"
-                data-aos-delay="300"
+                // data-aos-delay="300"
               >
                 BossDentIndia is a leading online retailer specializing in
                 dental products and equipment. We offer a wide range of
@@ -71,7 +71,7 @@ const About = () => {
               <p
                 className="about-txt"
                 data-aos="fade-right"
-                data-aos-delay="400"
+                // data-aos-delay="400"
               >
                 At BossDentIndia, we are committed to delivering superior dental
                 products and ensuring customer satisfaction. We strive to
@@ -87,12 +87,12 @@ const About = () => {
               to="/contact"
               className="about-btn-main"
               data-aos="fade-right"
-              data-aos-delay="800"
+              // data-aos-delay="800"
             >
               <button
                 className="about-btn"
                 data-aos="fade-right"
-                data-aos-delay="600"
+                // data-aos-delay="600"
               >
                 Contact With Us{" "}
                 <span className="about-icon">

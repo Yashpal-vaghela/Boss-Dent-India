@@ -100,6 +100,7 @@
 
 /* search icon */
 .newnavbar1 .search-icon {
+  color: #fff;
   position: relative;
   cursor: pointer;
   padding: 10px 10px;
@@ -307,6 +308,9 @@
   
   .newnavbar1 .search-icon .search-input {
     margin-right: 0px;
+  }
+  .offcanvas-body .search-icon{
+    display:none !important;
   }
   .newnavbar1 .search-icon {
     display: flex;

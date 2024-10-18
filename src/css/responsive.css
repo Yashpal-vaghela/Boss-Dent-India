@@ -716,7 +716,7 @@ body {
 
   .shop-sidebar ul li.active {
     background-color: #c89c31;
-    color: white;
+    color: white !important;
   }
 
   /* Product grid adjustments for mobile */

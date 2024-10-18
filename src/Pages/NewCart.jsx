@@ -20,8 +20,6 @@ const NewCart = () => {
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
   const [loading, setLoading] = useState(false);
 
- 
-
   useEffect(() => {
     fetchCartData();
   }, []);
@@ -29,12 +27,12 @@ const NewCart = () => {
   // fetchCartData
   const fetchCartData = async () => {
     setLoading(true);
-    const cartdata = await axios
+    await axios
       .get(
         `https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${getUserData.user_id}`
       )
       .then((res) => {
-        const filter = res.data.cart_items.map((item) => {
+        res.data.cart_items.map((item) => {
           addToCartList(Number(item.product_id));
         });
         localStorage.setItem("cart", JSON.stringify(res.data));
@@ -60,21 +58,16 @@ const NewCart = () => {
       user_id: getUserData.user_id,
       product_id: product.product_id,
     };
-    const RemoveData = await axios
+    await axios
       .delete(`https://admin.bossdentindia.com/wp-json/custom/v1/cart/delete`, {
         data: payload,
       })
       .then((res) => {
-        // console.log("response-delete-data-cart--------", res.data);
-        // const cartList = JSON.parse(localStorage.getItem("cart_productId"));
         const filterData = CartData.filter((item) => item.id !== product.id);
         setCartData(filterData);
         setCartgetTotal(res.data.cart_total);
         AdddeliveryCharge(res.data.cart_total, CartData);
         removeFromCartList(product.product_id);
-        // localStorage.setItem('cart',JSON.stringify(filterData))
-        // console.log("cartDtaa", CartData, grandTotal, CartgetTotal);
-        // localStorage.setItem("cart_productId", JSON.stringify(updateList));
         localStorage.setItem(
           "cart",
           JSON.stringify({ cart_items: filterData, cart_total: CartgetTotal })
@@ -83,12 +76,11 @@ const NewCart = () => {
       })
       .catch((error) => {
         console.log("Removing product with ID:", product.product_id);
-        console.log("error-delete-cart", error);
       });
   };
 
   const handleEmptyCart = async () => {
-    const deleteData = await axios
+    await axios
       .delete(
         "https://admin.bossdentindia.com/wp-json/custom/v1/cart/delete_all",
         {
@@ -245,9 +237,9 @@ const CartListItem = React.memo(
     setCartData,
     setCartgetTotal,
     getUserData,
-    setCanCheckout
+    setCanCheckout,
   }) => {
-    const [productVariations, setProductVariations] = useState(() => {
+    const [productVariations] = useState(() => {
       return product.product_attributes ? product.product_attributes : {};
     });
 
@@ -256,13 +248,12 @@ const CartListItem = React.memo(
     });
     const [showDialogBox, setShowDialogBox] = useState(false);
     const handleAttributeSelect = async (product, attribute, value) => {
-      // console.log("update", attribute, value, product, { [attribute]: value });
       const updateAttributes = {
         ...selectedAttributes,
         [attribute]: value,
       };
       setSelectedAttributes(updateAttributes);
-      const update = await axios
+      await axios
         .post(`https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`, {
           user_id: getUserData.user_id,
           product_id: product.product_id,
@@ -279,7 +270,6 @@ const CartListItem = React.memo(
                 }
               : item;
           });
-          // console.log("response-update", response.data, UpdatedCartData);
           setCartData(UpdatedCartData);
           AdddeliveryCharge(response.data.cart_total, response.data.cart_items);
           setCartgetTotal(response.data.cart_total);
@@ -295,12 +285,12 @@ const CartListItem = React.memo(
       if (newQuantity <= 0) {
         return;
       }
-      const updateQty = await axios
+      await axios
         .post("https://admin.bossdentindia.com/wp-json/custom/v1/cart/update", {
           user_id: getUserData.user_id,
           product_id: product.product_id,
           product_quantity: newQuantity,
-          // select_Attributes: product.selected_attribute,
+          select_Attributes: selectedAttributes,
         })
         .then((response) => {
           const UpdatedProduct = response?.data?.cart_item[0];
@@ -326,17 +316,36 @@ const CartListItem = React.memo(
     const handleCancel = () => {
       setShowDialogBox(false);
     };
+
     useEffect(() => {
-      const AllAttributesSelected = CartData.every((product) => {
-        if (product.product_attributes && product.product_attributes.length > 0) {
-          console.log("pro",product.product_attributes[0])
+      const AllAttributesSelected = CartData.some((product) => {
+        if (
+          product.product_attributes &&
+          product.product_attributes.length > 0
+        ) {
+          const f = Object.keys(product.product_attributes[0].attributes).every(
+            (i) => {
+              console.log(
+                "i",
+                product.selected_attribute,
+                product.selected_attribute[i]
+              );
+            }
+          );
+          console.log(
+            "pro",
+            Object.keys(product.product_attributes[0].attributes),
+            "f",
+            f
+          );
           return Object.keys(product.product_attributes[0].attributes).every(
-            (key) => product.selected_attribute && product.selected_attribute[key]
+            (key) =>
+              product.selected_attribute && product.selected_attribute[key]
           );
         }
         return true;
       });
-      console.log("All",AllAttributesSelected)
+      console.log("All", AllAttributesSelected);
       setCanCheckout(AllAttributesSelected);
     }, [CartData]);
     return (

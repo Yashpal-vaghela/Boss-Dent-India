@@ -10,7 +10,7 @@ import Loader1 from "../component/Loader1";
 import ConfirmationDialog from "../component/ConfirmationDialog";
 
 const WatchList = () => {
-  const { watchlist, removeFromWatchlist,addToCartList } = useWatchlist();
+  const { watchlist, removeFromWatchlist, addToCartList,addToWatchlist } = useWatchlist();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [stockStatuses, setStockStatuses] = useState({});
@@ -18,19 +18,25 @@ const WatchList = () => {
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
   const [getCartData] = useState(JSON.parse(localStorage.getItem("cart")));
   const [WatchListData, setWatchListData] = useState([]);
+  const [showDialog, setShowDialog] = useState(false);
+  const [productToRemove, setProductToRemove] = useState(null);
 
   // Function to fetch product and stock status data
   const fetchWatchlistData = async () => {
     setLoading(true);
     setError(null);
-     await axios
+    await axios
       .get(
         `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist?user_id=${getUserData.user_id}`
       )
-      .then(async (response) => {
+      .then((response) => {
+        // console.log("watchlist", response.data,Object.keys(response.data));
         setWatchListData(response.data);
         fetchStockStatuses(response);
         setLoading(false);
+        response.data.map((item)=>{
+          addToWatchlist(Number(item.product_id))
+        })
       })
       .catch((err) => {
         setLoading(false);
@@ -51,7 +57,7 @@ const WatchList = () => {
         return { [product.product_id]: "unknown" };
       }
     });
-
+    
     // Combine stock statuses into a single object
     const stockStatusesResults = await Promise.all(stockStatusPromises);
     const combinedStockStatuses = Object.assign({}, ...stockStatusesResults);
@@ -86,9 +92,23 @@ const WatchList = () => {
     }
   }, []);
 
+  const confirmDelete = (e, product) => {
+    // console.log("confirmDelete", e, product);
+    setProductToRemove(product);
+    setShowDialog(true);
+  };
+  const handleConfirmRemove = () => {
+    // console.log("productConfirmRemove", productToRemove, WatchListData);
+    handleRemove(productToRemove);
+    setShowDialog(false);
+  };
+  const handleCancel = () => {
+    setShowDialog(false);
+  };
+
   // Handle removing item from watchlistf
   const handleRemove = async (product) => {
-    // removeFromWatchlist(product.product_id);
+    removeFromWatchlist(product.product_id);
     const deleteData = await axios
       .delete(
         `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/delete`,
@@ -103,24 +123,16 @@ const WatchList = () => {
         const deleteProduct = WatchListData.filter(
           (item) => item.product_id !== product.product_id
         );
-        removeFromWatchlist(product.product_id);
+        removeFromWatchlist()
+        localStorage.setItem("watchlist_length", response.data.wishlist_length);
         setWatchListData(deleteProduct);
-        // setWatchListData((preProducts)=>preProducts.filter((product)=>product.product_id !== product.product_id));
       })
       .catch((error) => console.log("error", error));
   };
 
   // Handle adding product to cart based on stock status
   const handleAddToCart = async (product, selectedAttributes) => {
-    // e.preventDefault();
     const stockStatus = stockStatuses[product.product_id];
-    console.log(
-      "product",
-      product,
-      selectedAttributes,
-      stockStatuses,
-      getCartData
-    );
     if (stockStatus === "instock") {
       try {
         const weightResponse = await axios.get(
@@ -128,18 +140,9 @@ const WatchList = () => {
         );
         const productWeight = weightResponse.data.weight || 0;
         if (getUserData) {
-
           const filterCartData = getCartData.cart_items.filter((item) => {
-            // console.log("sds",item,product  ,weightResponse)
             return item.product_id === product.product_id;
           });
-          console.log(
-            "filterCartData",
-            product,
-            getCartData.cart_items,
-            filterCartData,
-            selectedAttributes
-          );
           if (filterCartData.length == 0) {
             await axios
               .post(
@@ -162,7 +165,7 @@ const WatchList = () => {
                 );
                 handleRemove(product);
                 setWatchListData(filterData);
-                addToCartList(product.product_id,{})
+                addToCartList(product.product_id, {});
                 toast.success("Product added to cart!");
                 localStorage.setItem("cart_length", res.data.cart_length);
               })
@@ -171,15 +174,16 @@ const WatchList = () => {
               });
           } else {
             const updateQty =
-                Number(product.product_quantity) +
-                Number(filterCartData[0].product_quantity);
+              Number(product.product_quantity) +
+              Number(filterCartData[0].product_quantity);
             await axios
               .post(
                 `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
                 {
                   user_id: getUserData.user_id,
                   product_id: product.product_id,
-                  product_quantity: updateQty
+                  product_quantity: updateQty,
+                  selected_attribute:selectedAttributes
                 }
               )
               .then((res) => {
@@ -220,6 +224,13 @@ const WatchList = () => {
         <Loader1 />
       ) : (
         <div className="container">
+          {showDialog && (
+            <ConfirmationDialog
+              onConfirm={handleConfirmRemove}
+              onCancel={handleCancel}
+              title={productToRemove?.product_title}
+            ></ConfirmationDialog>
+          )}
           <div className="watchlist-page">
             <div className="header" data-aos="fade-up">
               <h1>Wishlist</h1>
@@ -241,14 +252,14 @@ const WatchList = () => {
                     );
                     const selectedAttributes =
                       watchlistItem?.selected_attribute || {};
-                    
+
                     return (
                       <WatchlistItem
                         key={product.id}
                         product={product}
                         stockStatus={stockStatuses[product.product_id]}
                         handleAddToCart={handleAddToCart}
-                        handleRemove={handleRemove}
+                        handleRemove={(e) => confirmDelete(e, product)}
                         handleImageLoad={handleImageLoad}
                         imageLoading={imageLoading[product.product_id]}
                         selectedAttributes={selectedAttributes}
@@ -281,11 +292,10 @@ const WatchlistItem = React.memo(
       const storedAttributes = product.selected_attribute;
       return storedAttributes ? product.selected_attribute : {};
     });
-    const [productVariations, setProductVariations] = useState(() => {
+    const [productVariations] = useState(() => {
       const storedProdcutvariation = product.product_variations;
       return storedProdcutvariation ? product.product_variations : {};
     });
-    const [showDialog, setShowDialog] = useState(false);
 
     // Function to handle attribute selection
     const handleAttributeSelect = async (attribute, value) => {
@@ -304,154 +314,136 @@ const WatchlistItem = React.memo(
           }
         )
         .then((response) => {
-          localStorage.setItem(
-            `selectedAttributes_${product.id}`,
-            JSON.stringify(updatedAttributes)
-          );
+          console.log("update-wishlist-response", response.data);
         })
         .catch((error) => console.log("update-error", error));
     };
-    
-    const confirmDelete = () =>{
-      setShowDialog(true);
-    };
-    const handleConfirmRemove = () => {
-      handleRemove(product);
-      setShowDialog(false);
-    }
-    const handleCancel = () => {
-      setShowDialog(false);
-    };
+
     return (
       <>
-      {showDialog && (
-          <ConfirmationDialog 
-            onConfirm = {handleConfirmRemove}
-            onCancel = {handleCancel}
-          />
-        )}
         <div className="watchlist-item">
-        
-        <div className="watchlist-item-image-wrapper">
-          <img
-            src={product.product_image}
-            alt={product.product_title}
-            className={`watchlist-item-image ${
-              imageLoading ? "loaded" : "loading"
-            }`}
-            loading="lazy"
-            onLoad={() => handleImageLoad(product.product_id)}
-          />
-        </div>
-        <div className="watchlist-item-details">
-          <div className="d-lg-block d-md-block">
-            <div className="watchlist-item-info">
-              <Link
-                to={`/products/${product.product_id}`}
-                className="watchlist-item-link"
-              >
-                <h5 className="mb-0">{product?.product_title}</h5>
-              </Link>
-              <p className="watchlist-item-price mb-0">
-                Price: ₹{product.product_price}
-              </p>
-            </div>
-            {/* Render product variations */}
-            {productVariations.length !== 0 &&
-              productVariations[0].attributes !== undefined && (
-                <div className="wishlist-item-attributes">
-                  {Object.keys(productVariations[0].attributes).map(
-                    (attribute) => {
-                      return (
-                        <div key={attribute} className="variation-cart-main">
-                          <h4>
-                            {attribute.replace(/attribute_pa_|attribute_/, "")}:
-                            {""}
-                          </h4>
-                          {attribute === "attribute_pa_color" ? (
-                            <div style={{ display: "flex" }}>
-                              {productVariations.map((variation, index) => {
-                                return (
-                                  <div
-                                    key={index}
-                                    className={`color-option ${
-                                      Object.values(variation?.attributes)[0]
-                                    } ${
-                                      selectedAttributes[attribute] ===
-                                      variation.attributes[attribute]
-                                        ? "selected"
-                                        : ""
-                                    }`}
-                                    onClick={() =>
-                                      handleAttributeSelect(
-                                        attribute,
-                                        variation.attributes[attribute]
-                                      )
-                                    }
-                                  ></div>
-                                );
-                              })}
-                            </div>
-                          ) : (
-                            <div className="variation-buttons">
-                              {productVariations.map((variation, index) => {
-                                // console.log("vari-size", variation);
-                                return (
-                                  <button
-                                    key={index}
-                                    className={`variation-button ${
-                                      selectedAttributes[attribute] ===
-                                      variation.attributes[attribute]
-                                        ? "selected"
-                                        : ""
-                                    }`}
-                                    onClick={() =>
-                                      handleAttributeSelect(
-                                        attribute,
-                                        variation.attributes[attribute]
-                                      )
-                                    }
-                                  >
-                                    {typeof variation.attributes[attribute] ===
-                                    "string"
-                                      ? variation.attributes[attribute]
-                                      : JSON.stringify(
-                                          variation.attributes[attribute]
-                                        )}
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    }
-                  )}
-                </div>
-              )}
-          </div>
-
-          <div className="actions">
-            <button
-              className={`watchlist-add-to-cart ${
-                stockStatus !== "instock" ? "disable-button" : ""
+          <div className="watchlist-item-image-wrapper">
+            <img
+              src={product.product_image}
+              alt={product.product_title}
+              className={`watchlist-item-image ${
+                imageLoading ? "loaded" : "loading"
               }`}
-              disabled={stockStatus !== "instock"}
-              onClick={() => handleAddToCart(product, selectedAttributes)}
-            >
-              Add to Cart
-            </button>
-            <button
-              className="watchlist-item-remove"
-              onClick={confirmDelete}
-            >
-              <MdDelete />
-            </button>
+              loading="lazy"
+              onLoad={() => handleImageLoad(product.product_id)}
+            />
+          </div>
+          <div className="watchlist-item-details">
+            <div className="d-lg-block d-md-block">
+              <div className="watchlist-item-info">
+                <Link
+                  to={`/products/${product.product_id}`}
+                  className="watchlist-item-link"
+                >
+                  <h5 className="mb-0">{product?.product_title}</h5>
+                </Link>
+                <p className="watchlist-item-price mb-0">
+                  Price: ₹{product.product_price}
+                </p>
+              </div>
+              {/* Render product variations */}
+              {productVariations.length !== 0 &&
+                productVariations[0].attributes !== undefined && (
+                  <div className="wishlist-item-attributes">
+                    {Object.keys(productVariations[0].attributes).map(
+                      (attribute) => {
+                        return (
+                          <div key={attribute} className="variation-cart-main">
+                            <h4>
+                              {attribute.replace(
+                                /attribute_pa_|attribute_/,
+                                ""
+                              )}
+                              :{""}
+                            </h4>
+                            {attribute === "attribute_pa_color" ? (
+                              <div style={{ display: "flex" }}>
+                                {productVariations.map((variation, index) => {
+                                  return (
+                                    <div
+                                      key={index}
+                                      className={`color-option ${
+                                        Object.values(variation?.attributes)[0]
+                                      } ${
+                                        selectedAttributes[attribute] ===
+                                        variation.attributes[attribute]
+                                          ? "selected"
+                                          : ""
+                                      }`}
+                                      onClick={() =>
+                                        handleAttributeSelect(
+                                          attribute,
+                                          variation.attributes[attribute]
+                                        )
+                                      }
+                                    ></div>
+                                  );
+                                })}
+                              </div>
+                            ) : (
+                              <div className="variation-buttons">
+                                {productVariations.map((variation, index) => {
+                                  return (
+                                    <button
+                                      key={index}
+                                      className={`variation-button ${
+                                        selectedAttributes[attribute] ===
+                                        variation.attributes[attribute]
+                                          ? "selected"
+                                          : ""
+                                      }`}
+                                      onClick={() =>
+                                        handleAttributeSelect(
+                                          attribute,
+                                          variation.attributes[attribute]
+                                        )
+                                      }
+                                    >
+                                      {typeof variation.attributes[
+                                        attribute
+                                      ] === "string"
+                                        ? variation.attributes[attribute]
+                                        : JSON.stringify(
+                                            variation.attributes[attribute]
+                                          )}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      }
+                    )}
+                  </div>
+                )}
+            </div>
+
+            <div className="actions">
+              <button
+                className={`watchlist-add-to-cart ${
+                  stockStatus !== "instock" ? "disable-button" : ""
+                }`}
+                disabled={stockStatus !== "instock"}
+                onClick={() => handleAddToCart(product, selectedAttributes)}
+              >
+                Add to Cart
+              </button>
+              <button
+                className="watchlist-item-remove"
+                onClick={(e) => handleRemove(e, product)}
+              >
+                <MdDelete />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
       </>
-    
     );
   }
 );

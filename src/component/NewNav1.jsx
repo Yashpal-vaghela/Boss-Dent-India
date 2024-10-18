@@ -10,33 +10,15 @@ import {
   FaPhoneAlt,
   FaTimes,
 } from "react-icons/fa";
-// import { useSelector } from "react-redux";
 import { useWatchlist } from "../Pages/WatchlistContext";
 import axios from "axios";
 
 const NewNav1 = () => {
   const { watchlist ,cartList} = useWatchlist();
-  // const cartData = useSelector((state) => state.cart.cartItems);
-  const CartLength = localStorage.getItem("cart_length");
-  // const WishList = localStorage.getItem("wishlist_length");
   const [searchIcon, setSeachIcon] = useState(false);
   const [searchQuery, setSeachQuery] = useState("");
   const [suggested, setSuggested] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
-  const [loginData,setLoginData] = useState(localStorage.getItem('token'));
-  // const [UserData] = useState(JSON.stringify(localStorage.getItem('UserData')))
-  const getCartData = async () =>{
-    const logindata = localStorage.getItem("token");
-    // console.log("loginData",logindata,UserData)
-    setLoginData(loginData)
-    // if(loginData !== null){
-    //   await axios.get(`https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${fetchuserdata.user_id}`)
-    // }
-  }
-
-  useEffect(()=>{
-    getCartData();
-  },[loginData])
 
   const navigate = useNavigate();
 
@@ -52,17 +34,8 @@ const NewNav1 = () => {
     try {
       const response = await axios.get(
         `https://admin.bossdentindia.com/wp-json/custom/v1/product-search?s=${query}`
-        // `https://admin.bossdentindia.com/wp-json/wp/v2/product?search=${query}`
       );
-      // const products = response.data.map((product)=>({
-      //   id:product.id,
-      //   title:product.title.rendered,
-      //   slug:product.slug,
-      // }));
-      // console.log("filterDtaA", response.data);
       const filterData = response.data.filter((product) => {
-        // console.log(product);
-        // console.warn("product",product.title.rendered.toLowerCase().includes(query.toLowerCase()))
         return product.product_name.toLowerCase().includes(query.toLowerCase());
       });
       const products = filterData.map((product) => ({
@@ -70,7 +43,6 @@ const NewNav1 = () => {
         title: product.product_name,
         slug: product.product_slug,
       }));
-      // console.log("response", filterData);
 
       setSuggested(products);
       setSuggestions(products);
@@ -83,8 +55,12 @@ const NewNav1 = () => {
       setSuggestions([]);
     }
   };
-  const handleClick = (id) => {
-    navigate(`/products/${id}`);
+  const handleClick = (product) => {
+    console.log("pro",product)
+    navigate(`/products/${encodeURIComponent(product.slug)}`, {
+      state: { productId: product.id },
+    });
+    // navigate(`/products/${id}`);
     handleOffcanvas1();
     handleClearSearch();
   };
@@ -98,7 +74,6 @@ const NewNav1 = () => {
 
   const handleOffcanvas1 = () => {
     var x = document.getElementById("close");
-    // console.log("x", x);
     if (window.innerWidth <= 991) {
       if (window?.getComputedStyle(x)?.display !== "none") {
         return x.click();
@@ -115,11 +90,10 @@ const NewNav1 = () => {
       const alertMessageElements =
         document.getElementsByClassName("success-alert");
       const bannerElements = document.getElementsByClassName("banner-section");
-      // console.log("searchElement", searchElements,"topnav",topNav,"menuElement",menuSubElements);
-
+  
       if (window.innerWidth >= 991) {
         if (window.scrollY >= 20) {
-          searchElements.style.display = "flex";
+          searchElements.style.display = "flex" ;
           showSearchElements.classList.add("show-search-icon");
           topNav.style.display = "none";
           Array.from(alertMessageElements).forEach((element) => {
@@ -148,7 +122,6 @@ const NewNav1 = () => {
           });
         }
       } else {
-        // setSeachIcon(false);
         searchElements.classList.remove("show-search-icon");
         showSearchElements.style.display = "none";
         topNav.style.display = "flex";
@@ -226,10 +199,10 @@ const NewNav1 = () => {
               {suggestions?.length !== 0 ? (
                 <div className="suggestion-main">
                   <ul className="suggestions">
-                    {suggestions.map((product) => (
+                    {suggestions.map((product,index) => (
                       <li
-                        key={product.id}
-                        onClick={() => handleClick(product.id)}
+                        key={index}
+                        onClick={() => handleClick(product)}
                       >
                         {product.title}
                       </li>
@@ -374,7 +347,7 @@ const NewNav1 = () => {
             <div className="cart-icon icon">
               <Link to="/cart">
                 <FaCartPlus />
-                <span>{CartLength}</span>
+                <span>{cartList?.length}</span>
               </Link>
             </div>
           </div>
@@ -445,7 +418,7 @@ const NewNav1 = () => {
               {/* computer size serach bar */}
               <div
                 id="search-icon"
-                className=" d-md-none search-icon align-items-center"
+                className="search-icon align-items-center"
               >
                 {searchIcon ? (
                   <>
@@ -464,7 +437,7 @@ const NewNav1 = () => {
                             {suggested.map((product) => (
                               <li
                                 key={product.id}
-                                onClick={() => handleClick(product.id)}
+                                onClick={() => handleClick(product)}
                               >
                                 {product.title}
                               </li>
@@ -610,7 +583,7 @@ const NewNav1 = () => {
                   {suggested.map((product) => (
                     <li
                       key={product.id}
-                      onClick={() => handleClick(product.id)}
+                      onClick={() => handleClick(product)}
                     >
                       {product.title}
                     </li>

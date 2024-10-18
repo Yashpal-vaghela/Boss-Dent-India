@@ -13,7 +13,9 @@ const Footer = () => {
   return (
     <footer>
       <div className="footer-container">
-        <div className="footer-section" data-aos="fade-up" data-aos-delay="0">
+        <div className="footer-section" data-aos="fade-up" 
+        // data-aos-delay="0"
+        >
           <img src="/asset/images/flogo1.png" alt="BossDent" className="logo" />
           <p>
             Bossdentindia (Disposables & Consumables) is an online dental
@@ -42,41 +44,47 @@ const Footer = () => {
             </Link>
           </div>
         </div>
-        <div className="footer-section" data-aos="fade-up" data-aos-delay="200">
+        <div className="footer-section" data-aos="fade-up" 
+        // data-aos-delay="200"
+        >
           <h3>Quick Links</h3>
           <ul>
             <li>
-              <a href="/products">Shop</a>
+              <Link to="/products">Shop</Link>
             </li>
             <li>
-              <a href="/aboutus">About Us</a>
+              <Link to="/aboutus">About Us</Link>
             </li>
             <li>
-              <a href="/wishlist">Wishlist</a>
+              <Link to="/wishlist">Wishlist</Link>
             </li>
             <li>
-              <a href="/my-account">My Account</a>
+              <Link to="/my-account">My Account</Link>
             </li>
           </ul>
         </div>
-        <div className="footer-section" data-aos="fade-up" data-aos-delay="400">
+        <div className="footer-section" data-aos="fade-up" 
+        // data-aos-delay="400"
+        >
           <h3>Policy</h3>
           <ul>
             <li>
-              <a href="/refund-and-returns-policy">Refund & Returns Policy</a>
+              <Link to="/refund-and-returns-policy">Refund & Returns Policy</Link>
             </li>
             <li>
-              <a href="/privacy-policy">Privacy Policy</a>
+              <Link to="/privacy-policy">Privacy Policy</Link>
             </li>
             <li>
-              <a href="/terms-and-conditions">Terms & Conditions</a>
+              <Link to="/terms-and-conditions">Terms & Conditions</Link>
             </li>
             <li>
-              <a href="/help-center">Help Center</a>
+              <Link to="/help-center">Help Center</Link>
             </li>
           </ul>
         </div>
-        <div className="footer-section" data-aos="fade-up" data-aos-delay="600">
+        <div className="footer-section" data-aos="fade-up" 
+        // data-aos-delay="600"
+        >
           <h3>Contact Us</h3>
           <p className="f-i-txt align-items-start">
             <span className="f-icon mt-1">

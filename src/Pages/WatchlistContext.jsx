@@ -18,6 +18,10 @@ export const WatchlistProvider = ({ children }) => {
     const savedCartlist = localStorage.getItem("cart_productId");
     return savedCartlist ? JSON.parse(savedCartlist) : [];
   });
+  // const [selectAttribute, setSelectAttribute] = useState(() => {
+  //   const selectAttributeList = localStorage.getItem("selectedAttributes");
+  //   return selectAttributeList ? JSON.parse(selectAttributeList) : [];
+  // });
   const [getCartId, setgetCartId] = useState([]);
   const [getWishlistId, setWishlistId] = useState([]);
   const navigate = useNavigate();
@@ -43,18 +47,14 @@ export const WatchlistProvider = ({ children }) => {
     return true;
   };
 
-  const addToWatchlist = (id, selectedAttributes) => {
+  const addToWatchlist = (id) => {
+    // console.log("id",id)
     if (!ensureAuthenticated()) return;
-    console.warn("addWatchlist", id, ensureAuthenticated());
     // Only add the product ID to the watchlist if it doesn't already exist
     setWatchlist((prevWatchlist) => {
-      // console.log("prevWatchList",prevWatchlist)
       if (!prevWatchlist.includes(id)) {
         const updatedWatchlist = [...prevWatchlist, id];
-        localStorage.setItem("watchlist", JSON.stringify(updatedWatchlist));
-        // Store selected attributes separately for this product
-        const attributesKey = `selectedAttributes_${id}`;
-        localStorage.setItem(attributesKey, JSON.stringify(selectedAttributes));
+        // localStorage.setItem("watchlist", JSON.stringify(updatedWatchlist));
         return updatedWatchlist;
       }
       return prevWatchlist; // No change if ID already exists
@@ -64,16 +64,13 @@ export const WatchlistProvider = ({ children }) => {
   const removeFromWatchlist = (id) => {
     if (!ensureAuthenticated()) return;
     setWatchlist((prevWatchlist) => {
-      const updatedWatchlist = prevWatchlist.filter((itemId) => itemId != id);
-      // console.warn("removeWatchlist", id, updatedWatchlist, prevWatchlist);
+      const updatedWatchlist = prevWatchlist.filter((itemId) => itemId !== Number(id));
       localStorage.setItem("watchlist", JSON.stringify(updatedWatchlist));
-      const attributesKey = `selectedAttributes_${id}`;
-      localStorage.removeItem(attributesKey);
       return updatedWatchlist;
     });
   };
 
-  const addToCartList = (id, selectedAttributes) => {
+  const addToCartList = (id) => {
     // console.log("addToCartList",id,selectedAttributes)
     if (!ensureAuthenticated()) return;
     // console.warn("addWatchlist",id)
@@ -83,130 +80,105 @@ export const WatchlistProvider = ({ children }) => {
       if (!prevCartlist.includes(id)) {
         const updateCartList = [...prevCartlist, id];
         localStorage.setItem("cart_productId", JSON.stringify(updateCartList));
-        const attributesKey = `selectedAttribute_${id}`;
-        localStorage.setItem(attributesKey, JSON.stringify(selectedAttributes));
         return updateCartList;
       }
       return prevCartlist;
     });
   };
 
-  const addToCartListProduct = async (id,selectedAttributes,fetchuserdata)=>{
-    if(!ensureAuthenticated()) return;
-    await axios.get(`https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${fetchuserdata.user_id}`)
-    .then((res)=>{
-      localStorage.setItem("cart", JSON.stringify(res.data));
-      setCartList((prevCartlist)=>{
-        if(!prevCartlist.includes(id)){
-          const updateCartList = [...prevCartlist,id];
-          localStorage.setItem('cart_productId',JSON.stringify(updateCartList));
-          const attributesKey = `selectedAttribute_${id}`;
-          localStorage.setItem(attributesKey,JSON.stringify(selectedAttributes))
-          return updateCartList;
-        }
-        return prevCartlist;
+  const addToCartListProduct = async (
+    id,
+    selectedAttributes,
+    fetchuserdata
+  ) => {
+    if (!ensureAuthenticated()) return;
+    await axios
+      .get(
+        `https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${fetchuserdata.user_id}`
+      )
+      .then((res) => {
+        localStorage.setItem("cart", JSON.stringify(res.data));
+        setCartList((prevCartlist) => {
+          if (!prevCartlist.includes(id)) {
+            const updateCartList = [...prevCartlist, id];
+            localStorage.setItem(
+              "cart_productId",
+              JSON.stringify(updateCartList)
+            );
+            return updateCartList;
+          }
+          return prevCartlist;
+        });
       })
-    })
-    .catch((err)=>console.log("err",err))
-  }
+      .catch((err) => console.log("err", err));
+  };
   const removeFromCartList = (id) => {
     if (!ensureAuthenticated()) return;
     setCartList((prevCartlist) => {
-      const updateCartList = prevCartlist.filter((itemId) => itemId != id);
-      // console.warn("removeCartList",id,updateCartList,prevCartlist)
+      const updateCartList = prevCartlist.filter((itemId) => itemId !== Number(id));
       localStorage.setItem("cart_productId", JSON.stringify(updateCartList));
-      const attributesKey = `selectedAttributes_${id}`;
-      localStorage.removeItem(attributesKey);
       return updateCartList;
     });
-    console.log("carTlIST",cartList)
   };
-
-  const LoginUserCartList = async (fetchuserdata,selectedAttributes) => {
-    // if (!ensureAuthenticated()) return;
-    console.log("loginUserCartList", cartList);
+  const LoginUserCartList = async (fetchuserdata) => {
     await axios
       .get(
         `https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${fetchuserdata}`
       )
       .then((response) => {
         localStorage.setItem("cart", JSON.stringify(response.data));
-        const id = response.data.cart_items.map((item)=>{
-          if(!cartList.includes(item.product_id)){
-          //  return  setgetCartId([...getCartId,Number(item.product_id)])
-          // cartList.push(Number(item.product_id))
-          setCartList((prevCartlist) => {
-            // console.log("preCartList",prevCartlist)
-            if (!prevCartlist.includes(item.product_id)) {
-              const updateCartList = [...prevCartlist,Number(item.product_id)];
-              localStorage.setItem("cart_productId", JSON.stringify(updateCartList));
-              const attributesKey = `selectedAttribute_${item.product_id}`;
-              localStorage.setItem(attributesKey, JSON.stringify(selectedAttributes));
-              return updateCartList;
-            }
-            return prevCartlist;
-          });
-            return getCartId.push(Number(item.product_id))
+         response.data.cart_items.map((item) => {
+          if (!cartList.includes(item.product_id)) {
+            setCartList((prevCartlist) => {
+              if (!prevCartlist.includes(item.product_id)) {
+                const updateCartList = [
+                  ...prevCartlist,
+                  Number(item.product_id),
+                ];
+                localStorage.setItem(
+                  "cart_productId",
+                  JSON.stringify(updateCartList)
+                );
+                return updateCartList;
+              }
+              return prevCartlist;
+            });
+            return getCartId.push(Number(item.product_id));
           }
-        })
-       
-        localStorage.setItem('cart_productId',JSON.stringify(getCartId))
-        // setgetCartId(
-        //   ...getCartId,
-        //   response.data.cart_items.map((item) => item.id)
-        // );
-        console.log(
-          "Login-user-cartList",
-          "id",
-          id,
-          response.data,
-          Object.values(response.data.cart_items),
-          "setCartId",
-          getCartId
-        );
-        // localStorage.setItem("cart_productId",response.data.cart_items)
+        });
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => console.log("Error fetching cartList", error));
   };
-  const LogoutUserCartList = () =>{
-    setgetCartId([]);
-    setCartList([]);
-    localStorage.setItem('cart_productId',JSON.stringify([]))
-  }
-  const LoginUserWatchList = async (fetchuserdata, selectedAttributes) => {
-    try {
-      const response = await axios.get(
-        `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist?user_id=${fetchuserdata}`
-      );
-  
-      localStorage.setItem("wishlist", JSON.stringify(response.data));
-
-      const id = response.data.map((item)=>{
-        if(!watchlist.includes(item.product_id)){
-          setWatchlist((prevWatchlist) => {
-            if (!prevWatchlist.includes(item.product_id)) {
-              const updatedWatchlist = [...prevWatchlist,Number(item.product_id)];
-              localStorage.setItem("wishlist_productId", JSON.stringify(updatedWatchlist));
-              const attributesKey = `selectedAttribute_${item.product_id}`;
-              localStorage.setItem(attributesKey, JSON.stringify(selectedAttributes));
-              return updatedWatchlist;
+  const LoginUserWatchList = async (fetchuserdata) =>{
+      await axios.get(`https://admin.bossdentindia.com/wp-json/custom/v1/wishlist?user_id=${fetchuserdata}`)
+      .then((response)=>{
+         response.data.map((item)=>{
+          setWatchlist((prevWatchlist)=>{
+            if(!prevWatchlist.includes(item.product_id)){
+              const updateWatchList = [
+                ...prevWatchlist,
+                Number(item.product_id)
+              ];
+              localStorage.setItem("watchlist",JSON.stringify(updateWatchList))
+              return updateWatchList;
             }
             return prevWatchlist;
           });
           return getWishlistId.push(Number(item.product_id))
-        }
+        });
       })
-      localStorage.setItem('wishlist_productId', JSON.stringify(getWishlistId))
-      // console.log("Login-user-watchList", response.data);
-    } catch (error) {
-      console.error("Error fetching wishlist", error);
-    }
-  };
-  const LogoutUserWatchList = () =>{
+      .catch((error)=>console.log("Error fetching watchList",error))
+  }
+  const LogoutUserList = () => {
+    setgetCartId([]);
+    setCartList([]);
+    localStorage.setItem("cart_productId", JSON.stringify([]));
     setWishlistId([]);
     setWatchlist([]);
-    localStorage.setItem('wishlist_productId', JSON.stringify([]))
-  }  
+    localStorage.setItem("watchlist", JSON.stringify([]));
+    localStorage.setItem("watchlist_length", 0);
+  };
+  
   return (
     <WatchlistContext.Provider
       value={{
@@ -218,9 +190,9 @@ export const WatchlistProvider = ({ children }) => {
         addToCartListProduct,
         removeFromCartList,
         LoginUserCartList,
-        LogoutUserCartList,
+        LogoutUserList,
         LoginUserWatchList,
-        LogoutUserWatchList
+        // LogoutUserWatchList,
       }}
     >
       {children}

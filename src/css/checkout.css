@@ -242,6 +242,13 @@
 }
 
 /* Apply Coupon Code */
+.order-summary-wrapper span{
+  font-size: 14px;
+  font-weight: 700;
+  padding: 0px 0px 12px;
+  border-bottom: 2px solid #e3e3e3;
+  width: 100%;
+}
 .order-coupon-code {
   display: flex;
   justify-content: space-between;

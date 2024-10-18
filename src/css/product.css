@@ -362,6 +362,7 @@
   .shop-sidebar-menu {
     position: relative;
     top: 0px;
+    max-width: 100%;
   }
   /* .product-card-link:hover .product-image {
     opacity: 1;

@@ -198,7 +198,7 @@
   height: 50px;
 }
 .checkout-warning {
-  color: red;
+  color: red !important;
   font-size: 12px;
   margin-top: 5px;
 }
