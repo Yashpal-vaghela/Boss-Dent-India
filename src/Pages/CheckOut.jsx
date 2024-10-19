@@ -319,6 +319,29 @@ const CheckOut = () => {
                     </div>
                     <div
                       className={
+                        formik?.errors?.city
+                          ? "contactField-wrapper mb-0"
+                          : "contactField-wrapper"
+                      }
+                    >
+                      <label className="form-label">City:</label>
+                      <input
+                        type="text"
+                        name="city"
+                        className="form-control"
+                        value={formik?.values?.city || ""}
+                        onChange={formik?.handleChange}
+                        onBlur={formik?.handleBlur}
+                      />
+                      {formik?.errors?.city && (
+                        <span className="text-danger">
+                          {formik?.errors?.city}
+                        </span>
+                      )}
+                    </div>
+
+                    <div
+                      className={
                         formik?.errors?.state
                           ? "contactField-wrapper mb-0"
                           : "contactField-wrapper"
@@ -351,29 +374,6 @@ const CheckOut = () => {
                         </span>
                       )}
                     </div>
-                    <div
-                      className={
-                        formik?.errors?.city
-                          ? "contactField-wrapper mb-0"
-                          : "contactField-wrapper"
-                      }
-                    >
-                      <label className="form-label">City:</label>
-                      <input
-                        type="text"
-                        name="city"
-                        className="form-control"
-                        value={formik?.values?.city || ""}
-                        onChange={formik?.handleChange}
-                        onBlur={formik?.handleBlur}
-                      />
-                      {formik?.errors?.city && (
-                        <span className="text-danger">
-                          {formik?.errors?.city}
-                        </span>
-                      )}
-                    </div>
-
                     <div
                       className={
                         formik?.errors?.zip
@@ -558,14 +558,14 @@ const CheckOut = () => {
                             paymentMethod === "PhonePe" ? "selected" : ""
                           }
                         />
-                        <img
+                        {/* <img
                           src="/asset/images/bank-transfer.png"
                           alt="Bank Transfer"
                           onClick={() => handlePaymentSelect("BankTransfer")}
                           className={
                             paymentMethod === "BankTransfer" ? "selected" : ""
                           }
-                        />
+                        /> */}
                       </div>
                       <button type="submit" className="payment-button">
                         Proceed to payment

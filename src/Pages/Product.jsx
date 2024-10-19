@@ -36,7 +36,6 @@ const Product = () => {
   const category = searchParams.get("category");
   const navigate = useNavigate();
   const location = useLocation();
-  // const { pathname } = useLocation();
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
   const [qty] = useState(1);
   const [getcartProductData, setgetcartProductData] = useState(
@@ -152,7 +151,7 @@ const Product = () => {
                 (item) => item.product_id == product.id
               );
               // console.log("filter",filterCartProduct)
-              if (filterCartData.length === 0) {
+              if (filterCartData.length == 0) {
                 await axios
                   .post(
                     `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
@@ -266,6 +265,7 @@ const Product = () => {
           `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${product.id}`
         );
         const productWeight = weightResponse.data.weight;
+         await axios
          await axios
           .post(
             "https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/add",

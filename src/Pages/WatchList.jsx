@@ -109,6 +109,7 @@ const WatchList = () => {
   // Handle removing item from watchlistf
   const handleRemove = async (product) => {
     removeFromWatchlist(product.product_id);
+    await axios
      await axios
       .delete(
         `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/delete`,
@@ -143,7 +144,7 @@ const WatchList = () => {
           const filterCartData = getCartData.cart_items.filter((item) => {
             return item.product_id === product.product_id;
           });
-          if (filterCartData.length == 0) {
+          if (filterCartData.length === 0) {
             await axios
               .post(
                 `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
@@ -305,6 +306,7 @@ const WatchlistItem = React.memo(
       };
       setSelectedAttributes(updatedAttributes);
       await axios
+       await axios
         .post(
           `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/update`,
           {
