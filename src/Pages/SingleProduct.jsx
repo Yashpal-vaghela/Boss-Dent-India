@@ -48,7 +48,6 @@ const SingleProduct = () => {
   const fetchProduct = async () => {
     setLoading(true);
     // const a = decodeURIComponent(id)
-    // console.log("location", location.state?.productId, id,a);
     try {
       const response = await axios.get(
         `https://admin.bossdentindia.com/wp-json/wp/v2/product/${location.state.productId}`
@@ -71,7 +70,6 @@ const SingleProduct = () => {
       // Fetch related products based on category
       if (response.data.product_cat && response.data.product_cat.length > 0) {
         const categoryId = response.data.product_cat[0];
-        // console.log("categoryId", categoryId, response.data);
         const categoryResponse = await axios.get(
           `https://admin.bossdentindia.com/wp-json/wp/v2/product_cat/${categoryId}`
         );
@@ -84,7 +82,6 @@ const SingleProduct = () => {
         const shuffledProducts = relatedProductsResponse.data.sort(
           () => 0.5 - Math.random()
         );
-        // const a = relatedProductsResponse.data.filter((item)=>console.log("filterdara",item.title))
         setRelatedProducts(shuffledProducts.slice(0, 10));
       }
 
@@ -110,7 +107,7 @@ const SingleProduct = () => {
     }
   };
   useEffect(() => {
-    console.log("loca",location.state.productId)
+    // console.log("loca",location.state.productId)
     fetchProduct();
   }, [id]);
 
@@ -158,7 +155,6 @@ const SingleProduct = () => {
   };
 
   const handleAttributeSelect = async (attribute, value, key) => {
-    // console.log("value", attribute, value, key);
     const newSelectedAttributes = {
       ...selectedAttributes,
       [attribute]: value,
@@ -212,7 +208,6 @@ const SingleProduct = () => {
             }
           )
           .then((response) => {
-            console.log("add", selectedAttributes);
             addToWatchlist(product.id, selectedAttributes);
             // setAlertMessage("Product add from watchlist.");
             toast.success("Product add into the wishlist!.");
@@ -229,9 +224,7 @@ const SingleProduct = () => {
 
   // Addtocart product and related product api integrate
   const handleAddToCart = async (e, relatedProduct) => {
-    console.log("rel",relatedProduct)
     e.preventDefault();
-    // console.log("user",getUserData,isLoggedIn)
     if (isLoggedIn) {
       if (stockStatus === "instock") {
         const userData = JSON.parse(localStorage.getItem("UserData"));
@@ -322,13 +315,11 @@ const SingleProduct = () => {
                       );
                       toast.success("Product update to cart successfully!");
                       // setAlertMessage("Product update from cart!");
-                      // console.log("res=========", res.data, alertMessage);
                     })
                     .catch((err) => console.log("err", err));
                 }
                 // setRelatedProductWeight(response.data.weight);
               });
-            // console.log("related-product-weight", RelatedCartProductWeight);
           }
         }
         // alert("Product added to cart!");
@@ -338,7 +329,7 @@ const SingleProduct = () => {
     } else {
       toast.error("Please login to add product to cart!");
       setTimeout(() => {
-        navigate("/my-account", { state: { from: location.pathname,productId:relatedProduct.id } });
+        navigate("/my-account", { state: { from: location.pathname, productId: relatedProduct.id } });
       }, 2000);
     }
   };
@@ -381,7 +372,6 @@ const SingleProduct = () => {
       .catch((err) => console.log("err", err));
   };
   const handleProductClick = (product) => {
-    // console.log("pro",product)
     navigate(`/products/${encodeURIComponent(product.slug)}`, {
       state: { productId: product.id },
     });
@@ -395,7 +385,6 @@ const SingleProduct = () => {
           <div className="header">
             <h1 className="shop-title">Shop</h1>
             <nav className="bread-crumbs">
-              {/* {console.log("category", category, product.product_cat)} */}
               <Link to="/">Home</Link>
               <i className="fa-solid fa-angle-right"></i>{" "}
               <Link to="/products">Shop</Link>{" "}
@@ -413,9 +402,8 @@ const SingleProduct = () => {
               <Zoom>
                 <img
                   // id={`product-image-${location.state.productId}`}
-                  className={`single-product-img ${
-                    isImageLoaded ? "loaded" : ""
-                  }`}
+                  className={`single-product-img ${isImageLoaded ? "loaded" : ""
+                    }`}
                   src={product.yoast_head_json.og_image[0].url}
                   // src={imageUrl.replace("https://", "https://admin.")}
                   alt={product.title?.rendered}
@@ -466,14 +454,12 @@ const SingleProduct = () => {
                             {variations.map((color, index) => {
                               return (
                                 <div
-                                  className={`color-option ${
-                                    Object.values(color.attributes)[0]
-                                  } ${
-                                    selectedColor ===
-                                    Object.values(color.attributes)[0]
+                                  className={`color-option ${Object.values(color.attributes)[0]
+                                    } ${selectedColor ===
+                                      Object.values(color.attributes)[0]
                                       ? "selected"
                                       : ""
-                                  }`}
+                                    }`}
                                   key={index}
                                   onClick={() =>
                                     handleAttributeSelect(
@@ -492,11 +478,10 @@ const SingleProduct = () => {
                               return (
                                 <button
                                   key={index}
-                                  className={`variation-button ${
-                                    selectedAttributes[attribute] === value
+                                  className={`variation-button ${selectedAttributes[attribute] === value
                                       ? "selected"
                                       : ""
-                                  }`}
+                                    }`}
                                   onClick={() =>
                                     handleAttributeSelect(attribute, value)
                                   }
@@ -536,20 +521,18 @@ const SingleProduct = () => {
               <div className="btn-icon-main">
                 <div>
                   <button
-                    className={`add-to-cart-btn ${
-                      stockStatus === "outofstock" ? "disable-button" : ""
-                    }`}
+                    className={`add-to-cart-btn ${stockStatus === "outofstock" ? "disable-button" : ""
+                      }`}
                     disabled={stockStatus !== "instock"}
-                    onClick={(e) => handleAddToCart(e,product)}
+                    onClick={(e) => handleAddToCart(e, product)}
                   >
                     ADD TO CART
                   </button>
                 </div>
                 <div>
                   <span
-                    className={`like-icon ${
-                      !watchlist.includes(product.id) ? "" : "inactive-heart"
-                    }`}
+                    className={`like-icon ${!watchlist.includes(product.id) ? "" : "inactive-heart"
+                      }`}
                     onClick={() => handleWatchlistToggle(product)}
                   >
                     {watchlist.includes(product.id) ? (
@@ -568,25 +551,22 @@ const SingleProduct = () => {
                 <ul>
                   <li
                     onClick={() => setActivesection("description")}
-                    className={`des-title ${
-                      activeSection === "description" ? "active" : ""
-                    }`}
+                    className={`des-title ${activeSection === "description" ? "active" : ""
+                      }`}
                   >
                     Description
                   </li>
                   <li
                     onClick={() => setActivesection("additional")}
-                    className={`des-title ${
-                      activeSection === "additional" ? "active" : ""
-                    }`}
+                    className={`des-title ${activeSection === "additional" ? "active" : ""
+                      }`}
                   >
                     Additional Information
                   </li>
                   <li
                     onClick={() => setActivesection("review")}
-                    className={`des-title ${
-                      activeSection === "review" ? "active" : ""
-                    }`}
+                    className={`des-title ${activeSection === "review" ? "active" : ""
+                      }`}
                   >
                     Review
                   </li>
@@ -607,12 +587,12 @@ const SingleProduct = () => {
               <p>Weight: {weight || "N/A"}gm</p>
             </div>
           )}
-          {/* {activeSection === "review" && (
+          {activeSection === "review" && (
             <div className="reviews-section">
               <ReviewList productId={location.state.productId} />
               <ReviewForm productId={location.state.productId} />
             </div>
-          )} */}
+          )}
           <div className="related-products">
             <h3 className="related-title">Related Products</h3>
             <Swiper
@@ -662,11 +642,10 @@ const SingleProduct = () => {
 
                       <div className="related-icons">
                         <span
-                          className={`heart-icon ${
-                            !watchlist.includes(relatedProduct.id)
+                          className={`heart-icon ${!watchlist.includes(relatedProduct.id)
                               ? ""
                               : "inactive-heart"
-                          }`}
+                            }`}
                           onClick={() => handleWatchlistToggle(relatedProduct)}
                         >
                           {watchlist.includes(relatedProduct.id) ? (

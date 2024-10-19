@@ -74,15 +74,17 @@ const Login = () => {
       Swal.fire({
         icon: "success",
         title: "Login Successful",
-        timer: 2500,
+        timer: 2000,
         showConfirmButton: false,
       });
       setTimeout(() => {
         const redirectPath = location.state?.from || "/";
-        const productId = location.state.productId
-        console.log("loca", location.state,location.state.productId);
-        navigate(redirectPath, {state:{productId:location.state.productId}});
-      }, 2700);
+        if(location.state !== null){
+          navigate(redirectPath, {state:{productId:location.state.productId}});
+        }else{
+          navigate(redirectPath);
+        }
+      }, 2100);
     } catch (error) {
       toast.error("Login failed. Please check your username and password.");
       console.error("Error logging in:", error);
