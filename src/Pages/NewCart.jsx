@@ -14,7 +14,10 @@ const NewCart = () => {
   const [canCheckout, setCanCheckout] = useState(false);
   const [imageLoading, setImageLoading] = useState({});
   const [deliveryCharge, setDeliveryCharge] = useState(99);
-  const [CartData, setCartData] = useState([]);
+  const [CartData, setCartData] = useState(() => {
+    const d = localStorage.getItem("cart");
+    return d ? JSON.parse(d) : [];
+  });
   const [CartgetTotal, setCartgetTotal] = useState([]);
   const { alertMessage, removeFromCartList, addToCartList } = useWatchlist();
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
@@ -38,7 +41,7 @@ const NewCart = () => {
         localStorage.setItem("cart", JSON.stringify(res.data));
         localStorage.setItem("cart_length", res.data.cart_items.length);
         setLoading(false);
-        setCartData(res.data.cart_items);
+        setCartData(res.data);
         setCartgetTotal(res.data.cart_total);
         AdddeliveryCharge(res.data.cart_total, res.data.cart_items);
       })
@@ -63,8 +66,8 @@ const NewCart = () => {
         data: payload,
       })
       .then((res) => {
-        const filterData = CartData.filter((item) => item.id !== product.id);
-        setCartData(filterData);
+        const filterData = CartData?.cart_items.filter((item) => item.id !== product.id);
+        setCartData({cart_items:filterData});
         setCartgetTotal(res.data.cart_total);
         AdddeliveryCharge(res.data.cart_total, CartData);
         removeFromCartList(product.product_id);
@@ -100,7 +103,6 @@ const NewCart = () => {
 
   const AdddeliveryCharge = (CartTotal) => {
     const getTotalWeight = CartTotal.total_weight / 1000;
-    // console.log("getTotalWeight", getTotalWeight);
     if (getTotalWeight < 1) {
       setDeliveryCharge(99);
     } else if (getTotalWeight >= 1 && getTotalWeight <= 3) {
@@ -139,7 +141,7 @@ const NewCart = () => {
           </>
         ) : (
           <>
-            {CartData?.length === 0 ? (
+            {CartData?.cart_items?.length === 0 ? (
               <>
                 <div className="cart-page-empty">
                   <p className="">Your Cart is Empty </p>
@@ -151,8 +153,8 @@ const NewCart = () => {
             ) : (
               <div className="cart-content" data-aos="filp-left">
                 <div className="cart-items">
-                  {CartData?.length !== 0 &&
-                    CartData?.map((product, index) => {
+                  {CartData?.cart_items?.length !== 0 &&
+                    CartData?.cart_items?.map((product, index) => {
                       return (
                         <CartListItem
                           key={product.id}
@@ -169,6 +171,8 @@ const NewCart = () => {
                           setCartgetTotal={setCartgetTotal}
                           getUserData={getUserData}
                           setCanCheckout={setCanCheckout}
+                          addToCartList={addToCartList}
+                          CartgetTotal={CartgetTotal}
                         ></CartListItem>
                       );
                     })}
@@ -194,11 +198,11 @@ const NewCart = () => {
                     <span>Grand Total</span>
                     <span>₹{grandTotal}.00</span>
                   </div>
-                  {console.log("checkout", canCheckout)}
+                 
                   <Link to="/checkout">
-                    <button className="checkout-button" disabled={!canCheckout}>
-                      Check Out
-                    </button>
+                  <button className="checkout-button" disabled={!canCheckout}>
+                    Check Out
+                  </button>
                   </Link>
 
                   <div className="cart-payment-methods">
@@ -238,6 +242,8 @@ const CartListItem = React.memo(
     setCartgetTotal,
     getUserData,
     setCanCheckout,
+    addToCartList,
+    CartgetTotal
   }) => {
     const [productVariations] = useState(() => {
       return product.product_attributes ? product.product_attributes : {};
@@ -261,8 +267,7 @@ const CartListItem = React.memo(
         })
         .then((response) => {
           const UpdatedProduct = response?.data?.cart_item[0];
-          const UpdatedCartData = CartData?.map((item) => {
-            // console.log("item", item.product_id, UpdatedProduct);
+          const UpdatedCartData = CartData?.cart_items?.map((item) => {
             return item.product_id === UpdatedProduct.product_id
               ? {
                   ...item,
@@ -270,7 +275,8 @@ const CartListItem = React.memo(
                 }
               : item;
           });
-          setCartData(UpdatedCartData);
+          localStorage.setItem("cart", JSON.stringify({cart_items:UpdatedCartData,cart_total:CartgetTotal}));
+          setCartData({cart_items:UpdatedCartData});
           AdddeliveryCharge(response.data.cart_total, response.data.cart_items);
           setCartgetTotal(response.data.cart_total);
         })
@@ -300,7 +306,7 @@ const CartListItem = React.memo(
               : item
           );
           AdddeliveryCharge(response.data.cart_total, response.data.cart_items);
-          setCartData(UpdatedCartData);
+          setCartData({cart_items:UpdatedCartData});
           setCartgetTotal(response.data.cart_total);
         })
         .catch((err) => console.log("error", err));
@@ -318,36 +324,19 @@ const CartListItem = React.memo(
     };
 
     useEffect(() => {
-      const AllAttributesSelected = CartData.some((product) => {
-        if (
-          product.product_attributes &&
-          product.product_attributes.length > 0
-        ) {
-          const f = Object.keys(product.product_attributes[0].attributes).every(
-            (i) => {
-              console.log(
-                "i",
-                product.selected_attribute,
-                product.selected_attribute[i]
-              );
-            }
-          );
-          console.log(
-            "pro",
-            Object.keys(product.product_attributes[0].attributes),
-            "f",
-            f
-          );
-          return Object.keys(product.product_attributes[0].attributes).every(
-            (key) =>
-              product.selected_attribute && product.selected_attribute[key]
-          );
+      const AllAttributesSelected = CartData?.cart_items.every((product) => {
+        if (product.product_attributes && product.product_attributes.length > 0) {
+          if(Object.values(product.selected_attribute)[0]){
+            return true;
+          }else{
+            return false;
+          }
         }
         return true;
       });
-      console.log("All", AllAttributesSelected);
       setCanCheckout(AllAttributesSelected);
     }, [CartData]);
+
     return (
       <>
         {showDialogBox && (

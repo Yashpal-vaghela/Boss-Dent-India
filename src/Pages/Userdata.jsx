@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AddressForm from "../component/AddressForm";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../css/responsiveuserdata.css";
@@ -23,7 +23,7 @@ const UserData = () => {
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
-  const { LogoutUserCartList, LogoutUserWatchList } = useWatchlist();
+  const { LogoutUserList } = useWatchlist();
 
   const fetchUserData = useCallback(async () => {
     const token = localStorage.getItem("token");
@@ -243,8 +243,7 @@ const UserData = () => {
       "cart",
       JSON.stringify({ cart_items: [], cart_total: {} })
     );
-    LogoutUserCartList();
-    LogoutUserWatchList();
+    LogoutUserList();
     toast("Logged out!");
     navigate("/my-account");
   };
@@ -263,7 +262,8 @@ const UserData = () => {
         <div className="header" data-aos="fade-up">
           <h1>User Data</h1>
           <nav className="bread-crumbs">
-            <a href="/">Home</a> <i className="fa-solid fa-angle-right"></i>{" "}
+            <Link to="/">Home</Link>
+             <i className="fa-solid fa-angle-right"></i>{" "}
             <span>User Data</span>
           </nav>
         </div>
@@ -437,9 +437,7 @@ const UserData = () => {
                   )}
                 </div>
                 <div>
-                  <a href="/forgot-password" className="forgot-password-link">
-                    Forgot Password?
-                  </a>
+                  <Link to="/forgot-password" className="forgot-password-link"> Forgot Password?</Link>
                 </div>
                 <div>
                   {/* {isLoading ? <div className="loader"> </div>  : null } */}
