@@ -14,10 +14,11 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState("")
+  const [userName, setUserName] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
-  const { LoginUserCartList, LoginUserWatchList, LogoutUserWatchList, LogoutUserCartList } = useWatchlist();
+  const { LoginUserCartList, LoginUserWatchList, LogoutUserList } =
+    useWatchlist();
 
   useEffect(() => {
     const savedUsername = localStorage.getItem("userIdentifier");
@@ -54,13 +55,13 @@ const Login = () => {
         user_dispaly_name: response.data.user_display_name,
         user_email: response.data.user_email,
         user_id: response.data.user_id,
-        user_nicename: response.data.user_nicename
-      }
-      LoginUserCartList(response.data.user_id,{})
-      LoginUserWatchList(response.data.user_id,{})
+        user_nicename: response.data.user_nicename,
+      };
+      LoginUserCartList(response.data.user_id, {});
+      LoginUserWatchList(response.data.user_id, {});
       // console.log("res==",response,ObjectUserData)
       localStorage.setItem("token", token);
-      localStorage.setItem('UserData', JSON.stringify(ObjectUserData))
+      localStorage.setItem("UserData", JSON.stringify(ObjectUserData));
       // localStorage.setItem("user_id", userId);
       if (rememberMe) {
         localStorage.setItem("userIdentifier", userIdentifier);
@@ -76,11 +77,12 @@ const Login = () => {
         timer: 2500,
         showConfirmButton: false,
       });
-      setTimeout(()=>{
-        const redirectPath = location.state?.from || "/"; 
-        navigate(redirectPath);
-      },2700)
-      
+      setTimeout(() => {
+        const redirectPath = location.state?.from || "/";
+        const productId = location.state.productId
+        console.log("loca", location.state,location.state.productId);
+        navigate(redirectPath, {state:{productId:location.state.productId}});
+      }, 2700);
     } catch (error) {
       toast.error("Login failed. Please check your username and password.");
       console.error("Error logging in:", error);
@@ -99,9 +101,11 @@ const Login = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("UserData");
     localStorage.removeItem("cart");
-    localStorage.setItem("cart", JSON.stringify({cart_items:[], cart_total:{}}));
-    LogoutUserCartList();
-    LogoutUserWatchList();
+    localStorage.setItem(
+      "cart",
+      JSON.stringify({ cart_items: [], cart_total: {} })
+    );
+    LogoutUserList();
     Swal.fire({
       icon: "success",
       title: "Logout Succesful",
@@ -109,9 +113,8 @@ const Login = () => {
       showConfirmButton: false,
     });
     setTimeout(() => {
-     window.location.reload(); 
-    }, 2700)
-        
+      window.location.reload();
+    }, 2700);
   };
 
   return loading ? (
@@ -122,8 +125,13 @@ const Login = () => {
     <div className="container">
       {isLoggedIn ? (
         <div className="already-logged-in" data-aos="fade">
-          <p>You are already logged in as <strong>{userName}</strong></p>
-          <butoon onClick={handleLogout} className="logout-button"> Log Out </butoon>
+          <p>
+            You are already logged in as <strong>{userName}</strong>
+          </p>
+          <butoon onClick={handleLogout} className="logout-button">
+            {" "}
+            Log Out{" "}
+          </butoon>
         </div>
       ) : (
         <div className="login-container" data-aos="fade">
@@ -174,10 +182,9 @@ const Login = () => {
                 <label htmlFor="rememberMe">Remember Me</label>
               </div>
               <div>
-                <Link href="/forgot-password" className="forgot-password-l"></Link>
-                <a href="/forgot-password" className="forgot-password-l">
+                <Link href="/forgot-password" className="forgot-password-l">
                   Forgot Password?
-                </a>
+                </Link>
               </div>
             </div>
             <button type="submit" className="login-button">

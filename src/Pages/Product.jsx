@@ -266,7 +266,6 @@ const Product = () => {
         );
         const productWeight = weightResponse.data.weight;
          await axios
-         await axios
           .post(
             "https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/add",
             {

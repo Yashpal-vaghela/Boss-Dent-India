@@ -104,12 +104,13 @@ const SingleProduct = () => {
       }
     } catch (error) {
       // console.error("Error fetching product:", error);
-      toast.error("Failed to fetch product details.")
+      toast.error("Failed to fetch product details.");
     } finally {
       setLoading(false);
     }
   };
   useEffect(() => {
+    console.log("loca",location.state.productId)
     fetchProduct();
   }, [id]);
 
@@ -228,6 +229,7 @@ const SingleProduct = () => {
 
   // Addtocart product and related product api integrate
   const handleAddToCart = async (e, relatedProduct) => {
+    console.log("rel",relatedProduct)
     e.preventDefault();
     // console.log("user",getUserData,isLoggedIn)
     if (isLoggedIn) {
@@ -246,22 +248,20 @@ const SingleProduct = () => {
               localStorage.setItem("cart", JSON.stringify(response.data));
               GetCartProduct = response.data.cart_items;
               filterCartProduct = response.data.cart_items.filter(
-                (item) => item.product_id == product.id
+                (item) => Number(item.product_id) === product.id
               );
               relatedProduct ? (
                 <>
                   {response.data.cart_items.filter(
-                    (item) => item.product_id == relatedProduct.id
+                    (item) => Number(item.product_id) === relatedProduct.id
                   )}
                 </>
               ) : (
                 <></>
               );
-              // console.log("response-cart", response, filterCartProduct);
             })
             .catch((error) => console.log("error-cart", error));
-          // console.log("filterCartProduct", filterCartProduct, RelatedCartProduct);
-          if (filterCartProduct.length == 0 && relatedProduct === undefined) {
+          if (filterCartProduct.length === 0 && relatedProduct === undefined) {
             handleAddToCartApi(product, userData);
           } else if (relatedProduct === undefined) {
             handleUpdateCartApi(filterCartProduct, product, GetCartProduct);
@@ -338,7 +338,7 @@ const SingleProduct = () => {
     } else {
       toast.error("Please login to add product to cart!");
       setTimeout(() => {
-        navigate("/my-account", { state: { from: location.pathname } });
+        navigate("/my-account", { state: { from: location.pathname,productId:relatedProduct.id } });
       }, 2000);
     }
   };
@@ -540,7 +540,7 @@ const SingleProduct = () => {
                       stockStatus === "outofstock" ? "disable-button" : ""
                     }`}
                     disabled={stockStatus !== "instock"}
-                    onClick={(e) => handleAddToCart(e)}
+                    onClick={(e) => handleAddToCart(e,product)}
                   >
                     ADD TO CART
                   </button>
@@ -607,12 +607,12 @@ const SingleProduct = () => {
               <p>Weight: {weight || "N/A"}gm</p>
             </div>
           )}
-          {activeSection === "review" && (
+          {/* {activeSection === "review" && (
             <div className="reviews-section">
               <ReviewList productId={location.state.productId} />
               <ReviewForm productId={location.state.productId} />
             </div>
-          )}
+          )} */}
           <div className="related-products">
             <h3 className="related-title">Related Products</h3>
             <Swiper
