@@ -20,7 +20,6 @@ const SingleProduct = () => {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [error, setError] = useState(null);
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [salePrice, setSalePrice] = useState(null);
@@ -36,7 +35,7 @@ const SingleProduct = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [weight, setWeight] = useState(null);
   const [activeSection, setActivesection] = useState("description");
-  const { id } = useParams();
+  // const { id } = useParams();
   // const dispatch = useDispatch();
   const navigate = useNavigate();
   const [alertMessage, setAlertMessage] = useState("");
@@ -55,7 +54,6 @@ const SingleProduct = () => {
   // fetch single product ,stock status and weight api integrate
   const fetchProduct = async () => {
     setLoading(true);
-    setError(null);
     // const a = decodeURIComponent(id)
     // console.log("location", location.state?.productId, id,a);
     try {
@@ -113,7 +111,7 @@ const SingleProduct = () => {
       }
     } catch (error) {
       // console.error("Error fetching product:", error);
-      setError("Failed to fetch product details. Please try again later.");
+      toast.error("Failed to fetch product details.")
     } finally {
       setLoading(false);
     }
@@ -267,7 +265,7 @@ const SingleProduct = () => {
             })
             .catch((error) => console.log("error-cart", error));
           // console.log("filterCartProduct", filterCartProduct, RelatedCartProduct);
-          if (filterCartProduct.length === 0 && relatedProduct === undefined) {
+          if (filterCartProduct.length == 0 && relatedProduct === undefined) {
             handleAddToCartApi(product, userData);
           } else if (relatedProduct === undefined) {
             handleUpdateCartApi(filterCartProduct, product, GetCartProduct);
