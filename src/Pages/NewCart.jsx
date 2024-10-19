@@ -300,7 +300,7 @@ const CartListItem = React.memo(
         })
         .then((response) => {
           const UpdatedProduct = response?.data?.cart_item[0];
-          const UpdatedCartData = CartData?.map((item) =>
+          const UpdatedCartData = CartData?.cart_items.map((item) =>
             item.product_id === UpdatedProduct.product_id
               ? { ...item, product_quantity: UpdatedProduct.product_quantity }
               : item

@@ -1,5 +1,5 @@
 // import React, { useEffect,useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const BreadCrumbs = () => {
     const pathName = useLocation();
@@ -13,7 +13,7 @@ const BreadCrumbs = () => {
   return (
     <div>
       <nav className="bread-crumbs">
-          <a href="/">Home</a>  
+        <Link to="/">Home</Link>
           <i className="fa-solid fa-angle-right"></i>
           {
             pathName !== undefined ? <span>{pathName?.pathname?.split("/")}</span>: null

@@ -106,9 +106,7 @@ const Footer = () => {
             <span className="f-icon">
               <IoMdMail />
             </span>
-            <a href="mailto:zahndentaldepo@gmailcom">
-              zahndentaldepo@gmail.com
-            </a>
+            <Link to="mailto:zahndentaldepo@gmailcom">zahndentaldepo@gmail.com</Link>
           </p>
         </div>
       </div>

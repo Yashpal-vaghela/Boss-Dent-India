@@ -3,7 +3,7 @@ import { FaEyeSlash, FaEye } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Loader1 from "../component/Loader1";
 import { useWatchlist } from "./WatchlistContext";
 
@@ -174,6 +174,7 @@ const Login = () => {
                 <label htmlFor="rememberMe">Remember Me</label>
               </div>
               <div>
+                <Link href="/forgot-password" className="forgot-password-l"></Link>
                 <a href="/forgot-password" className="forgot-password-l">
                   Forgot Password?
                 </a>

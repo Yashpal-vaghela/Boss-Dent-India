@@ -109,7 +109,7 @@ const WatchList = () => {
   // Handle removing item from watchlistf
   const handleRemove = async (product) => {
     removeFromWatchlist(product.product_id);
-    const deleteData = await axios
+     await axios
       .delete(
         `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/delete`,
         {
@@ -304,7 +304,7 @@ const WatchlistItem = React.memo(
         [attribute]: value,
       };
       setSelectedAttributes(updatedAttributes);
-      const updateData = await axios
+      await axios
         .post(
           `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/update`,
           {

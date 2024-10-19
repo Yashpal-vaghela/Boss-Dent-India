@@ -37,20 +37,12 @@ const SingleProduct = () => {
   const [weight, setWeight] = useState(null);
   const [activeSection, setActivesection] = useState("description");
   const { id } = useParams();
-  // const dispatch = useDispatch();
   const navigate = useNavigate();
   const [alertMessage, setAlertMessage] = useState("");
   const [selectedColor, setSelectedColor] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
-  const [getCartList] = useState(JSON.parse(localStorage.getItem("cart")));
-  const [ID] = useState(location.state?.productId);
-
-  useEffect(() => {
-    const userLoggedIn = !!localStorage.getItem("token");
-    setIsLoggedIn(userLoggedIn);
-  }, []);
 
   // fetch single product ,stock status and weight api integrate
   const fetchProduct = async () => {
@@ -60,7 +52,7 @@ const SingleProduct = () => {
     // console.log("location", location.state?.productId, id,a);
     try {
       const response = await axios.get(
-        `https://admin.bossdentindia.com/wp-json/wp/v2/product/${ID}`
+        `https://admin.bossdentindia.com/wp-json/wp/v2/product/${location.state.productId}`
       );
       setProduct(response.data);
       // preload the main product image
@@ -88,7 +80,7 @@ const SingleProduct = () => {
 
         // Fetch related products in the same category
         const relatedProductsResponse = await axios.get(
-          `https://admin.bossdentindia.com/wp-json/wp/v2/product?product_cat=${categoryId}&exclude=${ID}&per_page=20`
+          `https://admin.bossdentindia.com/wp-json/wp/v2/product?product_cat=${categoryId}&exclude=${location.state.productId}&per_page=20`
         );
         const shuffledProducts = relatedProductsResponse.data.sort(
           () => 0.5 - Math.random()
@@ -99,12 +91,12 @@ const SingleProduct = () => {
 
       setSalePrice(response.data.sale_price || response.data.price);
       const weightData = await axios.get(
-        `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${ID}`
+        `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${location.state.productId}`
       );
       setWeight(weightData.data.weight);
       try {
         const stockResponse = await axios.get(
-          `https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/${ID}`
+          `https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/${location.state.productId}`
         );
         setStockStatus(stockResponse.data.stock_status);
       } catch (stockError) {
@@ -118,10 +110,16 @@ const SingleProduct = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchProduct();
-    const imgElement = document.getElementById(`product-imagr-${ID}`);
+  }, [id]);
+
+  useEffect(() => {
+    const userLoggedIn = !!localStorage.getItem("token");
+    setIsLoggedIn(userLoggedIn);
+    const imgElement = document.getElementById(
+      `product-imagr-${location.state.productId}`
+    );
     const observer = new IntersectionObserver(
       (enteries, observer) => {
         enteries.forEach((entry) => {
@@ -177,7 +175,6 @@ const SingleProduct = () => {
       setSalePrice(selectedVariation.price);
     }
   };
-
   // watchlist delete api integrate
   const handleWatchlistToggle = async (product) => {
     if (isLoggedIn) {
@@ -199,7 +196,7 @@ const SingleProduct = () => {
           })
           .catch((error) => console.log("error", error));
       } else {
-         await axios
+        await axios
           .post(
             "https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/add",
             {
@@ -254,11 +251,9 @@ const SingleProduct = () => {
               );
               relatedProduct ? (
                 <>
-                  {
-                    ( response.data.cart_items.filter(
-                      (item) => item.product_id == relatedProduct.id
-                    ))
-                  }
+                  {response.data.cart_items.filter(
+                    (item) => item.product_id == relatedProduct.id
+                  )}
                 </>
               ) : (
                 <></>
@@ -275,7 +270,7 @@ const SingleProduct = () => {
 
           if (relatedProduct !== undefined) {
             let RelatedCartProductWeight = null;
-             axios
+            axios
               .get(
                 `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${relatedProduct.id}`
               )
@@ -387,6 +382,7 @@ const SingleProduct = () => {
       .catch((err) => console.log("err", err));
   };
   const handleProductClick = (product) => {
+    // console.log("pro",product)
     navigate(`/products/${encodeURIComponent(product.slug)}`, {
       state: { productId: product.id },
     });
@@ -395,6 +391,8 @@ const SingleProduct = () => {
     <>
       {loading ? (
         <Loader1 />
+      ) : error ? (
+        error
       ) : (
         <div className="single-product">
           <div className="header">
@@ -417,7 +415,7 @@ const SingleProduct = () => {
             <div className="single-product-img">
               <Zoom>
                 <img
-                  id={`product-image-${ID}`}
+                  // id={`product-image-${location.state.productId}`}
                   className={`single-product-img ${
                     isImageLoaded ? "loaded" : ""
                   }`}
@@ -614,8 +612,8 @@ const SingleProduct = () => {
           )}
           {activeSection === "review" && (
             <div className="reviews-section">
-              <ReviewList productId={ID} />
-              <ReviewForm productId={ID} />
+              <ReviewList productId={location.state.productId} />
+              <ReviewForm productId={location.state.productId} />
             </div>
           )}
           <div className="related-products">
@@ -647,11 +645,8 @@ const SingleProduct = () => {
                 return (
                   <SwiperSlide key={relatedProduct.id}>
                     <div className="related-product-card">
-                      <Link
-                        to={`/products/${relatedProduct.slug}`}
-                        onClick={() => handleProductClick(relatedProduct)}
-                      >
-                         <img
+                      <div onClick={() => handleProductClick(relatedProduct)}>
+                        <img
                           src={
                             relatedProduct.yoast_head_json?.og_image?.[0]?.url
                             // relatedImageUrl.replace("https://","https://admin.")
@@ -666,8 +661,8 @@ const SingleProduct = () => {
                             ? `Price: ${relatedProduct.price} ₹`
                             : "Price not available"}
                         </p>
-                      </Link>
-                    
+                      </div>
+
                       <div className="related-icons">
                         <span
                           className={`heart-icon ${

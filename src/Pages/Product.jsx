@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import {
-  Link,
   useLocation,
   useNavigate,
   useSearchParams,
@@ -29,7 +28,6 @@ const Product = () => {
     watchlist,
     addToWatchlist,
     removeFromWatchlist,
-    addToCartList,
     addToCartListProduct,
   } = useWatchlist();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,7 +38,7 @@ const Product = () => {
   const location = useLocation();
   // const { pathname } = useLocation();
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
-  const [qty, setQty] = useState(1);
+  const [qty] = useState(1);
   const [getcartProductData, setgetcartProductData] = useState(
     JSON.parse(localStorage.getItem("cart"))
   );
@@ -191,11 +189,11 @@ const Product = () => {
                     toast.success("Product added to cart!");
                   });
               } else {
-                console.log(
-                  "update-cart",
-                  getcartProductData,
-                  filterCartProduct
-                );
+                // console.log(
+                //   "update-cart",
+                //   getcartProductData,
+                //   filterCartProduct
+                // );
                 await axios
                   .post(
                     `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
@@ -242,7 +240,7 @@ const Product = () => {
   const handleAddToWatchlist = async (product) => {
     if (isLoggedIn) {
       if (watchlist.includes(product.id)) {
-        const deleteData = await axios
+         await axios
           .delete(
             `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/delete`,
             {
@@ -268,7 +266,7 @@ const Product = () => {
           `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${product.id}`
         );
         const productWeight = weightResponse.data.weight;
-        const postData = await axios
+         await axios
           .post(
             "https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/add",
             {
@@ -454,16 +452,16 @@ const Product = () => {
                               )}
                             </button>
                           </div>
-                          {/* <div
+                          <div
                             className="product-button-main"
                             onClick={() => handleProductClick(product)}
                           >
                             <button className="product-button">
                               Learn More
                             </button>
-                          </div> */}
+                          </div>
 
-                          <Link
+                          {/* <Link
                             to={`/products/${product.slug}`}
                             className="product-button-main"
                             onClick={() => handleProductClick(product)}
@@ -471,7 +469,7 @@ const Product = () => {
                              <button className="product-button">
                               Learn More
                             </button>
-                          </Link>
+                          </Link> */}
                         </div>
                       );
                     })}
