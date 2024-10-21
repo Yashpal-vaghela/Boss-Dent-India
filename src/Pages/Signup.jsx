@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AlertSuccess from "../component/AlertSuccess"; // Adjust the path as needed
 import Loader1 from "../component/Loader1";
 
@@ -322,7 +322,7 @@ const Signup = () => {
                   Sign Up
                 </button>
                 <p className="login-text">
-                  I already have an account? <a href="/my-account">Log in</a>
+                  I already have an account? <Link to="/my-account">Log in</Link>
                 </p>
               </form>
             ) : (

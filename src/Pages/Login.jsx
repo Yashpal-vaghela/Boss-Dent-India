@@ -79,9 +79,11 @@ const Login = () => {
       });
       setTimeout(() => {
         const redirectPath = location.state?.from || "/";
-        if(location.state !== null){
-          navigate(redirectPath, {state:{productId:location.state.productId}});
-        }else{
+        if (location.state !== null) {
+          navigate(redirectPath, {
+            state: { productId: location.state.productId },
+          });
+        } else {
           navigate(redirectPath);
         }
       }, 2100);
@@ -184,7 +186,7 @@ const Login = () => {
                 <label htmlFor="rememberMe">Remember Me</label>
               </div>
               <div>
-                <Link href="/forgot-password" className="forgot-password-l">
+                <Link to="/forgot-password" className="forgot-password-l">
                   Forgot Password?
                 </Link>
               </div>
@@ -193,7 +195,7 @@ const Login = () => {
               Log in
             </button>
             <p className="login-text">
-              Don't have an account? <a href="/sign-up">Sign Up</a>
+              Don't have an account? <Link to="/sign-up">Sign Up</Link>
             </p>
           </form>
         </div>

@@ -32,7 +32,7 @@ const Success = () => {
               <p>Thanks for shopping with us online!</p>
               <div className="buttons">
                 <div className="right">
-                  <Link href="/" className="btn text-white">
+                  <Link to="/" className="btn text-white">
                     Continue Shopping
                   </Link>
                 </div>

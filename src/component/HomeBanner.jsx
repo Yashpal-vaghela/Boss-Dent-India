@@ -65,11 +65,7 @@ const HomeBanner = () => {
           >
             <div className="banneer-img-main">
               <img
-              // src="/asset/images/Bossdent ( Web banners )-01.gif"
-                // src="/asset/images/Bossdent ( Web banners )-01.webp"
-                // src="/asset/images/Bossdent-Web-banners-01.jpg"
-                 src="/asset/images/Bossdent ( Web banners-01).webp"
-                // src="/asset/images/Bossdent ( Web banners ) re size-01.webp"
+                src="/asset/images/Bossdent ( Web banners-01).webp"
                 alt="banner1"
                 className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                 onLoad={handleImageLoad}
@@ -99,11 +95,7 @@ const HomeBanner = () => {
           >
             <div className="banneer-img-main">
               <img
-              src="/asset/images/Bossdent ( Web banners-02).webp"
-              // src="/asset/images/Bossdent ( Web banners )-02.gif"
-                // src="/asset/images/Bossdent ( Web banners )-02.webp"
-                // src="/asset/images/Bossdent-Web-banners-02.jpg"
-                // src="/asset/images/Bossdent ( Web banners ) re size-02.webp"
+                src="/asset/images/Bossdent ( Web banners-02).webp"
                 alt="banner2"
                 className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                 onLoad={handleImageLoad}
@@ -124,10 +116,6 @@ const HomeBanner = () => {
             <div className="banneer-img-main">
               <img
                 src="/asset/images/Bossdent ( Web banners-03).webp"
-              // src="/asset/images/Bossdent ( Web banners ) re size-03.webp"
-                // src="/asset/images/Bossdent ( Web banners )-03.gif"
-                // src="/asset/images/Bossdent-Web-banners-03.jpg"
-                // src="/asset/images/Bossdent ( Web banners )-03.webp"
                 alt="banner3"
                 className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                 onLoad={handleImageLoad}
@@ -147,11 +135,7 @@ const HomeBanner = () => {
           >
             <div className="banneer-img-main">
               <img
-                // src="/asset/images/Bossdent ( Web banners )-04.webp"
-                // src="/asset/images/Bossdent ( Web banners )-04.gif"
-                // src="/asset/images/Bossdent-Web-banners-04.jpg"
                 src="/asset/images/Bossdent ( Web banners-04).webp"
-                // src="/asset/images/Bossdent ( Web banners ) re size-04.webp"
                 alt="banner4"
                 className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
                 onLoad={handleImageLoad}

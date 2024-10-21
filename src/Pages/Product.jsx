@@ -1,10 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import {
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 import { useWatchlist } from "./WatchlistContext";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
@@ -22,8 +18,13 @@ const Product = () => {
   const [loading, setLoading] = useState(true);
   const [totalProducts, setTotalProducts] = useState(0);
   const [stockStatuses, setStockStatuses] = useState({});
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(9);
+  const [currentPage, setCurrentPage] = useState(()=>{
+    const a = localStorage.getItem("Product_page");
+    return  a ? Number(localStorage.getItem('Product_page')) : 1
+  });
+  const [itemsPerPage] = useState(() => {
+    return window.innerWidth >= 1400 ? 12 : 9;
+  });
   const {
     watchlist,
     addToWatchlist,
@@ -48,10 +49,11 @@ const Product = () => {
 
   // fetch product data
   const fetchProducts = useCallback(
-    async (page = 1) => {
+    async (currentPage1) => {
+      // console.log("curre",currentPage,currentPage1)
       setLoading(true);
       try {
-        let apiUrl = `https://admin.bossdentindia.com/wp-json/wp/v2/product?per_page=${itemsPerPage}&page=${page}`;
+        let apiUrl = `https://admin.bossdentindia.com/wp-json/wp/v2/product?per_page=${itemsPerPage}&page=${currentPage1}`;
         // const perPage = 100;
         if (category) {
           apiUrl += `&product_cat=${category}`;
@@ -98,7 +100,12 @@ const Product = () => {
   }, []);
 
   useEffect(() => {
+    // setCurrentPage(()=>{
+    //   const a = localStorage.getItem("Product_page");
+    //   return  a ? Number(localStorage.getItem('Product_page')) : 1
+    // })
     fetchProducts(currentPage);
+    // console.log("item", itemsPerPage, window.innerWidth >= 1400);
   }, [fetchProducts, currentPage]);
 
   useEffect(() => {
@@ -118,6 +125,7 @@ const Product = () => {
   };
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    localStorage.setItem('Product_page',page);
   };
 
   const handleCategoryClick = (newCategory) => {
@@ -130,7 +138,6 @@ const Product = () => {
   };
 
   const handleAddToCart = async (e, product) => {
-    // console.log("product", product, product.id);
     e.preventDefault();
     if (getUserData) {
       const stockStatus = stockStatuses[product.id];
@@ -148,10 +155,10 @@ const Product = () => {
               });
               // console.log("filterData", filterCartData, cartProductId);
               const filterCartProduct = getcartProductData.cart_items.filter(
-                (item) => item.product_id == product.id
+                (item) => Number(item.product_id) === product.id
               );
               // console.log("filter",filterCartProduct)
-              if (filterCartData.length == 0) {
+              if (filterCartData.length === 0) {
                 await axios
                   .post(
                     `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
@@ -183,16 +190,10 @@ const Product = () => {
                       return prevCartProductId;
                     });
                     addToCartListProduct(product.id, {}, userData);
-                    // addToCartList(product.id,{},userData);
                     localStorage.setItem("cart_length", res.data.cart_length);
                     toast.success("Product added to cart!");
                   });
               } else {
-                // console.log(
-                //   "update-cart",
-                //   getcartProductData,
-                //   filterCartProduct
-                // );
                 await axios
                   .post(
                     `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
@@ -239,7 +240,7 @@ const Product = () => {
   const handleAddToWatchlist = async (product) => {
     if (isLoggedIn) {
       if (watchlist.includes(product.id)) {
-         await axios
+        await axios
           .delete(
             `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/delete`,
             {
@@ -265,7 +266,7 @@ const Product = () => {
           `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${product.id}`
         );
         const productWeight = weightResponse.data.weight;
-         await axios
+        await axios
           .post(
             "https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/add",
             {
@@ -352,7 +353,7 @@ const Product = () => {
                               className="product-link"
                               onClick={() => handleProductClick(product)}
                             >
-                                {imageUrl && (
+                              {imageUrl && (
                                 <img
                                   src={product.yoast_head_json.og_image[0].url}
                                   alt={product.title.rendered}
@@ -373,32 +374,6 @@ const Product = () => {
                                 {product.title.rendered}
                               </h3>
                             </div>
-                            {/* <Link
-                              to={`/products/${product.slug}`}
-                              className="product-link"
-                              onClick={() => handleProductClick(product)}
-                            >
-                              {imageUrl && (
-                                <img
-                                  src={product.yoast_head_json.og_image[0].url}
-                                  alt={product.title.rendered}
-                                  className="product-image"
-                                  loading="lazy"
-                                  onLoad={handleImageLoad}
-                                />
-                              )}
-                              <h3
-                                className="product-title"
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  height: "60px",
-                                }}
-                              >
-                                {product.title.rendered}
-                              </h3>
-                            </Link> */}
                           </div>
                           <h3
                             className="product-price "
@@ -459,16 +434,6 @@ const Product = () => {
                               Learn More
                             </button>
                           </div>
-
-                          {/* <Link
-                            to={`/products/${product.slug}`}
-                            className="product-button-main"
-                            onClick={() => handleProductClick(product)}
-                          >
-                             <button className="product-button">
-                              Learn More
-                            </button>
-                          </Link> */}
                         </div>
                       );
                     })}

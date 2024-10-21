@@ -11,7 +11,7 @@ const Loader = () => {
         className="img-fluid loader-img"
         width={200}
         height={100}
-        alt="loader-image photo"
+        alt=""
       ></img>
     </div>
   );

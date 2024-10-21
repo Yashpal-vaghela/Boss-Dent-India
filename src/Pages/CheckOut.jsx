@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import * as yup from "yup";
 import BreadCrumbs from "../component/BreadCrumbs";
 import Indian_states_cities_list from "indian-states-cities-list";
@@ -28,39 +28,56 @@ const CheckOut = () => {
   const deliveryChargData = localStorage.getItem("deliveryCharge");
   const [coupon, setCoupon] = useState("");
   const [couponError, setCouponError] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod] = useState("PhonePe");
   const [States, setStates] = useState([]);
   const [loading, setLoading] = useState(false);
   const [getCouponData, setGetCouponData] = useState([]);
   const token = localStorage.getItem("token");
   const [getCartData] = useState(JSON.parse(localStorage.getItem("cart")));
-  const [cartTotal] = useState(
-    getCartData?.cart_total.total_price
-  );
+  const [cartTotal] = useState(getCartData?.cart_total.total_price);
   const [finalTotal, setFinalTotal] = useState();
   const [discountAmount, setDiscountAmount] = useState();
+  const [HandleSubmit,setHandleSubmit] = useState(false);
 
   const getCoupon = async () => {
+    // setLoading(true)
     await axios
       .get("https://admin.bossdentindia.com/wp-json/custom/v1/coupons")
       .then((res) => {
+        // setLoading(false);
         // console.log("res", res.data);
         setGetCouponData(res.data);
         localStorage.setItem("couponData", JSON.stringify(res.data));
       })
-      .catch((err) => console.log("err", err));
+      .catch((err) => {setLoading(false);console.log("err", err)});
   };
 
   useEffect(() => {
     setStates(Indian_states_cities_list?.STATES_OBJECT);
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
+    // setLoading(true);
+    // setTimeout(() => {
+    //   setLoading(false);
+    // }, 500);
     getCoupon();
-    // console.log("formik",formik)
   }, []);
 
+  const handleApplyCouponCode = () => {
+    const filtercoupon = getCouponData.filter(
+      (item) => item.post_title === coupon
+    );
+    
+    if (filtercoupon && finalTotal > 2000) {
+      const total = finalTotal - (finalTotal * 10) / 100;
+      const discount = finalTotal - total;
+      setDiscountAmount(discount.toFixed(2));
+      setFinalTotal(total);
+      setCouponError("");
+    } else {
+      setCouponError(
+        `${coupon} discount code apply on only more than ₹2000 price.`
+      )
+    }
+  };
   useEffect(() => {
     setFinalTotal(
       getCartData?.cart_total.total_price + Number(deliveryChargData)
@@ -70,9 +87,10 @@ const CheckOut = () => {
     }
   }, [cartTotal, deliveryChargData]);
 
-  const handlePaymentSelect = (method) => {
-    setPaymentMethod(method);
-  };
+  // const handlePaymentSelect = (method) => {
+  //   setPaymentMethod(method);
+  // };
+
   // new form validation
   const initialValues = {
     name: "",
@@ -90,47 +108,13 @@ const CheckOut = () => {
     validateOnChange: true,
     validateOnBlur: false,
     onSubmit: async () => {
-      console.log("finalsubmit",paymentMethod,getCartData);
-      if (paymentMethod)
-      {
-        try {
-          setLoading(true);
-          // Create the order and retrieve the order ID
-          const orderResponse = await fetch(
-            "https://admin.bossdentindia.com/wp-json/custom/v1/order_create",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-              body: JSON.stringify({
-                amount: finalTotal,
-                customerDetails: formik?.values,
-                items: getCartData.cart_items?.map((item) => ({
-                  product_id: Number(item?.product_id),
-                  quantity: Number(item?.product_quantity),
-                })),
-              }),
-            }
-          );
-
-          if (!orderResponse.ok) {
-            const errorText = await orderResponse.text();
-            console.error("Order creation error:", errorText);
-            throw new Error("Failed to create order.");
-          } else {
-            setLoading(false);
-          }
-
-          const orderData = await orderResponse.json();
-          const newOrderId = orderData.orderId.toString();
-
-          //  Proceed to payment
-          if (paymentMethod === "PhonePe") {
+      console.log("finalsubmit", paymentMethod, getCartData,HandleSubmit);
+        if (paymentMethod && HandleSubmit === true) {
+          try {
             setLoading(true);
-            const paymentResponse = await fetch(
-              "https://admin.bossdentindia.com/wp-json/phone/v1/initiate-payment",
+            // Create the order and retrieve the order ID
+            const orderResponse = await fetch(
+              "https://admin.bossdentindia.com/wp-json/custom/v1/order_create",
               {
                 method: "POST",
                 headers: {
@@ -140,65 +124,78 @@ const CheckOut = () => {
                 body: JSON.stringify({
                   amount: finalTotal,
                   customerDetails: formik?.values,
-                  orderId: newOrderId, // Pass the order ID to the payment initiation
+                  items: getCartData.cart_items?.map((item) => ({
+                    product_id: Number(item?.product_id),
+                    quantity: Number(item?.product_quantity),
+                  })),
                 }),
               }
             );
 
-            if (!paymentResponse.ok) {
-              const paymentErrorText = await paymentResponse.text();
-              console.error("Payment response error text:", paymentErrorText);
-              throw new Error("Failed to initiate payment.");
+            if (!orderResponse.ok) {
+              const errorText = await orderResponse.text();
+              console.error("Order creation error:", errorText);
+              throw new Error("Failed to create order.");
+            } else {
+              setLoading(false);
             }
 
-            const paymentData = await paymentResponse.json();
-            if (
-              paymentData.success &&
-              paymentData.data &&
-              paymentData.data.instrumentResponse &&
-              paymentData.data.instrumentResponse.redirectInfo &&
-              paymentData.data.instrumentResponse.redirectInfo.url
-            ) {
-              setLoading(false);
-              const paymentUrl =
-                paymentData.data.instrumentResponse.redirectInfo.url;
-              // window.location.href = paymentUrl;
-              window.open(paymentUrl, "_blank");
+            const orderData = await orderResponse.json();
+            const newOrderId = orderData.orderId.toString();
+
+            //  Proceed to payment
+            if (paymentMethod === "PhonePe") {
+              setLoading(true);
+              const paymentResponse = await fetch(
+                "https://admin.bossdentindia.com/wp-json/phone/v1/initiate-payment",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: JSON.stringify({
+                    amount: finalTotal,
+                    customerDetails: formik?.values,
+                    orderId: newOrderId, // Pass the order ID to the payment initiation
+                  }),
+                }
+              );
+
+              if (!paymentResponse.ok) {
+                const paymentErrorText = await paymentResponse.text();
+                console.error("Payment response error text:", paymentErrorText);
+                throw new Error("Failed to initiate payment.");
+              }
+
+              const paymentData = await paymentResponse.json();
+              if (
+                paymentData.success &&
+                paymentData.data &&
+                paymentData.data.instrumentResponse &&
+                paymentData.data.instrumentResponse.redirectInfo &&
+                paymentData.data.instrumentResponse.redirectInfo.url
+              ) {
+                setLoading(false);
+                const paymentUrl =
+                  paymentData.data.instrumentResponse.redirectInfo.url;
+                // window.location.href = paymentUrl;
+                window.open(paymentUrl, "_blank");
+              }
             }
+          } catch (error) {
+            toast.error(error?.message);
+            console.error("Error handling checkout:", error, error?.message);
+            // alert("Error processing payment. Please try again.");
           }
-        } catch (error) {
-          toast.error(error?.message);
-          console.error("Error handling checkout:", error, error?.message);
-          // alert("Error processing payment. Please try again.");
         }
-      }
-       
     },
   });
+
   //Applied coupon code
   const handleCouponChange = (e) => {
     setCoupon(e.target.value);
     setCouponError("");
-  };
-
-  const handleApplyCouponCode = () => {
-    const filtercoupon = getCouponData.filter(
-      (item) => item.post_title === coupon
-    );
-    if (filtercoupon && finalTotal > 2000) {
-      const total = finalTotal - (finalTotal * 10) / 100;
-      const discount = finalTotal - total;
-      setDiscountAmount(discount.toFixed(2));
-      setFinalTotal(total);
-      setCouponError("");
-    } else if (coupon) {
-      // setTimeout(()=>{
-      //   setCouponError("");
-      // },2000)
-      setCouponError(
-        `${coupon} discount code apply on only more than ₹2000 price.`
-      );
-    }
   };
 
   const handleRemoveCoupon = () => {
@@ -282,12 +279,15 @@ const CheckOut = () => {
                     >
                       <label className="form-label">Phone:</label>
                       <input
-                        type="text"
+                        type="number"
                         name="phone"
                         className="form-control"
                         value={formik?.values?.phone || ""}
                         onChange={formik?.handleChange}
                         onBlur={formik?.handleBlur}
+                        maxLength={10}
+                        minLength={10}
+                        pattern="\d{10}"
                       />
                       {formik?.errors?.phone && (
                         <span className="text-danger">
@@ -470,10 +470,10 @@ const CheckOut = () => {
                       )}
                     </div>
                     <div
-                      // className="order-coupon-code"
-                      className={`${
-                        couponError ? "order-coupon-code" : "order-coupon-code"
-                      }`}
+                      className="order-coupon-code"
+                      // className={`${
+                      //   couponError ? "order-coupon-code" : "order-coupon-code"
+                      // }`}
                     >
                       <input
                         className="form-control w-75"
@@ -528,7 +528,6 @@ const CheckOut = () => {
                               ></i>
                             </span>
                           </div>
-
                           <p>-₹{discountAmount}</p>
                         </div>
                       )}
@@ -553,7 +552,7 @@ const CheckOut = () => {
                         <img
                           src="/asset/images/Phone-pe.png"
                           alt="PhonePe"
-                          onClick={() => handlePaymentSelect("PhonePe")}
+                          // onClick={() => handlePaymentSelect("PhonePe")}
                           className={
                             paymentMethod === "PhonePe" ? "selected" : ""
                           }
@@ -567,7 +566,12 @@ const CheckOut = () => {
                           }
                         /> */}
                       </div>
-                      <button type="submit" className="payment-button">
+                      {formik?.errors?.paymentMethod && (
+                        <span className="text-danger text-center d-block">
+                          {formik?.errors?.paymentMethod}
+                        </span>
+                      )}
+                      <button type="submit" className="payment-button" onClick={()=>setHandleSubmit((prev)=>!prev)}>
                         Proceed to payment
                       </button>
                     </div>

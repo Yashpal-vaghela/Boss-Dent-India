@@ -36,7 +36,6 @@ const SingleProduct = () => {
   const [weight, setWeight] = useState(null);
   const [activeSection, setActivesection] = useState("description");
   const { id } = useParams();
-  // const dispatch = useDispatch();
   const navigate = useNavigate();
   const [alertMessage, setAlertMessage] = useState("");
   const [selectedColor, setSelectedColor] = useState(null);

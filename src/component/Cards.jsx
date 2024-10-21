@@ -59,12 +59,12 @@ const Cards = () => {
   const applicators = [
     {
       appimage: "/asset/images/TIPS.jpg",
-      appname: "Elongated Micro Applicator Tips",
+      appname: "Micro Applicator Tips",
     },
-    { appimage: "/asset/images/TIPS1.jpg", appname: "Micro Applicator Tips" },
-    { appimage: "/asset/images/TIPS2.jpg", appname: "Micro Applicator Tips" },
+    { appimage: "/asset/images/TIPS1.jpg", appname: "Elongated Micro Applicator Tips" },
+    { appimage: "/asset/images/TIPS2.jpg", appname: "Elongated Micro Applicator Tips" },
     // { appimage: "/asset/images/TIPS3.jpg", appname: "Micro Applicator Tips" },
-    { appimage: "/asset/images/TIPS4.jpg", appname: "Micro Applicator Tips" },
+    { appimage: "/asset/images/TIPS4.jpg", appname: "Fine Micro Applicator Tips" },
     {
       appimage: "/asset/images/TIPS5.jpg",
       appname: "Fine Micro Applicator Tips",
@@ -77,7 +77,7 @@ const Cards = () => {
 
   const navigate = useNavigate();
   const handleProductNavigate = (e, slug, id) => {
-    console.log("e", e, slug, id);
+    // console.log("e", e, slug, id);
     navigate(`/products/${encodeURIComponent(slug)}}`, {
       state: { productId: id },
     });

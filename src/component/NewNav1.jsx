@@ -56,7 +56,7 @@ const NewNav1 = () => {
     }
   };
   const handleClick = (product) => {
-    console.log("pro",product)
+    // console.log("pro",product)
     navigate(`/products/${encodeURIComponent(product.slug)}`, {
       state: { productId: Number(product.id) },
     });

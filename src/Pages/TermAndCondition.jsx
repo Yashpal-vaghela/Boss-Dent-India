@@ -1,5 +1,6 @@
 import React from 'react'
 import BreadCrumbs from '../component/BreadCrumbs'
+import { Link } from 'react-router-dom'
 
 const TermAndCondition = () => {
   return (
@@ -16,7 +17,7 @@ const TermAndCondition = () => {
             <p>Welcome to bossdentindia.com!</p>
             <p>
             These terms and conditions outline the rules and regulations for the use of bossdentindia’s Website, located at  
-            <a href="https://bossdentindia.com" target="_blank" rel="noopener noreferrer"> https://bossdentindia.com</a>.
+            <Link to="https://bossdentindia.com" target="_blank" rel="noopener noreferrer"> https://bossdentindia.com</Link>
             </p>
             <p>
                 By accessing this website we assume you accept these terms and conditions. Do not continue to use bossdentindia.com if you do not agree to take all of the terms and conditions stated on this page.
