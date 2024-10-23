@@ -18,10 +18,8 @@ import ForgotPassword from "./ForgotPassword";
 import NewNav1 from "./NewNav1";
 import NewCart from "../Pages/NewCart";
 import ProtectedRoute from "./ProtectedRoute";
-// import ErrorPage from "../Pages/404";
 import Gallery from "../Pages/Gallery";
-// import Success from "../Pages/Success";
-// import ImageGallery from './ImageGallery'
+import Success from "../Pages/success";
 
 const Allroutes = () => {
   return (
@@ -50,7 +48,7 @@ const Allroutes = () => {
         <Route path="/cart" element={<ProtectedRoute><NewCart/></ProtectedRoute>}/>
         <Route path="/checkout" element={<ProtectedRoute><CheckOut/></ProtectedRoute>}/>
         <Route path="/gallery" element={<Gallery/>}></Route>
-        {/* <Route path="/success" element={<Success></Success>}> </Route> */}
+        <Route path="/success" element={<Success/>} />
         <Route path="*" element={<Home/>}></Route>
       </Routes>
     </>

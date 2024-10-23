@@ -1,74 +1,96 @@
-/* .checkout-success-wrapper{
-    padding: 20px 0px 0px;
-    background-image: url(../../public/asset/images/Thank-you-banner2.jpg);
-    width: 100vw;
-    height: 100vh;
-    background-position:center;
-    background-size: contain;
-    background-repeat: no-repeat;
-} */
-
-/* .checkout-success-wrapper{
+.checkout-success-wrapper {
     margin-bottom: 20px;
-} */
-
-/* .checkout-success-wrapper{
-    position: relative;
-}
-.checkout-success-message{
-    position: absolute;
-    z-index: 1;
-    top: 30%;
-    color: #fff;
-    font-weight: 40px;
+    background-color: #f8f9fa;
+    padding: 40px;
+    text-align: center;
+    width: 60%;
 }
 
+.checkout-success-message {
+    font-size: 2.5em;
+    color: #28a745;
+    margin-bottom: 20px;
+}
 
- */
+.order-status-success {
+    color: #28a745;
+    font-weight: bold;
+    font-size: 1.2em;
+  }
 
+.order-status-failed{
+    color: #d40707;
+    font-weight: bold;
+    font-size: 1.2em;
+}
 
+.order-id{
+    font-size: 1.1em;
+    font-weight: bold;
+    
+}
 
+.contact-detalis {
+    font-size: 1.1em;
+    margin: 20px 0;
+}
+.checkout-success {
+    margin-top: 30px;
+    padding: 20px;
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+  }
+  
+.receipt-table p {
+  font-size: 1.2em;
+  margin-bottom: 15px;
+}
 
-
-/* 
-.page-content{
+.page-content {
     margin-bottom: 20px;
     margin-top: 10px;
 }
-.page-content .container{
+
+.page-content .container {
     max-width: 1350px;
 }
-.page-content .container .checkout-success{
- background-color: #fff;
- padding: 20px;
- width:100%;
- font-family: webfont;
+
+.page-content .container .checkout-success {
+    background-color: #fff;
+    padding: 20px;
+    width: 100%;
+    font-family: webfont;
 }
-.page-content .container .navbar{
+
+.page-content .container .navbar {
     padding: 15px;
     background-color: #EFEFEF;
     border-radius: 5px;
     display: block;
     font-size: 18px;
-  
+
 }
-.page-content .breadcrumb{
-  vertical-align: middle;
-  align-items: center;
-  margin-bottom: 0;
-  color: #264882;
+
+.page-content .breadcrumb {
+    vertical-align: middle;
+    align-items: center;
+    margin-bottom: 0;
+    color: #264882;
 }
 
 
 
-#content h1{
-   margin-top: 25px;
+#content h1 {
+    margin-top: 25px;
 }
-.content-wrap{
+
+.content-wrap {
     font-size: 12px;
     color: #000000;
 }
-.receipt-table{
+
+.receipt-table {
     width: 680px;
     margin: 0 auto;
 }
@@ -79,7 +101,8 @@
     font-weight: bold;
     display: inline-block;
 }
-.receipt-table table{
+
+.receipt-table table {
     border-collapse: collapse;
     width: 100%;
     border-top: 1px solid #DDDDDD;
@@ -87,7 +110,7 @@
     margin-bottom: 20px;
 }
 
-.receipt-table thead td{
+.receipt-table thead td {
     font-size: 14px;
     border-right: 1px solid #DDDDDD;
     border-bottom: 1px solid #DDDDDD;
@@ -98,61 +121,64 @@
     color: #222222;
 }
 
-.receipt-table tbody td{
+.receipt-table tbody td {
     font-size: 14px;
     border-right: 1px solid #DDDDDD;
     border-bottom: 1px solid #DDDDDD;
     text-align: left;
     padding: 7px;
 }
-.receipt-table tfoot td{
+
+.receipt-table tfoot td {
     text-align: right;
     padding: 7px;
     border-right: 1px solid #DDDDDD;
     border-bottom: 1px solid #DDDDDD;
 
 }
-.buttons .btn{
+
+.buttons .btn {
     background-color: #152238;
 
 }
 
-@media(max-width:992px)
-{
-    .page-content .container{
+@media(max-width:992px) {
+    .page-content .container {
         max-width: 1230px;
     }
-    .page-content .container .checkout-success
-    {
+
+    .page-content .container .checkout-success {
         padding: 20px 20px 50px;
     }
-    .receipt-table{
-        width:670px;
+
+    .receipt-table {
+        width: 670px;
         margin: 0 auto;
     }
 }
 
-@media(max-width:768px)
-{
-    .page-content{
-        margin-top:10px;
+@media(max-width:768px) {
+    .page-content {
+        margin-top: 10px;
         margin-bottom: 10px;
     }
-    .page-content .container{
-       padding: 0;
+
+    .page-content .container {
+        padding: 0;
     }
-    .receipt-table{
-        width:100%;
+
+    .receipt-table {
+        width: 100%;
     }
 }
-@media(max-width:576px)
-{
-    .page-content .container{
+
+@media(max-width:576px) {
+    .page-content .container {
         max-width: 1100px;
     }
+
     .page-content .container .navbar {
         font-size: 16px;
     }
-   
+
 }
- */

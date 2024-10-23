@@ -7,6 +7,7 @@ import Loader1 from "../component/Loader1";
 import Loader from "../component/Loader";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Success from "./success";
 
 const checkoutSchema = yup.object().shape({
   name: yup.string().required("Name field is required"),
@@ -38,6 +39,8 @@ const CheckOut = () => {
   const [finalTotal, setFinalTotal] = useState();
   const [discountAmount, setDiscountAmount] = useState();
   const [HandleSubmit,setHandleSubmit] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false)
+  const [orderId, setOrderId] = useState("");
 
   const getCoupon = async () => {
     // setLoading(true)
@@ -54,10 +57,6 @@ const CheckOut = () => {
 
   useEffect(() => {
     setStates(Indian_states_cities_list?.STATES_OBJECT);
-    // setLoading(true);
-    // setTimeout(() => {
-    //   setLoading(false);
-    // }, 500);
     getCoupon();
   }, []);
 
@@ -108,7 +107,7 @@ const CheckOut = () => {
     validateOnChange: true,
     validateOnBlur: false,
     onSubmit: async () => {
-      console.log("finalsubmit", paymentMethod, getCartData,HandleSubmit);
+      // console.log("finalsubmit", paymentMethod, getCartData,HandleSubmit);
         if (paymentMethod && HandleSubmit === true) {
           try {
             setLoading(true);
@@ -142,6 +141,7 @@ const CheckOut = () => {
 
             const orderData = await orderResponse.json();
             const newOrderId = orderData.orderId.toString();
+            setOrderId(newOrderId);
 
             //  Proceed to payment
             if (paymentMethod === "PhonePe") {
@@ -181,6 +181,8 @@ const CheckOut = () => {
                   paymentData.data.instrumentResponse.redirectInfo.url;
                 // window.location.href = paymentUrl;
                 window.open(paymentUrl, "_blank");
+                localStorage.setItem("cart", JSON.stringify({ cart_items: [], cart_total: {} }));
+                setPaymentSuccess(true);
               }
             }
           } catch (error) {
@@ -203,6 +205,10 @@ const CheckOut = () => {
     setCoupon("");
     setCouponError("");
   };
+
+  if (paymentSuccess){
+    <Success orderId={orderId} />
+  }
 
   return (
     <>
