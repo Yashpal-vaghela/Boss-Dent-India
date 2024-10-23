@@ -12,15 +12,16 @@ import Category from "../component/Category";
 import Loader from "../component/Loader";
 import { toast } from "react-toastify";
 import ProductPagination from "../component/ProductPagination";
+import { Link } from "react-router-dom";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalProducts, setTotalProducts] = useState(0);
   const [stockStatuses, setStockStatuses] = useState({});
-  const [currentPage, setCurrentPage] = useState(()=>{
+  const [currentPage, setCurrentPage] = useState(() => {
     const a = localStorage.getItem("Product_page");
-    return  a ? Number(localStorage.getItem('Product_page')) : 1
+    return a ? Number(localStorage.getItem("Product_page")) : 1;
   });
   const [itemsPerPage] = useState(() => {
     return window.innerWidth >= 1400 ? 12 : 9;
@@ -100,12 +101,7 @@ const Product = () => {
   }, []);
 
   useEffect(() => {
-    // setCurrentPage(()=>{
-    //   const a = localStorage.getItem("Product_page");
-    //   return  a ? Number(localStorage.getItem('Product_page')) : 1
-    // })
     fetchProducts(currentPage);
-    // console.log("item", itemsPerPage, window.innerWidth >= 1400);
   }, [fetchProducts, currentPage]);
 
   useEffect(() => {
@@ -118,14 +114,10 @@ const Product = () => {
     setgetcartProductData(JSON.parse(localStorage.getItem("cart")));
   }, [alertMessage]);
 
-  const handleProductClick = (product) => {
-    navigate(`/products/${encodeURIComponent(product.slug)}`, {
-      state: { productId: product.id },
-    });
-  };
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    localStorage.setItem('Product_page',page);
+    localStorage.setItem("Product_page", page);
   };
 
   const handleCategoryClick = (newCategory) => {
@@ -349,9 +341,11 @@ const Product = () => {
                       return (
                         <div className="product-card" key={product.id}>
                           <div className="product-card-link">
-                            <div
+                            <Link
                               className="product-link"
-                              onClick={() => handleProductClick(product)}
+                              to={`/products/${encodeURIComponent(
+                                product.slug
+                              )}`}
                             >
                               {imageUrl && (
                                 <img
@@ -373,10 +367,10 @@ const Product = () => {
                               >
                                 {product.title.rendered}
                               </h3>
-                            </div>
+                            </Link>
                           </div>
                           <h3
-                            className="product-price "
+                            className="product-price"
                             style={{
                               textAlign: "center",
                             }}
@@ -384,15 +378,17 @@ const Product = () => {
                             Price: {product.price} ₹
                           </h3>
                           <div className="product-actions">
-                            <button
+                            <Link
+                              to={`/products/${encodeURIComponent(
+                                product.slug
+                              )}`}
                               className="btnProductQuickview"
                               data-toggle="tooltip"
                               data-placement="top"
                               data-original-title="Quick view"
-                              onClick={() => handleProductClick(product)}
                             >
                               <BsFillGridFill />
-                            </button>
+                            </Link>
                             <button
                               className={`btn-quick-add ${
                                 stockStatuses[product.id] !== "instock"
@@ -426,14 +422,14 @@ const Product = () => {
                               )}
                             </button>
                           </div>
-                          <div
+                          <Link
+                            to={`/products/${encodeURIComponent(product.slug)}`}
                             className="product-button-main"
-                            onClick={() => handleProductClick(product)}
                           >
                             <button className="product-button">
                               Learn More
                             </button>
-                          </div>
+                          </Link>
                         </div>
                       );
                     })}

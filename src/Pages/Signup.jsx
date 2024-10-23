@@ -13,7 +13,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState([]);
   const [error, setError] = useState("");
   const  [passwordError, setPasswordError] = useState('')
   const [otp, setOTP] = useState("");
@@ -53,7 +53,7 @@ const Signup = () => {
     if (phone.length !== 10) {
       setPhone(e.target.value);
     } else {
-      setPhone();
+      setPhone([]);
     }
   };
   const handleSubmit = async (e) => {

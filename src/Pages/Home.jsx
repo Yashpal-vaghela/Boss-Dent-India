@@ -55,7 +55,16 @@ const Home = () => {
               data-aos="fade-down"
               // data-aos-delay="200"
             >
-              <Link to="/products?category=127">
+              <Link
+                to="/products?category=127"
+                // onClick={() => {
+                //   return localStorage.getItem("Product_page") > 1 ? (
+                //     localStorage.setItem("Product_page", 1)
+                //   ) : (
+                //     <></>
+                //   );
+                // }}
+              >
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
                     <img src="/asset/images/v2-logo.png" alt="Vincismile" />
@@ -102,7 +111,10 @@ const Home = () => {
               </p>
             </div>
             <div className="other-banner-btn-main">
-              <Link to="/products/1185" className="other-banner-btn-0">
+              <Link
+                to="/products/topcem-dual-cure-resin-cement"
+                className="other-banner-btn-0"
+              >
                 <button className="other-banner-btn">SEE COLLECTION</button>
               </Link>
             </div>
@@ -119,8 +131,10 @@ const Home = () => {
       <section>
         <div className="other-cards-main-section">
           <div className="main-title-other-card-main">
-            <h2 className="main-title" data-aos="fade-down" 
-            // data-aos-delay="0"
+            <h2
+              className="main-title"
+              data-aos="fade-down"
+              // data-aos-delay="0"
             >
               Our Services
             </h2>

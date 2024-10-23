@@ -14,7 +14,6 @@
     "react-animate-on-scroll": "^2.1.9",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
-    "react-intersection-observer": "^9.13.0",
     "react-loader-spinner": "^6.1.6",
     "react-medium-image-zoom": "^5.2.5",
     "react-router-dom": "^6.23.1",
@@ -24,7 +23,6 @@
     "slick-carousel": "^1.8.1",
     "sweetalert2": "^11.12.0",
     "swiper": "^11.1.9",
-    "url": "^0.11.3",
     "web-vitals": "^2.1.4",
     "yet-another-react-lightbox": "^3.21.6",
     "yup": "^1.4.0"

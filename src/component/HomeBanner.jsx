@@ -62,6 +62,13 @@ const HomeBanner = () => {
             onMouseUp={handleHoldEnd}
             onTouchStart={handleHoldStart}
             onTouchEnd={handleHoldEnd}
+            onClick={() => {
+              return localStorage.getItem("Product_page") > 1 ? (
+                localStorage.setItem("Product_page", 1)
+              ) : (
+                <></>
+              );
+            }}
           >
             <div className="banneer-img-main">
               <img
@@ -86,7 +93,7 @@ const HomeBanner = () => {
         </SwiperSlide>
         <SwiperSlide>
           <Link
-            to="/products/2092"
+            to="/products/patient-bibs"
             className="banner-2-main"
             onMouseDown={handleHoldStart}
             onMouseUp={handleHoldEnd}
@@ -112,6 +119,13 @@ const HomeBanner = () => {
             onMouseUp={handleHoldEnd}
             onTouchStart={handleHoldStart}
             onTouchEnd={handleHoldEnd}
+            onClick={() => {
+              return localStorage.getItem("Product_page") > 1 ? (
+                localStorage.setItem("Product_page", 1)
+              ) : (
+                <></>
+              );
+            }}
           >
             <div className="banneer-img-main">
               <img
@@ -132,6 +146,13 @@ const HomeBanner = () => {
             onMouseUp={handleHoldEnd}
             onTouchStart={handleHoldStart}
             onTouchEnd={handleHoldEnd}
+            onClick={() => {
+              return localStorage.getItem("Product_page") > 1 ? (
+                localStorage.setItem("Product_page", 1)
+              ) : (
+                <></>
+              );
+            }}
           >
             <div className="banneer-img-main">
               <img

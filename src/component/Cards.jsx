@@ -61,10 +61,19 @@ const Cards = () => {
       appimage: "/asset/images/TIPS.jpg",
       appname: "Micro Applicator Tips",
     },
-    { appimage: "/asset/images/TIPS1.jpg", appname: "Elongated Micro Applicator Tips" },
-    { appimage: "/asset/images/TIPS2.jpg", appname: "Elongated Micro Applicator Tips" },
+    {
+      appimage: "/asset/images/TIPS1.jpg",
+      appname: "Elongated Micro Applicator Tips",
+    },
+    {
+      appimage: "/asset/images/TIPS2.jpg",
+      appname: "Elongated Micro Applicator Tips",
+    },
     // { appimage: "/asset/images/TIPS3.jpg", appname: "Micro Applicator Tips" },
-    { appimage: "/asset/images/TIPS4.jpg", appname: "Fine Micro Applicator Tips" },
+    {
+      appimage: "/asset/images/TIPS4.jpg",
+      appname: "Fine Micro Applicator Tips",
+    },
     {
       appimage: "/asset/images/TIPS5.jpg",
       appname: "Fine Micro Applicator Tips",
@@ -76,12 +85,7 @@ const Cards = () => {
   ];
 
   const navigate = useNavigate();
-  const handleProductNavigate = (e, slug, id) => {
-    // console.log("e", e, slug, id);
-    navigate(`/products/${encodeURIComponent(slug)}}`, {
-      state: { productId: id },
-    });
-  };
+
   return (
     <div className="cards-main">
       <div className="variable-cards-title-main">
@@ -89,12 +93,7 @@ const Cards = () => {
       </div>
       <div className="variable-cards-main">
         <div className="cards-1-main">
-          <div
-            className="cards-1 "
-            onClick={(e) =>
-              handleProductNavigate(e, "tieon-surgeon-cap-washable", 2159)
-            }
-          >
+          <Link className="cards-1" to="/products/tieon-surgeon-cap-washable">
             <Swiper
               effect={"cards"}
               grabCursor={true}
@@ -108,31 +107,28 @@ const Cards = () => {
                     alt={`Slide ${index + 1}`}
                     className="slide-image"
                   />
-                  {/* <Link className="card-product-name" to="/products/2159"> */}
+                  {/* <Link
+                    className="card-product-name"
+                    to="/products/tieon-surgeon-cap-washable"
+                    // onClick={() => {
+                    //   localStorage.setItem("productId", 2159);
+                    // }}
+                  >
+                    {product.capname}
+                  </Link> */}
                   <span
                     className="card-product-name"
-                    onClick={(e) =>
-                      handleProductNavigate(
-                        e,
-                        "tieon-surgeon-cap-washable",
-                        2159
-                      )
+                    onClick={() =>
+                      navigate("/products/tieon-surgeon-cap-washable")
                     }
                   >
                     {product.capname}
                   </span>
-                  {/* </Link> */}
                 </SwiperSlide>
               ))}
             </Swiper>
-          </div>
-          {/* <Link
-            to="/products/Tieon-Surgeon-Caps"
-            className="cards-1 "
-            onClick={(e) =>
-              handleProductNavigate(e, "/products/Tieon-Surgeon-Caps", 2159)
-            }
-          ></Link> */}
+          </Link>
+
           <Link to="/products?category=118" className="cards-1">
             <Swiper
               effect={"cards"}
@@ -149,21 +145,15 @@ const Cards = () => {
                   />
                   <span
                     className="card-product-name"
-                    onClick={() => navigate("/products/1913")}
+                    onClick={() => navigate("/products?category=118")}
                   >
                     {product.airname}
                   </span>
-                  {/* <Link className="card-product-name" to="/products/2159">{product.airname}</Link> */}
                 </SwiperSlide>
               ))}
             </Swiper>
           </Link>
-          <div
-            className="cards-1"
-            onClick={(e) =>
-              handleProductNavigate(e,"micro-applicator-tips",1698)
-            }
-          >
+          <Link to="/products/micro-applicator-tips" className="cards-1">
             <Swiper
               effect={"cards"}
               grabCursor={true}
@@ -179,25 +169,16 @@ const Cards = () => {
                   />
                   <span
                     className="card-product-name"
-                    onClick={(e) =>
-                      handleProductNavigate(e,"micro-applicator-tips",1698)
-                    }
-                    // onClick={() =>
-                    //   navigate("/products/Elongated-Micro-Applicator-Tips")
-                    // }
+                    onClick={() => {
+                      navigate("/products/micro-applicator-tips");
+                    }}
                   >
                     {product.appname}
                   </span>
-                  {/* <Link className="card-product-name" to="/products/2159">{product.appname}</Link> */}
                 </SwiperSlide>
               ))}
             </Swiper>
-          </div>
-          {/* <Link
-            to="/products/Elongated-Micro-Applicator-Tips"
-            className="cards-1 "
-          >
-          </Link> */}
+          </Link>
         </div>
       </div>
     </div>

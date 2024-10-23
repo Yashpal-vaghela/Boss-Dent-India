@@ -57,9 +57,8 @@ const NewNav1 = () => {
   };
   const handleClick = (product) => {
     // console.log("pro",product)
-    navigate(`/products/${encodeURIComponent(product.slug)}`, {
-      state: { productId: Number(product.id) },
-    });
+    // localStorage.setItem("productId",product.id);
+    navigate(`/products/${encodeURIComponent(product.slug)}`);
     // navigate(`/products/${id}`);
     handleOffcanvas1();
     handleClearSearch();
@@ -253,7 +252,7 @@ const NewNav1 = () => {
               Need any Help ?
             </p>
             <Link
-              to="#"
+              to="tel:+917698828883"
               className="navbar-contact-txt"
               style={{ fontWeight: "700" }}
             >
@@ -400,7 +399,7 @@ const NewNav1 = () => {
                   </Link>
                 </li>
                 <li className="nav-item" onClick={handleOffcanvas1}>
-                  <Link className="nav-link" to="/products">
+                  <Link to="/products" className="nav-link" >
                     Shop
                   </Link>
                 </li>
@@ -524,9 +523,6 @@ const NewNav1 = () => {
                 <div className="cart-icon icon" onClick={handleOffcanvas1}>
                   <Link to="/cart">
                     <FaCartPlus />
-                    {/* {
-                      console.log("cartList",cartList)
-                    } */}
                     <span>{cartList?.length}</span>
                   </Link>
                 </div>

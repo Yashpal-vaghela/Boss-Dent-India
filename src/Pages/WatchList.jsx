@@ -13,7 +13,7 @@ const WatchList = () => {
   const { watchlist, removeFromWatchlist, addToCartList,addToWatchlist } = useWatchlist();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [stockStatuses, setStockStatuses] = useState({});
+  // const [stockStatuses, setStockStatuses] = useState({});
   const [imageLoading, setImageLoading] = useState({});
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
   const [getCartData] = useState(JSON.parse(localStorage.getItem("cart")));
@@ -32,7 +32,8 @@ const WatchList = () => {
       .then((response) => {
         // console.log("watchlist", response.data,Object.keys(response.data));
         setWatchListData(response.data);
-        fetchStockStatuses(response);
+        // setStockStatuses(response.data)
+        // fetchStockStatuses(response);
         setLoading(false);
         response.data.map((item)=>{
           addToWatchlist(Number(item.product_id))
@@ -44,29 +45,29 @@ const WatchList = () => {
       });
   };
   // fetch stock status data
-  const fetchStockStatuses = async (response) => {
-    // Batch request for stock statuses
-    const stockStatusPromises = response.data.map(async (product) => {
-      try {
-        const stockResponse = await axios.get(
-          `https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/${product.product_id}`
-        );
-        return { [product.product_id]: stockResponse.data.stock_status };
-      } catch (error) {
-        console.error("Error fetching stock status:", error);
-        return { [product.product_id]: "unknown" };
-      }
-    });
+  // const fetchStockStatuses = async (response) => {
+  //   // Batch request for stock statuses
+  //   const stockStatusPromises = response.data.map(async (product) => {
+  //     try {
+  //       const stockResponse = await axios.get(
+  //         `https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/${product.product_id}`
+  //       );
+  //       return { [product.product_id]: stockResponse.data.stock_status };
+  //     } catch (error) {
+  //       console.error("Error fetching stock status:", error);
+  //       return { [product.product_id]: "unknown" };
+  //     }
+  //   });
     
-    // Combine stock statuses into a single object
-    const stockStatusesResults = await Promise.all(stockStatusPromises);
-    const combinedStockStatuses = Object.assign({}, ...stockStatusesResults);
-    setStockStatuses(combinedStockStatuses);
-    localStorage.setItem(
-      "stockStatuses",
-      JSON.stringify(combinedStockStatuses)
-    );
-  };
+  //   // Combine stock statuses into a single object
+  //   const stockStatusesResults = await Promise.all(stockStatusPromises);
+  //   const combinedStockStatuses = Object.assign({}, ...stockStatusesResults);
+  //   setStockStatuses(combinedStockStatuses);
+  //   localStorage.setItem(
+  //     "stockStatuses",
+  //     JSON.stringify(combinedStockStatuses)
+  //   );
+  // };
 
   useEffect(() => {
     const cachedWishListProdcts = JSON.parse(
@@ -82,7 +83,7 @@ const WatchList = () => {
         cachedStockStatuses &&
         cachedWishListProdcts.length === watchlist.length
       ) {
-        setStockStatuses(cachedStockStatuses);
+        // setStockStatuses(cachedStockStatuses);
         setLoading(false);
       }
       fetchWatchlistData();
@@ -109,7 +110,6 @@ const WatchList = () => {
   // Handle removing item from watchlistf
   const handleRemove = async (product) => {
     removeFromWatchlist(product.product_id);
-    await axios
      await axios
       .delete(
         `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/delete`,
@@ -133,8 +133,8 @@ const WatchList = () => {
 
   // Handle adding product to cart based on stock status
   const handleAddToCart = async (product, selectedAttributes) => {
-    const stockStatus = stockStatuses[product.product_id];
-    if (stockStatus === "instock") {
+    // const stockStatus = stockStatuses[product.product_id];
+    if (product.stock_status === "instock") {
       try {
         const weightResponse = await axios.get(
           `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${product.product_id}`
@@ -158,6 +158,7 @@ const WatchList = () => {
                   product_weight: productWeight,
                   product_price: product.product_price,
                   selected_attribute: selectedAttributes,
+                  stock_status:product.stock_status
                 }
               )
               .then((res) => {
@@ -258,7 +259,7 @@ const WatchList = () => {
                       <WatchlistItem
                         key={product.id}
                         product={product}
-                        stockStatus={stockStatuses[product.product_id]}
+                        stockStatus={product.stock_status}
                         handleAddToCart={handleAddToCart}
                         handleRemove={(e) => confirmDelete(e, product)}
                         handleImageLoad={handleImageLoad}
@@ -297,7 +298,7 @@ const WatchlistItem = React.memo(
       const storedProdcutvariation = product.product_variations;
       return storedProdcutvariation ? product.product_variations : {};
     });
-
+    console.log("stock",stockStatus);
     // Function to handle attribute selection
     const handleAttributeSelect = async (attribute, value) => {
       const updatedAttributes = {
@@ -305,7 +306,6 @@ const WatchlistItem = React.memo(
         [attribute]: value,
       };
       setSelectedAttributes(updatedAttributes);
-      await axios
        await axios
         .post(
           `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/update`,
@@ -338,8 +338,9 @@ const WatchlistItem = React.memo(
           <div className="watchlist-item-details">
             <div className="d-lg-block d-md-block">
               <div className="watchlist-item-info">
+                {/* {console.log("s",product)} */}
                 <Link
-                  to={`/products/${product.product_id}`}
+                  to={`/products/${product.product_slug}`}
                   className="watchlist-item-link"
                 >
                   <h5 className="mb-0">{product?.product_title}</h5>

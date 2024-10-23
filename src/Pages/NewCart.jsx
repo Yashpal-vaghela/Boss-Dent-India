@@ -253,7 +253,7 @@ const CartListItem = React.memo(
     setCartgetTotal,
     getUserData,
     setCanCheckout,
-    addToCartList,
+    // addToCartList,
     CartgetTotal
   }) => {
     const [productVariations] = useState(() => {
@@ -277,7 +277,6 @@ const CartListItem = React.memo(
           selected_attribute: updateAttributes,
         })
         .then((response) => {
-         
           const UpdatedProduct = response?.data?.cart_item[0];
           const UpdatedCartData = CartData?.cart_items?.map((item) => {
             return item.product_id === UpdatedProduct.product_id
@@ -374,7 +373,7 @@ const CartListItem = React.memo(
           </div>
           <div className="cart-item-details">
             <Link
-              to={`/products/${product.product_id}`}
+              to={`/products/${product.product_slug}`}
               className="cart-item-link"
             >
               <h3>{product?.product_title}</h3>

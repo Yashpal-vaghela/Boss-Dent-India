@@ -36,86 +36,21 @@ const SingleProduct = () => {
   const [weight, setWeight] = useState(null);
   const [activeSection, setActivesection] = useState("description");
   const { id } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
   const [alertMessage, setAlertMessage] = useState("");
   const [selectedColor, setSelectedColor] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const location = useLocation();
+  // const [ProductId] = useState(() => {
+  //  return  localStorage.getItem("productId")
+  //     ? localStorage.getItem("productId")
+  //     : [];
+  // });
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
-
-  // fetch single product ,stock status and weight api integrate
-  const fetchProduct = async () => {
-    setLoading(true);
-    // const a = decodeURIComponent(id)
-    try {
-      const response = await axios.get(
-        `https://admin.bossdentindia.com/wp-json/wp/v2/product/${location.state.productId}`
-      );
-      setProduct(response.data);
-      // preload the main product image
-      if (response.data.yoast_head_json?.og_image?.[0]?.url) {
-        const img = new Image();
-        img.src = response.data.yoast_head_json.og_image[0].url;
-        // setImageUrl(img.src);
-      }
-
-      // Extract and set variations if available
-      if (response.data.variations) {
-        setVariations(response.data.variations);
-      } else {
-        setVariations([]);
-      }
-
-      // Fetch related products based on category
-      if (response.data.product_cat && response.data.product_cat.length > 0) {
-        const categoryId = response.data.product_cat[0];
-        const categoryResponse = await axios.get(
-          `https://admin.bossdentindia.com/wp-json/wp/v2/product_cat/${categoryId}`
-        );
-        setCategory(categoryResponse.data.name);
-
-        // Fetch related products in the same category
-        const relatedProductsResponse = await axios.get(
-          `https://admin.bossdentindia.com/wp-json/wp/v2/product?product_cat=${categoryId}&exclude=${location.state.productId}&per_page=20`
-        );
-        const shuffledProducts = relatedProductsResponse.data.sort(
-          () => 0.5 - Math.random()
-        );
-        setRelatedProducts(shuffledProducts.slice(0, 10));
-      }
-
-      setSalePrice(response.data.sale_price || response.data.price);
-      const weightData = await axios.get(
-        `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${location.state.productId}`
-      );
-      setWeight(weightData.data.weight);
-      try {
-        const stockResponse = await axios.get(
-          `https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/${location.state.productId}`
-        );
-        setStockStatus(stockResponse.data.stock_status);
-      } catch (stockError) {
-        console.error("Error fetching stock status:", stockError);
-        setStockStatus("Error fetching stock status");
-      }
-    } catch (error) {
-      // console.error("Error fetching product:", error);
-      toast.error("Failed to fetch product details.");
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    // console.log("loca",location.state.productId)
-    fetchProduct();
-  }, [id]);
-
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem("token");
     setIsLoggedIn(userLoggedIn);
-    const imgElement = document.getElementById(
-      `product-imagr-${location.state.productId}`
-    );
+    const imgElement = document.getElementById(`product-imagr-${product.id}`);
     const observer = new IntersectionObserver(
       (enteries, observer) => {
         enteries.forEach((entry) => {
@@ -137,6 +72,79 @@ const SingleProduct = () => {
       }
     };
   }, []);
+  // fetch single product ,stock status and weight api integrate
+  const fetchProduct = async () => {
+    setLoading(true);
+    // const productId = localStorage.getItem('productId')
+    try {
+      const response = await axios.get(
+        `https://admin.bossdentindia.com/wp-json/custom/v1/product/${id}`
+        // `https://admin.bossdentindia.com/wp-json/wp/v2/product/${id}`
+      );
+      setProduct(response.data);
+      // preload the main product image
+      if (response.data.yoast_head_json?.og_image?.[0]?.url) {
+        const img = new Image();
+        img.src = response.data.yoast_head_json.og_image[0].url;
+        // setImageUrl(img.src);
+      }
+
+      // Extract and set variations if available
+      if (response.data.variations) {
+        setVariations(response.data.variations);
+      } else {
+        setVariations([]);
+      }
+      // console.log("cate1====",response.data)
+      // Fetch related products based on category
+      if (response.data.categories && response.data.categories.length > 0) {
+        const categoryId = response.data.categories[0].id;
+        // const categoryResponse = await axios.get(
+        //   `https://admin.bossdentindia.com/wp-json/wp/v2/product_cat/${categoryId}`
+        // );
+        // console.log("cat",categoryResponse)
+        setCategory(response.data.categories[0].name);
+        // console.log("product-response-data",response.data)
+        // Fetch related products in the same category
+        const relatedProductsResponse = await axios.get(
+          `https://admin.bossdentindia.com/wp-json/wp/v2/product?product_cat=${categoryId}&exclude=${response.data.id}&per_page=20`
+        );
+        const shuffledProducts = relatedProductsResponse.data.sort(
+          () => 0.5 - Math.random()
+        );
+        setRelatedProducts(shuffledProducts.slice(0, 10));
+      }
+
+      setSalePrice(response.data.sale_price || response.data.price);
+      setWeight(response.data.weight);
+      setStockStatus(response.data.stock_status);
+      // const weightData = await axios.get(
+      //   `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${response.data.id}`
+      // );
+
+      // try {
+      //   const stockResponse = await axios.get(
+      //     `https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/${response.data.id}`
+      //   );
+
+      // } catch (stockError) {
+      //   console.error("Error fetching stock status:", stockError);
+      //   setStockStatus("Error fetching stock status");
+      // }
+    } catch (error) {
+      // console.error("Error fetching product:", error);
+      toast.error("Failed to fetch product details.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // console.log("loca", location, id);
+    if (id) {
+      fetchProduct();
+    }
+  }, [id]);
 
   useEffect(() => {
     if (alertMessage) {
@@ -170,6 +178,7 @@ const SingleProduct = () => {
       setSalePrice(selectedVariation.price);
     }
   };
+
   // watchlist delete api integrate
   const handleWatchlistToggle = async (product) => {
     if (isLoggedIn) {
@@ -260,8 +269,8 @@ const SingleProduct = () => {
           }
 
           if (relatedProduct !== undefined) {
-            let RelatedCartProductWeight = null;
-            axios
+          let RelatedCartProductWeight = null;
+           await axios
               .get(
                 `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${relatedProduct.id}`
               )
@@ -328,10 +337,13 @@ const SingleProduct = () => {
     } else {
       toast.error("Please login to add product to cart!");
       setTimeout(() => {
-        navigate("/my-account", { state: { from: location.pathname, productId: relatedProduct.id } });
+        navigate("/my-account", {
+          state: { from: location.pathname, productId: relatedProduct.id },
+        });
       }, 2000);
     }
   };
+
   // product addtocart api  integrate
   const handleAddToCartApi = async (product, userData) => {
     axios
@@ -370,11 +382,7 @@ const SingleProduct = () => {
       })
       .catch((err) => console.log("err", err));
   };
-  const handleProductClick = (product) => {
-    navigate(`/products/${encodeURIComponent(product.slug)}`, {
-      state: { productId: product.id },
-    });
-  };
+
   return (
     <>
       {loading ? (
@@ -388,11 +396,16 @@ const SingleProduct = () => {
               <i className="fa-solid fa-angle-right"></i>{" "}
               <Link to="/products">Shop</Link>{" "}
               <i className="fa-solid fa-angle-right"></i>
-              <Link to={`/products?category=${product.product_cat[0]}`}>
+              <Link
+                to={`/products?category=${product.categories[0].id}`}
+                onMouseOver={() => {
+                 return localStorage.getItem("Product_page") > 1 ? localStorage.setItem("Product_page", 1) : <></>
+                }}
+              >
                 {category}
               </Link>{" "}
               <i className="fa-solid fa-angle-right"></i>
-              <span>{product.title?.rendered}</span>
+              <span>{product.name}</span>
             </nav>
           </div>
           {alertMessage && <AlertSuccess message={alertMessage} />}
@@ -401,23 +414,22 @@ const SingleProduct = () => {
               <Zoom>
                 <img
                   // id={`product-image-${location.state.productId}`}
-                  className={`single-product-img ${isImageLoaded ? "loaded" : ""
-                    }`}
+                  className={`single-product-img ${
+                    isImageLoaded ? "loaded" : ""
+                  }`}
                   src={product.yoast_head_json.og_image[0].url}
                   // src={imageUrl.replace("https://", "https://admin.")}
-                  alt={product.title?.rendered}
+                  alt={product.name}
                   onLoad={() => setIsImageLoaded(true)}
                 />
               </Zoom>
             </div>
             <div className="single-product-details">
-              <h2 className="single-product-title">
-                {product.title?.rendered}
-              </h2>
+              <h2 className="single-product-title">{product?.name}</h2>
               <h3 className="single-product-price">
                 {salePrice
                   ? `Sale Price: ${salePrice} ₹`
-                  : `Price: ${product.acf?.price} ₹`}
+                  : `Price: ${product?.price} ₹`}
               </h3>
               {product.acf?.prese && <h4>Prese: {product.acf.preset}</h4>}
               <h4 className="single-product-cat">
@@ -453,12 +465,14 @@ const SingleProduct = () => {
                             {variations.map((color, index) => {
                               return (
                                 <div
-                                  className={`color-option ${Object.values(color.attributes)[0]
-                                    } ${selectedColor ===
-                                      Object.values(color.attributes)[0]
+                                  className={`color-option ${
+                                    Object.values(color.attributes)[0]
+                                  } ${
+                                    selectedColor ===
+                                    Object.values(color.attributes)[0]
                                       ? "selected"
                                       : ""
-                                    }`}
+                                  }`}
                                   key={index}
                                   onClick={() =>
                                     handleAttributeSelect(
@@ -477,10 +491,11 @@ const SingleProduct = () => {
                               return (
                                 <button
                                   key={index}
-                                  className={`variation-button ${selectedAttributes[attribute] === value
+                                  className={`variation-button ${
+                                    selectedAttributes[attribute] === value
                                       ? "selected"
                                       : ""
-                                    }`}
+                                  }`}
                                   onClick={() =>
                                     handleAttributeSelect(attribute, value)
                                   }
@@ -497,7 +512,7 @@ const SingleProduct = () => {
                 )}
               <div
                 dangerouslySetInnerHTML={{
-                  __html: product.excerpt?.rendered,
+                  __html: product.short_description,
                 }}
                 className="single-product-pcs"
               />
@@ -520,8 +535,9 @@ const SingleProduct = () => {
               <div className="btn-icon-main">
                 <div>
                   <button
-                    className={`add-to-cart-btn ${stockStatus === "outofstock" ? "disable-button" : ""
-                      }`}
+                    className={`add-to-cart-btn ${
+                      stockStatus === "outofstock" ? "disable-button" : ""
+                    }`}
                     disabled={stockStatus !== "instock"}
                     onClick={(e) => handleAddToCart(e, product)}
                   >
@@ -530,8 +546,9 @@ const SingleProduct = () => {
                 </div>
                 <div>
                   <span
-                    className={`like-icon ${!watchlist.includes(product.id) ? "" : "inactive-heart"
-                      }`}
+                    className={`like-icon ${
+                      !watchlist.includes(product.id) ? "" : "inactive-heart"
+                    }`}
                     onClick={() => handleWatchlistToggle(product)}
                   >
                     {watchlist.includes(product.id) ? (
@@ -550,22 +567,25 @@ const SingleProduct = () => {
                 <ul>
                   <li
                     onClick={() => setActivesection("description")}
-                    className={`des-title ${activeSection === "description" ? "active" : ""
-                      }`}
+                    className={`des-title ${
+                      activeSection === "description" ? "active" : ""
+                    }`}
                   >
                     Description
                   </li>
                   <li
                     onClick={() => setActivesection("additional")}
-                    className={`des-title ${activeSection === "additional" ? "active" : ""
-                      }`}
+                    className={`des-title ${
+                      activeSection === "additional" ? "active" : ""
+                    }`}
                   >
                     Additional Information
                   </li>
                   <li
                     onClick={() => setActivesection("review")}
-                    className={`des-title ${activeSection === "review" ? "active" : ""
-                      }`}
+                    className={`des-title ${
+                      activeSection === "review" ? "active" : ""
+                    }`}
                   >
                     Review
                   </li>
@@ -576,7 +596,7 @@ const SingleProduct = () => {
           {activeSection === "description" && (
             <div
               dangerouslySetInnerHTML={{
-                __html: product.content?.rendered,
+                __html: product.description,
               }}
               className="single-product-des"
             />
@@ -588,8 +608,8 @@ const SingleProduct = () => {
           )}
           {activeSection === "review" && (
             <div className="reviews-section">
-              <ReviewList productId={location.state.productId} />
-              <ReviewForm productId={location.state.productId} />
+              <ReviewList productId={product.id} />
+              <ReviewForm productId={product.id} />
             </div>
           )}
           <div className="related-products">
@@ -621,7 +641,11 @@ const SingleProduct = () => {
                 return (
                   <SwiperSlide key={relatedProduct.id}>
                     <div className="related-product-card">
-                      <div onClick={() => handleProductClick(relatedProduct)}>
+                      <Link
+                        to={`/products/${encodeURIComponent(
+                          relatedProduct.slug
+                        )}`}
+                      >
                         <img
                           src={
                             relatedProduct.yoast_head_json?.og_image?.[0]?.url
@@ -637,14 +661,15 @@ const SingleProduct = () => {
                             ? `Price: ${relatedProduct.price} ₹`
                             : "Price not available"}
                         </p>
-                      </div>
+                      </Link>
 
                       <div className="related-icons">
                         <span
-                          className={`heart-icon ${!watchlist.includes(relatedProduct.id)
+                          className={`heart-icon ${
+                            !watchlist.includes(relatedProduct.id)
                               ? ""
                               : "inactive-heart"
-                            }`}
+                          }`}
                           onClick={() => handleWatchlistToggle(relatedProduct)}
                         >
                           {watchlist.includes(relatedProduct.id) ? (
