@@ -14,7 +14,7 @@ import { useWatchlist } from "../Pages/WatchlistContext";
 import axios from "axios";
 
 const NewNav1 = () => {
-  const { watchlist ,cartList} = useWatchlist();
+  const { watchlist, cartList } = useWatchlist();
   const [searchIcon, setSeachIcon] = useState(false);
   const [searchQuery, setSeachQuery] = useState("");
   const [suggested, setSuggested] = useState([]);
@@ -89,10 +89,10 @@ const NewNav1 = () => {
       const alertMessageElements =
         document.getElementsByClassName("success-alert");
       const bannerElements = document.getElementsByClassName("banner-section");
-  
+
       if (window.innerWidth >= 991) {
         if (window.scrollY >= 20) {
-          searchElements.style.display = "flex" ;
+          searchElements.style.display = "flex";
           showSearchElements.classList.add("show-search-icon");
           topNav.style.display = "none";
           Array.from(alertMessageElements).forEach((element) => {
@@ -198,11 +198,8 @@ const NewNav1 = () => {
               {suggestions?.length !== 0 ? (
                 <div className="suggestion-main">
                   <ul className="suggestions">
-                    {suggestions.map((product,index) => (
-                      <li
-                        key={index}
-                        onClick={() => handleClick(product)}
-                      >
+                    {suggestions.map((product, index) => (
+                      <li key={index} onClick={() => handleClick(product)}>
                         {product.title}
                       </li>
                     ))}
@@ -265,15 +262,15 @@ const NewNav1 = () => {
       {/* navbar */}
       <nav className="newnavbar1 navbar navbar-dark bg-dark navbar-expand-lg">
         <div className="container-fluid newnavbar-sub">
-          <div className="navbarlogo">
-            <Link to="/">
-              <img
-                src="/asset/images/flogo.png"
-                alt="Logo"
-                className="img-fluid"
-              ></img>
-            </Link>
-          </div>
+          <Link to="/" className="navbarlogo">
+            <img
+              src="/asset/images/flogo.png"
+              alt="Logo"
+              className="img-fluid"
+            ></img>
+          </Link>
+          {/* <div className="navbarlogo">
+          </div> */}
           {/* moblie and tablet screen search icon */}
           <div className="d-lg-none d-sm-flex d-md-flex search-icon align-items-center">
             {/* {
@@ -338,7 +335,7 @@ const NewNav1 = () => {
               <Link to="/wishlist">
                 <FaHeart />
                 <span>
-                {watchlist?.length}
+                  {watchlist?.length}
                   {/* {WishList} */}
                 </span>
               </Link>
@@ -399,7 +396,7 @@ const NewNav1 = () => {
                   </Link>
                 </li>
                 <li className="nav-item" onClick={handleOffcanvas1}>
-                  <Link to="/products" className="nav-link" >
+                  <Link to="/products" className="nav-link">
                     Shop
                   </Link>
                 </li>
@@ -415,10 +412,7 @@ const NewNav1 = () => {
                 </li>
               </ul>
               {/* computer size serach bar */}
-              <div
-                id="search-icon"
-                className="search-icon align-items-center"
-              >
+              <div id="search-icon" className="search-icon align-items-center">
                 {searchIcon ? (
                   <>
                     <input
@@ -577,10 +571,7 @@ const NewNav1 = () => {
               <div className="suggestion-sub">
                 <ul className="suggested">
                   {suggested.map((product) => (
-                    <li
-                      key={product.id}
-                      onClick={() => handleClick(product)}
-                    >
+                    <li key={product.id} onClick={() => handleClick(product)}>
                       {product.title}
                     </li>
                   ))}

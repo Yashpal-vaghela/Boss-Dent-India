@@ -2,7 +2,7 @@
   padding-top: 130px;
   color: rgb(0, 0, 0);
   text-align: left;
-  font-family: Source Sans Pro, sans-serif;
+  font-family: sans-serif;
   margin: 20px auto;
 }
 
@@ -17,7 +17,7 @@
   margin: 20px;
   color: rgb(0, 0, 0);
   text-align: left;
-  font-family: Source Sans Pro, sans-serif;
+  font-family:  sans-serif;
 }
 
 .shop-title {
@@ -225,7 +225,7 @@
   line-height: 20px;
   font-weight: 700;
   color: rgb(255, 255, 255);
-  font-family: Roboto, sans-serif;
+  font-family: sans-serif;
   margin: 20px 0;
   width: -moz-fit-content;
   border: 0;

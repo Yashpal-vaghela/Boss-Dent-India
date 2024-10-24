@@ -64,7 +64,9 @@ export const WatchlistProvider = ({ children }) => {
   const removeFromWatchlist = (id) => {
     if (!ensureAuthenticated()) return;
     setWatchlist((prevWatchlist) => {
-      const updatedWatchlist = prevWatchlist.filter((itemId) => itemId !== Number(id));
+      const updatedWatchlist = prevWatchlist.filter(
+        (itemId) => itemId !== Number(id)
+      );
       localStorage.setItem("watchlist", JSON.stringify(updatedWatchlist));
       return updatedWatchlist;
     });
@@ -113,12 +115,43 @@ export const WatchlistProvider = ({ children }) => {
       .catch((err) => console.log("err", err));
   };
   const removeFromCartList = (id) => {
+    // console.log("id", id);
     if (!ensureAuthenticated()) return;
     setCartList((prevCartlist) => {
-      const updateCartList = prevCartlist.filter((itemId) => itemId !== Number(id));
+      const updateCartList = prevCartlist.filter(
+        (itemId) => itemId !== Number(id)
+      );
       localStorage.setItem("cart_productId", JSON.stringify(updateCartList));
       return updateCartList;
     });
+  };
+  const removeFromCartListProduct = async (product_id, userdata) => {
+    const payload = {
+      user_id: userdata.user_id,
+      product_id: product_id,
+    };
+    await axios
+      .delete(`https://admin.bossdentindia.com/wp-json/custom/v1/cart/delete`, {
+        data: payload,
+      })
+      .then((response) => {
+        setCartList((prevCartlist) => {
+          const updateCartList = prevCartlist.filter(
+            (itemId) => itemId !== Number(product_id)
+          );
+          localStorage.setItem(
+            "cart_productId",
+            JSON.stringify(updateCartList)
+          );
+          return updateCartList;
+        });
+        localStorage.setItem(
+          "cart",
+          JSON.stringify({ cart_items: [], cart_total: {} })
+        );
+        // console.log("delete", response.data);
+      })
+      .catch((error) => console.log("error", error));
   };
   const LoginUserCartList = async (fetchuserdata) => {
     await axios
@@ -127,7 +160,7 @@ export const WatchlistProvider = ({ children }) => {
       )
       .then((response) => {
         localStorage.setItem("cart", JSON.stringify(response.data));
-         response.data.cart_items.map((item) => {
+        response.data.cart_items.map((item) => {
           if (!cartList.includes(item.product_id)) {
             setCartList((prevCartlist) => {
               if (!prevCartlist.includes(item.product_id)) {
@@ -145,30 +178,37 @@ export const WatchlistProvider = ({ children }) => {
             });
             return getCartId.push(Number(item.product_id));
           }
+          return getCartId;
         });
       })
       .catch((error) => console.log("Error fetching cartList", error));
   };
-  const LoginUserWatchList = async (fetchuserdata) =>{
-      await axios.get(`https://admin.bossdentindia.com/wp-json/custom/v1/wishlist?user_id=${fetchuserdata}`)
-      .then((response)=>{
-         response.data.map((item)=>{
-          setWatchlist((prevWatchlist)=>{
-            if(!prevWatchlist.includes(item.product_id)){
+  const LoginUserWatchList = async (fetchuserdata) => {
+    await axios
+      .get(
+        `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist?user_id=${fetchuserdata}`
+      )
+      .then((response) => {
+        response.data.map((item) => {
+          setWatchlist((prevWatchlist) => {
+            if (!prevWatchlist.includes(item.product_id)) {
               const updateWatchList = [
                 ...prevWatchlist,
-                Number(item.product_id)
+                Number(item.product_id),
               ];
-              localStorage.setItem("watchlist",JSON.stringify(updateWatchList))
+              localStorage.setItem(
+                "watchlist",
+                JSON.stringify(updateWatchList)
+              );
               return updateWatchList;
             }
             return prevWatchlist;
           });
-          return getWishlistId.push(Number(item.product_id))
+          return getWishlistId.push(Number(item.product_id));
         });
       })
-      .catch((error)=>console.log("Error fetching watchList",error))
-  }
+      .catch((error) => console.log("Error fetching watchList", error));
+  };
   const LogoutUserList = () => {
     setgetCartId([]);
     setCartList([]);
@@ -178,7 +218,7 @@ export const WatchlistProvider = ({ children }) => {
     localStorage.setItem("watchlist", JSON.stringify([]));
     localStorage.setItem("watchlist_length", 0);
   };
-  
+
   return (
     <WatchlistContext.Provider
       value={{
@@ -189,6 +229,7 @@ export const WatchlistProvider = ({ children }) => {
         addToCartList,
         addToCartListProduct,
         removeFromCartList,
+        removeFromCartListProduct,
         LoginUserCartList,
         LogoutUserList,
         LoginUserWatchList,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import BreadCrumbs from "../component/BreadCrumbs";
 import Indian_states_cities_list from "indian-states-cities-list";
@@ -8,6 +8,7 @@ import Loader from "../component/Loader";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Success from "./success";
+import { useWatchlist } from "./WatchlistContext";
 
 const checkoutSchema = yup.object().shape({
   name: yup.string().required("Name field is required"),
@@ -26,6 +27,7 @@ const checkoutSchema = yup.object().shape({
 });
 
 const CheckOut = () => {
+  const { removeFromCartListProduct } = useWatchlist();
   const deliveryChargData = localStorage.getItem("deliveryCharge");
   const [coupon, setCoupon] = useState("");
   const [couponError, setCouponError] = useState("");
@@ -38,10 +40,10 @@ const CheckOut = () => {
   const [cartTotal] = useState(getCartData?.cart_total.total_price);
   const [finalTotal, setFinalTotal] = useState();
   const [discountAmount, setDiscountAmount] = useState();
-  const [HandleSubmit,setHandleSubmit] = useState(false);
-  const [paymentSuccess, setPaymentSuccess] = useState(false)
+  const [HandleSubmit, setHandleSubmit] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [orderId, setOrderId] = useState("");
-
+  const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
   const getCoupon = async () => {
     // setLoading(true)
     await axios
@@ -52,7 +54,10 @@ const CheckOut = () => {
         setGetCouponData(res.data);
         localStorage.setItem("couponData", JSON.stringify(res.data));
       })
-      .catch((err) => {setLoading(false);console.log("err", err)});
+      .catch((err) => {
+        setLoading(false);
+        console.log("err", err);
+      });
   };
 
   useEffect(() => {
@@ -64,7 +69,7 @@ const CheckOut = () => {
     const filtercoupon = getCouponData.filter(
       (item) => item.post_title === coupon
     );
-    
+
     if (filtercoupon && finalTotal > 2000) {
       const total = finalTotal - (finalTotal * 10) / 100;
       const discount = finalTotal - total;
@@ -74,7 +79,7 @@ const CheckOut = () => {
     } else {
       setCouponError(
         `${coupon} discount code apply on only more than ₹2000 price.`
-      )
+      );
     }
   };
   useEffect(() => {
@@ -108,12 +113,49 @@ const CheckOut = () => {
     validateOnBlur: false,
     onSubmit: async () => {
       // console.log("finalsubmit", paymentMethod, getCartData,HandleSubmit);
-        if (paymentMethod && HandleSubmit === true) {
-          try {
+      if (paymentMethod && HandleSubmit === true) {
+        try {
+          setLoading(true);
+          // Create the order and retrieve the order ID
+          const orderResponse = await fetch(
+            "https://admin.bossdentindia.com/wp-json/custom/v1/order_create",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                amount: finalTotal,
+                customerDetails: formik?.values,
+                items: getCartData.cart_items?.map((item) => ({
+                  product_id: Number(item?.product_id),
+                  quantity: Number(item?.product_quantity),
+                })),
+                user_id: getUserData.user_id,
+              }),
+            }
+          );
+
+          if (!orderResponse.ok) {
+            const errorText = await orderResponse.text();
+            console.error("Order creation error:", errorText);
+            throw new Error("Failed to create order.");
+          } else {
+            setLoading(false);
+          }
+
+          const orderData = await orderResponse.json();
+          const newOrderId = orderData.orderId.toString();
+          setOrderId(newOrderId);
+          getCartData.cart_items?.map((item) =>
+            removeFromCartListProduct(item.product_id,getUserData)
+          );
+          //  Proceed to payment
+          if (paymentMethod === "PhonePe") {
             setLoading(true);
-            // Create the order and retrieve the order ID
-            const orderResponse = await fetch(
-              "https://admin.bossdentindia.com/wp-json/custom/v1/order_create",
+            const paymentResponse = await fetch(
+              "https://admin.bossdentindia.com/wp-json/phone/v1/initiate-payment",
               {
                 method: "POST",
                 headers: {
@@ -123,74 +165,40 @@ const CheckOut = () => {
                 body: JSON.stringify({
                   amount: finalTotal,
                   customerDetails: formik?.values,
-                  items: getCartData.cart_items?.map((item) => ({
-                    product_id: Number(item?.product_id),
-                    quantity: Number(item?.product_quantity),
-                  })),
+                  orderId: newOrderId, // Pass the order ID to the payment initiation
                 }),
               }
             );
 
-            if (!orderResponse.ok) {
-              const errorText = await orderResponse.text();
-              console.error("Order creation error:", errorText);
-              throw new Error("Failed to create order.");
-            } else {
+            if (!paymentResponse.ok) {
+              const paymentErrorText = await paymentResponse.text();
+              console.error("Payment response error text:", paymentErrorText);
+              throw new Error("Failed to initiate payment.");
+            }
+
+            const paymentData = await paymentResponse.json();
+            if (
+              paymentData.success &&
+              paymentData.data &&
+              paymentData.data.instrumentResponse &&
+              paymentData.data.instrumentResponse.redirectInfo &&
+              paymentData.data.instrumentResponse.redirectInfo.url
+            ) {
               setLoading(false);
+              const paymentUrl =
+                paymentData.data.instrumentResponse.redirectInfo.url;
+              // window.location.href = paymentUrl;
+             
+              window.open(paymentUrl, "_blank");
+              setPaymentSuccess(true);
             }
-
-            const orderData = await orderResponse.json();
-            const newOrderId = orderData.orderId.toString();
-            setOrderId(newOrderId);
-
-            //  Proceed to payment
-            if (paymentMethod === "PhonePe") {
-              setLoading(true);
-              const paymentResponse = await fetch(
-                "https://admin.bossdentindia.com/wp-json/phone/v1/initiate-payment",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                  },
-                  body: JSON.stringify({
-                    amount: finalTotal,
-                    customerDetails: formik?.values,
-                    orderId: newOrderId, // Pass the order ID to the payment initiation
-                  }),
-                }
-              );
-
-              if (!paymentResponse.ok) {
-                const paymentErrorText = await paymentResponse.text();
-                console.error("Payment response error text:", paymentErrorText);
-                throw new Error("Failed to initiate payment.");
-              }
-
-              const paymentData = await paymentResponse.json();
-              if (
-                paymentData.success &&
-                paymentData.data &&
-                paymentData.data.instrumentResponse &&
-                paymentData.data.instrumentResponse.redirectInfo &&
-                paymentData.data.instrumentResponse.redirectInfo.url
-              ) {
-                setLoading(false);
-                const paymentUrl =
-                  paymentData.data.instrumentResponse.redirectInfo.url;
-                // window.location.href = paymentUrl;
-                window.open(paymentUrl, "_blank");
-                localStorage.setItem("cart", JSON.stringify({ cart_items: [], cart_total: {} }));
-                setPaymentSuccess(true);
-              }
-            }
-          } catch (error) {
-            toast.error(error?.message);
-            console.error("Error handling checkout:", error, error?.message);
-            // alert("Error processing payment. Please try again.");
           }
+        } catch (error) {
+          toast.error(error?.message);
+          console.error("Error handling checkout:", error, error?.message);
+          // alert("Error processing payment. Please try again.");
         }
+      }
     },
   });
 
@@ -206,8 +214,8 @@ const CheckOut = () => {
     setCouponError("");
   };
 
-  if (paymentSuccess){
-    <Success orderId={orderId} />
+  if (paymentSuccess) {
+    <Success orderId={orderId} />;
   }
 
   return (
@@ -577,7 +585,11 @@ const CheckOut = () => {
                           {formik?.errors?.paymentMethod}
                         </span>
                       )}
-                      <button type="submit" className="payment-button" onClick={()=>setHandleSubmit((prev)=>!prev)}>
+                      <button
+                        type="submit"
+                        className="payment-button"
+                        onClick={() => setHandleSubmit((prev) => !prev)}
+                      >
                         Proceed to payment
                       </button>
                     </div>

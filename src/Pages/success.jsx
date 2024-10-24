@@ -7,11 +7,6 @@ const Success = ({ orderId }) => {
   const navigate = useNavigate();
   
   useEffect(() =>{
-    if(orderId === undefined){
-      navigate('/');
-    } else{
-      fetchPaymentStatus(); 
-    }
     const fetchPaymentStatus = async () => {
       try {
         const response = await axios.get(`https://admin.bossdentindia.com/wp-json/custom/v1/payment-status?order_id=${orderId}`);
@@ -22,6 +17,11 @@ const Success = ({ orderId }) => {
         setPaymentStatus('failed');
       }
     };
+    if(orderId === undefined){
+      navigate('/');
+    } else{
+      fetchPaymentStatus(); 
+    }
   },[orderId])
 
   return (

@@ -1,15 +1,15 @@
-* {
+/* * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+} */
 
 .single-product {
   padding-top: 130px;
   margin: 20px;
   color: rgb(0, 0, 0);
   text-align: left;
-  font-family: Source Sans Pro, sans-serif;
+  font-family:sans-serif;
 }
 
 .single-product-main {
@@ -386,7 +386,7 @@
   line-height: 20px;
   font-weight: 700;
   color: rgb(255, 255, 255);
-  font-family: Roboto, sans-serif;
+  font-family: sans-serif;
   margin: 20px 0;
   width: fit-content;
   border: 0;

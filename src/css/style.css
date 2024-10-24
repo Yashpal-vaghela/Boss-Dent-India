@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
@@ -176,7 +177,6 @@ body {
 } */
 
 /* Home Category */
-
 .home-cat-sub {
   display: flex;
   align-items: center;
@@ -356,7 +356,7 @@ body {
   border-radius: 50px;
   cursor: pointer;
   font-size: 16px;
-  font-family: Source Sans Pro, sans-serif;
+  font-family: sans-serif;
   transition: background-color 0.3s ease;
 }
 
@@ -505,7 +505,7 @@ body {
   box-shadow: 0 0px 10px rgba(0, 0, 0, 0.4);
   border-radius: 10px;
   text-align: center;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family:  sans-serif;
 }
 
 .signup-title {
@@ -757,7 +757,7 @@ body {
 }
 
 .contact-content h2 {
-  font-family: Source Sans pro, sans-serif;
+  font-family: sans-serif;
   color: rgb(0, 0, 0);
   font-weight: 600;
   font-size: 32px;
@@ -954,7 +954,7 @@ body {
 
 /* RefundPolicy*/
 .refund-policy {
-  font-family: Lato, sans-serif;
+  font-family: sans-serif;
   padding-top: 0px;
   margin: 0px auto;
   color: rgb(100, 100, 100);
@@ -998,7 +998,7 @@ a {
   line-height: 60px;
 }
 .content h2 {
-  font-family: Source Sans Pro, sans-serif;
+  font-family: sans-serif;
   font-size: 22px;
   color: #222;
   font-weight: 600;
@@ -1033,7 +1033,7 @@ a {
 /* privacy policy */
 
 .privacy-policy {
-  font-family: Lato, sans-serif;
+  font-family:  sans-serif;
   padding-top: 0px;
   margin: 0px auto;
   color: rgb(100, 100, 100);
@@ -1091,7 +1091,7 @@ a {
 /* terms and conditions */
 .terms-container {
   margin: 0px auto 10px;
-  font-family: Lato, sans-serif;
+  font-family:  sans-serif;
   color: rgb(100, 100, 100);
   text-align: left;
 }
@@ -1111,7 +1111,7 @@ a {
   font-size: 35px;
 }
 .term-info h2 {
-  font-family: Lato, sans-serif;
+  font-family:  sans-serif;
   font-size: 32px;
   margin-left: 27px;
   margin-top: 20px;
@@ -1125,7 +1125,7 @@ a {
 }
 
 .term-info p {
-  font-family: Lato, sans-serif;
+  font-family: sans-serif;
   margin-left: 30px;
   margin-top: 0px;
 }

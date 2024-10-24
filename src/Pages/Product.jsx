@@ -182,7 +182,7 @@ const Product = () => {
                       return prevCartProductId;
                     });
                     addToCartListProduct(product.id, {}, userData);
-                    localStorage.setItem("cart_length", res.data.cart_length);
+                    // localStorage.setItem("cart_length", res.data.cart_length);
                     toast.success("Product added to cart!");
                   });
               } else {

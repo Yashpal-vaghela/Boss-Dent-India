@@ -36,7 +36,7 @@ const WatchList = () => {
         // fetchStockStatuses(response);
         setLoading(false);
         response.data.map((item)=>{
-          addToWatchlist(Number(item.product_id))
+        return  addToWatchlist(Number(item.product_id))
         })
       })
       .catch((err) => {
@@ -169,7 +169,7 @@ const WatchList = () => {
                 setWatchListData(filterData);
                 addToCartList(product.product_id, {});
                 toast.success("Product added to cart!");
-                localStorage.setItem("cart_length", res.data.cart_length);
+                // localStorage.setItem("cart_length", res.data.cart_length);
               })
               .catch((err) => {
                 console.log("watchlist-error", err);

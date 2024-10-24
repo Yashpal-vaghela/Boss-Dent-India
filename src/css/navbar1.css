@@ -1,3 +1,7 @@
+/* @font-face {
+  font-family: webFontSourceSanspro ;
+  src: url('../../public/font-family/Source_Sans_3/static/SourceSans3-Regular.ttf');
+} */
 .navbar-main {
   position: fixed;
   top: 0px;
@@ -137,6 +141,22 @@
 /* .navbar-show-icon {
   margin-right: 20.5px;
 } */
+ /* search bar Input  */
+ .search-input {
+  position: absolute;
+  color: #ccc;
+  top: 0px;
+  right: 40px;
+  width: 170px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background: #c39428;
+  z-index: 10;
+}
+.search-input::placeholder{
+  color: #fff;;
+}
 /* suggest menu box */
 .newnavbar1 .suggestion-sub {
   position: absolute;
@@ -145,7 +165,7 @@
   border-radius: 8px;
 }
 .suggestion-sub .suggested {
-  /* top: 100%; */
+  top: 100%;
   position: relative;
   width: 100%;
   background-color: #fff;
@@ -323,12 +343,13 @@
   }
   /* suggestion-box */
   .suggestion-box .suggestion-sub {
+    position: absolute;
     right: 21%;
   }
-  .suggestion-sub .suggested li {
-    padding: 10px;
-    cursor: pointer;
-    border-bottom: 1px solid #eee;
+  .newnavbar1 .suggestion-sub .suggested li {
+    padding: 10px 10px;
+    /* cursor: pointer;
+    border-bottom: 1px solid #eee; */
   }
 }
 
@@ -393,6 +414,7 @@
   }
   /* suggest */
   .suggestion-box .suggestion-sub {
+    position: relative;
     top: 0px;
     left: 0px;
     padding: 0px 10px;
@@ -495,11 +517,11 @@
 }
 
 .navbar-contact-link p {
-  font-size: 16x;
+  font-size: 16px;
   line-height: 14px;
   font-weight: 500;
   color: rgb(100, 100, 100);
-  font-family: Source Sans pro, sans-serif;
+  font-family: sans-serif;
   margin-right: 10px;
 }
 .navbar-contact-link hr {
@@ -547,7 +569,6 @@
   outline: none;
   font-size: 16px;
   margin-top: 0px;
-  padding: 15px 30px;
 }
 .navbar-top-search-main input:focus {
   box-shadow: none !important;
@@ -568,10 +589,45 @@
 }
 
 /* NAVBAR TOP SUGGETION */
+
 .navbar-top-search-main .suggestion-main {
   margin-left: 16px;
   top: 60px;
   width: 45%;
+  position: absolute;
+  z-index: 1001;
+}
+.suggestions{
+  top: 100%;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  border-radius: 5px;
+  color: #000;
+  z-index: 1005;
+  max-height: 200px;
+  overflow-y: auto;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+.suggestions li{
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+.suggestions li:hover {
+  background-color: #f0f0f0;
+}
+.suggested li{
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.suggested li:hover {
+  background-color: #f0f0f0;
 }
 /* navbar top contact details */
 .navbar-contact-details-wrapper {
@@ -598,7 +654,7 @@
   line-height: 15px;
   font-weight: 400;
   color: #000;
-  font-family: Source Sans pro, sans-serif;
+  font-family:  sans-serif;
   margin: 5px 0 0 0;
 }
 
@@ -607,7 +663,7 @@
   line-height: 16px;
   font-weight: 400;
   color: #000;
-  font-family: Source Sans pro, sans-serif;
+  font-family: sans-serif;
   margin: 5px 0 0 0;
   text-decoration: none;
 }
@@ -618,7 +674,7 @@
   line-height: 16px;
   font-weight: 700;
   color: #000;
-  font-family: Source Sans pro, sans-serif;
+  font-family: sans-serif;
   margin: 5px 0;
 }
 /* @media(max-width:992px) and (min-width:991px){

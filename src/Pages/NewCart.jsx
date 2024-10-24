@@ -16,7 +16,7 @@ const NewCart = () => {
   const [deliveryCharge, setDeliveryCharge] = useState();
   const [CartData, setCartData] = useState(() => {
     const d = localStorage.getItem("cart");
-    return d ? JSON.parse(d) : [];
+    return d ? JSON.parse(d) : null;
   });
   const [CartgetTotal, setCartgetTotal] = useState([]);
   const { alertMessage, removeFromCartList, addToCartList } = useWatchlist();
@@ -36,13 +36,13 @@ const NewCart = () => {
       )
       .then((res) => {
         res.data.cart_items.map((item) => {
-          addToCartList(Number(item.product_id));
+         return addToCartList(Number(item.product_id));
         });
         localStorage.setItem("cart", JSON.stringify(res.data));
         localStorage.setItem("cart_length", res.data.cart_items.length);
         setLoading(false);
         setCartData(res.data);
-        if(res.data.cart_total.total_price < 2300){
+        if (res.data.cart_total.total_price < 2300) {
           setDeliveryCharge(90);
         }
         setCartgetTotal(res.data.cart_total);
@@ -54,7 +54,6 @@ const NewCart = () => {
           "cart",
           JSON.stringify({ cart_items: [], cart_total: {} })
         );
-        localStorage.setItem("cart_length", 0);
       });
   };
 
@@ -69,8 +68,10 @@ const NewCart = () => {
         data: payload,
       })
       .then((res) => {
-        const filterData = CartData?.cart_items.filter((item) => item.id !== product.id);
-        setCartData({cart_items:filterData});
+        const filterData = CartData?.cart_items.filter(
+          (item) => item.id !== product.id
+        );
+        setCartData({ cart_items: filterData });
         setCartgetTotal(res.data.cart_total);
         AdddeliveryCharge(res.data.cart_total, CartData);
         removeFromCartList(product.product_id);
@@ -78,7 +79,7 @@ const NewCart = () => {
           "cart",
           JSON.stringify({ cart_items: filterData, cart_total: CartgetTotal })
         );
-        localStorage.setItem("cart_length", filterData.length);
+        // localStorage.setItem("cart_length", filterData.length);
       })
       .catch((error) => {
         console.log("Removing product with ID:", product.product_id);
@@ -94,8 +95,8 @@ const NewCart = () => {
         }
       )
       .then((response) => {
-        setCartData([]);
-        localStorage.setItem("cart_productId", []);
+        setCartData({ cart_items: [], cart_total: {} });
+        localStorage.setItem("cart_productId", JSON.stringify([]));
         localStorage.setItem(
           "cart",
           JSON.stringify({ cart_items: [], cart_total: {} })
@@ -106,12 +107,12 @@ const NewCart = () => {
 
   const AdddeliveryCharge = (CartTotal) => {
     // const getTotalWeight = CartTotal.total_weight / 1000;
-    const getTotalAmount = CartTotal.total_price
+    const getTotalAmount = CartTotal.total_price;
     // console.log("getTotalAmount",getTotalAmount,CartTotal)
     if (getTotalAmount <= 2300) {
       setDeliveryCharge(90);
       localStorage.setItem("deliveryCharge", 90);
-    } else{
+    } else {
       setDeliveryCharge(0);
       localStorage.setItem("deliveryCharge", 0);
     }
@@ -121,7 +122,6 @@ const NewCart = () => {
     // } else if (getTotalWeight > 3) {
     //   setDeliveryCharge(65);
     // }
-    
   };
 
   const grandTotal = CartgetTotal?.total_price + deliveryCharge;
@@ -209,11 +209,11 @@ const NewCart = () => {
                     <span>Grand Total</span>
                     <span>₹{grandTotal}.00</span>
                   </div>
-                 
+
                   <Link to="/checkout">
-                  <button className="checkout-button" disabled={!canCheckout}>
-                    Check Out
-                  </button>
+                    <button className="checkout-button" disabled={!canCheckout}>
+                      Check Out
+                    </button>
                   </Link>
 
                   <div className="cart-payment-methods">
@@ -254,7 +254,7 @@ const CartListItem = React.memo(
     getUserData,
     setCanCheckout,
     // addToCartList,
-    CartgetTotal
+    CartgetTotal,
   }) => {
     const [productVariations] = useState(() => {
       return product.product_attributes ? product.product_attributes : {};
@@ -286,8 +286,14 @@ const CartListItem = React.memo(
                 }
               : item;
           });
-          localStorage.setItem("cart", JSON.stringify({cart_items:UpdatedCartData,cart_total:CartgetTotal}));
-          setCartData({cart_items:UpdatedCartData});
+          localStorage.setItem(
+            "cart",
+            JSON.stringify({
+              cart_items: UpdatedCartData,
+              cart_total: CartgetTotal,
+            })
+          );
+          setCartData({ cart_items: UpdatedCartData });
           AdddeliveryCharge(response.data.cart_total, response.data.cart_items);
           setCartgetTotal(response.data.cart_total);
         })
@@ -312,15 +318,21 @@ const CartListItem = React.memo(
         .then((response) => {
           // console.log("res",response.data)
           const UpdatedProduct = response?.data?.cart_item[0];
-          const UpdatedCartData = CartData?.cart_items.map((item) =>
-            item.product_id === UpdatedProduct.product_id
+          const UpdatedCartData = CartData?.cart_items.map((item) => {
+            return item.product_id === UpdatedProduct.product_id
               ? { ...item, product_quantity: UpdatedProduct.product_quantity }
-              : item
-          );
+              : item;
+          });
           // console.log("Cart",CartgetTotal)
-          localStorage.setItem("cart", JSON.stringify({cart_items:UpdatedCartData,cart_total:response.data.cart_total}));
+          localStorage.setItem(
+            "cart",
+            JSON.stringify({
+              cart_items: UpdatedCartData,
+              cart_total: response.data.cart_total,
+            })
+          );
           AdddeliveryCharge(response.data.cart_total, response.data.cart_items);
-          setCartData({cart_items:UpdatedCartData});
+          setCartData({ cart_items: UpdatedCartData });
           setCartgetTotal(response.data.cart_total);
         })
         .catch((err) => console.log("error", err));
@@ -339,10 +351,13 @@ const CartListItem = React.memo(
 
     useEffect(() => {
       const AllAttributesSelected = CartData?.cart_items.every((product) => {
-        if (product.product_attributes && product.product_attributes.length > 0) {
-          if(Object.values(product.selected_attribute)[0]){
+        if (
+          product.product_attributes &&
+          product.product_attributes.length > 0
+        ) {
+          if (Object.values(product.selected_attribute)[0]) {
             return true;
-          }else{
+          } else {
             return false;
           }
         }
