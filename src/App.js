@@ -8,6 +8,7 @@ import "./css/success.css";
 import "./css/navbar1.css";
 import "./css/otherBanner.css";
 import "./css/gallery.css";
+import "./css/orderdetails.css";
 import Allroutes from "./component/Allroutes";
 import Footer from "./component/Footer";
 import BackToTopButton from "./component/BackToTopButton";

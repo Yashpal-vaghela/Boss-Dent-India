@@ -132,10 +132,10 @@ const Login = () => {
           <p>
             You are already logged in as <strong>{userName}</strong>
           </p>
-          <butoon onClick={handleLogout} className="logout-button">
+          <button onClick={handleLogout} className="logout-button">
             {" "}
             Log Out{" "}
-          </butoon>
+          </button>
         </div>
       ) : (
         <div className="login-container" data-aos="fade">

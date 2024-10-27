@@ -20,6 +20,8 @@ import NewCart from "../Pages/NewCart";
 import ProtectedRoute from "./ProtectedRoute";
 import Gallery from "../Pages/Gallery";
 import Success from "../Pages/success";
+import ReturnExchange from "../Pages/ReturnExchange";
+import OrderDetailsInfo from "../Pages/OrderDetailsInfo";
 
 const Allroutes = () => {
   return (
@@ -43,10 +45,12 @@ const Allroutes = () => {
         <Route path="/refund-and-returns-policy" element={<RefundPolicy />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-and-conditions" element={<TermAndCondition />} />
+        <Route path="/return-exchange" element={<ReturnExchange/>}></Route>
         <Route path="/new-nav" element={<NewNav1 />} />
         {/* <Route path='/gallery' element={<ImageGallery />}/> */}
         <Route path="/cart" element={<ProtectedRoute><NewCart/></ProtectedRoute>}/>
         <Route path="/checkout" element={<ProtectedRoute><CheckOut/></ProtectedRoute>}/>
+        <Route path="/order-details-info" element={<OrderDetailsInfo/>}></Route>
         <Route path="/gallery" element={<Gallery/>}></Route>
         <Route path="/success" element={<Success/>} />
         <Route path="*" element={<Home/>}></Route>

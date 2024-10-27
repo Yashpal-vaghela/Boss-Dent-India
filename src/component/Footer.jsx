@@ -16,7 +16,9 @@ const Footer = () => {
         <div className="footer-section" data-aos="fade-up" 
         // data-aos-delay="0"
         >
-          <img src="/asset/images/flogo1.png" alt="BossDent" className="logo" />
+          <Link to="/">
+          <img src="/asset/images/flogo1.png" width={250} height={77} alt="BossDent" className="logo" />
+          </Link>
           <p>
             Bossdentindia (Disposables & Consumables) is an online dental
             product selling store based in Surat Gujrat.
@@ -82,6 +84,9 @@ const Footer = () => {
             </li>
             <li>
               <Link to="/help-center">Help Center</Link>
+            </li>
+            <li>
+              <Link to="/return-exchange">Return & Exchange</Link>
             </li>
           </ul>
         </div>

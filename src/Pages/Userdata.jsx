@@ -6,8 +6,9 @@ import "../css/responsiveuserdata.css";
 import AlertSuccess from "../component/AlertSuccess";
 import { toast } from "react-toastify";
 import Loader1 from "../component/Loader1";
+import Loader from "../component/Loader";
 import { useWatchlist } from "./WatchlistContext";
-
+import axios from "axios";
 
 const UserData = () => {
   const [user, setUser] = useState(null);
@@ -21,7 +22,9 @@ const UserData = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [ApiLoader, setApiLoader] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [OrderDetail, setOrderDetails] = useState([]);
   const navigate = useNavigate();
   const { LogoutUserList } = useWatchlist();
 
@@ -61,6 +64,7 @@ const UserData = () => {
           },
         }
       );
+
       if (!userDetailResponse.ok)
         throw new Error("Failed to fetch user details");
       const userDetailData = await userDetailResponse.json();
@@ -81,6 +85,8 @@ const UserData = () => {
       if (!addressResponse.ok) throw new Error("Failed to fetch address data");
       const addressData = await addressResponse.json();
       setAddress(addressData.pickup_locations || []);
+      // console.log("ad", userDetailData);
+      // Fetch Order Details
     } catch (error) {
       console.error("Error fetching user data:", error);
       toast.error("Error fetching user data");
@@ -149,28 +155,31 @@ const UserData = () => {
       console.error("Error updating user data:", error);
     }
   };
-  const handleLogin = async (username, password) =>{
+  const handleLogin = async (username, password) => {
     try {
-      const loginResponse = await fetch("https://admin.bossdentindia.com/wp-json/jwt-auth/v1/token",{
-        method: "POST",
-        headers: {
-          "content-Type": "application/json"
-        },
-        body: JSON.stringify({ username, password})
-      });
+      const loginResponse = await fetch(
+        "https://admin.bossdentindia.com/wp-json/jwt-auth/v1/token",
+        {
+          method: "POST",
+          headers: {
+            "content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
       const loginResult = await loginResponse.json();
       if (loginResponse.ok) {
         localStorage.setItem("token", loginResult.token);
         return true;
       } else {
         toast.error(loginResult.message || "Login failed.");
-        return false; 
+        return false;
       }
-    }catch (error) {
-    toast.error("An error occurred while logging in.");
-    return false; 
-  }
-  }
+    } catch (error) {
+      toast.error("An error occurred while logging in.");
+      return false;
+    }
+  };
   const handleChangePassword = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -181,7 +190,7 @@ const UserData = () => {
       username = userData.user_email;
     }
     console.log("userName :::::", username);
-    
+
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -220,11 +229,11 @@ const UserData = () => {
       setOldPassword("");
       setNewPassword("");
       const loginSuccess = await handleLogin(username, newPassword);
-        if (loginSuccess) {
-          toast.success("Logged in successfully with the new password!");
-        } else {
-          toast.error("Automatic login failed. Please log in manually.");
-        }
+      if (loginSuccess) {
+        toast.success("Logged in successfully with the new password!");
+      } else {
+        toast.error("Automatic login failed. Please log in manually.");
+      }
     } catch (error) {
       console.error("Error changing password:", error);
       toast.error("Error changing password");
@@ -253,6 +262,28 @@ const UserData = () => {
   const togglePasswordVisibility1 = () => {
     setShowNewPassword(!showNewPassword);
   };
+  const handleOrderApiData = async (section) => {
+    // console.log("section", section);
+    setApiLoader(true);
+    setSelectedSection(section);
+    await axios
+      .get(
+        `https://admin.bossdentindia.com/wp-json/custom/v1/user-orders/${user.ID}`
+      )
+      .then((response) => {
+        // console.log("Orderresponse", response);
+        const FilterData = response.data.filter(
+          (order) => order.status !== "trash"
+        );
+        setApiLoader(false);
+        // console.log("filter", FilterData);
+        setOrderDetails(FilterData);
+      })
+      .catch((error) => {
+        setApiLoader(false);
+        console.log("error", error);
+      });
+  };
 
   return !user ? (
     <Loader1 />
@@ -263,8 +294,7 @@ const UserData = () => {
           <h1>User Data</h1>
           <nav className="bread-crumbs">
             <Link to="/">Home</Link>
-             <i className="fa-solid fa-angle-right"></i>{" "}
-            <span>User Data</span>
+            <i className="fa-solid fa-angle-right"></i> <span>User Data</span>
           </nav>
         </div>
         <div className="user-data-container" data-aos="fade">
@@ -280,7 +310,7 @@ const UserData = () => {
               <li onClick={() => setSelectedSection("contactDetails")}>
                 Contact Details
               </li>
-              <li onClick={() => setSelectedSection("orders")}>Orders</li>
+              <li onClick={() => handleOrderApiData("orders")}>Orders</li>
               <li onClick={() => setSelectedSection("address")}>Address</li>
               <li onClick={() => setSelectedSection("changePassword")}>
                 Change Password
@@ -308,7 +338,7 @@ const UserData = () => {
             )}
             {selectedSection === "contactDetails" && (
               <form className="user-details-form">
-                <h2>Contact Details</h2>
+                <h2 className="section-title">Contact Details</h2>
                 <div>
                   <label>Name:</label>
                   <input type="text" value={user.username} readOnly />
@@ -366,12 +396,115 @@ const UserData = () => {
                 </button>
               </form>
             )}
+
             {selectedSection === "orders" && (
-              <p>Orders section coming soon...</p>
+              <div className="order-section d-inline">
+                {/* <p>Orders section coming soon...</p> */}
+                {OrderDetail.length !== 0 ? (
+                  <>
+                    <h2 className="order-details-title section-title">
+                      Order Details
+                    </h2>
+                    <div className="order-table">
+                      <div className="order-title row mx-0">
+                        <div className="col-2">
+                          <h1>Order Id</h1>
+                        </div>
+                        <div className="col-2">
+                          <h1>Order Date</h1>
+                        </div>
+                        <div className="col-2">
+                          <h1>Product Items</h1>
+                        </div>
+                        <div className="col-2">
+                          <h1>Total Amount</h1>
+                        </div>
+                        <div className="col-2">
+                          <h1>Status</h1>
+                        </div>
+                        <div className="col-2">
+                          <h1>Action</h1>
+                        </div>
+                      </div>
+                      <div className="order-content row mx-0 justify-content-between align-items-center">
+                        {OrderDetail?.map((order, index) => {
+                          const dateOnly = order.order_date.split(" ")[0];
+                          const [year, month, day] = dateOnly.split("-");
+                          // console.log(
+                          //   "getDate",
+                          //   dateOnly,
+                          //   "DDD",
+                          //   year,
+                          //   month,
+                          //   day
+                          // );
+                          return (
+                            <React.Fragment key={index}>
+                              <div className="col-2">
+                                <span>{order.order_id}</span>
+                              </div>
+                              <div className="col-2 date-section">
+                                <span>
+                                  {/* {dateOnly} */}
+                                  {day}-{month}-{year}
+                                </span>
+                              </div>
+                              <div className="col-2">
+                                <span>{order.items.length}</span>
+                              </div>
+                              <div className="col-2">
+                                <span>{order.order_total}</span>
+                              </div>
+                              <div className="col-2">
+                                {/* {attribute.replace(/attribute_pa_|attribute_/, "")} */}
+                                <span>
+                                  {order.status.replace(/wc-|wc-/, "")}
+                                </span>
+                              </div>
+                              <div className="col-2 px-0 action-button d-flex align-items-center justify-content-center">
+                                <span>
+                                  <i className="d-flex d-sm-none d-md-none d-lg-none fa-solid fa-angles-right"></i>
+                                </span>
+                                <button
+                                  className="d-none d-sm-block d-md-block d-lg-block btn btn-dark mx-1"
+                                  onClick={() =>
+                                    navigate("/order-details-info")
+                                  }
+                                >
+                                  View
+                                </button>
+                              </div>
+                            </React.Fragment>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="d-flex align-items-center justify-content-center h-100">
+                      {ApiLoader === true ? (
+                        <Loader></Loader>
+                      ) : (
+                        <div className="d-block text-center  order-main">
+                          <p>No Order details found!</p>
+                          <p>
+                            Please your first Order
+                            <Link to="/products" style={{ color: "#c39428" }}>
+                              {" "}
+                              ShopNow
+                            </Link>
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
             )}
             {selectedSection === "address" && (
               <div className="address-section">
-                <h2>Address Information</h2>
+                <h2 className="section-title">Address Information</h2>
                 {address.length > 0 ? (
                   address.map((loc, index) => (
                     <div key={index} className="address-item">
@@ -437,7 +570,10 @@ const UserData = () => {
                   )}
                 </div>
                 <div>
-                  <Link to="/forgot-password" className="forgot-password-link"> Forgot Password?</Link>
+                  <Link to="/forgot-password" className="forgot-password-link">
+                    {" "}
+                    Forgot Password?
+                  </Link>
                 </div>
                 <div>
                   {/* {isLoading ? <div className="loader"> </div>  : null } */}
