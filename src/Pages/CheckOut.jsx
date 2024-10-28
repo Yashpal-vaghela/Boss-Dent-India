@@ -153,9 +153,7 @@ const CheckOut = () => {
           const orderData = await orderResponse.json();
           const newOrderId = orderData.orderId.toString();
           setOrderId(newOrderId);
-          getCartData.cart_items?.map((item) =>
-            removeFromCartListProduct(item.product_id,getUserData)
-          );
+        
           //  Proceed to payment
           if (paymentMethod === "PhonePe") {
             setLoading(true);
@@ -177,7 +175,7 @@ const CheckOut = () => {
 
             if (!paymentResponse.ok) {
               const paymentErrorText = await paymentResponse.text();
-              console.error("Payment response error text:", paymentErrorText);
+              console.error("Payment response error text:", paymentErrorText,"paymentResponse",paymentResponse);
               throw new Error("Failed to initiate payment.");
             }
 
@@ -189,11 +187,13 @@ const CheckOut = () => {
               paymentData.data.instrumentResponse.redirectInfo &&
               paymentData.data.instrumentResponse.redirectInfo.url
             ) {
+              getCartData.cart_items?.map((item) =>
+                removeFromCartListProduct(item.product_id,getUserData)
+              );
               setLoading(false);
               const paymentUrl =
                 paymentData.data.instrumentResponse.redirectInfo.url;
               // window.location.href = paymentUrl;
-             
               window.open(paymentUrl, "_blank");
               setPaymentSuccess(true);
             }
@@ -428,7 +428,7 @@ const CheckOut = () => {
                         value={formik?.values?.zip || ""}
                         onChange={formik?.handleChange}
                         onBlur={formik?.handleBlur}
-                        maxLength={4}
+                        maxLength={6}
                       />
                       {formik?.errors?.zip && (
                         <span className="text-danger">
