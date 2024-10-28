@@ -11,7 +11,9 @@ import Success from "./success";
 import { useWatchlist } from "./WatchlistContext";
 
 const checkoutSchema = yup.object().shape({
-  name: yup.string().required("Name field is required"),
+  first_name:yup.string().required("First Name field is required"),
+  last_name:yup.string().required("Last Name field is required"),
+  // name: yup.string().required("Name field is required"),
   email: yup
     .string()
     .email("Contact Details Email is not valid.")
@@ -97,7 +99,9 @@ const CheckOut = () => {
 
   // new form validation
   const initialValues = {
-    name: "",
+    // name: "",
+    first_name:"",
+    last_name:"",
     email: "",
     phone: "",
     address: "",
@@ -112,7 +116,7 @@ const CheckOut = () => {
     validateOnChange: true,
     validateOnBlur: false,
     onSubmit: async () => {
-      // console.log("finalsubmit", paymentMethod, getCartData,HandleSubmit);
+      // console.log("finalsubmit", paymentMethod, getCartData,HandleSubmit,getCartData,formik?.values);
       if (paymentMethod && HandleSubmit === true) {
         try {
           setLoading(true);
@@ -131,6 +135,7 @@ const CheckOut = () => {
                 items: getCartData.cart_items?.map((item) => ({
                   product_id: Number(item?.product_id),
                   quantity: Number(item?.product_quantity),
+                  selected_attribute:item?.selected_attribute
                 })),
                 user_id: getUserData.user_id,
               }),
@@ -239,26 +244,48 @@ const CheckOut = () => {
                   //  data-aos-anchor-placement="top-bottom"
                 >
                   <h2>Billing Address</h2>
-                  <div className="form-inside">
+                  <div className="form-inside row mx-0">
                     <div
                       className={
-                        formik?.errors?.name
-                          ? "contactField-wrapper mb-0"
-                          : "contactField-wrapper"
+                        formik?.errors?.first_name
+                          ? "contactField-wrapper col-lg-6 col-12 mb-0"
+                          : "contactField-wrapper col-lg-6 col-12"
                       }
                     >
-                      <label className="form-label">Name:</label>
+                      <label className="form-label">First Name:</label>
                       <input
                         type="text"
-                        name="name"
+                        name="first_name"
                         className="form-control"
-                        value={formik?.values?.name || ""}
+                        value={formik?.values?.first_name || ""}
                         onChange={formik?.handleChange}
                         onBlur={formik?.handleBlur}
                       />
-                      {formik?.errors?.name && (
+                      {formik?.errors?.first_name && (
                         <span className="text-danger">
-                          {formik?.errors?.name}
+                          {formik?.errors?.first_name}
+                        </span>
+                      )}
+                    </div>
+                    <div
+                      className={
+                        formik?.errors?.last_name
+                          ? "contactField-wrapper col-lg-6 col-12 mb-0"
+                          : "contactField-wrapper col-lg-6 col-12"
+                      }
+                    >
+                      <label className="form-label">Last Name:</label>
+                      <input
+                        type="text"
+                        name="last_name"
+                        className="form-control"
+                        value={formik?.values?.last_name || ""}
+                        onChange={formik?.handleChange}
+                        onBlur={formik?.handleBlur}
+                      />
+                      {formik?.errors?.last_name && (
+                        <span className="text-danger">
+                          {formik?.errors?.last_name}
                         </span>
                       )}
                     </div>
@@ -293,15 +320,13 @@ const CheckOut = () => {
                     >
                       <label className="form-label">Phone:</label>
                       <input
-                        type="number"
+                        type="text"
                         name="phone"
                         className="form-control"
                         value={formik?.values?.phone || ""}
                         onChange={formik?.handleChange}
                         onBlur={formik?.handleBlur}
                         maxLength={10}
-                        minLength={10}
-                        pattern="\d{10}"
                       />
                       {formik?.errors?.phone && (
                         <span className="text-danger">
@@ -403,6 +428,7 @@ const CheckOut = () => {
                         value={formik?.values?.zip || ""}
                         onChange={formik?.handleChange}
                         onBlur={formik?.handleBlur}
+                        maxLength={4}
                       />
                       {formik?.errors?.zip && (
                         <span className="text-danger">
@@ -412,6 +438,7 @@ const CheckOut = () => {
                     </div>
                   </div>
                 </div>
+                
                 <div className="col-lg-5 col-md-5 col-12" data-aos="fade-left">
                   <div className="order-summary-wrapper">
                     <h2>order summary</h2>
