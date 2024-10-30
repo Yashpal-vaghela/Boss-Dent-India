@@ -11,8 +11,8 @@ import Success from "./success";
 import { useWatchlist } from "./WatchlistContext";
 
 const checkoutSchema = yup.object().shape({
-  first_name:yup.string().required("First Name field is required"),
-  last_name:yup.string().required("Last Name field is required"),
+  first_name: yup.string().required("First Name field is required"),
+  last_name: yup.string().required("Last Name field is required"),
   // name: yup.string().required("Name field is required"),
   email: yup
     .string()
@@ -100,8 +100,8 @@ const CheckOut = () => {
   // new form validation
   const initialValues = {
     // name: "",
-    first_name:"",
-    last_name:"",
+    first_name: "",
+    last_name: "",
     email: "",
     phone: "",
     address: "",
@@ -135,7 +135,7 @@ const CheckOut = () => {
                 items: getCartData.cart_items?.map((item) => ({
                   product_id: Number(item?.product_id),
                   quantity: Number(item?.product_quantity),
-                  selected_attribute:item?.selected_attribute
+                  selected_attribute: item?.selected_attribute,
                 })),
                 user_id: getUserData.user_id,
               }),
@@ -153,7 +153,7 @@ const CheckOut = () => {
           const orderData = await orderResponse.json();
           const newOrderId = orderData.orderId.toString();
           setOrderId(newOrderId);
-        
+
           //  Proceed to payment
           if (paymentMethod === "PhonePe") {
             setLoading(true);
@@ -175,7 +175,12 @@ const CheckOut = () => {
 
             if (!paymentResponse.ok) {
               const paymentErrorText = await paymentResponse.text();
-              console.error("Payment response error text:", paymentErrorText,"paymentResponse",paymentResponse);
+              console.error(
+                "Payment response error text:",
+                paymentErrorText,
+                "paymentResponse",
+                paymentResponse
+              );
               throw new Error("Failed to initiate payment.");
             }
 
@@ -188,7 +193,7 @@ const CheckOut = () => {
               paymentData.data.instrumentResponse.redirectInfo.url
             ) {
               getCartData.cart_items?.map((item) =>
-                removeFromCartListProduct(item.product_id,getUserData)
+                removeFromCartListProduct(item.product_id, getUserData)
               );
               setLoading(false);
               const paymentUrl =
@@ -199,6 +204,7 @@ const CheckOut = () => {
             }
           }
         } catch (error) {
+          setLoading(false);
           toast.error(error?.message);
           console.error("Error handling checkout:", error, error?.message);
           // alert("Error processing payment. Please try again.");
@@ -438,7 +444,7 @@ const CheckOut = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="col-lg-5 col-md-5 col-12" data-aos="fade-left">
                   <div className="order-summary-wrapper">
                     <h2>order summary</h2>
@@ -480,6 +486,15 @@ const CheckOut = () => {
                                               )}
                                               : &nbsp;
                                               <b>
+                                                {console.log(
+                                                  "pro",
+                                                  product?.selected_attribute,
+                                                  typeof product?.selected_attribute,
+                                                  Object.values(
+                                                    product?.selected_attribute
+                                                  )[0],
+                                                  // JSON.parse(Object.keys(product?.selected_attribute))
+                                                )}
                                                 {
                                                   Object.values(
                                                     product?.selected_attribute

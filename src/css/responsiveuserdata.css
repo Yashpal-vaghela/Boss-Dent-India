@@ -19,8 +19,8 @@
 }
 
 .user-data-sidebar .avatar {
-  width: 100px;
-  height: 100px;
+  /* width: 100px;
+  height: 100px; */
   border-radius: 50%;
   margin-bottom: 10px;
 }
@@ -548,7 +548,7 @@
   border-bottom: 2px solid black;
 }
 .order-content .action-button{
-  padding: .25rem 0px;
+  padding: .24rem 0px;
 }
 /* .order-content div .btn{
   padding: 0rem 0.75rem;

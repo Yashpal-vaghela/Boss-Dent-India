@@ -36,7 +36,7 @@ const NewCart = () => {
       )
       .then((res) => {
         res.data.cart_items.map((item) => {
-         return addToCartList(Number(item.product_id));
+          return addToCartList(Number(item.product_id));
         });
         localStorage.setItem("cart", JSON.stringify(res.data));
         localStorage.setItem("cart_length", res.data.cart_items.length);
@@ -269,6 +269,7 @@ const CartListItem = React.memo(
         ...selectedAttributes,
         [attribute]: value,
       };
+      // console.log("updateAttributes",updateAttributes,JSON.parse(updateAttributes))
       setSelectedAttributes(updateAttributes);
       await axios
         .post(`https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`, {
@@ -282,10 +283,16 @@ const CartListItem = React.memo(
             return item.product_id === UpdatedProduct.product_id
               ? {
                   ...item,
-                  selected_attribute: JSON.stringify({ [attribute]: value }),
+                  selected_attribute: { [attribute]: value },
                 }
               : item;
           });
+          // console.log(
+          //   "response",
+          //   response.data,
+          //   "updateCartData",
+          //   UpdatedCartData
+          // );
           localStorage.setItem(
             "cart",
             JSON.stringify({
@@ -301,6 +308,7 @@ const CartListItem = React.memo(
     };
 
     const handleUpdateQty = async (e, product, action) => {
+      console.log("select",selectedAttributes)
       let newQuantity =
         action === "PLUS"
           ? Number(product.product_quantity) + 1
@@ -323,7 +331,7 @@ const CartListItem = React.memo(
               ? { ...item, product_quantity: UpdatedProduct.product_quantity }
               : item;
           });
-          // console.log("Cart",CartgetTotal)
+          console.log("Cart",UpdatedCartData);
           localStorage.setItem(
             "cart",
             JSON.stringify({

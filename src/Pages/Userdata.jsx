@@ -9,6 +9,7 @@ import Loader1 from "../component/Loader1";
 import Loader from "../component/Loader";
 import { useWatchlist } from "./WatchlistContext";
 import axios from "axios";
+import OrderDetailsInfo from "./OrderDetailsInfo";
 
 const UserData = () => {
   const [user, setUser] = useState(null);
@@ -70,6 +71,12 @@ const UserData = () => {
       const userDetailData = await userDetailResponse.json();
 
       setUser(userDetailData);
+      const a = localStorage.getItem("userSidebar");
+      if (a == "orders") {
+        setSelectedSection(a);
+        handleOrderApiData(a, userDetailData);
+        localStorage.removeItem("userSidebar");
+      }
       setContactNumber(userDetailData.contactNumber || "");
       setGender(userDetailData.gender || "");
 
@@ -262,27 +269,47 @@ const UserData = () => {
   const togglePasswordVisibility1 = () => {
     setShowNewPassword(!showNewPassword);
   };
-  const handleOrderApiData = async (section) => {
-    // console.log("section", section);
+  const handleOrderApiData = async (section, userId) => {
+    // console.log("section", user,section);
     setApiLoader(true);
     setSelectedSection(section);
-    await axios
-      .get(
-        `https://admin.bossdentindia.com/wp-json/custom/v1/user-orders/${user.ID}`
-      )
-      .then((response) => {
-        // console.log("Orderresponse", response);
-        const FilterData = response.data.filter(
-          (order) => order.status !== "trash"
-        );
-        setApiLoader(false);
-        // console.log("filter", FilterData);
-        setOrderDetails(FilterData);
-      })
-      .catch((error) => {
-        setApiLoader(false);
-        console.log("error", error);
-      });
+    if (user !== null) {
+      await axios
+        .get(
+          `https://admin.bossdentindia.com/wp-json/custom/v1/user-orders/${user.ID}`
+        )
+        .then((response) => {
+          // console.log("Orderresponse", response.data);
+          const FilterData = response.data.filter(
+            (order) => order.status !== "trash"
+          );
+          setApiLoader(false);
+          // console.log("filter", FilterData);
+          setOrderDetails(FilterData);
+        })
+        .catch((error) => {
+          setApiLoader(false);
+          console.log("error", error);
+        });
+    } else {
+      await axios
+        .get(
+          `https://admin.bossdentindia.com/wp-json/custom/v1/user-orders/${userId.ID}`
+        )
+        .then((response) => {
+          // console.log("Orderresponse", response.data);
+          const FilterData = response.data.filter(
+            (order) => order.status !== "trash"
+          );
+          setApiLoader(false);
+          // console.log("filter", FilterData);
+          setOrderDetails(FilterData);
+        })
+        .catch((error) => {
+          setApiLoader(false);
+          console.log("error", error);
+        });
+    }
   };
 
   return !user ? (
@@ -303,6 +330,8 @@ const UserData = () => {
               className="avatar"
               src="/asset/images/avtar.png"
               alt="User Avatar"
+              width={100}
+              height={100}
               onClick={() => setSelectedSection("welcome")}
             />
             <h3>{user.username}</h3>
@@ -430,14 +459,6 @@ const UserData = () => {
                         {OrderDetail?.map((order, index) => {
                           const dateOnly = order.order_date.split(" ")[0];
                           const [year, month, day] = dateOnly.split("-");
-                          // console.log(
-                          //   "getDate",
-                          //   dateOnly,
-                          //   "DDD",
-                          //   year,
-                          //   month,
-                          //   day
-                          // );
                           return (
                             <React.Fragment key={index}>
                               <div className="col-2">
@@ -456,20 +477,30 @@ const UserData = () => {
                                 <span>{order.order_total}</span>
                               </div>
                               <div className="col-2">
-                                {/* {attribute.replace(/attribute_pa_|attribute_/, "")} */}
                                 <span>
                                   {order.status.replace(/wc-|wc-/, "")}
                                 </span>
                               </div>
                               <div className="col-2 px-0 action-button d-flex align-items-center justify-content-center">
-                                <span>
-                                  <i className="d-flex d-sm-none d-md-none d-lg-none fa-solid fa-angles-right"></i>
-                                </span>
+                                <i
+                                  className="d-flex d-sm-none d-md-none d-lg-none fa-solid fa-angles-right"
+                                  onClick={() => {
+                                    navigate("/order-details-info");
+                                    localStorage.setItem(
+                                      "OrderId",
+                                      order.order_id
+                                    );
+                                  }}
+                                ></i>
                                 <button
                                   className="d-none d-sm-block d-md-block d-lg-block btn btn-dark mx-1"
-                                  onClick={() =>
-                                    navigate("/order-details-info")
-                                  }
+                                  onClick={() => {
+                                    navigate("/order-details-info");
+                                    localStorage.setItem(
+                                      "OrderId",
+                                      order.order_id
+                                    );
+                                  }}
                                 >
                                   View
                                 </button>
