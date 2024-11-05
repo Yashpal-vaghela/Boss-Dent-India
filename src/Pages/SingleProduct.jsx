@@ -41,6 +41,7 @@ const SingleProduct = () => {
   const [alertMessage, setAlertMessage] = useState("");
   const [selectedColor, setSelectedColor] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [discountProductPrice, setDiscountProdcutPrice] = useState(null);
   // const [ProductId] = useState(() => {
   //  return  localStorage.getItem("productId")
   //     ? localStorage.getItem("productId")
@@ -112,10 +113,35 @@ const SingleProduct = () => {
         const shuffledProducts = relatedProductsResponse.data.sort(
           () => 0.5 - Math.random()
         );
-        setRelatedProducts(shuffledProducts.slice(0, 10));
-      }
+        const productwithDiscount = shuffledProducts.map((product)=>{
+          const regularPrice = parseFloat(product.regular_price);
+          const salePrice = parseFloat(product.price);
 
-      setSalePrice(response.data.sale_price || response.data.price);
+          let discount = 0;
+          if (regularPrice && salePrice < regularPrice) {
+            discount = Math.round(((regularPrice - salePrice)/regularPrice) * 100);
+          }
+          return {...product, discount}
+        })
+        setRelatedProducts(productwithDiscount.slice(0, 10));
+        console.log(shuffledProducts);
+      }
+      
+      
+      
+      const regularPrice = parseFloat(response.data.regular_price);
+      const salePrice = parseFloat(response.data.sale_price || response.data.price);
+      if (regularPrice && salePrice < regularPrice) {
+        const discount = ((regularPrice - salePrice) / regularPrice) * 100;
+        setDiscountProdcutPrice(Math.round(discount)); // Store the discount percentage in state
+      } else {
+        setDiscountProdcutPrice(0); // No discount
+      }
+      setSalePrice(salePrice);
+      // console.log(response.data.sale_price);
+      // console.log(response.data.price);
+      // console.log(response.data.regular_price);
+      
       setWeight(response.data.weight);
       setStockStatus(response.data.stock_status);
       // const weightData = await axios.get(
@@ -409,6 +435,13 @@ const SingleProduct = () => {
           <div className="single-product-main">
             <div className="single-product-img">
               <Zoom>
+                <div className="image-container">
+                  {discountProductPrice > 0 && (
+                    <div className="discount-badge">
+                      {`${discountProductPrice}% off`}
+                    </div>
+                  )}
+                </div>
                 <img
                   // id={`product-image-${location.state.productId}`}
                   className={`single-product-img ${
@@ -424,9 +457,18 @@ const SingleProduct = () => {
             <div className="single-product-details">
               <h2 className="single-product-title">{product?.name}</h2>
               <h3 className="single-product-price">
-                {salePrice
-                  ? `Sale Price: ${salePrice} ₹`
-                  : `Price: ${product?.price} ₹`}
+                {salePrice && product?.regular_price ? (
+                  <>
+                    <span className="regular-price">
+                      {product.regular_price} ₹
+                    </span>
+                    <span className="sale-price">
+                      {salePrice} ₹
+                    </span>
+                  </>
+                ) : (
+                  `Price: ${product?.price} ₹`
+                )}
               </h3>
               {product.acf?.prese && <h4>Prese: {product.acf.preset}</h4>}
               <h4 className="single-product-cat">
@@ -643,6 +685,13 @@ const SingleProduct = () => {
                           relatedProduct.slug
                         )}`}
                       >
+                        <div className="image-container">
+                          {relatedProduct.discount >0 && (
+                            <div className="discount-badge">
+                              {`${relatedProduct.discount}% off`}
+                            </div>
+                          )}
+                        </div>
                         <img
                           src={
                             relatedProduct.yoast_head_json?.og_image?.[0]?.url
@@ -653,11 +702,33 @@ const SingleProduct = () => {
                         <h4 className="related-product-title">
                           {relatedProduct.title?.rendered}
                         </h4>
-                        <p>
+                        {/* <p>
                           {relatedProduct.price
                             ? `Price: ${relatedProduct.price} ₹`
                             : "Price not available"}
+                        </p> */}
+                        <p>
+                          {relatedProduct.regular_price && relatedProduct.price ? (
+                            relatedProduct.regular_price !== relatedProduct.price ? (
+                              // If regular_price and price are different, show both
+                              <>
+                                <span className="regular-price" style={{ textDecoration: "line-through" }}>
+                                  {relatedProduct.regular_price} ₹
+                                </span>
+                                <span className="sale-price">
+                                  {relatedProduct.price} ₹
+                                </span>
+                              </>
+                            ) : (
+                              // If regular_price and price are the same, show only one price
+                              <span className="price">{relatedProduct.price} ₹</span>
+                            )
+                          ) : (
+                            // Fallback in case one of the prices is missing
+                            `Price: ${relatedProduct.price} ₹`
+                          )}
                         </p>
+
                       </Link>
 
                       <div className="related-icons">

@@ -289,7 +289,7 @@ const WatchlistItem = React.memo(
       const storedProdcutvariation = product.product_variations;
       return storedProdcutvariation ? product.product_variations : {};
     });
-    console.log("stock", stockStatus);
+    console.log("productdata", product);
     // Function to handle attribute selection
     const handleAttributeSelect = async (attribute, value) => {
       const updatedAttributes = {
@@ -338,6 +338,7 @@ const WatchlistItem = React.memo(
                 </Link>
                 <p className="watchlist-item-price mb-0">
                   Price: ₹{product.product_price}
+                  {/* price: {product.regularprice} */}
                 </p>
               </div>
               {/* Render product variations */}

@@ -64,6 +64,8 @@ const Product = () => {
         const newProducts = response.data;
         setTotalProducts(parseInt(response.headers["x-wp-total"], 10));
         setProducts(newProducts);
+        // console.log(newProducts);
+        
         const stockResponse = await axios.get(
           "https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/all"
         );
@@ -338,8 +340,19 @@ const Product = () => {
                       ) {
                         imageUrl = product.yoast_head_json.og_image[0].url;
                       }
+
+                      const discountPercentage = product.regular_price && product.price 
+                            ? Math.round(
+                              ((product.regular_price - product.price) / product.regular_price) *
+                              100
+                            ):null;
                       return (
                         <div className="product-card" key={product.id}>
+                          { discountPercentage > 0 && (
+                            <div className="discount-badge">
+                              {`${discountPercentage}% Off`}
+                            </div>
+                          )}
                           <div className="product-card-link">
                             <Link
                               className="product-link"
@@ -375,8 +388,35 @@ const Product = () => {
                               textAlign: "center",
                             }}
                           >
-                            Price: {product.price} ₹
+                             {product?.regular_price && product?.price ? (
+                              product.regular_price === product.price ? (
+                                // If both values are the same, show only one value
+                                `Price: ${product.price} ₹`
+                              ) : (
+                                // If values are different, show both with strikethrough on regular_price
+                                <>
+                                  <span className="regular-price">
+                                    {product.regular_price} ₹
+                                  </span>
+                                  <span className="current-price">
+                                    {product.price} ₹
+                                  </span>
+                                  {/* <span className="discount-percentage">
+                                    {` (${(
+                                      ((product.regular_price - product.price) / product.regular_price) *
+                                      100
+                                    ).toFixed(2)}% Off)`}
+                                  </span> */}
+                                </>
+                              )
+                            ) : (
+                              // If only price is available, show price
+                              `Price: ${product?.price || "N/A"} ₹`
+                            )}
+                            {/* Price: {product.regular_price} ₹
+                            Price: {product.price} ₹ */}
                           </h3>
+
                           <div className="product-actions">
                             <Link
                               to={`/products/${encodeURIComponent(
