@@ -289,7 +289,7 @@ const WatchlistItem = React.memo(
       const storedProdcutvariation = product.product_variations;
       return storedProdcutvariation ? product.product_variations : {};
     });
-    console.log("productdata", product);
+    // console.log("productdata", product);
     // Function to handle attribute selection
     const handleAttributeSelect = async (attribute, value) => {
       const updatedAttributes = {
@@ -307,7 +307,7 @@ const WatchlistItem = React.memo(
           }
         )
         .then((response) => {
-          console.log("update-wishlist-response", response.data);
+          // console.log("update-wishlist-response", response.data);
         })
         .catch((error) => console.log("update-error", error));
     };
