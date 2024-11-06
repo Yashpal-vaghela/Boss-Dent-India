@@ -23,7 +23,7 @@ const Home = () => {
               <Link to="/products?category=116">
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img src="/asset/images/gloves1.png" alt="gloves" />
+                    <img src="/asset/images/gloves.png" alt="gloves" />
                   </div>
                 </div>
                 <div className="home-cat-txt">
@@ -40,7 +40,7 @@ const Home = () => {
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
                     <img
-                      src="/asset/images/home_cat-3.webp"
+                      src="/asset/images/general-dentist.webp"
                       alt="General Dentist"
                     />
                   </div>
@@ -55,19 +55,10 @@ const Home = () => {
               data-aos="fade-down"
               // data-aos-delay="200"
             >
-              <Link
-                to="/products?category=127"
-                // onClick={() => {
-                //   return localStorage.getItem("Product_page") > 1 ? (
-                //     localStorage.setItem("Product_page", 1)
-                //   ) : (
-                //     <></>
-                //   );
-                // }}
-              >
+              <Link to="/products?category=127" >
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img src="/asset/images/v2-logo.png" alt="Vincismile" />
+                    <img src="/asset/images/vinsimle.png" alt="Vincismile" />
                   </div>
                 </div>
                 <div className="home-cat-txt">
@@ -84,7 +75,7 @@ const Home = () => {
               <Link to="/products?category=125">
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img src="/asset/images/retractor.png" alt="retractor" />
+                    <img src="/asset/images/retractornew.png" alt="retractor" />
                   </div>
                 </div>
                 <div className="home-cat-txt">

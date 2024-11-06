@@ -264,16 +264,10 @@ const NewNav1 = () => {
         <div className="container-fluid newnavbar-sub">
           <Link to="/" className="navbarlogo">
             <img
-              src="/asset/images/flogonew.png"
-              alt="Logo"
-              height={80}
-              className="img-fluid"
-            ></img>
-            {/* <img
-              src="/asset/images/flogo.png"
+              src="/asset/images/footer-logo.png"
               alt="Logo"
               className="img-fluid"
-            ></img> */}
+            />
           </Link>
           {/* <div className="navbarlogo">
           </div> */}
