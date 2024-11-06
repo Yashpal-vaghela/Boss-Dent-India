@@ -14,7 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Cards = () => {
   const surgoncaps = [
     {
-      capimage: "/asset/images/All-surgon-cap.jpg",
+      capimage: "/asset/images/All-surgon-cap1.jpg",
       capname: "Tieon Surgeon Caps",
     },
     {

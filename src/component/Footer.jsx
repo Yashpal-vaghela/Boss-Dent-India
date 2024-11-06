@@ -17,7 +17,7 @@ const Footer = () => {
         // data-aos-delay="0"
         >
           <Link to="/">
-          <img src="/asset/images/flogo1.png" width={250} height={77} alt="BossDent" className="logo" />
+          <img src="/asset/images/flogonew.png" width={250} height={77} alt="BossDent" className="logo" />
           </Link>
           <p>
             Bossdentindia (Disposables & Consumables) is an online dental

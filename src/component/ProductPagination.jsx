@@ -12,7 +12,7 @@ const ProductPagination = ({ totalProducts, productsPerPage, currentPage, onPage
                 i === 1 || // Always show the first page
                 i === currentPage || // Show the current page
                 i === totalPages || // Always show the last page
-                (i >= currentPage - 1 && i <= currentPage + 1) // Show surrounding pages
+                (i >= currentPage - 3 && i <= currentPage + 3) // Show surrounding pages
             ) {
                 paginationButtons.push(
                     <button
@@ -23,7 +23,7 @@ const ProductPagination = ({ totalProducts, productsPerPage, currentPage, onPage
                         {i}
                     </button>
                 );
-            } else if (i === currentPage - 2 || i === currentPage + 2) {
+            } else if (i === currentPage - 4 || i === currentPage + 4) {
                 // Add ellipsis for skipped pages
                 paginationButtons.push(
                     <span key={`ellipsis-${i}`} className="ellipsis">...</span>

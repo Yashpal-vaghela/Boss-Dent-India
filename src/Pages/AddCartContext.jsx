@@ -47,7 +47,7 @@ export const AddCartProvider = ({ children }) => {
   };
 
   const addToCart = async (product, quantity, selectedAttributes = {}) => {
-    console.log("quanttity1",quantity);
+    //console.log("quanttity1",quantity);
     if (!ensureAuthenticated()) return;
    
     const existingProduct = cart.find((item) => item.id === product.id && JSON.stringify(item.selectedAttributes) === JSON.stringify(selectedAttributes));
