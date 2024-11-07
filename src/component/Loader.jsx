@@ -7,12 +7,11 @@ const Loader = () => {
       style={{ height: "0px", margin: "10% auto" }}
     >
       <img
-        src="/asset/images/BOSS-DENT-LOGO-01.png"
+        src="/asset/images/loader-image.webp"
         className="img-fluid loader-img"
-        width={200}
-        height={100}
-        alt=""
-      ></img>
+        width="200"
+        height="100"
+        alt="loader-logo"/>
     </div>
   );
 };

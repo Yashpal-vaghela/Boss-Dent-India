@@ -4,10 +4,10 @@ const Loader1 = () => {
   return (
     <div className="Loader-wrapper">
       <img
-        src="/asset/images/BOSS-DENT-LOGO-01.png"
+        src="/asset/images/loader-image.webp"
         className="img-fluid loader-img"
-        width={200}
-        height={100}
+        width="200"
+        height="100"
         alt="loader-image1"
       ></img>
     </div>

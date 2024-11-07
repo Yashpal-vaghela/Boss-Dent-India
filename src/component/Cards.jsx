@@ -14,72 +14,72 @@ import { Link, useNavigate } from "react-router-dom";
 const Cards = () => {
   const surgoncaps = [
     {
-      capimage: "/asset/images/All-surgon-cap1.jpg",
+      capimage: "/asset/images/All-surgon-cap.webp",
       capname: "Tieon Surgeon Caps",
     },
     {
-      capimage: "/asset/images/Blue-surgon-cap.jpg",
+      capimage: "/asset/images/Blue-surgon-cap1.jpg",
       capname: "Tieon Surgeon Cap (Blue)",
     },
     {
-      capimage: "/asset/images/Pink-surgon-cap.jpg",
+      capimage: "/asset/images/Pink-surgon-cap1.jpg",
       capname: "Tieon Surgeon Cap (Pink)",
     },
     {
-      capimage: "/asset/images/Black-surgon-cap.jpg",
+      capimage: "/asset/images/Black-surgon-cap1.jpg",
       capname: "Tieon Surgeon Cap (Black)",
     },
     {
-      capimage: "/asset/images/Red-surgon-cap.jpg",
+      capimage: "/asset/images/Red-surgon-cap1.jpg",
       capname: "Tieon Surgeon Cap (Red)",
     },
     {
-      capimage: "/asset/images/Purple-surgon-cap.jpg",
+      capimage: "/asset/images/Purple-surgon-cap1.jpg",
       capname: "Tieon Surgeon Cap (Purple)",
     },
     {
-      capimage: "/asset/images/Green-surgon-cap.jpg",
+      capimage: "/asset/images/Green-surgon-cap1.jpg",
       capname: "Tieon Surgeon Cap (Green)",
     },
   ];
   const masks = [
-    { airimage: "/asset/images/masc10.jpg", airname: "Masks (3ply & 4ply)" },
-    { airimage: "/asset/images/masc1.jpg", airname: "Masks (3ply & 4ply)" },
-    { airimage: "/asset/images/masc2.jpg", airname: "Orange" },
-    { airimage: "/asset/images/masc3.jpg", airname: "Green" },
-    { airimage: "/asset/images/masc4.jpg", airname: "Blue" },
-    { airimage: "/asset/images/masc5.jpg", airname: "Pink" },
-    { airimage: "/asset/images/masc6.jpg", airname: "yelllow" },
-    { airimage: "/asset/images/masc7.jpg", airname: "Black" },
-    { airimage: "/asset/images/masc8.jpg", airname: "White" },
-    { airimage: "/asset/images/masc11.jpg", airname: "White" },
-    { airimage: "/asset/images/masc15.jpg", airname: "Purple" },
+    { airimage: "/asset/images/maskall.jpg", airname: "Masks (3ply & 4ply)" },
+    { airimage: "/asset/images/maskall1.jpg", airname: "Masks (3ply & 4ply)" },
+    { airimage: "/asset/images/mask1.jpg", airname: "Orange" },
+    { airimage: "/asset/images/mask2.jpg", airname: "Green" },
+    { airimage: "/asset/images/mask3.jpg", airname: "Blue" },
+    { airimage: "/asset/images/mask4.jpg", airname: "Pink" },
+    { airimage: "/asset/images/mask5.jpg", airname: "yelllow" },
+    { airimage: "/asset/images/mask6.jpg", airname: "Black" },
+    { airimage: "/asset/images/mask7.jpg", airname: "White" },
+    { airimage: "/asset/images/mask8.jpg", airname: "White" },
+    { airimage: "/asset/images/mask9.jpg", airname: "Purple" },
   ];
 
   const applicators = [
     {
-      appimage: "/asset/images/TIPS.jpg",
+      appimage: "/asset/images/Tipsnew.jpg",
       appname: "Micro Applicator Tips",
     },
     {
-      appimage: "/asset/images/TIPS1.jpg",
+      appimage: "/asset/images/tipsnew1.jpg",
       appname: "Elongated Micro Applicator Tips",
     },
     {
-      appimage: "/asset/images/TIPS2.jpg",
+      appimage: "/asset/images/tipsnew2.jpg",
       appname: "Elongated Micro Applicator Tips",
     },
     // { appimage: "/asset/images/TIPS3.jpg", appname: "Micro Applicator Tips" },
     {
-      appimage: "/asset/images/TIPS4.jpg",
+      appimage: "/asset/images/tipsnew4.jpg",
       appname: "Fine Micro Applicator Tips",
     },
     {
-      appimage: "/asset/images/TIPS5.jpg",
+      appimage: "/asset/images/tipsnew5.jpg",
       appname: "Fine Micro Applicator Tips",
     },
     {
-      appimage: "/asset/images/TIPS6.jpg",
+      appimage: "/asset/images/tipsnew6.jpg",
       appname: "Super Fine Micro Applicator Tips",
     },
   ];
