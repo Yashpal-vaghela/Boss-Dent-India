@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { FaPlay, FaPause } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
@@ -9,8 +9,31 @@ import "swiper/css/navigation";
 
 const HomeBanner = () => {
   const [isAutoplay, setIsAutoplay] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
   const swiperRef = useRef(null);
+
+  const bannerImages = [
+    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient-drape-banner.webp",
+    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Mask-banner.webp",
+    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Reactors-banner.webp",
+    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient-bibs-banner.webp"
+  ];
+
+  useEffect(() => {
+    // Preload each image
+    bannerImages.forEach((src) => {
+      const link = document.createElement("link");
+      link.rel = "preload";
+      link.href = src;
+      link.as = "image";
+      document.head.appendChild(link);
+    });
+
+    // Cleanup function to remove preloads if component unmounts
+    return () => {
+      document.querySelectorAll("link[rel='preload'][as='image']").forEach((link) => link.remove());
+    };
+  }, []);
+
   const toggleAutoplay = () => {
     if (isAutoplay) {
       swiperRef.current.swiper.autoplay.stop();
@@ -19,6 +42,7 @@ const HomeBanner = () => {
     }
     setIsAutoplay(!isAutoplay);
   };
+
   // Stop autoplay on hold (MouseDown or TouchStart)
   const handleHoldStart = () => {
     swiperRef.current.swiper.autoplay.stop();
@@ -29,15 +53,8 @@ const HomeBanner = () => {
     swiperRef.current.swiper.autoplay.start();
   };
 
-  const handleImageLoad = () => {
-    setIsLoaded(true);
-  };
   return (
-    <section
-      style={{ position: "relative" }}
-      className="banner-section"
-      data-aos="fade-down"
-    >
+    <section style={{ position: "relative" }} className="banner-section" data-aos="fade-down">
       <Swiper
         ref={swiperRef}
         spaceBetween={30}
@@ -63,50 +80,16 @@ const HomeBanner = () => {
             onTouchStart={handleHoldStart}
             onTouchEnd={handleHoldEnd}
             onClick={() => {
-              return localStorage.getItem("Product_page") > 1 ? (
-                localStorage.setItem("Product_page", 1)
-              ) : (
-                <></>
-              );
+              return localStorage.getItem("Product_page") > 1
+                ? localStorage.setItem("Product_page", 1)
+                : null;
             }}
           >
             <div className="banneer-img-main">
               <img
-                src="/asset/images/Bossdent ( Web banners-01).webp"
+                src={bannerImages[0]}
                 alt="banner1"
-                className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
-                onLoad={handleImageLoad}
-                loading="lazy"
-              />
-            </div>
-            {/* <div className="banner-btn-main">
-                <Link to="/products" className="banner-btn-link">
-                  <button className="banner-btn-shop">
-                    Shop Now{""}
-                    <span className="banner-btn-icon">
-                      <IoMdArrowDropright />
-                    </span>
-                  </button>
-                </Link>
-              </div> */}
-          </Link>
-        </SwiperSlide>
-        <SwiperSlide>
-          <Link
-            to="/products/patient-bibs"
-            className="banner-2-main"
-            onMouseDown={handleHoldStart}
-            onMouseUp={handleHoldEnd}
-            onTouchStart={handleHoldStart}
-            onTouchEnd={handleHoldEnd}
-          >
-            <div className="banneer-img-main">
-              <img
-                src="/asset/images/Bossdent ( Web banners-02).webp"
-                alt="banner2"
-                className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
-                onLoad={handleImageLoad}
-                loading="lazy"
+                className="banner-img"
               />
             </div>
           </Link>
@@ -120,20 +103,16 @@ const HomeBanner = () => {
             onTouchStart={handleHoldStart}
             onTouchEnd={handleHoldEnd}
             onClick={() => {
-              return localStorage.getItem("Product_page") > 1 ? (
-                localStorage.setItem("Product_page", 1)
-              ) : (
-                <></>
-              );
+              return localStorage.getItem("Product_page") > 1
+                ? localStorage.setItem("Product_page", 1)
+                : null;
             }}
           >
             <div className="banneer-img-main">
               <img
-                src="/asset/images/Bossdent ( Web banners-03).webp"
+                src={bannerImages[1]}
                 alt="banner3"
-                className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
-                onLoad={handleImageLoad}
-                loading="lazy"
+                className="banner-img"
               />
             </div>
           </Link>
@@ -146,37 +125,35 @@ const HomeBanner = () => {
             onMouseUp={handleHoldEnd}
             onTouchStart={handleHoldStart}
             onTouchEnd={handleHoldEnd}
-            onClick={() => {
-              return localStorage.getItem("Product_page") > 1 ? (
-                localStorage.setItem("Product_page", 1)
-              ) : (
-                <></>
-              );
-            }}
           >
             <div className="banneer-img-main">
               <img
-                src="/asset/images/Bossdent ( Web banners-04).webp"
+                src={bannerImages[2]}
                 alt="banner4"
-                className={`banner-img ${isLoaded ? "loaded" : "loading"}`}
-                onLoad={handleImageLoad}
-                loading="lazy"
+                className="banner-img"
               />
             </div>
-            {/* <div className="banner-btn-main-4">
-                <Link to="/products" className="banner-btn-link">
-                  <button className="banner-btn-shop">
-                    Shop Now{" "}
-                    <span className="banner-btn-icon">
-                      <IoMdArrowDropright />
-                    </span>{" "}
-                  </button>
-                </Link>
-              </div> */}
+          </Link>
+        </SwiperSlide>
+        <SwiperSlide>
+          <Link
+            to="/products/patient-bibs"
+            className="banner-2-main"
+            onMouseDown={handleHoldStart}
+            onMouseUp={handleHoldEnd}
+            onTouchStart={handleHoldStart}
+            onTouchEnd={handleHoldEnd}
+          >
+            <div className="banneer-img-main">
+              <img
+                src={bannerImages[3]}
+                alt="banner2"
+                className="banner-img"
+              />
+            </div>
           </Link>
         </SwiperSlide>
       </Swiper>
-      {/* <SimpleSlider/> */}
 
       <button
         onClick={toggleAutoplay}

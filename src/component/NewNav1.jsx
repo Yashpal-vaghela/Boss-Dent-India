@@ -228,17 +228,6 @@ const NewNav1 = () => {
               )}
             </>
           )}
-          {/* {suggestions.length > 0 && (
-            <div className="suggestion-main">
-              <ul className="suggestions">
-                {suggestions.map((product) => (
-                  <li key={product.id} onClick={() => handleClick(product.id)}>
-                    {product.title}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )} */}
         </div>
         <div className="navbar-contact-details-wrapper">
           <span>
@@ -266,17 +255,13 @@ const NewNav1 = () => {
             <img
               src="/asset/images/footer-logo.png"
               alt="Logo"
+              width='200px'
+              height='90px'
               className="img-fluid"
             />
           </Link>
-          {/* <div className="navbarlogo">
-          </div> */}
           {/* moblie and tablet screen search icon */}
           <div className="d-lg-none d-sm-flex d-md-flex search-icon align-items-center">
-            {/* {
-              searchQuery ? <></> : <></>
-            } */}
-            {/* {console.log("searchQuery", searchQuery, searchIcon)} */}
             {searchIcon || searchQuery ? (
               <>
                 <input

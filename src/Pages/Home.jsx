@@ -23,7 +23,12 @@ const Home = () => {
               <Link to="/products?category=116">
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img src="/asset/images/gloves.png" alt="gloves" />
+                    <img 
+                      src="/asset/images/gloves.png" 
+                      alt="gloves" 
+                      width="150"
+                      height="150"
+                      />
                   </div>
                 </div>
                 <div className="home-cat-txt">
@@ -42,6 +47,8 @@ const Home = () => {
                     <img
                       src="/asset/images/general-dentist.webp"
                       alt="General Dentist"
+                      width="150"
+                      height="150"
                     />
                   </div>
                 </div>
@@ -58,7 +65,12 @@ const Home = () => {
               <Link to="/products?category=127" >
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img src="/asset/images/vinsimle.png" alt="Vincismile" />
+                    <img 
+                      src="/asset/images/vinsimle.png" 
+                      alt="Vincismile" 
+                      width="150"
+                      height="150"
+                      />
                   </div>
                 </div>
                 <div className="home-cat-txt">
@@ -75,7 +87,12 @@ const Home = () => {
               <Link to="/products?category=125">
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img src="/asset/images/retractornew.png" alt="retractor" />
+                    <img 
+                      src="/asset/images/retractornew.png" 
+                      alt="retractor" 
+                      width="150"
+                      height="150"
+                      />
                   </div>
                 </div>
                 <div className="home-cat-txt">

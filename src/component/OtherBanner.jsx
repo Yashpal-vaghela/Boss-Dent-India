@@ -8,23 +8,32 @@ const OtherBanner = () => {
   const BannerImageData = [
     {
       id: 1,
-      src: "/asset/images/Prophy-cups-and-brushes.jpg",
+      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Comp-Polishing-kit.webp",
       alt: "Prophy-cups-and-brushes",
+      width: 300,
+      height: 400,
     },
     {
       id:2,
-      src: "/asset/images/Suction-Tips_.jpg",
+      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Suction-Tips_.webp",
+      // src:"/asset/images/Comp-Polishing-kit.webp"
       alt: "Suction-tips",
+      width: 300,
+      height: 400,
     },
     {
       id:3,
-      src: "/asset/images/Comp-Polishing-kit-&-wheel.jpg",
+      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Prophy-cups-and-brushes.webp",
       alt: "Comp-Polishing-kit-and-wheel",
+      width: 300,
+      height: 400,
     },
     {
       id:4,
-      src: "/asset/images/Veneer-Box-and-Veneer-Glue-Stick.jpg",
+      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Veneer-Box-and-Veneer-Glue-Stick.webp",
       alt: "Venner-box-and-veneer-glue-stick",
+      width: 300,
+      height: 400,
     },
   ];
   const [ModelOpen, setModelOpen] = useState(false);
@@ -73,9 +82,6 @@ const OtherBanner = () => {
     setClickedImg([{src:newItem}])
     setCurrentIndex(newIndex)
   }
-  // const handleClick = () =>{
-  //   console.log("click")
-  // }
  
   return (
     <section className="OtherBanner-section">
@@ -89,6 +95,8 @@ const OtherBanner = () => {
                   src={item.src}
                   className="img-fluid"
                   alt={item.alt}
+                  width={item.width}
+                  height={item.height}
                   onClick={() => handleShowImage(item, index)}
                 ></img>
               </div>

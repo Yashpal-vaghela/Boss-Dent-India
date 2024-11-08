@@ -564,18 +564,17 @@ const SingleProduct = () => {
               />
               <div className="quantity-controls">
                 <button
-                  onClick={(e) => handleUpdateqty(e, "PLUS")}
-                  className="ind-btn"
-                >
-                  +
-                </button>
-
-                <span className="quantity">{quantity}</span>
-                <button
                   onClick={(e) => handleUpdateqty(e, "MINUS")}
                   className="ind-btn"
                 >
                   -
+                </button>
+                <span className="quantity">{quantity}</span>
+                <button
+                  onClick={(e) => handleUpdateqty(e, "PLUS")}
+                  className="ind-btn"
+                >
+                  +
                 </button>
               </div>
               <div className="btn-icon-main">
