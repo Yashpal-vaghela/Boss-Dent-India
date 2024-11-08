@@ -6,6 +6,27 @@
     padding-left: calc((2rem) * .5);
     padding-right: calc((2rem) * .5);
 }
+
+.lightbox-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #fff;
+  }
+  
+  .btn-next {
+    right: 20px;
+  }
+  
+  .btn-prev {
+    left: 20px;
+  }
+  
 /* .OtherBanner-wrapper{
     gap: 10px;
 } */

@@ -18,17 +18,16 @@ const Home = () => {
             <div
               className="home-cat-content-box"
               data-aos="fade-down"
-              // data-aos-delay="0"
             >
               <Link to="/products?category=116">
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img 
-                      src="/asset/images/gloves.png" 
-                      alt="gloves" 
+                    <img
+                      src="/asset/images/gloves.png"
+                      alt="gloves"
                       width="150"
                       height="150"
-                      />
+                    />
                   </div>
                 </div>
                 <div className="home-cat-txt">
@@ -39,7 +38,6 @@ const Home = () => {
             <div
               className="home-cat-content-box"
               data-aos="fade-down"
-              // data-aos-delay="400"
             >
               <Link to="/products?category=75">
                 <div className="home-cat-img-box">
@@ -60,17 +58,16 @@ const Home = () => {
             <div
               className="home-cat-content-box"
               data-aos="fade-down"
-              // data-aos-delay="200"
             >
               <Link to="/products?category=127" >
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img 
-                      src="/asset/images/vinsimle.png" 
-                      alt="Vincismile" 
+                    <img
+                      src="/asset/images/vinsimle.png"
+                      alt="Vincismile"
                       width="150"
                       height="150"
-                      />
+                    />
                   </div>
                 </div>
                 <div className="home-cat-txt">
@@ -78,21 +75,19 @@ const Home = () => {
                 </div>
               </Link>
             </div>
-
             <div
               className="home-cat-content-box"
               data-aos="fade-down"
-              // data-aos-delay="600"
             >
               <Link to="/products?category=125">
                 <div className="home-cat-img-box">
                   <div className="home-cat-img-div">
-                    <img 
-                      src="/asset/images/retractornew.png" 
-                      alt="retractor" 
+                    <img
+                      src="/asset/images/retractornew.png"
+                      alt="retractor"
                       width="150"
                       height="150"
-                      />
+                    />
                   </div>
                 </div>
                 <div className="home-cat-txt">
@@ -142,7 +137,7 @@ const Home = () => {
             <h2
               className="main-title"
               data-aos="fade-down"
-              // data-aos-delay="0"
+            // data-aos-delay="0"
             >
               Our Services
             </h2>
@@ -151,13 +146,13 @@ const Home = () => {
             <div
               className="other-card-main-1"
               data-aos="fade-down"
-              // data-aos-delay="0"
+            // data-aos-delay="0"
             >
               <div className="other-card-icon-main">
                 <span
                   className="other-card-icon"
                   data-aos="fade-right"
-                  // data-aos-delay="0"
+                // data-aos-delay="0"
                 >
                   <MdLocalShipping />
                 </span>
@@ -166,7 +161,7 @@ const Home = () => {
                 <h2
                   className="other-card-title mb-0"
                   data-aos="fade-left"
-                  // data-aos-delay="0"
+                // data-aos-delay="0"
                 >
                   FAST SHIPPING
                 </h2>
@@ -175,12 +170,12 @@ const Home = () => {
             <div
               className="other-card-main-2"
               data-aos="fade-down"
-              // data-aos-delay="200"
+            // data-aos-delay="200"
             >
               <div
                 className="other-card-icon-main"
                 data-aos="fade-right"
-                // data-aos-delay="200"
+              // data-aos-delay="200"
               >
                 <span className="other-card-icon">
                   <MdSecurity />
@@ -189,7 +184,7 @@ const Home = () => {
               <div
                 className="other-card-title-main"
                 data-aos="fade-left"
-                // data-aos-delay="200"
+              // data-aos-delay="200"
               >
                 <h2 className="other-card-title mb-0">SECURE PAYMENT</h2>
               </div>
@@ -197,13 +192,13 @@ const Home = () => {
             <div
               className="other-card-main-3"
               data-aos="fade-down"
-              // data-aos-delay="400"
+            // data-aos-delay="400"
             >
               <div className="other-card-icon-main">
                 <span
                   className="other-card-icon"
                   data-aos="fade-right"
-                  // data-aos-delay="400"
+                // data-aos-delay="400"
                 >
                   <MdSupportAgent />
                 </span>
@@ -212,7 +207,7 @@ const Home = () => {
                 <h2
                   className="other-card-title mb-0"
                   data-aos="fade-left"
-                  // data-aos-delay="400"
+                // data-aos-delay="400"
                 >
                   BEST SUPPORT
                 </h2>

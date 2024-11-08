@@ -138,20 +138,14 @@ const Product = () => {
       if (stockStatus === "instock") {
         if (isLoggedIn) {
           try {
-            const weightResponse = await axios.get(
-              `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${product.id}`
-            );
-            const productWeight = weightResponse.data.weight;
             const userData = JSON.parse(localStorage.getItem("UserData"));
             if (userData) {
-              const filterCartData = cartProductId.filter((item) => {
-                return item === product.id;
-              });
-              // console.log("filterData", filterCartData, cartProductId);
-              const filterCartProduct = getcartProductData.cart_items.filter(
+              const filterCartData = cartProductId.filter((item) => item === product.id);
+  
+              const filterCartProduct = getcartProductData?.cart_items?.filter(
                 (item) => Number(item.product_id) === product.id
-              );
-              // console.log("filter",filterCartProduct)
+              ) || [];
+  
               if (filterCartData.length === 0) {
                 await axios
                   .post(
@@ -163,7 +157,6 @@ const Product = () => {
                       product_title: product.title.rendered,
                       product_image: product.yoast_head_json.og_image[0].url,
                       product_attributes: product.variations,
-                      product_weight: productWeight,
                       product_price: product.price,
                       selected_attribute: {},
                     }
@@ -171,20 +164,13 @@ const Product = () => {
                   .then((res) => {
                     setCartProductId((prevCartProductId) => {
                       if (!prevCartProductId.includes(product.id)) {
-                        const updateCartProductId = [
-                          ...prevCartProductId,
-                          product.id,
-                        ];
-                        localStorage.setItem(
-                          "cart_productId",
-                          JSON.stringify(updateCartProductId)
-                        );
+                        const updateCartProductId = [...prevCartProductId, product.id];
+                        localStorage.setItem("cart_productId", JSON.stringify(updateCartProductId));
                         return updateCartProductId;
                       }
                       return prevCartProductId;
                     });
                     addToCartListProduct(product.id, {}, userData);
-                    // localStorage.setItem("cart_length", res.data.cart_length);
                     toast.success("Product added to cart!");
                   });
               } else {
@@ -194,34 +180,28 @@ const Product = () => {
                     {
                       user_id: getUserData.user_id,
                       product_id: product.id,
-                      product_quantity:
-                        Number(filterCartProduct[0].product_quantity) + 1,
+                      product_quantity: Number(filterCartProduct[0].product_quantity) + 1,
                     }
                   )
                   .then((res) => {
-                    // setAlertMessage("Product update from cart!");
-                    toast.success("Product update from cart!");
+                    toast.success("Product updated in cart!");
                     addToCartListProduct(product.id, {}, userData);
                   })
                   .catch((err) => console.log("err", err));
               }
             }
           } catch (error) {
-            console.error("Error fetching product weight:", error);
-            // setAlertMessage("Error fetching product weight. Please try again.");
-            toast.error("Error fetching product weight.");
+            console.error("Error:", error);
+            toast.error("An error occurred. Please try again.");
           }
         } else {
-          toast.error("Please log In! Thank you!");
-          // setAlertMessage("Please log In! Thank you.");
+          toast.error("Please log in! Thank you!");
           setTimeout(() => {
             navigate("/my-account", { state: { from: location.pathname } });
           }, 2000);
         }
       } else {
-        toast.error(
-          "This product is out of stock and cannot be added to the cart."
-        );
+        toast.error("This product is out of stock and cannot be added to the cart.");
       }
     } else {
       toast.error("Please login to add product to cart!");
@@ -230,7 +210,7 @@ const Product = () => {
       }, 2000);
     }
   };
-
+  
   const handleAddToWatchlist = async (product) => {
     if (isLoggedIn) {
       if (watchlist.includes(product.id)) {

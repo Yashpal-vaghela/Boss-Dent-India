@@ -10,36 +10,6 @@ body {
   box-sizing: border-box;
 }
 
-/* new banner section started */
-
-.mySwiper .swiper-slide {
-  width: 100%;
-  box-sizing: border-box;
-  transition: transform 0.5s ease;
-}
-
-.mySwiper .swiper-pagination-bullet {
-  background-color: #333;
-}
-
-/* Change the color of the active pagination bullet */
-.mySwiper .swiper-pagination-bullet-active {
-  background-color: #c39428;
-}
-
-.mySwiper .swiper-button-prev,
-.mySwiper .swiper-button-next {
-  color: #c39428;
-}
-
-/* Optionally, change the background color of the arrows */
-.mySwiper .swiper-button-prev::after,
-.mySwiper .swiper-button-next::after {
-  background-color: transparent;
-  font-size: 30px;
-  font-weight: 900;
-}
-
 .home-main {
   margin-top: 160px;
 }
@@ -49,16 +19,6 @@ body {
   height: 70vh;
   object-fit: cover;
 }
-
-/* .banner-1-main {
-  position: relative;
-} */
-
-/* .banner-img-main {
-  width: 100%;
-  height: auto;
-  overflow: hidden;
-} */
 
 .banner-img {
   width: 100%;
@@ -75,108 +35,8 @@ body {
   transition: filter 0.3s ease-out;
 }
 
-/* .banner-btn-main {
-  position: absolute;
-  bottom: 20%;
-  left: 85%;
-  transform: translateX(-50%);
-} */
-
-/* .banner-btn-main-2 {
-  position: absolute;
-  bottom: 10%;
-  left: 10%;
-  transform: translateX(-50%);
-} */
-
-/* .banner-btn-main-3 {
-  position: absolute;
-  bottom: 59%;
-  left: 7%;
-  transform: translateX(-50%);
-} */
-
-/* .banner-btn-main-4 {
-  position: absolute;
-  bottom: 39%;
-  left: 82%;
-  transform: translateX(-50%);
-} */
-
-/* .banner-btn-link {
-  text-decoration: none;
-} */
-
-/* .banner-btn-shop {
-  padding: 6px 10px;
-  font-size: 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: none;
-  align-items: center;
-  display: flex;
-  font-weight: 600;
-  color: rgb(21, 48, 42);
-  background: rgb(203, 145, 21) !important;
-  background: linear-gradient(
-    130deg,
-    #c3942f 0%,
-    #d89c27 18%,
-    #dfc86f 37%,
-    #e7dc96 50%,
-    #dfc86f 64%,
-    #d89c27 82%,
-    #c99c30 100%
-  ) !important;
-} */
-
-/* .banner-btn-icon {
-  font-size: 20px;
-  font-weight: 600;
-  padding-top: 3px;
-} */
-
-/* .banner-2-main {
-}
-.banner-3-main {
-}
-.banner-4-main {
-} */
-
-/* .banner-p2-sbox-img img {
-  transition: transform 0.3s ease;
-}
-
-.banner-p2-sbox:hover img {
-  transform: translateY(-10%);
-}
-
-.banner-p2-sbox-content {
-  text-align: left;
-}
-
-.banner-p2-sbox-content-txt h1 {
-  font-size: 20px;
-  line-height: 36px;
-  font-weight: 700;
-  color: rgb(0, 0, 0);
-  font-family: Source Sans Pro, sans-serif;
-}
-
-.banner-p2-sbox-content-txt p {
-  font-size: 13px;
-  line-height: 24px;
-  font-weight: 400;
-  color: rgb(100, 100, 100);
-  font-family: Roboto, sans-serif;
-}
-
-.banner-p2-sbox-content-btn button span {
-  color: #fff;
-  font-size: 25px;
-} */
-
 /* Home Category */
+
 .home-cat-sub {
   display: flex;
   align-items: center;
@@ -185,24 +45,13 @@ body {
   margin: 40px 20px 28px;
 }
 
-.home-cat-content-box a {
-  text-decoration: none;
-}
-
-.home-cat-content-box a:hover .home-cat-img-div img {
-  transform: scale(1.2);
-}
-
-.home-cat-content-box a:hover .home-cat-txt h1 {
-  color: #bf8e22;
-}
-
 .home-cat-img-div {
   width: 150px;
   height: 150px;
   background-color: #ecf3f7;
   padding: 20px;
   border-radius: 100px;
+  transition: transform 0.5s;
 }
 
 .home-cat-img-div img {
@@ -210,7 +59,9 @@ body {
   height: 100%;
   transition: all 0.5s;
 }
-
+.home-cat-content-box:hover .home-cat-img-div img {
+  transform: scale(1.1);
+}
 .home-cat-txt {
   margin: 20px 0 0;
 }
@@ -417,7 +268,6 @@ body {
 .remember-me-row {
   display: flex;
   align-items: center;
-  /* gap: 5px; */
   justify-content: space-between;
 }
 
@@ -431,7 +281,6 @@ body {
 
 .remember-me-row input[type="checkbox"] {
   margin: 0;
-  /* Remove default margin of checkbox */
 }
 
 .password-toggle-icon {
@@ -681,7 +530,6 @@ body {
   max-width: 400px;
   color: #000;
   margin-right: 20px;
-  /* padding: 30px; */
   background-image: url(../../public/asset/images/element_26.png);
   background-size: cover;
   background-position: right;

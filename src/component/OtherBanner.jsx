@@ -97,8 +97,9 @@ const OtherBanner = () => {
                   alt={item.alt}
                   width={item.width}
                   height={item.height}
+                  loading="lazy"
                   onClick={() => handleShowImage(item, index)}
-                ></img>
+                />
               </div>
             );
           })}
@@ -116,21 +117,9 @@ const OtherBanner = () => {
                       handleRotationLeft();
                     }}
                     aria-label="Previous"
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "20px",
-                      transform: "translateY(-50%)",
-                      backgroundColor: "transparent",
-                      border: "none",
-                      cursor: "pointer",
-                      padding: "10px",
-                      zIndex: 1000,
-                      fontSize:"20px",
-                      color:"#fff",
-                    }}
+                    className="lightbox-button btn-prev"
                   >
-                    <FaChevronLeft></FaChevronLeft>
+                    <FaChevronLeft />
                   </button>
                 ),
                 // Custom Next Button
@@ -140,22 +129,9 @@ const OtherBanner = () => {
                       handleRotationRight();
                     }}
                     aria-label="Next"
-                    className="btn btn-next"
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      right: "20px",
-                      transform: "translateY(-50%)",
-                      backgroundColor: "transparent",
-                      border: "none",
-                      cursor: "pointer",
-                      padding: "10px",
-                      zIndex: 1000,
-                      fontSize:"20px",
-                      color:"#fff",
-                    }}
+                    className="lightbox-button btn-next"
                   >
-                    <FaChevronRight></FaChevronRight>
+                    <FaChevronRight />
                   </button>
                 ),
               }}
