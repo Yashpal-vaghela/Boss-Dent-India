@@ -65,7 +65,7 @@ const Product = () => {
         setTotalProducts(parseInt(response.headers["x-wp-total"], 10));
         setProducts(newProducts);
         // console.log(newProducts);
-        
+
         const stockResponse = await axios.get(
           "https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/all"
         );
@@ -116,7 +116,6 @@ const Product = () => {
     setgetcartProductData(JSON.parse(localStorage.getItem("cart")));
   }, [alertMessage]);
 
-
   const handlePageChange = (page) => {
     setCurrentPage(page);
     localStorage.setItem("Product_page", page);
@@ -140,12 +139,15 @@ const Product = () => {
           try {
             const userData = JSON.parse(localStorage.getItem("UserData"));
             if (userData) {
-              const filterCartData = cartProductId.filter((item) => item === product.id);
-  
-              const filterCartProduct = getcartProductData?.cart_items?.filter(
-                (item) => Number(item.product_id) === product.id
-              ) || [];
-  
+              const filterCartData = cartProductId.filter(
+                (item) => item === product.id
+              );
+
+              const filterCartProduct =
+                getcartProductData?.cart_items?.filter(
+                  (item) => Number(item.product_id) === product.id
+                ) || [];
+
               if (filterCartData.length === 0) {
                 await axios
                   .post(
@@ -164,8 +166,14 @@ const Product = () => {
                   .then((res) => {
                     setCartProductId((prevCartProductId) => {
                       if (!prevCartProductId.includes(product.id)) {
-                        const updateCartProductId = [...prevCartProductId, product.id];
-                        localStorage.setItem("cart_productId", JSON.stringify(updateCartProductId));
+                        const updateCartProductId = [
+                          ...prevCartProductId,
+                          product.id,
+                        ];
+                        localStorage.setItem(
+                          "cart_productId",
+                          JSON.stringify(updateCartProductId)
+                        );
                         return updateCartProductId;
                       }
                       return prevCartProductId;
@@ -180,7 +188,8 @@ const Product = () => {
                     {
                       user_id: getUserData.user_id,
                       product_id: product.id,
-                      product_quantity: Number(filterCartProduct[0].product_quantity) + 1,
+                      product_quantity:
+                        Number(filterCartProduct[0].product_quantity) + 1,
                     }
                   )
                   .then((res) => {
@@ -201,7 +210,9 @@ const Product = () => {
           }, 2000);
         }
       } else {
-        toast.error("This product is out of stock and cannot be added to the cart.");
+        toast.error(
+          "This product is out of stock and cannot be added to the cart."
+        );
       }
     } else {
       toast.error("Please login to add product to cart!");
@@ -210,7 +221,7 @@ const Product = () => {
       }, 2000);
     }
   };
-  
+
   const handleAddToWatchlist = async (product) => {
     if (isLoggedIn) {
       if (watchlist.includes(product.id)) {
@@ -321,14 +332,17 @@ const Product = () => {
                         imageUrl = product.yoast_head_json.og_image[0].url;
                       }
 
-                      const discountPercentage = product.regular_price && product.price 
-                            ? Math.round(
-                              ((product.regular_price - product.price) / product.regular_price) *
-                              100
-                            ):null;
+                      const discountPercentage =
+                        product.regular_price && product.price
+                          ? Math.round(
+                              ((product.regular_price - product.price) /
+                                product.regular_price) *
+                                100
+                            )
+                          : null;
                       return (
                         <div className="product-card" key={product.id}>
-                          { discountPercentage > 0 && (
+                          {discountPercentage > 0 && (
                             <div className="discount-badge">
                               {`${discountPercentage}% Off`}
                             </div>
@@ -368,15 +382,16 @@ const Product = () => {
                               textAlign: "center",
                             }}
                           >
-                             {product?.regular_price && product?.price ? (
+                            {product?.regular_price && product?.price ? (
                               product.regular_price === product.price ? (
                                 // If both values are the same, show only one value
                                 `Price: ${product.price} ₹`
                               ) : (
                                 // If values are different, show both with strikethrough on regular_price
                                 <>
+                                  Price:&nbsp;
                                   <span className="regular-price">
-                                    {product.regular_price} ₹
+                                    {product.regular_price}
                                   </span>
                                   <span className="current-price">
                                     {product.price} ₹

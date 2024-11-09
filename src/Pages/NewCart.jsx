@@ -416,9 +416,9 @@ const CartListItem = React.memo(
                       >
                         <div className="d-flex align-items-center">
                           <h4>
-                            {attribute.replace(/attribute_pa_|attribute_/, "")}:
+                            {attribute.replace(/pa_|attribute_/, "")}:
                           </h4>
-                          {attribute === "attribute_pa_color" ? (
+                          {attribute === "pa_color" ? (
                             <>
                               <div style={{ display: "flex" }}>
                                 {productVariations?.map((variation, index) => {

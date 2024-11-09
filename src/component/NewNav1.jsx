@@ -253,7 +253,7 @@ const NewNav1 = () => {
         <div className="container-fluid newnavbar-sub">
           <Link to="/" className="navbarlogo">
             <img
-              src="/asset/images/footer-logo.png"
+              src="/asset/images/flogo1.png"
               alt="Logo"
               width='200px'
               height='90px'

@@ -87,7 +87,7 @@ const OtherBanner = () => {
     <section className="OtherBanner-section">
       <div className="container-fluid">
         {/* <h1>Image Gallery</h1> */}
-        <div className="row OtherBanner-wrapper">
+        <div className="row OtherBanner-wrapper px-0">
           {BannerImageData.map((item, index) => {
             return (
               <div key={index} className="col-lg-3 col-md-6 col-sm-6 col-12 mb-lg-0 mb-4 " data-aos="zoom-out">

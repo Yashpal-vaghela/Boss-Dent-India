@@ -23,6 +23,7 @@ const SingleProduct = () => {
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [salePrice, setSalePrice] = useState(null);
+  const [regluarPrice, setRegularPrice] = useState(null);
   const [variations, setVariations] = useState([]);
   const [selectedAttributes, setSelectedAttributes] = useState({});
   const [stockStatus, setStockStatus] = useState("unknown");
@@ -83,6 +84,7 @@ const SingleProduct = () => {
         // `https://admin.bossdentindia.com/wp-json/wp/v2/product/${id}`
       );
       setProduct(response.data);
+      // setRegularPrice(response.data.price)
       // preload the main product image
       if (response.data.yoast_head_json?.og_image?.[0]?.url) {
         const img = new Image();
@@ -113,26 +115,32 @@ const SingleProduct = () => {
         const shuffledProducts = relatedProductsResponse.data.sort(
           () => 0.5 - Math.random()
         );
-        const productwithDiscount = shuffledProducts.map((product)=>{
+        const productwithDiscount = shuffledProducts.map((product) => {
           const regularPrice = parseFloat(product.regular_price);
           const salePrice = parseFloat(product.price);
 
           let discount = 0;
           if (regularPrice && salePrice < regularPrice) {
-            discount = Math.round(((regularPrice - salePrice)/regularPrice) * 100);
+            discount = Math.round(
+              ((regularPrice - salePrice) / regularPrice) * 100
+            );
           }
-          return {...product, discount}
-        })
+          return { ...product, discount };
+        });
         setRelatedProducts(productwithDiscount.slice(0, 10));
-        console.log(shuffledProducts);
+        // console.log(shuffledProducts);
       }
-      
-      
-      
-      const regularPrice = parseFloat(response.data.regular_price);
-      const salePrice = parseFloat(response.data.sale_price || response.data.price);
-      if (regularPrice && salePrice < regularPrice) {
-        const discount = ((regularPrice - salePrice) / regularPrice) * 100;
+
+      const regularPrice1 = parseFloat(response.data.regular_price);
+      // const ProductVariationPrice = response.data.variations.map((item)=>item.sale_price);
+      // const a = Object.values(ProductVariationPrice)[0]
+      // const ProductVariationSalesPrice = parseFloat
+      const salePrice = parseFloat(
+        response.data.sale_price || response.data.price
+      );
+
+      if (regularPrice1 && salePrice < regularPrice1) {
+        const discount = ((regularPrice1 - salePrice) / regularPrice1) * 100;
         setDiscountProdcutPrice(Math.round(discount)); // Store the discount percentage in state
       } else {
         setDiscountProdcutPrice(0); // No discount
@@ -141,22 +149,8 @@ const SingleProduct = () => {
       // console.log(response.data.sale_price);
       // console.log(response.data.price);
       // console.log(response.data.regular_price);
-      
       setWeight(response.data.weight);
       setStockStatus(response.data.stock_status);
-      // const weightData = await axios.get(
-      //   `https://admin.bossdentindia.com/wp-json/custom/v1/product-weight/${response.data.id}`
-      // );
-
-      // try {
-      //   const stockResponse = await axios.get(
-      //     `https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/${response.data.id}`
-      //   );
-
-      // } catch (stockError) {
-      //   console.error("Error fetching stock status:", stockError);
-      //   setStockStatus("Error fetching stock status");
-      // }
     } catch (error) {
       // console.error("Error fetching product:", error);
       toast.error("Failed to fetch product details.");
@@ -190,7 +184,13 @@ const SingleProduct = () => {
     }
   };
 
-  const handleAttributeSelect = async (attribute, value, key) => {
+  const handleAttributeSelect = async (
+    attribute,
+    value,
+    key,
+    salePrice,
+    RegularPrice
+  ) => {
     const newSelectedAttributes = {
       ...selectedAttributes,
       [attribute]: value,
@@ -202,9 +202,20 @@ const SingleProduct = () => {
         return newSelectedAttributes[key] === variation.attributes[key];
       });
     });
-
+    const ProductDiscountPrice = (
+      ((RegularPrice - salePrice) / RegularPrice) *
+      100
+    ).toFixed(0);
+    // console.log("pro",ProductDiscountPrice)
+    setDiscountProdcutPrice(Number(ProductDiscountPrice));
+    // const a = ((ProductVariationPrice - salePrice) / ProductVariationPrice) * 100;
+    // console.log("a",a,"salesPrice",salePrice,ProductVariationPrice);
+    // console.log("salePrice", salePrice, "RegularPrice", RegluarPrice);
+    setRegularPrice(RegularPrice);
     if (selectedVariation) {
       setSalePrice(selectedVariation.price);
+    } else {
+      setSalePrice(salePrice);
     }
   };
 
@@ -260,7 +271,6 @@ const SingleProduct = () => {
       }, 2000);
     }
     // console.log(product);
-    
   };
 
   // Addtocart product and related product api integrate
@@ -288,9 +298,11 @@ const SingleProduct = () => {
               // RelatedCartProduct
               relatedProduct ? (
                 <>
-                  {RelatedCartProduct = response.data.cart_items.filter(
-                    (item) => Number(item.product_id) === relatedProduct.id
-                  )}
+                  {
+                    (RelatedCartProduct = response.data.cart_items.filter(
+                      (item) => Number(item.product_id) === relatedProduct.id
+                    ))
+                  }
                 </>
               ) : (
                 <></>
@@ -318,7 +330,7 @@ const SingleProduct = () => {
                     product_attributes: relatedProduct.variations,
                     product_weight: relatedProduct.weight,
                     product_price: relatedProduct.price,
-                    selected_attribute: {},
+                    selected_attribute: selectedAttributes,
                   }
                 )
                 .then((res) => {
@@ -442,13 +454,13 @@ const SingleProduct = () => {
           <div className="single-product-main">
             <div className="single-product-img">
               <Zoom>
-                <div className="image-container">
+                {/* <div className="image-container">
                   {discountProductPrice > 0 && (
                     <div className="discount-badge">
                       {`${discountProductPrice}% off`}
                     </div>
                   )}
-                </div>
+                </div> */}
                 <img
                   // id={`product-image-${location.state.productId}`}
                   className={`single-product-img ${
@@ -463,20 +475,36 @@ const SingleProduct = () => {
             </div>
             <div className="single-product-details">
               <h2 className="single-product-title">{product?.name}</h2>
-              <h3 className="single-product-price">
-                {salePrice && product?.regular_price ? (
+              <h3 className="single-product-price align-item-center justify-contents-center">
+                {/* {
+                  console.log("RegularPrice",product)
+                } */}
+                {salePrice && regluarPrice ? (
                   <>
-                    <span className="regular-price">
-                      {product.regular_price} ₹
-                    </span>
-                    <span className="sale-price">
-                      {salePrice} ₹
-                    </span>
+                    Price:&nbsp;
+                    <span className="regular-price">{regluarPrice}</span>
+                    <span className="sale-price">{salePrice} ₹ </span>
+                    {console.log("dis", discountProductPrice)}
+                    {discountProductPrice && (
+                      <span
+                        className="position-relative"
+                        style={{ fontSize: "16px", color: "red" }}
+                      >
+                        ({`${discountProductPrice}% off`})
+                      </span>
+                    )}
+                    {/* <div className=" position-relative"></div> */}
+                    {/* {discountProductPrice && (
+                      <div className="discount-badge">
+                        {`${discountProductPrice}% off`}
+                      </div>
+                    )} */}
                   </>
                 ) : (
-                  `Price: ${product?.price} ₹`
+                  `Price: ${product.price} ₹`
                 )}
               </h3>
+
               {product.acf?.prese && <h4>Prese: {product.acf.preset}</h4>}
               <h4 className="single-product-cat">
                 Category: <span>{category}</span>
@@ -485,7 +513,7 @@ const SingleProduct = () => {
                 Stock Status:{" "}
                 {stockStatus === "instock" ? "In Stock" : "Out of Stock"}
               </h4>
-
+              {/* {console.log("variations",product)} */}
               {variations.length > 0 &&
                 Object.keys(variations[0]?.attributes || {}).map(
                   (attribute, index) => {
@@ -503,12 +531,13 @@ const SingleProduct = () => {
                         className="variation-main align-items-center"
                       >
                         <h4 className="mb-0">
-                          {attribute.replace(/attribute_pa_|attribute_/, "")}:
+                          {attribute.replace(/pa_|attribute_/, "")}:
                         </h4>
                         {/* color theme */}
-                        {attribute === "attribute_pa_color" ? (
+                        {attribute === "pa_color" ? (
                           <div style={{ display: "flex" }}>
                             {variations.map((color, index) => {
+                              // console.log("color",color)
                               return (
                                 <div
                                   className={`color-option ${
@@ -524,7 +553,9 @@ const SingleProduct = () => {
                                     handleAttributeSelect(
                                       attribute,
                                       Object.values(color.attributes)[0],
-                                      Object.keys(color.attributes)[0]
+                                      Object.keys(color.attributes)[0],
+                                      color.sale_price,
+                                      color.regular_price
                                     )
                                   }
                                 ></div>
@@ -692,7 +723,7 @@ const SingleProduct = () => {
                         )}`}
                       >
                         <div className="image-container">
-                          {relatedProduct.discount >0 && (
+                          {relatedProduct.discount > 0 && (
                             <div className="discount-badge">
                               {`${relatedProduct.discount}% off`}
                             </div>
@@ -714,11 +745,16 @@ const SingleProduct = () => {
                             : "Price not available"}
                         </p> */}
                         <p>
-                          {relatedProduct.regular_price && relatedProduct.price ? (
-                            relatedProduct.regular_price !== relatedProduct.price ? (
+                          {relatedProduct.regular_price &&
+                          relatedProduct.price ? (
+                            relatedProduct.regular_price !==
+                            relatedProduct.price ? (
                               // If regular_price and price are different, show both
                               <>
-                                <span className="regular-price" style={{ textDecoration: "line-through" }}>
+                                <span
+                                  className="regular-price"
+                                  style={{ textDecoration: "line-through" }}
+                                >
                                   {relatedProduct.regular_price} ₹
                                 </span>
                                 <span className="sale-price">
@@ -727,14 +763,15 @@ const SingleProduct = () => {
                               </>
                             ) : (
                               // If regular_price and price are the same, show only one price
-                              <span className="price">{relatedProduct.price} ₹</span>
+                              <span className="price">
+                                {relatedProduct.price} ₹
+                              </span>
                             )
                           ) : (
                             // Fallback in case one of the prices is missing
                             `Price: ${relatedProduct.price} ₹`
                           )}
                         </p>
-
                       </Link>
 
                       <div className="related-icons">
