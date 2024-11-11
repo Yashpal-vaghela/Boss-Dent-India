@@ -81,10 +81,8 @@ const SingleProduct = () => {
     try {
       const response = await axios.get(
         `https://admin.bossdentindia.com/wp-json/custom/v1/product/${id}`
-        // `https://admin.bossdentindia.com/wp-json/wp/v2/product/${id}`
       );
       setProduct(response.data);
-      // setRegularPrice(response.data.price)
       // preload the main product image
       if (response.data.yoast_head_json?.og_image?.[0]?.url) {
         const img = new Image();
@@ -98,16 +96,11 @@ const SingleProduct = () => {
       } else {
         setVariations([]);
       }
-      // console.log("cate1====",response.data)
       // Fetch related products based on category
       if (response.data.categories && response.data.categories.length > 0) {
         const categoryId = response.data.categories[0].id;
-        // const categoryResponse = await axios.get(
-        //   `https://admin.bossdentindia.com/wp-json/wp/v2/product_cat/${categoryId}`
-        // );
-        // console.log("cat",categoryResponse)
         setCategory(response.data.categories[0].name);
-        // console.log("product-response-data",response.data)
+
         // Fetch related products in the same category
         const relatedProductsResponse = await axios.get(
           `https://admin.bossdentindia.com/wp-json/wp/v2/product?product_cat=${categoryId}&exclude=${response.data.id}&per_page=20`
@@ -132,13 +125,10 @@ const SingleProduct = () => {
       }
 
       const regularPrice1 = parseFloat(response.data.regular_price);
-      // const ProductVariationPrice = response.data.variations.map((item)=>item.sale_price);
-      // const a = Object.values(ProductVariationPrice)[0]
-      // const ProductVariationSalesPrice = parseFloat
       const salePrice = parseFloat(
         response.data.sale_price || response.data.price
       );
-
+      // if(regularPrice1)
       if (regularPrice1 && salePrice < regularPrice1) {
         const discount = ((regularPrice1 - salePrice) / regularPrice1) * 100;
         setDiscountProdcutPrice(Math.round(discount)); // Store the discount percentage in state
@@ -146,6 +136,7 @@ const SingleProduct = () => {
         setDiscountProdcutPrice(0); // No discount
       }
       setSalePrice(salePrice);
+      setRegularPrice(regularPrice1);
       // console.log(response.data.sale_price);
       // console.log(response.data.price);
       // console.log(response.data.regular_price);
@@ -210,7 +201,7 @@ const SingleProduct = () => {
     setDiscountProdcutPrice(Number(ProductDiscountPrice));
     // const a = ((ProductVariationPrice - salePrice) / ProductVariationPrice) * 100;
     // console.log("a",a,"salesPrice",salePrice,ProductVariationPrice);
-    // console.log("salePrice", salePrice, "RegularPrice", RegluarPrice);
+    console.log("salePrice", salePrice, "RegularPrice", RegularPrice);
     setRegularPrice(RegularPrice);
     if (selectedVariation) {
       setSalePrice(selectedVariation.price);
@@ -384,6 +375,7 @@ const SingleProduct = () => {
 
   // product addtocart api  integrate
   const handleAddToCartApi = async (product, userData) => {
+    console.log("regluarPrice", regluarPrice);
     axios
       .post(`https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`, {
         user_id: userData.user_id,
@@ -482,16 +474,24 @@ const SingleProduct = () => {
                 {salePrice && regluarPrice ? (
                   <>
                     Price:&nbsp;
-                    <span className="regular-price">{regluarPrice}</span>
-                    <span className="sale-price">{salePrice} ₹ </span>
                     {console.log("dis", discountProductPrice)}
-                    {discountProductPrice && (
-                      <span
-                        className="position-relative"
-                        style={{ fontSize: "16px", color: "red" }}
-                      >
-                        ({`${discountProductPrice}% off`})
-                      </span>
+                    {salePrice !== regluarPrice ? (
+                      <>
+                        <span className="regular-price">{regluarPrice}</span>
+                        <span className="sale-price">{salePrice} ₹ </span>
+                        {discountProductPrice && (
+                          <span
+                            className="position-relative"
+                            style={{ fontSize: "16px", color: "red" }}
+                          >
+                            ({`${discountProductPrice}% off`})
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <span className="sale-price">{salePrice} ₹ </span>
+                      </>
                     )}
                     {/* <div className=" position-relative"></div> */}
                     {/* {discountProductPrice && (
@@ -518,23 +518,26 @@ const SingleProduct = () => {
                 Object.keys(variations[0]?.attributes || {}).map(
                   (attribute, index) => {
                     // Create a Set to store unique values
-                    const uniqueValues = new Set(
-                      variations
-                        .map((variation) => variation.attributes[attribute])
-                        .filter((value) => value !== undefined)
-                    );
+                    // const uniqueValues = new Set(
+                    //   variations
+                    //     .map((variation) => variation.attributes[attribute])
+                    //     .filter((value) => value !== undefined)
+                    // );
+                    // console.log("unique", uniqueValues);
 
-                    const uniqueValuesArray = Array.from(uniqueValues);
+                    // const uniqueValuesArray = Array.from(uniqueValues);
                     return (
                       <div
                         key={attribute}
                         className="variation-main align-items-center"
                       >
+                        {console.log("attribute", attribute)}
                         <h4 className="mb-0">
                           {attribute.replace(/pa_|attribute_/, "")}:
                         </h4>
+
                         {/* color theme */}
-                        {attribute === "pa_color" ? (
+                        {attribute === "pa_color" || attribute === "color" ? (
                           <div style={{ display: "flex" }}>
                             {variations.map((color, index) => {
                               // console.log("color",color)
@@ -564,7 +567,39 @@ const SingleProduct = () => {
                           </div>
                         ) : (
                           <div className="variation-buttons">
-                            {uniqueValuesArray.map((value, index) => {
+                            {variations.map((value, index) => {
+                              // console.log("color", value,"pro",product);
+                              return (
+                                <button
+                                  key={index}
+                                  className={`variation-button ${
+                                    selectedAttributes[attribute] ===
+                                    Object.values(value.attributes)[0]
+                                      ? "selected"
+                                      : ""
+                                  }`}
+                                  onClick={() =>
+                                    handleAttributeSelect(
+                                      attribute,
+                                      Object.values(value.attributes)[0],
+                                      "",
+                                      value.sale_price,
+                                      value.regular_price
+                                    )
+                                  }
+                                >
+                                  {Object.values(value.attributes)[0]}
+                                </button>
+                              );
+                            })}
+                            {/* {uniqueValuesArray.map((value, index) => {
+                              console.log(
+                                "value",
+                                value,
+                                uniqueValuesArray,
+                                "vari",
+                                variations
+                              );
                               return (
                                 <button
                                   key={index}
@@ -574,13 +609,18 @@ const SingleProduct = () => {
                                       : ""
                                   }`}
                                   onClick={() =>
-                                    handleAttributeSelect(attribute, value)
+                                    handleAttributeSelect(
+                                      attribute,
+                                      value,
+                                      // value.sale_price,
+                                      // value.regular_price
+                                    )
                                   }
                                 >
                                   {value}
                                 </button>
                               );
-                            })}
+                            })} */}
                           </div>
                         )}
                       </div>

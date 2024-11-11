@@ -157,19 +157,7 @@ const HomeBanner = () => {
 
       <button
         onClick={toggleAutoplay}
-        style={{
-          position: "absolute",
-          top: "10px",
-          fontSize: "16px",
-          right: "17px",
-          zIndex: 10,
-          padding: "10px",
-          backgroundColor: "#f6f6f6",
-          color: "#c89c31",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
+        className="homebanner_pause_btn"
       >
         {isAutoplay ? <FaPause /> : <FaPlay />}
       </button>

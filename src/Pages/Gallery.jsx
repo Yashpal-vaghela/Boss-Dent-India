@@ -1,85 +1,118 @@
 import React, { useState } from "react";
 import BreadCrumbs from "../component/BreadCrumbs";
-import Lightbox from "yet-another-react-lightbox";
+// import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+// import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 const Gallery = () => {
   const GalleryData = [
-    { id: 1, product_img: "/asset/images/4 PLY MASK.jpg", alt: "4Ply-Mask" },
     {
-      id: 2,
-      product_img: "/asset/images/Dispensing Gun.jpg",
-      alt: "Dispensing-Gun",
+      id: 1,
+      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Comp-Polishing-kit.webp",
+      slug: "/products?category=120",
+      alt: "Comp-Polishing-kit",
     },
-    { id: 3, product_img: "/asset/images/MIxing Tips.jpg", alt: "Mixing-Tips" },
+    // {
+    //   id: 2,
+    //   src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Prophy-cups-and-brushes.webp",
+    //   alt: "Prophy-cups-and-brushes",
+    // },
+    {
+      id: 3,
+      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Veneer-Box-and-Veneer-Glue-Stick.webp",
+      slug: "/products?category=75",
+      alt: "Veneer-box-and-Veneer-Glue-Stick",
+    },
     {
       id: 4,
-      product_img: "/asset/images/Patient Bibs.jpg",
-      alt: "Patient-Bibs",
+      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/4-PLY-MASK.webp",
+      slug: "/products?category=118",
+      alt: "4Ply-Mask",
     },
     {
       id: 5,
-      product_img: "/asset/images/Patient Draps.jpg",
-      alt: "Patient-Draps",
+      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Dispensing+Gun.webp",
+      slug: "/products?category=46",
+      alt: "Dispensing-Gun",
     },
     {
       id: 6,
-      product_img: "/asset/images/Starilaization.jpg",
-      alt: "Starilaization",
+      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/MIxing+Tips.webp",
+      slug: "/products?category=123",
+      alt: "Mixing-Tips",
     },
     {
       id: 7,
-      product_img: "/asset/images/Tieon Surgeon Cap.jpg",
+      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient+Bibs.webp",
+      slug: "/products?category=119",
+      alt: "Patient-Bibs",
+    },
+    {
+      id: 8,
+      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient+Draps.webp",
+      slug: "/products?category=119",
+      alt: "Patient-Draps",
+    },
+    {
+      id: 9,
+      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Starilaization.webp",
+      slug: "/products?category=75",
+      alt: "Starilaization",
+    },
+    {
+      id: 10,
+      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Tieon+Surgeon+Cap.webp",
+      slug:"/products?category=117",
       alt: "Tieon-Surgeon-Cap",
     },
   ];
-  const [ModelOpen, setModelOpen] = useState(false);
-  const [clickedImg, setClickedImg] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(null);
+  // const [ModelOpen, setModelOpen] = useState(false);
+  // const [clickedImg, setClickedImg] = useState([]);
+  // const [currentIndex, setCurrentIndex] = useState(null);
 
-  const handleShowImage = (item, index) => {
-    console.log("item", item);
-    setModelOpen((prev) => !prev);
-    setCurrentIndex(index);
-    setClickedImg([{ product_img: item.product_img }]);
-  };
+  // const handleShowImage = (item, index) => {
+  //   console.log("item", item);
+  //   setModelOpen((prev) => !prev);
+  //   setCurrentIndex(index);
+  //   setClickedImg([{ src: item.src }]);
+  // };
 
-  const handleRotationLeft = () => {
-    const totalLength = GalleryData.length;
-    if (currentIndex === 0) {
-      setCurrentIndex(totalLength - 1);
-      const newUrl = GalleryData[totalLength - 1].product_img;
-      setClickedImg([{ product_img: newUrl }]);
-      return;
-    }
-    const newIndex = currentIndex - 1;
-    const newUrl = GalleryData.filter((item) => {
-      // console.warn("item=====",item, BannerImageData.indexOf(item), newIndex);
-      return GalleryData.indexOf(item) === newIndex;
-    });
+  // const handleRotationLeft = () => {
+  //   const totalLength = GalleryData.length;
+  //   if (currentIndex === 0) {
+  //     setCurrentIndex(totalLength - 1);
+  //     const newUrl = GalleryData[totalLength - 1].src;
+  //     setClickedImg([{ src: newUrl }]);
+  //     return;
+  //   }
+  //   const newIndex = currentIndex - 1;
+  //   const newUrl = GalleryData.filter((item) => {
+  //     // console.warn("item=====",item, BannerImageData.indexOf(item), newIndex);
+  //     return GalleryData.indexOf(item) === newIndex;
+  //   });
 
-    const newItem = newUrl[0].product_img;
-    // console.log("newUrl", newUrl, "newINdex", newIndex,"newItem",newItem);
-    setClickedImg([{ product_img: newItem }]);
-    setCurrentIndex(newIndex);
-  };
-  const handleRotationRight = () => {
-    const totalLength = GalleryData.length;
-    if (currentIndex + 1 >= totalLength) {
-      setCurrentIndex(0);
-      const newUrl = GalleryData[0].product_img;
-      setClickedImg([{ product_img: newUrl }]);
-      return;
-    }
-    const newIndex = currentIndex + 1;
-    const newUrl = GalleryData.filter((item) => {
-      return GalleryData.indexOf(item) === newIndex;
-    });
-    const newItem = newUrl[0].product_img;
-    setClickedImg([{ product_img: newItem }]);
-    setCurrentIndex(newIndex);
-  };
+  //   const newItem = newUrl[0].src;
+  //   // console.log("newUrl", newUrl, "newINdex", newIndex,"newItem",newItem);
+  //   setClickedImg([{ src: newItem }]);
+  //   setCurrentIndex(newIndex);
+  // };
+  // const handleRotationRight = () => {
+  //   const totalLength = GalleryData.length;
+  //   if (currentIndex + 1 >= totalLength) {
+  //     setCurrentIndex(0);
+  //     const newUrl = GalleryData[0].src;
+  //     setClickedImg([{ src: newUrl }]);
+  //     return;
+  //   }
+  //   const newIndex = currentIndex + 1;
+  //   const newUrl = GalleryData.filter((item) => {
+  //     return GalleryData.indexOf(item) === newIndex;
+  //   });
+  //   const newItem = newUrl[0].src;
+  //   setClickedImg([{ src: newItem }]);
+  //   setCurrentIndex(newIndex);
+  // };
   return (
     <div className="container">
       <section className="gallery-section">
@@ -95,16 +128,18 @@ const Gallery = () => {
                   className="col-lg-4 col-md-6 col-12 gallery-product-img"
                   key={index}
                 >
-                  <img
-                    src={item.product_img}
-                    className="img-fluid"
-                    alt={item.alt}
-                    onClick={() => handleShowImage(item, index)}
-                  ></img>
+                  <Link to={item.slug} >
+                    <img
+                      src={item.src}
+                      className="img-fluid"
+                      alt={item.alt}
+                      // onClick={() => handleShowImage(item, index)}
+                    ></img>
+                  </Link>
                 </div>
               );
             })}
-            {clickedImg && (
+            {/* {clickedImg && (
               <Lightbox
                 open={ModelOpen}
                 close={() => setModelOpen(false)}
@@ -163,7 +198,7 @@ const Gallery = () => {
                   ),
                 }}
               ></Lightbox>
-            )}
+            )} */}
           </div>
         </div>
       </section>

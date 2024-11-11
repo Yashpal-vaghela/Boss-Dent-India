@@ -264,6 +264,7 @@ const CartListItem = React.memo(
       return product.selected_attribute ? product.selected_attribute : {};
     });
     const [showDialogBox, setShowDialogBox] = useState(false);
+    const [productPrice, setProductPrice] = useState(product.product_price);
     const handleAttributeSelect = async (product, attribute, value) => {
       const updateAttributes = {
         ...selectedAttributes,
@@ -287,11 +288,22 @@ const CartListItem = React.memo(
                 }
               : item;
           });
+          const ProductFilterPrice =
+            response.data?.cart_item[0].product_attributes.filter(
+              (item) => Object.values(item.attributes)[0] == value
+            );
+          if (ProductFilterPrice[0].sale_price) {
+            setProductPrice(ProductFilterPrice[0].sale_price);
+          } else {
+            setProductPrice(ProductFilterPrice[0].price);
+          }
           // console.log(
           //   "response",
           //   response.data,
           //   "updateCartData",
-          //   UpdatedCartData
+          //   UpdatedCartData,
+          //   "a",
+          //   ProductFilterRegularPrice
           // );
           localStorage.setItem(
             "cart",
@@ -308,7 +320,7 @@ const CartListItem = React.memo(
     };
 
     const handleUpdateQty = async (e, product, action) => {
-      console.log("select",selectedAttributes)
+      console.log("select", selectedAttributes);
       let newQuantity =
         action === "PLUS"
           ? Number(product.product_quantity) + 1
@@ -331,7 +343,7 @@ const CartListItem = React.memo(
               ? { ...item, product_quantity: UpdatedProduct.product_quantity }
               : item;
           });
-          console.log("Cart",UpdatedCartData);
+          console.log("Cart", UpdatedCartData);
           localStorage.setItem(
             "cart",
             JSON.stringify({
@@ -415,9 +427,7 @@ const CartListItem = React.memo(
                         }`}
                       >
                         <div className="d-flex align-items-center">
-                          <h4>
-                            {attribute.replace(/pa_|attribute_/, "")}:
-                          </h4>
+                          <h4>{attribute.replace(/pa_|attribute_/, "")}:</h4>
                           {attribute === "pa_color" ? (
                             <>
                               <div style={{ display: "flex" }}>
@@ -509,11 +519,12 @@ const CartListItem = React.memo(
             </button>
           </div>
           <div className="cart-price">
-            <p className="cart-item-price">₹{product.product_price}</p>
+            {/* {console.log("pro", productPrice)} */}
+            <p className="cart-item-price">₹{productPrice}</p>
             <p className="cart-item-total">
               ₹
               {product.product_quantity !== undefined
-                ? product.product_price * product.product_quantity
+                ? productPrice * product.product_quantity
                 : 0}
               .00
             </p>

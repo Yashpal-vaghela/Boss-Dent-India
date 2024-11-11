@@ -9,11 +9,24 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+/* Home Banner */
 
 .home-main {
   margin-top: 160px;
 }
-
+.homebanner_pause_btn{
+  position: absolute;
+  top: 10px;
+  font-size: 16px;
+  right: 17px;
+  z-index: 10;
+  padding: 10px;
+  background-color: #f6f6f6;
+  color: #c89c31;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 .banner-img {
   width: 100%;
   height: 70vh;
@@ -41,7 +54,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  gap: 40px;
+  /* gap: 40px; */
   margin: 40px 20px 28px;
 }
 
@@ -52,6 +65,8 @@ body {
   padding: 20px;
   border-radius: 100px;
   transition: transform 0.5s;
+  display: flex;
+  margin: auto;
 }
 
 .home-cat-img-div img {
@@ -1025,11 +1040,21 @@ a {
   .user-data {
     padding-top: 35px;
   }
+  .homebanner_pause_btn{
+    padding: 3px 8px ;
+  }
+  .homebanner_pause_btn svg{
+    font-size: 14px;
+  }
 }
 @media (max-width: 768px) {
   .home-main {
     margin-top: 20px;
   }
+  .homebanner_pause_btn{
+    padding: 0px 5px;
+  }
+  
   /* login page */
   .login-container {
     margin: 20px auto 90px;
@@ -1049,6 +1074,9 @@ a {
   }
 }
 @media (max-width: 576px) {
+  .homebanner_pause_btn svg{
+    font-size: 12px;
+  }
   /* login page */
   .login-container {
     margin: 10px auto 90px;
