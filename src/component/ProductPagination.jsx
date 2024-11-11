@@ -6,16 +6,6 @@ const ProductPagination = ({
   currentPage,
   onPageChange,
 }) => {
-  //   console.log(
-  //     "totalProducts",
-  //     totalProducts,
-  //     "productsPerPage",
-  //     productsPerPage,
-  //     "currentPage",
-  //     currentPage,
-  //     "onPage",
-  //     onPageChange
-  //   );
   // Calculate total pages based on total products
   const totalPages = Math.ceil(totalProducts / productsPerPage);
 
@@ -109,14 +99,6 @@ const ProductPagination = ({
           </span>
         );
       }
-
-      console.log(
-        "Pagination",
-        paginationButtons,
-        "totalPages",
-        totalPages
-        //   paginationButtons[totalPages].key,
-      );
       paginationButtons.push(
         <button
           key={totalPages}
@@ -158,7 +140,6 @@ const ProductPagination = ({
           );
         }
       }
-      console.log("page", paginationButtons);
       return paginationButtons;
     }
   };

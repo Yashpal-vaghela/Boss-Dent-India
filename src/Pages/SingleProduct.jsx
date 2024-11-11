@@ -121,14 +121,12 @@ const SingleProduct = () => {
           return { ...product, discount };
         });
         setRelatedProducts(productwithDiscount.slice(0, 10));
-        // console.log(shuffledProducts);
       }
 
       const regularPrice1 = parseFloat(response.data.regular_price);
       const salePrice = parseFloat(
         response.data.sale_price || response.data.price
       );
-      // if(regularPrice1)
       if (regularPrice1 && salePrice < regularPrice1) {
         const discount = ((regularPrice1 - salePrice) / regularPrice1) * 100;
         setDiscountProdcutPrice(Math.round(discount)); // Store the discount percentage in state
@@ -137,13 +135,9 @@ const SingleProduct = () => {
       }
       setSalePrice(salePrice);
       setRegularPrice(regularPrice1);
-      // console.log(response.data.sale_price);
-      // console.log(response.data.price);
-      // console.log(response.data.regular_price);
       setWeight(response.data.weight);
       setStockStatus(response.data.stock_status);
     } catch (error) {
-      // console.error("Error fetching product:", error);
       toast.error("Failed to fetch product details.");
     } finally {
       setLoading(false);
@@ -151,7 +145,6 @@ const SingleProduct = () => {
   };
 
   useEffect(() => {
-    // console.log("loca", location, id);
     if (id) {
       fetchProduct();
     }
@@ -197,11 +190,8 @@ const SingleProduct = () => {
       ((RegularPrice - salePrice) / RegularPrice) *
       100
     ).toFixed(0);
-    // console.log("pro",ProductDiscountPrice)
     setDiscountProdcutPrice(Number(ProductDiscountPrice));
     // const a = ((ProductVariationPrice - salePrice) / ProductVariationPrice) * 100;
-    // console.log("a",a,"salesPrice",salePrice,ProductVariationPrice);
-    console.log("salePrice", salePrice, "RegularPrice", RegularPrice);
     setRegularPrice(RegularPrice);
     if (selectedVariation) {
       setSalePrice(selectedVariation.price);
@@ -261,7 +251,6 @@ const SingleProduct = () => {
         navigate("/my-account", { state: { from: location.pathname } });
       }, 2000);
     }
-    // console.log(product);
   };
 
   // Addtocart product and related product api integrate
@@ -285,7 +274,6 @@ const SingleProduct = () => {
               filterCartProduct = response.data.cart_items.filter(
                 (item) => Number(item.product_id) === product.id
               );
-              // console.log("relatedData",relatedProduct)
               // RelatedCartProduct
               relatedProduct ? (
                 <>
@@ -305,7 +293,6 @@ const SingleProduct = () => {
           } else if (relatedProduct === undefined) {
             handleUpdateCartApi(filterCartProduct, product, GetCartProduct);
           }
-          // console.log("filter",RelatedCartProduct)
           if (relatedProduct !== undefined) {
             if (RelatedCartProduct.length === 0) {
               axios
@@ -375,7 +362,6 @@ const SingleProduct = () => {
 
   // product addtocart api  integrate
   const handleAddToCartApi = async (product, userData) => {
-    console.log("regluarPrice", regluarPrice);
     axios
       .post(`https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`, {
         user_id: userData.user_id,
@@ -468,13 +454,9 @@ const SingleProduct = () => {
             <div className="single-product-details">
               <h2 className="single-product-title">{product?.name}</h2>
               <h3 className="single-product-price align-item-center justify-contents-center">
-                {/* {
-                  console.log("RegularPrice",product)
-                } */}
                 {salePrice && regluarPrice ? (
                   <>
                     Price:&nbsp;
-                    {console.log("dis", discountProductPrice)}
                     {salePrice !== regluarPrice ? (
                       <>
                         <span className="regular-price">{regluarPrice}</span>
@@ -513,25 +495,15 @@ const SingleProduct = () => {
                 Stock Status:{" "}
                 {stockStatus === "instock" ? "In Stock" : "Out of Stock"}
               </h4>
-              {/* {console.log("variations",product)} */}
               {variations.length > 0 &&
                 Object.keys(variations[0]?.attributes || {}).map(
                   (attribute, index) => {
-                    // Create a Set to store unique values
-                    // const uniqueValues = new Set(
-                    //   variations
-                    //     .map((variation) => variation.attributes[attribute])
-                    //     .filter((value) => value !== undefined)
-                    // );
-                    // console.log("unique", uniqueValues);
-
-                    // const uniqueValuesArray = Array.from(uniqueValues);
                     return (
                       <div
                         key={attribute}
                         className="variation-main align-items-center"
                       >
-                        {console.log("attribute", attribute)}
+                        {/* {console.log("attribute", attribute)} */}
                         <h4 className="mb-0">
                           {attribute.replace(/pa_|attribute_/, "")}:
                         </h4>
@@ -540,7 +512,6 @@ const SingleProduct = () => {
                         {attribute === "pa_color" || attribute === "color" ? (
                           <div style={{ display: "flex" }}>
                             {variations.map((color, index) => {
-                              // console.log("color",color)
                               return (
                                 <div
                                   className={`color-option ${
@@ -568,7 +539,6 @@ const SingleProduct = () => {
                         ) : (
                           <div className="variation-buttons">
                             {variations.map((value, index) => {
-                              // console.log("color", value,"pro",product);
                               return (
                                 <button
                                   key={index}
@@ -592,35 +562,6 @@ const SingleProduct = () => {
                                 </button>
                               );
                             })}
-                            {/* {uniqueValuesArray.map((value, index) => {
-                              console.log(
-                                "value",
-                                value,
-                                uniqueValuesArray,
-                                "vari",
-                                variations
-                              );
-                              return (
-                                <button
-                                  key={index}
-                                  className={`variation-button ${
-                                    selectedAttributes[attribute] === value
-                                      ? "selected"
-                                      : ""
-                                  }`}
-                                  onClick={() =>
-                                    handleAttributeSelect(
-                                      attribute,
-                                      value,
-                                      // value.sale_price,
-                                      // value.regular_price
-                                    )
-                                  }
-                                >
-                                  {value}
-                                </button>
-                              );
-                            })} */}
                           </div>
                         )}
                       </div>
@@ -779,11 +720,6 @@ const SingleProduct = () => {
                         <h4 className="related-product-title">
                           {relatedProduct.title?.rendered}
                         </h4>
-                        {/* <p>
-                          {relatedProduct.price
-                            ? `Price: ${relatedProduct.price} ₹`
-                            : "Price not available"}
-                        </p> */}
                         <p>
                           {relatedProduct.regular_price &&
                           relatedProduct.price ? (

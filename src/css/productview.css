@@ -106,7 +106,8 @@
 .regular-price {
   text-decoration: line-through;
   color: #888;
-  margin-right: 10px; 
+  margin-right: 10px;
+  font-weight: normal;
 }
 
 .sale-price {
@@ -297,13 +298,10 @@
   cursor: pointer;
   font-size: 24px;
   color: #222;
-  /* font-weight: 600; */
   border-bottom: 2px solid #c89c31;
   width: fit-content;
   padding: 10px 0px;
-  /* margin-right: 20px; */
   transition: all 0.2s ease-in-out;
-  /* margin-top: 20px; */
 }
 .des-title.active {
   color: #c39428;
@@ -312,14 +310,39 @@
 .single-product-des {
   font-size: 16px;
   color: #111111;
-  /* margin-top: 20px; */
   font-weight: 400;
   line-height: 24px;
-  /* margin-left: 20px; */
   border: 2px solid #222;
   border-radius: 10px;
   box-shadow: 0px 1px 5px #ddd;
   padding: 20px;
+}
+.single-product-des table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.single-product-des th,
+.single-product-des td {
+  border: 1px solid #c39428;
+  padding: 8px;
+  text-align: left;
+}
+
+.single-product-des th{
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.single-product-des td{
+  background-color: #fff;
+}
+
+.single-product-des tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 .product-description-nav ul {
   list-style-type: none;
