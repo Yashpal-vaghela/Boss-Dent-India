@@ -39,19 +39,19 @@ const Gallery = () => {
     {
       id: 6,
       src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/MIxing+Tips.webp",
-      slug: "/products?category=123",
+      slug: "/products/micro-applicator-tips",
       alt: "Mixing-Tips",
     },
     {
       id: 7,
       src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient+Bibs.webp",
-      slug: "/products?category=119",
+      slug: "/products/patient-bibs",
       alt: "Patient-Bibs",
     },
     {
       id: 8,
       src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient+Draps.webp",
-      slug: "/products?category=119",
+      slug: "/products/premium-patient-drape-washable-cotton-pvc",
       alt: "Patient-Draps",
     },
     {
@@ -63,7 +63,7 @@ const Gallery = () => {
     {
       id: 10,
       src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Tieon+Surgeon+Cap.webp",
-      slug:"/products?category=117",
+      slug:"/products/tieon-surgeon-cap-washable",
       alt: "Tieon-Surgeon-Cap",
     },
   ];

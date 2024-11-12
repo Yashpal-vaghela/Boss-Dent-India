@@ -8,6 +8,7 @@ const OrderDetailsInfo = () => {
   const [getOrderData, setOrderData] = useState([]);
   const [productPrice, setProductPrice] = useState();
   const pathName = useLocation();
+  const shippingCharge = 90.00;
 
   const handleOrderDetails = async () => {
     await axios
@@ -88,7 +89,7 @@ const OrderDetailsInfo = () => {
                           {Product.product_name}
                         </h2>
                         {Object.keys(Product.attributes)[0] ===
-                        "attribute_color" ? (
+                          "attribute_color" ? (
                           <>
                             <div className="order-detail-attributes d-flex align-items-center">
                               <h2 className="mb-0">Color:&nbsp;</h2>
@@ -156,20 +157,20 @@ const OrderDetailsInfo = () => {
                 </div>
                 <div className="d-flex justify-content-between align-items-center order-summary-main">
                   <span>Shipping</span>
-                  <span>0.00</span>
+                  <span>{shippingCharge.toFixed(2)}</span>
                 </div>
                 <div className="d-flex justify-content-between align-items-center order-summary-main">
                   <span>Total</span>
-                  {getOrderData.length !== 0 && (
-                    <span>{getOrderData.total_amount}</span>
-                  )}
+                  {(
+                    parseFloat(getOrderData.total_amount) + shippingCharge
+                  ).toFixed(2)}
                 </div>
               </div>
             </div>
           </div>
           <div
             className="col-lg-4 col-12 order-details-info-wrap"
-            // style={{ zIndex: "99", top: "0px", height: "100%" }}
+          // style={{ zIndex: "99", top: "0px", height: "100%" }}
           >
             <div className="payment-method-container" id="payment-method">
               <div className="payment-sec-title">

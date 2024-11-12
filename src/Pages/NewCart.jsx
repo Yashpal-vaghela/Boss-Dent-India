@@ -343,7 +343,7 @@ const CartListItem = React.memo(
               ? { ...item, product_quantity: UpdatedProduct.product_quantity }
               : item;
           });
-          console.log("Cart", UpdatedCartData);
+          // console.log("Cart", UpdatedCartData);
           localStorage.setItem(
             "cart",
             JSON.stringify({
@@ -428,7 +428,7 @@ const CartListItem = React.memo(
                       >
                         <div className="d-flex align-items-center">
                           <h4>{attribute.replace(/pa_|attribute_/, "")}:</h4>
-                          {attribute === "pa_color" ? (
+                          {attribute === "color" ? (
                             <>
                               <div style={{ display: "flex" }}>
                                 {productVariations?.map((variation, index) => {
@@ -520,7 +520,7 @@ const CartListItem = React.memo(
           </div>
           <div className="cart-price">
             {/* {console.log("pro", productPrice)} */}
-            <p className="cart-item-price">₹{productPrice}</p>
+            <p className="cart-item-price">₹{Number(productPrice).toFixed(2)}</p>
             <p className="cart-item-total">
               ₹
               {product.product_quantity !== undefined

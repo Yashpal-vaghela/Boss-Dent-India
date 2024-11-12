@@ -486,15 +486,6 @@ const CheckOut = () => {
                                               )}
                                               : &nbsp;
                                               <b>
-                                                {console.log(
-                                                  "pro",
-                                                  product?.selected_attribute,
-                                                  typeof product?.selected_attribute,
-                                                  Object.values(
-                                                    product?.selected_attribute
-                                                  )[0],
-                                                  // JSON.parse(Object.keys(product?.selected_attribute))
-                                                )}
                                                 {
                                                   Object.values(
                                                     product?.selected_attribute
@@ -527,9 +518,6 @@ const CheckOut = () => {
                     </div>
                     <div
                       className="order-coupon-code"
-                      // className={`${
-                      //   couponError ? "order-coupon-code" : "order-coupon-code"
-                      // }`}
                     >
                       <input
                         className="form-control w-75"
@@ -554,7 +542,6 @@ const CheckOut = () => {
                       <div className="d-flex justify-content-between ">
                         <h6 className="order_title">Subtotal</h6>
                         <p>₹{getCartData?.cart_total.total_price}.00</p>
-                        {/* <p>₹{cartTotal}.00</p> */}
                       </div>
                       {discountAmount && (
                         <div className="d-flex justify-content-between">
