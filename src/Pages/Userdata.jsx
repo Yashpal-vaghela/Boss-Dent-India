@@ -29,6 +29,47 @@ const UserData = () => {
   const navigate = useNavigate();
   const { LogoutUserList } = useWatchlist();
 
+  // OrderDetails pagination
+  const [currentPage, setCurrentPage] = useState(() => {
+    const a = localStorage.getItem("Order_page");
+    return a ? Number(localStorage.getItem("Order_page")) : 1;
+  });
+  const [itemPerPage] = useState(10);
+  const totalPages = Math.ceil(OrderDetail.length / itemPerPage);
+  const indexOfLastItem =  currentPage * itemPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemPerPage;
+  // const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    localStorage.setItem("Order_page", pageNumber);
+  };
+
+    // Generate pagination buttons
+    // const renderPageNumbers = () => {
+    //   const pageNumbers = [];
+    //   for (let i = 1; i <= totalPages; i++) {
+    //     pageNumbers.push(
+    //       <button
+    //         key={i}
+    //         onClick={() => handlePageChange(i)}
+    //         className={i === currentPage ? "active" : ""}
+    //         style={{
+    //           margin: "5px",
+    //           padding: "8px 12px",
+    //           cursor: "pointer",
+    //           backgroundColor: i === currentPage ? "#4CAF50" : "#f0f0f0",
+    //           border: "1px solid #ddd",
+    //           borderRadius: "4px",
+    //         }}
+    //       >
+    //         {i}
+    //       </button>
+    //     );
+    //   }
+    //   return pageNumbers;
+    // };
+
   const fetchUserData = useCallback(async () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -324,7 +365,10 @@ const UserData = () => {
             <i className="fa-solid fa-angle-right"></i> <span>User Data</span>
           </nav>
         </div>
-        <div className="user-data-container" data-aos="fade">
+        <div
+          className="user-data-container position-relative overflow-hidden"
+          data-aos="fade"
+        >
           <div className="user-data-sidebar">
             <img
               className="avatar"

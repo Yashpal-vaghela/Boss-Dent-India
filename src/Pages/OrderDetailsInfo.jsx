@@ -8,9 +8,8 @@ const OrderDetailsInfo = () => {
   const [getOrderData, setOrderData] = useState([]);
   const [productPrice, setProductPrice] = useState();
   const pathName = useLocation();
-  // console.log("getOrderId", getOrderData);
+
   const handleOrderDetails = async () => {
-    // console.log("fetchOrderDetails");
     await axios
       .get(
         `https://admin.bossdentindia.com/wp-json/custom/v1/order_details?order_id=${getOrderId}`
@@ -20,23 +19,13 @@ const OrderDetailsInfo = () => {
         const getPrice = response.data.order_items.map((item) => {
           let price = "";
           if (item.quantity > 1) {
-            price = item.total / item.quantity;
-            // console.log("price", price);
+            price = item.product_price / item.quantity;
           } else {
-            price = Number(item.total);
+            price = Number(item.product_price);
           }
-          // setProductPrice({...price,ProductPrice:price});
-          // console.log("price---",price);
           return price;
         });
         setProductPrice(getPrice);
-        // console.log(
-        //   "response",
-        //   response.data,
-        //   response.data.order_items,
-        //   "getPrice",
-        //   getPrice
-        // );
       })
       .catch((error) => console.log("error", error));
   };
@@ -79,10 +68,8 @@ const OrderDetailsInfo = () => {
                   Order Item
                 </h1>
               </div>
-              {/* {console.log("getOrder", getOrderData)} */}
               {getOrderData.length !== 0 &&
                 getOrderData.order_items.map((Product, index) => {
-                  // console.log("getOrder", Product);
                   return (
                     <div
                       className="row align-items-center justify-content-center mx-0"
@@ -100,7 +87,8 @@ const OrderDetailsInfo = () => {
                         <h2 className="order-product-title">
                           {Product.product_name}
                         </h2>
-                        {Object.keys(Product.attributes)[0] === "pa_color" ? (
+                        {Object.keys(Product.attributes)[0] ===
+                        "attribute_color" ? (
                           <>
                             <div className="order-detail-attributes d-flex align-items-center">
                               <h2 className="mb-0">Color:&nbsp;</h2>
@@ -126,21 +114,21 @@ const OrderDetailsInfo = () => {
                         </span>
                         <br />
                         <span className="order-item-price d-block d-sm-none d-md-none d-lg-none">
-                          {console.log(
-                            "price-display===",
-                            productPrice[index],
-                            Object.keys(productPrice)
+                          {getOrderData?.order_items.map((item) =>
+                            Number(item.product_price).toFixed(2)
                           )}
-                          {productPrice[index]}
-                          100.00
+                          {Number(productPrice[index]).toFixed(2)}
+                          {/* 100.00 */}
                         </span>
                       </div>
                       <div className="col-lg-2 col-md-2 col-sm-2 col-1 text-center d-lg-block d-md-block d-sm-block d-none">
-                        <span className="order-item-price">100.00</span>
+                        <span className="order-item-price">
+                          {productPrice[index].toFixed(2)}
+                        </span>
                       </div>
                       <div className="col-lg-2 col-md-2 col-sm-2 col-2 text-center">
                         <span className="order-item-priceTotal">
-                          {Product.total}
+                          {Number(Product.product_price).toFixed(2)}
                         </span>
                       </div>
                     </div>
@@ -154,20 +142,17 @@ const OrderDetailsInfo = () => {
               <div className="order-summary-content-main">
                 <div className="d-flex justify-content-between align-items-center order-summary-main">
                   <span>Items(s) Subtotal:</span>
-                  {/* {
-                    getOrderData.order_items.map((item)=>console.log("item",item))
-                  } */}
-                  <span>1 item</span>
-                  <span>
-                    {getOrderData.length !== 0 &&
-                      getOrderData?.order_items.reduce((total, ite) => {
-                        // console.log("total", total, Number(ite.total));
-                        return total + Number(ite.total);
-                      }, 0)}
-                  </span>
-                  {/* <span>
-                    200.00{getOrderData?.order_items.map((ite) => ite.total)}
-                  </span> */}
+
+                  {getOrderData.length !== 0 && (
+                    <span>
+                      {getOrderData?.order_items.reduce((totalqty, item) => {
+                        return totalqty + Number(item.quantity);
+                      }, 0)}{" "}
+                      Item
+                    </span>
+                  )}
+                  {/* <span>1 item</span> */}
+                  <span>{getOrderData.total_amount}</span>
                 </div>
                 <div className="d-flex justify-content-between align-items-center order-summary-main">
                   <span>Shipping</span>
@@ -175,7 +160,9 @@ const OrderDetailsInfo = () => {
                 </div>
                 <div className="d-flex justify-content-between align-items-center order-summary-main">
                   <span>Total</span>
-                  <span>200.00</span>
+                  {getOrderData.length !== 0 && (
+                    <span>{getOrderData.total_amount}</span>
+                  )}
                 </div>
               </div>
             </div>
@@ -198,8 +185,6 @@ const OrderDetailsInfo = () => {
                     <h2 className="text-danger">Payment Failed</h2>
                   </>
                 )}
-
-                {/* <h2>Phone Pe</h2> */}
               </div>
             </div>
             <div className="shipping-details-container" id="shipping-details">
@@ -208,18 +193,24 @@ const OrderDetailsInfo = () => {
               </div>
               <div className="shipping-details-content">
                 <h2>{getOrderData?.customer_details?.name}</h2>
-                <h2>{getOrderData?.customer_details?.address_1}</h2>
-                <h2>{getOrderData?.customer_details?.city}</h2>
-                <h2>{getOrderData?.customer_details?.state}</h2>
-                <h2>{getOrderData?.customer_details?.postcode}</h2>
+                <h2
+                  style={{ textOverflow: "ellipsis" }}
+                  className="overflow-hidden"
+                >
+                  {getOrderData?.customer_details?.address_1}
+                </h2>
+                <h2>{getOrderData?.customer_details?.city},</h2>
+                <h2>
+                  {getOrderData?.customer_details?.state},
+                  {getOrderData?.customer_details?.postcode}.
+                </h2>
                 <h2>{getOrderData?.customer_details?.phone}</h2>
-                {/* <h2>{getOrderData?.customer_details.city}</h2> */}
               </div>
             </div>
           </div>
         </div>
         <div className="order-buyitem-again d-flex mb-5 mt-3 align-item-center justify-content-end px-4 ">
-          <Link to="/">
+          <Link to={`/products`}>
             <button className="btn btn-dark btn-buy-again">
               <i className="fa-solid fa-repeat"></i> Buy it again
             </button>
