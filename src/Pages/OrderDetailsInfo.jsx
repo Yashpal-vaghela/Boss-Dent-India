@@ -88,26 +88,21 @@ const OrderDetailsInfo = () => {
                         <h2 className="order-product-title">
                           {Product.product_name}
                         </h2>
-                        {Object.keys(Product.attributes)[0] ===
-                          "attribute_color" ? (
+                        {Product.attributes && Object.keys(Product.attributes).length > 0 ? (
                           <>
-                            <div className="order-detail-attributes d-flex align-items-center">
-                              <h2 className="mb-0">Color:&nbsp;</h2>
-                              <span>
-                                {Object.values(Product.attributes)[0]}
-                              </span>
-                            </div>
+                            {Object.keys(Product.attributes)[0] === "attribute_color" ? (
+                              <div className="order-detail-attributes d-flex align-items-center">
+                                <h2 className="mb-0">Color:&nbsp;</h2>
+                                <span>{Object.values(Product.attributes)[0]}</span>
+                              </div>
+                            ) : (
+                              <div className="order-detail-attributes d-flex align-items-center">
+                                <h2 className="mb-0">Size:&nbsp;</h2>
+                                <span>{Object.values(Product.attributes)[0]}</span>
+                              </div>
+                            )}
                           </>
-                        ) : (
-                          <>
-                            <div className="order-detail-attributes d-flex align-items-center">
-                              <h2 className="mb-0">Size:&nbsp;</h2>
-                              <span>
-                                {Object.values(Product.attributes)[0]}
-                              </span>
-                            </div>
-                          </>
-                        )}
+                        ) : null}
                       </div>
                       <div className="col-lg-2 col-sm-1 col-2 text-center d-sm-block">
                         <span className="order-item-qty">
@@ -117,19 +112,19 @@ const OrderDetailsInfo = () => {
                         <span className="order-item-price d-block d-sm-none d-md-none d-lg-none">
                           {getOrderData?.order_items.map((item) =>
                             Number(item.product_price).toFixed(2)
-                          )}
-                          {Number(productPrice[index]).toFixed(2)}
+                          )} ₹
+                          {Number(productPrice[index]).toFixed(2)} ₹
                           {/* 100.00 */}
                         </span>
                       </div>
                       <div className="col-lg-2 col-md-2 col-sm-2 col-1 text-center d-lg-block d-md-block d-sm-block d-none">
                         <span className="order-item-price">
-                          {productPrice[index].toFixed(2)}
+                          {productPrice[index].toFixed(2)} ₹
                         </span>
                       </div>
                       <div className="col-lg-2 col-md-2 col-sm-2 col-2 text-center">
                         <span className="order-item-priceTotal">
-                          {Number(Product.product_price).toFixed(2)}
+                          {Number(Product.product_price).toFixed(2)} ₹
                         </span>
                       </div>
                     </div>
@@ -142,7 +137,7 @@ const OrderDetailsInfo = () => {
               </div>
               <div className="order-summary-content-main">
                 <div className="d-flex justify-content-between align-items-center order-summary-main">
-                  <span>Items(s) Subtotal:</span>
+                  <span>Item's Subtotal:</span>
 
                   {getOrderData.length !== 0 && (
                     <span>
@@ -153,17 +148,24 @@ const OrderDetailsInfo = () => {
                     </span>
                   )}
                   {/* <span>1 item</span> */}
-                  <span>{getOrderData.total_amount}</span>
+                  <span>{getOrderData.total_amount} ₹</span>
                 </div>
                 <div className="d-flex justify-content-between align-items-center order-summary-main">
-                  <span>Shipping</span>
-                  <span>{shippingCharge.toFixed(2)}</span>
+                  <span>Shipping Charge:</span>
+                  {/* <span>{shippingCharge.toFixed(2)}</span> */}
+                  <span>
+                    {getOrderData.shipping_charge && (getOrderData.shipping_charge ==!  0)?
+                      `${getOrderData.shipping_charge} ₹` :
+                      `${shippingCharge} ₹`}
+                  </span>
                 </div>
                 <div className="d-flex justify-content-between align-items-center order-summary-main">
-                  <span>Total</span>
-                  {(
-                    parseFloat(getOrderData.total_amount) + shippingCharge
-                  ).toFixed(2)}
+                  <span>Total:</span>
+                  <span>
+                    {(
+                      parseFloat(getOrderData.total_amount) + shippingCharge
+                    ).toFixed(2)} ₹
+                  </span>
                 </div>
               </div>
             </div>
