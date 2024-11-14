@@ -14,6 +14,9 @@ body {
 .home-main {
   margin-top: 160px;
 }
+.home-main .swiper-pagination-bullet-active{
+  background: #c39428;
+}
 .homebanner_pause_btn{
   position: absolute;
   top: 10px;
@@ -1074,6 +1077,9 @@ a {
   }
 }
 @media (max-width: 576px) {
+  .home-cat-txt{
+    margin: 10px 0 0;
+  }
   .homebanner_pause_btn svg{
     font-size: 12px;
   }

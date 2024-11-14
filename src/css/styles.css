@@ -225,9 +225,15 @@ footer {
   }
 
   .footer-section {
-    margin-top: 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
   }
-
+.footer-section h3{
+  margin-bottom: 5px;
+}
+.footer-section li {
+  padding-top: 5px;
+}
   .footer-bottom {
     flex-direction: column;
     align-items: center;

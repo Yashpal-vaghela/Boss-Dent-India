@@ -56,10 +56,7 @@ const NewNav1 = () => {
     }
   };
   const handleClick = (product) => {
-    // console.log("pro",product)
-    // localStorage.setItem("productId",product.id);
     navigate(`/products/${encodeURIComponent(product.slug)}`);
-    // navigate(`/products/${id}`);
     handleOffcanvas1();
     handleClearSearch();
   };
@@ -253,7 +250,7 @@ const NewNav1 = () => {
         <div className="container-fluid newnavbar-sub">
           <Link to="/" className="navbarlogo">
             <img
-              src="/asset/images/flogo1.png"
+              src="https://new-product-banner.s3.ap-south-1.amazonaws.com/flogo1.png"
               alt="Logo"
               width='200px'
               height='90px'
@@ -407,7 +404,6 @@ const NewNav1 = () => {
                       value={searchQuery}
                       onChange={handleSearchInputChangeSub}
                     ></input>
-                    {/* {console.log("suggest", suggested)} */}
                     {suggestions.length !== 0 ? (
                       <>
                         <div className="suggestion-sub">

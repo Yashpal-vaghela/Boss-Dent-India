@@ -51,8 +51,7 @@ const CheckOut = () => {
     await axios
       .get("https://admin.bossdentindia.com/wp-json/custom/v1/coupons")
       .then((res) => {
-        // setLoading(false);
-        // console.log("res", res.data);
+        setLoading(false);
         setGetCouponData(res.data);
         localStorage.setItem("couponData", JSON.stringify(res.data));
       })
@@ -137,6 +136,7 @@ const CheckOut = () => {
                   quantity: Number(item?.product_quantity),
                   selected_attribute: item?.selected_attribute,
                 })),
+                shipping_charge:deliveryChargData,
                 user_id: getUserData.user_id,
               }),
             }
@@ -175,12 +175,12 @@ const CheckOut = () => {
 
             if (!paymentResponse.ok) {
               const paymentErrorText = await paymentResponse.text();
-              console.error(
-                "Payment response error text:",
-                paymentErrorText,
-                "paymentResponse",
-                paymentResponse
-              );
+              // console.error(
+              //   "Payment response error text:",
+              //   paymentErrorText,
+              //   "paymentResponse",
+              //   paymentResponse
+              // );
               throw new Error("Failed to initiate payment.");
             }
 
@@ -471,7 +471,6 @@ const CheckOut = () => {
                                 </div>
                                 <div className="col-lg-6 col-md-6 col-6 cart-item-detail">
                                   <h1>{product?.product_title}</h1>
-                                  {/* {console.log("product",product.selected_attribute)} */}
                                   {product?.selected_attribute ? (
                                     <>
                                       <div className="d-flex align-items-center justify-content-center">

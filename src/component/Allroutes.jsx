@@ -23,11 +23,12 @@ import Success from "../Pages/success";
 import ReturnExchange from "../Pages/ReturnExchange";
 import OrderDetailsInfo from "../Pages/OrderDetailsInfo";
 
+const LazyHomePage = React.lazy(()=>import("../Pages/Home"))
 const Allroutes = () => {
   return (
-    <>
+    <React.Suspense fallback={<div>Loading...</div>}>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<LazyHomePage />} />
         <Route path="/aboutus" element={<About />} />
         <Route path="/my-account" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />
@@ -47,7 +48,6 @@ const Allroutes = () => {
         <Route path="/terms-and-conditions" element={<TermAndCondition />} />
         <Route path="/return-exchange" element={<ReturnExchange/>}></Route>
         <Route path="/new-nav" element={<NewNav1 />} />
-        {/* <Route path='/gallery' element={<ImageGallery />}/> */}
         <Route path="/cart" element={<ProtectedRoute><NewCart/></ProtectedRoute>}/>
         <Route path="/checkout" element={<ProtectedRoute><CheckOut/></ProtectedRoute>}/>
         <Route path="/order-details-info" element={<OrderDetailsInfo/>}></Route>
@@ -55,7 +55,7 @@ const Allroutes = () => {
         <Route path="/success" element={<Success/>} />
         <Route path="*" element={<Home/>}></Route>
       </Routes>
-    </>
+    </React.Suspense>
   );
 };
 

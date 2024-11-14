@@ -237,10 +237,13 @@
 }
 @media(max-width:576px){
   .cards-1-main{
-    margin-left: -35px;
+    margin-left: -20px;
   }
 }
 @media(max-width:480px){
+  .cards-1-main{
+    margin-left: -45px;
+  }
   .variable-cards-title{
     font-size: 25px;
   }

@@ -23,7 +23,7 @@ const Product = () => {
     const a = localStorage.getItem("Product_page");
     return a ? Number(localStorage.getItem("Product_page")) : 1;
   });
-  const [itemsPerPage] = useState(() => {
+  const [itemsPerPage,setItemsPerPage] = useState(() => {
     return window.innerWidth >= 1400 ? 12 : 9;
   });
   const {
@@ -51,7 +51,6 @@ const Product = () => {
   // fetch product data
   const fetchProducts = useCallback(
     async (currentPage1) => {
-      // console.log("curre",currentPage,currentPage1)
       setLoading(true);
       try {
         let apiUrl = `https://admin.bossdentindia.com/wp-json/wp/v2/product?per_page=${itemsPerPage}&page=${currentPage1}`;
@@ -64,7 +63,6 @@ const Product = () => {
         const newProducts = response.data;
         setTotalProducts(parseInt(response.headers["x-wp-total"], 10));
         setProducts(newProducts);
-        // console.log(newProducts);
 
         const stockResponse = await axios.get(
           "https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/all"
@@ -93,13 +91,17 @@ const Product = () => {
     },
     [category, itemsPerPage]
   );
-
+  const displayWindowSize = ()=>{
+    var width = document.documentElement.clientWidth;
+    setItemsPerPage(width >= 1400 ? 12 : 9);
+  }
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem("token");
     setIsLoggedIn(userLoggedIn);
     if (getCartList) {
       setCartProductId(getCartList);
     }
+    window.addEventListener("resize",displayWindowSize);
   }, []);
 
   useEffect(() => {
@@ -236,7 +238,6 @@ const Product = () => {
             }
           )
           .then((response) => {
-            // console.log("delete", response.data);
             localStorage.setItem(
               "watchlist_length",
               response.data.wishlist_length
@@ -267,7 +268,6 @@ const Product = () => {
             }
           )
           .then((response) => {
-            // console.log("product-page", response.data, wishList);
             localStorage.setItem(
               "watchlist_length",
               response.data.wishlist_length

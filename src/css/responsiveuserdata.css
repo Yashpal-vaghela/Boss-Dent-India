@@ -382,7 +382,7 @@
   }
 
   .user-data-sidebar {
-    width: 50%;
+    width: 35%;
     /* border-bottom: 1px solid #ccc; */
     /* border-right: none; */
   }
@@ -578,9 +578,9 @@
   .order-content div{
     padding: .77rem 0px;
   }
-  .order-content .date-section{
+  /* .order-content .date-section{
     padding: 0px;
-  }
+  } */
   .order-content div span{
     font-size: 14px;
   }
@@ -630,11 +630,14 @@
   .order-content div{
     padding: .78rem 0px;
   }
-  .order-content .date-section{
-    padding: 0px;
-  }
+  
   .order-content .action-button{
     padding: .84rem 0;
+  }
+}
+@media(max-width:467px){
+  .order-content .date-section{
+    padding: 0px;
   }
 }
 /* @media(max-width:575px){

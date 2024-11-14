@@ -1,15 +1,16 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Link } from "react-router-dom";
 import { MdLocalShipping, MdSecurity, MdSupportAgent } from "react-icons/md";
 import Cards from "../component/Cards";
 import HomeBanner from "../component/HomeBanner";
 import "../css/othercard.css";
 import OtherBanner from "../component/OtherBanner";
-
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 const Home = () => {
   const CategoryData = [
     {
-      src: "/asset/images/gloves.png",
+      src: "/asset/images/gloves-1.png",
       src_slug: "/products?category=116",
       cat_title: "All Gloves",
     },
@@ -29,86 +30,17 @@ const Home = () => {
       cat_title: "All Retactors",
     },
   ];
+  useEffect(()=>{
+    AOS.init({
+      disable:'mobile'
+    })
+  },[])
   return (
     <div className="home-main overflow-hidden">
       {/* home banner section */}
       <HomeBanner />
 
       {/* Category Section */}
-      {/* <section>
-        <div className="home-cat-main">
-          <div className="home-cat-sub">
-            <div className="home-cat-content-box" data-aos="fade-down">
-              <Link to="/products?category=116">
-                <div className="home-cat-img-box">
-                  <div className="home-cat-img-div">
-                    <img
-                      src="/asset/images/gloves.png"
-                      alt="gloves"
-                      width="150"
-                      height="150"
-                    />
-                  </div>
-                </div>
-                <div className="home-cat-txt">
-                  <h1>All Gloves</h1>
-                </div>
-              </Link>
-            </div>
-            <div className="home-cat-content-box" data-aos="fade-down">
-              <Link to="/products?category=75">
-                <div className="home-cat-img-box">
-                  <div className="home-cat-img-div">
-                    <img
-                      src="/asset/images/general-dentist.webp"
-                      alt="General Dentist"
-                      width="150"
-                      height="150"
-                    />
-                  </div>
-                </div>
-                <div className="home-cat-txt">
-                  <h1>General Dentistry</h1>
-                </div>
-              </Link>
-            </div>
-            <div className="home-cat-content-box" data-aos="fade-down">
-              <Link to="/products?category=127">
-                <div className="home-cat-img-box">
-                  <div className="home-cat-img-div">
-                    <img
-                      src="/asset/images/vinsimle.png"
-                      alt="Vincismile"
-                      width="150"
-                      height="150"
-                    />
-                  </div>
-                </div>
-                <div className="home-cat-txt">
-                  <h1>Vincismile</h1>
-                </div>
-              </Link>
-            </div>
-            <div className="home-cat-content-box" data-aos="fade-down">
-              <Link to="/products?category=125">
-                <div className="home-cat-img-box">
-                  <div className="home-cat-img-div">
-                    <img
-                      src="/asset/images/retractornew.png"
-                      alt="retractor"
-                      width="150"
-                      height="150"
-                    />
-                  </div>
-                </div>
-                <div className="home-cat-txt">
-                  <h1>All Retactors</h1>
-                </div>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section> */}
       <section className="category-section">
         <div className="row home-cat-sub">
           {CategoryData?.map((item, index) => {
@@ -119,8 +51,8 @@ const Home = () => {
                     <img
                       src={item?.src}
                       alt="gloves"
-                      width="150"
-                      height="150"
+                      width={150}
+                      height={150}
                     ></img>
                   </div>
                   <div className="home-cat-txt">
@@ -231,30 +163,4 @@ const Home = () => {
   );
 };
 
-export default Home;
-
-//   <section>
-//   <div className="other-banner-main"
-//   // data-aos="fade-down"
-//   >
-//     <div className="other-banner">
-//       <div className="banner-txt" data-aos="fade-right">
-//         <p className="b-txt-1">The Best Doctor Recommended</p>
-//         <p className="b-txt-2">
-//           <span className="txt-2-name">TopCEM Dual</span>{" "}
-//           <span className="txt-2-underline">Cure Resin Cement</span>{" "}
-//           {/* <span className="txt-2-discount"> 10%</span>{" "}
-//           <span className="txt-2-dicount-type">Flat Discount</span> */}
-//         </p>
-//       </div>
-//       <div className="other-banner-btn-main">
-//         <Link
-//           to="/products/topcem-dual-cure-resin-cement"
-//           className="other-banner-btn-0"
-//         >
-//           <button className="other-banner-btn">SEE COLLECTION</button>
-//         </Link>
-//       </div>
-//     </div>
-//   </div>
-// </section>
+export default React.memo(Home);
