@@ -33,13 +33,13 @@ const OrderPagination = ({
   }
   return (
     <>
-      <div className="row align-items-center mx-0 justify-content-between my-3">
+      <div className="row align-items-center mx-0 justify-content-between mt-3">
         <div className="col-lg-3 col-md-6 col-6 text-start OrderProductTotal">
-          Product Total Items: {totalItems}
+          <b>Total Items:</b> {totalItems}
         </div>
         <div className="col-lg-3 col-md-6 col-6  OrderProductRowPage">
-          <div className="row_page d-flex align-items-center justify-content-lg-end justify-content-between">
-            <h6 className="mb-0 me-lg-2">Row Per Page</h6>
+          <div className="row_page d-flex align-items-center justify-content-lg-end justify-content-md-end justify-content-between">
+            <h6 className="mb-0 me-md-2 me-lg-2">Row Per Page</h6>
             {/* Row Per Page */}
             <select
               className="form-select"
@@ -47,7 +47,7 @@ const OrderPagination = ({
               value={rowPerPage}
               onChange={handleRowPerPageChange}
               style={{
-                width: "40%",
+                width: "30%",
                 padding: ".175rem 1.3rem .175rem .55rem",
                 backgroundPosition: "right .35rem center",
               }}
@@ -55,12 +55,12 @@ const OrderPagination = ({
               <option value={5}>5</option>
               <option value={10}>10</option>
               <option value={20}>20</option>
-              <option value={50}>50</option>
+              <option value={totalItems}>All</option>
             </select>
           </div>
         </div>
         <div className="col-lg-4 col-12">
-          <div className="Orderpagination d-flex align-items-center justify-content-end">
+          <div className="Orderpagination d-flex align-items-center justify-content-lg-end justify-content-center">
           <button
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
@@ -69,6 +69,7 @@ const OrderPagination = ({
             </button>
             <div className="OrderPagination-list d-flex">
               {pageNumber.map((number, index) => {
+                // console.log("number",number)
                 return (
                   <button
                     key={index}
