@@ -9,7 +9,8 @@ import Loader1 from "../component/Loader1";
 import Loader from "../component/Loader";
 import { useWatchlist } from "./WatchlistContext";
 import axios from "axios";
-import OrderDetailsInfo from "./OrderDetailsInfo";
+// import OrderDetailsInfo from "./OrderDetailsInfo";
+import OrderPagination from "../component/OrderPagination";
 
 const UserData = () => {
   const [user, setUser] = useState(null);
@@ -26,49 +27,10 @@ const UserData = () => {
   const [ApiLoader, setApiLoader] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [OrderDetail, setOrderDetails] = useState([]);
+  const [itemPerPage, setItemPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
   const { LogoutUserList } = useWatchlist();
-
-  // OrderDetails pagination
-  const [currentPage, setCurrentPage] = useState(() => {
-    const a = localStorage.getItem("Order_page");
-    return a ? Number(localStorage.getItem("Order_page")) : 1;
-  });
-  const [itemPerPage] = useState(10);
-  const totalPages = Math.ceil(OrderDetail.length / itemPerPage);
-  const indexOfLastItem =  currentPage * itemPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemPerPage;
-  // const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
-  // Handle page change
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-    localStorage.setItem("Order_page", pageNumber);
-  };
-
-    // Generate pagination buttons
-    // const renderPageNumbers = () => {
-    //   const pageNumbers = [];
-    //   for (let i = 1; i <= totalPages; i++) {
-    //     pageNumbers.push(
-    //       <button
-    //         key={i}
-    //         onClick={() => handlePageChange(i)}
-    //         className={i === currentPage ? "active" : ""}
-    //         style={{
-    //           margin: "5px",
-    //           padding: "8px 12px",
-    //           cursor: "pointer",
-    //           backgroundColor: i === currentPage ? "#4CAF50" : "#f0f0f0",
-    //           border: "1px solid #ddd",
-    //           borderRadius: "4px",
-    //         }}
-    //       >
-    //         {i}
-    //       </button>
-    //     );
-    //   }
-    //   return pageNumbers;
-    // };
 
   const fetchUserData = useCallback(async () => {
     const token = localStorage.getItem("token");
@@ -237,7 +199,7 @@ const UserData = () => {
       const userData = JSON.parse(storeUserData);
       username = userData.user_email;
     }
-    console.log("userName :::::", username);
+    // console.log("userName :::::", username);
 
     const token = localStorage.getItem("token");
 
@@ -353,6 +315,21 @@ const UserData = () => {
     }
   };
 
+  const handleItemsPerPageChange = (newItemsPerPage) => {
+    setItemPerPage(newItemsPerPage);
+    setCurrentPage(1);
+  }
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const currentOrders = OrderDetail.slice(
+    (currentPage - 1) * itemPerPage,
+    currentPage * itemPerPage
+  );
+  // useEffect(() => {
+  //   handleOrderApiData("orders");
+  // }, []);
   return !user ? (
     <Loader1 />
   ) : (
@@ -500,7 +477,7 @@ const UserData = () => {
                         </div>
                       </div>
                       <div className="order-content row mx-0 justify-content-between align-items-center">
-                        {OrderDetail?.map((order, index) => {
+                        {currentOrders?.map((order, index) => {
                           const dateOnly = order.order_date.split(" ")[0];
                           const [year, month, day] = dateOnly.split("-");
                           return (
@@ -552,8 +529,17 @@ const UserData = () => {
                             </React.Fragment>
                           );
                         })}
+                        {/* <OrderDetailsInfo ></OrderDetailsInfo> */}
                       </div>
                     </div>
+                    {/* <input type="number" id="itemsPerPage" value={itemPerPage} onChange={handlePageChange} min="1" max={OrderDetail.length}></input> */}
+                    <OrderPagination
+                      itemPerPage={itemPerPage}
+                      totalItems={OrderDetail.length}
+                      onPageChange={handlePageChange}
+                      currentPage={currentPage}
+                      onRowsPerPageChange={handleItemsPerPageChange} 
+                    ></OrderPagination>
                   </>
                 ) : (
                   <>

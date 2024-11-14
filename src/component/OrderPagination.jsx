@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 
 const OrderPagination = ({
   itemPerPage,
   totalItems,
-  // paginate,
   onPageChange,
   currentPage,
+  onRowsPerPageChange
 }) => {
+  const [rowPerPage, setRowsPerPage] = useState(itemPerPage);
+  const pageNumber = [];
+
   // console.log(
   //   "item",
   //   itemPerPage,
@@ -20,26 +22,20 @@ const OrderPagination = ({
   //   "currentPage",
   //   currentPage
   // );
-  const pageNumber = [];
   for (let i = 1; i <= Math.ceil(totalItems / itemPerPage); i++) {
     pageNumber.push(i);
+  };
+
+  const handleRowPerPageChange = (e) => {
+    const newRowsPerPage = parseInt(e.target.value, 10);
+    setRowsPerPage(newRowsPerPage);
+    onRowsPerPageChange(newRowsPerPage);
   }
-  // const [OrderPerPage,setOrderPerPage] = useState([totalItems]);
-  // useEffect(()=>{
-  //   const currentRows =
-  //   console.log("Order",OrderPerPage)
-  // },[])
-
-  const [rowPerPage, setRowsPerPage] = useState(itemPerPage);
-  const indexOfLastRow = currentPage * rowPerPage;
-  const indexOfFirstRow = currentPage - rowPerPage;
-  // const currentRows =
-
   return (
     <>
       <div className="row align-items-center mx-0 justify-content-between my-3">
         <div className="col-lg-3 col-md-6 col-6 text-start OrderProductTotal">
-          Product Total Items
+          Product Total Items: {totalItems}
         </div>
         <div className="col-lg-3 col-md-6 col-6  OrderProductRowPage">
           <div className="row_page d-flex align-items-center justify-content-lg-end justify-content-between">
@@ -47,28 +43,26 @@ const OrderPagination = ({
             {/* Row Per Page */}
             <select
               className="form-select"
-              aria-label="Default select Example"
+              aria-label="Rows per page selector"
+              value={rowPerPage}
+              onChange={handleRowPerPageChange}
               style={{
                 width: "40%",
                 padding: ".175rem 1.3rem .175rem .55rem",
                 backgroundPosition: "right .35rem center",
               }}
             >
-              <option defaultValue={"selected"}>Page</option>
-              <option value="1">{itemPerPage}</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
             </select>
           </div>
         </div>
         <div className="col-lg-4 col-12">
           <div className="Orderpagination d-flex align-items-center justify-content-end">
-            <button
-              onClick={(e) => {
-                if (currentPage >= 1) {
-                  onPageChange(e,currentPage - 1);
-                }
-              }}
+          <button
+              onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
             >
               <span aria-hidden="true">&laquo;</span>
@@ -78,10 +72,9 @@ const OrderPagination = ({
                 return (
                   <button
                     key={index}
-                    className={`OrderPagination_button page-item ${
-                      currentPage === number ? "active" : ""
-                    }`}
-                    onClick={(e) => onPageChange(e,number)}
+                    className={`OrderPagination_button page-item ${currentPage === number ? "active" : ""
+                      }`}
+                    onClick={(e) => onPageChange(e, number)}
                   >
                     {number}
                   </button>
@@ -89,11 +82,7 @@ const OrderPagination = ({
               })}
             </div>
             <button
-              onClick={(e) => {
-                if (currentPage <= 1) {
-                  onPageChange(e,currentPage + 1);
-                }
-              }}
+              onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === pageNumber.length}
             >
               <span aria-hidden="true">&raquo;</span>

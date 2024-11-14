@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import Zoom from "react-medium-image-zoom";
+// import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { useWatchlist } from "./WatchlistContext";
@@ -11,15 +11,15 @@ import { Autoplay, Navigation } from "swiper/modules";
 import { FaCartPlus } from "react-icons/fa6";
 import ReviewList from "../component/ReviewList";
 import ReviewForm from "../component/ReviewForm";
-import AlertSuccess from "../component/AlertSuccess";
 import { toast } from "react-toastify";
 import Loader1 from "../component/Loader1";
 import { Link } from "react-router-dom";
+import ReactImageMagnify from "react-image-magnify";
 
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(true);
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  // const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [salePrice, setSalePrice] = useState(null);
@@ -39,10 +39,10 @@ const SingleProduct = () => {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const [alertMessage, setAlertMessage] = useState("");
   const [selectedColor, setSelectedColor] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [discountProductPrice, setDiscountProdcutPrice] = useState(null);
+  const [largeImageLoaded, setLargeImageLoaded] = useState(false);
   // const [ProductId] = useState(() => {
   //  return  localStorage.getItem("productId")
   //     ? localStorage.getItem("productId")
@@ -151,13 +151,10 @@ const SingleProduct = () => {
   }, [id]);
 
   useEffect(() => {
-    if (alertMessage) {
-      const timer = setTimeout(() => {
-        setAlertMessage("");
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [alertMessage]);
+    const img = new Image();
+    img.src = product.yoast_head_json?.og_image?.[0]?.url || "";
+    img.onload = () => setLargeImageLoaded(true);
+  }, [product]);
 
   const handleUpdateqty = (e, action) => {
     e.preventDefault();
@@ -171,7 +168,6 @@ const SingleProduct = () => {
   const handleAttributeSelect = async (
     attribute,
     value,
-    key,
     salePrice,
     RegularPrice
   ) => {
@@ -191,7 +187,6 @@ const SingleProduct = () => {
       100
     ).toFixed(0);
     setDiscountProdcutPrice(Number(ProductDiscountPrice));
-    // const a = ((ProductVariationPrice - salePrice) / ProductVariationPrice) * 100;
     setRegularPrice(RegularPrice);
     if (selectedVariation) {
       setSalePrice(selectedVariation.price);
@@ -216,7 +211,6 @@ const SingleProduct = () => {
           )
           .then((response) => {
             removeFromWatchlist(product.id);
-            // setAlertMessage("Product removed from watchlist.");
             toast.success("Product removed from watchlist successfully.");
           })
           .catch((error) => console.log("error", error));
@@ -240,7 +234,6 @@ const SingleProduct = () => {
           )
           .then((response) => {
             addToWatchlist(product.id, selectedAttributes);
-            // setAlertMessage("Product add from watchlist.");
             toast.success("Product add into the wishlist!.");
           })
           .catch((error) => console.log("product-page-error", error));
@@ -318,7 +311,6 @@ const SingleProduct = () => {
                     selectedAttributes,
                     getUserData
                   );
-                  // localStorage.setItem("cart_length", res.data.cart_length);
                 })
                 .catch((err) => console.log("err", err));
             } else {
@@ -340,13 +332,13 @@ const SingleProduct = () => {
                     getUserData
                   );
                   toast.success("Product update to cart successfully!");
-                  // setAlertMessage("Product update from cart!");
+                  
                 })
                 .catch((err) => console.log("err", err));
             }
           }
         }
-        // alert("Product added to cart!");
+        
       } else {
         toast.info("Product is out of stock");
       }
@@ -377,7 +369,6 @@ const SingleProduct = () => {
       .then((res) => {
         toast.success("product added to cart successfully!");
         addToCartListProduct(product.id, selectedAttributes, getUserData);
-        // localStorage.setItem("cart_length", res.data.cart_length);
       })
       .catch((err) => console.log("err", err));
   };
@@ -394,7 +385,6 @@ const SingleProduct = () => {
       .then((res) => {
         addToCartListProduct(product.id, selectedAttributes, getUserData);
         toast.success("Product update to cart successfully!");
-        // setAlertMessage("Product update from cart!");
       })
       .catch((err) => console.log("err", err));
   };
@@ -428,28 +418,57 @@ const SingleProduct = () => {
               <span>{product.name}</span>
             </nav>
           </div>
-          {alertMessage && <AlertSuccess message={alertMessage} />}
           <div className="single-product-main">
             <div className="single-product-img">
-              <Zoom>
-                {/* <div className="image-container">
+              {/* <Zoom> */}
+              {/* <div className="image-container">
                   {discountProductPrice > 0 && (
                     <div className="discount-badge">
                       {`${discountProductPrice}% off`}
                     </div>
                   )}
                 </div> */}
-                <img
-                  // id={`product-image-${location.state.productId}`}
+              {/* <img
+                  id={`product-image-${location.state.productId}`}
                   className={`single-product-img ${
                     isImageLoaded ? "loaded" : ""
                   }`}
                   src={product.yoast_head_json.og_image[0].url}
-                  // src={imageUrl.replace("https://", "https://admin.")}
+                  src={imageUrl.replace("https://", "https://admin.")}
                   alt={product.name}
                   onLoad={() => setIsImageLoaded(true)}
                 />
-              </Zoom>
+              </Zoom> */}
+
+              {largeImageLoaded ? (
+                <ReactImageMagnify
+                  {...{
+                    smallImage: {
+                      alt: product.name,
+                      isFluidWidth: true,
+                      className: "rounded",
+                      src: product.yoast_head_json?.og_image?.[0]?.url || "",
+                    },
+                    largeImage: {
+                      src: product.yoast_head_json?.og_image?.[0]?.url || "",
+                      width: 1200,
+                      height: 1600,
+                    },
+                    imageAlt: product.name,
+                    enlargedImageContainerDimensions: {
+                      width: "100%",
+                      height: "100%",
+                    },
+                    enlargedImageContainerStyle: { 
+                      position: window.innerWidth < 768 ? "static" : "absolute",
+                      zIndex: 9,
+                      marginTop: window.innerWidth < 768 ? "20px" : "0",
+                    },
+                  }}
+                />
+              ) : (
+                <p><Loader1 /></p> 
+              )}
             </div>
             <div className="single-product-details">
               <h2 className="single-product-title">{product?.name}</h2>
@@ -493,7 +512,7 @@ const SingleProduct = () => {
               </h4>
               <h4 className="single-product-stock-status">
                 Stock Status:{" "}
-                {stockStatus === "instock" ? "In Stock" : "Out of Stock"}
+                <span>{stockStatus === "instock" ? "In Stock" : "Out of Stock"}</span>
               </h4>
               {variations.length > 0 &&
                 Object.keys(variations[0]?.attributes || {}).map(
@@ -514,14 +533,12 @@ const SingleProduct = () => {
                             {variations.map((color, index) => {
                               return (
                                 <div
-                                  className={`color-option ${
-                                    Object.values(color.attributes)[0]
-                                  } ${
-                                    selectedColor ===
-                                    Object.values(color.attributes)[0]
+                                  className={`color-option ${Object.values(color.attributes)[0]
+                                    } ${selectedColor ===
+                                      Object.values(color.attributes)[0]
                                       ? "selected"
                                       : ""
-                                  }`}
+                                    }`}
                                   key={index}
                                   onClick={() =>
                                     handleAttributeSelect(
@@ -542,12 +559,11 @@ const SingleProduct = () => {
                               return (
                                 <button
                                   key={index}
-                                  className={`variation-button ${
-                                    selectedAttributes[attribute] ===
+                                  className={`variation-button ${selectedAttributes[attribute] ===
                                     Object.values(value.attributes)[0]
-                                      ? "selected"
-                                      : ""
-                                  }`}
+                                    ? "selected"
+                                    : ""
+                                    }`}
                                   onClick={() =>
                                     handleAttributeSelect(
                                       attribute,
@@ -592,9 +608,8 @@ const SingleProduct = () => {
               <div className="btn-icon-main">
                 <div>
                   <button
-                    className={`add-to-cart-btn ${
-                      stockStatus === "outofstock" ? "disable-button" : ""
-                    }`}
+                    className={`add-to-cart-btn ${stockStatus === "outofstock" ? "disable-button" : ""
+                      }`}
                     disabled={stockStatus !== "instock"}
                     onClick={(e) => handleAddToCart(e, product)}
                   >
@@ -603,9 +618,8 @@ const SingleProduct = () => {
                 </div>
                 <div>
                   <span
-                    className={`like-icon ${
-                      !watchlist.includes(product.id) ? "" : "inactive-heart"
-                    }`}
+                    className={`like-icon ${!watchlist.includes(product.id) ? "" : "inactive-heart"
+                      }`}
                     onClick={() => handleWatchlistToggle(product)}
                   >
                     {watchlist.includes(product.id) ? (
@@ -624,25 +638,22 @@ const SingleProduct = () => {
                 <ul>
                   <li
                     onClick={() => setActivesection("description")}
-                    className={`des-title ${
-                      activeSection === "description" ? "active" : ""
-                    }`}
+                    className={`des-title ${activeSection === "description" ? "active" : ""
+                      }`}
                   >
                     Description
                   </li>
                   <li
                     onClick={() => setActivesection("additional")}
-                    className={`des-title ${
-                      activeSection === "additional" ? "active" : ""
-                    }`}
+                    className={`des-title ${activeSection === "additional" ? "active" : ""
+                      }`}
                   >
                     Additional Information
                   </li>
                   <li
                     onClick={() => setActivesection("review")}
-                    className={`des-title ${
-                      activeSection === "review" ? "active" : ""
-                    }`}
+                    className={`des-title ${activeSection === "review" ? "active" : ""
+                      }`}
                   >
                     Review
                   </li>
@@ -722,9 +733,9 @@ const SingleProduct = () => {
                         </h4>
                         <p>
                           {relatedProduct.regular_price &&
-                          relatedProduct.price ? (
-                            relatedProduct.regular_price !==
                             relatedProduct.price ? (
+                            relatedProduct.regular_price !==
+                              relatedProduct.price ? (
                               // If regular_price and price are different, show both
                               <>
                                 <span
@@ -752,11 +763,10 @@ const SingleProduct = () => {
 
                       <div className="related-icons">
                         <span
-                          className={`heart-icon ${
-                            !watchlist.includes(relatedProduct.id)
-                              ? ""
-                              : "inactive-heart"
-                          }`}
+                          className={`heart-icon ${!watchlist.includes(relatedProduct.id)
+                            ? ""
+                            : "inactive-heart"
+                            }`}
                           onClick={() => handleWatchlistToggle(relatedProduct)}
                         >
                           {watchlist.includes(relatedProduct.id) ? (
