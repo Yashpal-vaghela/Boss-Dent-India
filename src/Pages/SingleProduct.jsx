@@ -6,15 +6,13 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { useWatchlist } from "./WatchlistContext";
 import axios from "axios";
 import "../css/productview.css";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation } from "swiper/modules";
-import { FaCartPlus } from "react-icons/fa6";
 import ReviewList from "../component/ReviewList";
 import ReviewForm from "../component/ReviewForm";
 import { toast } from "react-toastify";
 import Loader1 from "../component/Loader1";
 import { Link } from "react-router-dom";
 import ReactImageMagnify from "react-image-magnify";
+import RelatedProducts from "../component/RelatedProducts";
 
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
@@ -680,7 +678,7 @@ const SingleProduct = () => {
               <ReviewForm productId={product.id} />
             </div>
           )}
-          <div className="related-products">
+          {/* <div className="related-products">
             <h3 className="related-title">Related Products</h3>
             <Swiper
               modules={[Navigation, Autoplay]}
@@ -787,7 +785,13 @@ const SingleProduct = () => {
                 );
               })}
             </Swiper>
-          </div>
+          </div> */}
+          <RelatedProducts 
+            relatedProducts={relatedProducts}
+            watchlist={watchlist}
+            handleWatchlistToggle={handleWatchlistToggle}
+            handleAddToCart={handleAddToCart}
+          />
         </div>
       )}
     </>
