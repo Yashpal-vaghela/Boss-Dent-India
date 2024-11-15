@@ -12,16 +12,16 @@ body {
     max-width: 610px;
   }
   /* Product page */
-  .products-grid {
+  /* .products-grid {
     grid-template-columns: repeat(4, 1fr);
-  }
+  } */
 }
 
 @media only screen and (max-width: 1440px) {
   /* Product page */
-  .products-grid {
+  /* .products-grid {
     grid-template-columns: repeat(3, 1fr);
-  }
+  } */
 
   /* contact page */
   .form-image img {
@@ -40,17 +40,6 @@ body {
   .about-main {
     margin-top: 0px;
   }
-  .other-banner {
-    flex-direction: column;
-  }
-  .banner-txt {
-    text-align: center;
-  }
-  .other-banner-btn {
-    width: max-content;
-    margin: 0 auto;
-    margin-top: 20px;
-  }
 
   /* Product page */
   .products-grid {
@@ -68,19 +57,9 @@ body {
   .about-main {
     margin-top: 0px;
   }
-  .other-banner {
-    flex-direction: column;
-  }
-  .banner-txt {
-    text-align: center;
-  }
-  .other-banner-btn {
-    width: max-content;
-    margin: 0 auto;
-    margin-top: 20px;
-  }
+  
   /* Product page */
-  .product-page {
+  /* .product-page {
     padding: 20px;
   }
 
@@ -147,7 +126,7 @@ body {
   .products-grid {
     width: 70%;
     grid-template-columns: repeat(2, 1fr);
-  }
+  } */
   /* Contact page */
   .contact-container{
     margin-top: 40px !important;
@@ -324,17 +303,6 @@ body {
   .about-main {
     margin-top: 0px;
   }
-  .other-banner {
-    flex-direction: column;
-  }
-  .banner-txt {
-    text-align: center;
-  }
-  .other-banner-btn {
-    width: max-content;
-    margin: 0 auto;
-    margin-top: 20px;
-  }
   .home-cat-sub {
     /* flex-direction: column; */
     gap: 30px;
@@ -377,19 +345,6 @@ body {
   .about-main {
     margin-top: 0px;
   }
-  .other-banner {
-    flex-direction: column;
-  }
-  .banner-txt {
-    text-align: center;
-  }
-  .other-banner-btn {
-    width: max-content;
-    margin: 0 auto;
-  }
-  /* .home-cat-sub {
-    flex-direction: column;
-  } */
 
   /* contact page   */
   .contact-info,
@@ -587,7 +542,7 @@ body {
 @media only screen and (max-width:576px){
   .home-cat-sub{
     gap: 0px;
-    
+    margin: 40px 20px 18px;
   }
   .home-cat-sub .col-6{
     padding-bottom: 20px;
@@ -764,7 +719,7 @@ body {
 
   .product-title {
     font-size: 16px;
-    margin: 0px 0;
+    margin: 0px 0 !important;
     text-align: center;
     /* height: 40px !important; */
   }
