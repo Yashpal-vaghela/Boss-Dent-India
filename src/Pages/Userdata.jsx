@@ -6,11 +6,9 @@ import "../css/responsiveuserdata.css";
 import AlertSuccess from "../component/AlertSuccess";
 import { toast } from "react-toastify";
 import Loader1 from "../component/Loader1";
-import Loader from "../component/Loader";
 import { useWatchlist } from "./WatchlistContext";
 import axios from "axios";
-// import OrderDetailsInfo from "./OrderDetailsInfo";
-import OrderPagination from "../component/OrderPagination";
+import OrderDetails from "../component/OrderDetails";
 
 const UserData = () => {
   const [user, setUser] = useState(null);
@@ -199,13 +197,10 @@ const UserData = () => {
       const userData = JSON.parse(storeUserData);
       username = userData.user_email;
     }
-    // console.log("userName :::::", username);
-
     const token = localStorage.getItem("token");
 
     if (!token) {
       toast.warn("Not logged in!");
-      // alert("Not logged in!");
       navigate("/my-account");
       return;
     }
@@ -448,120 +443,129 @@ const UserData = () => {
             )}
 
             {selectedSection === "orders" && (
-              <div className="order-section d-inline">
-                {/* <p>Orders section coming soon...</p> */}
-                {OrderDetail.length !== 0 ? (
-                  <>
-                    <h2 className="order-details-title section-title">
-                      Order Details
-                    </h2>
-                    <div className="order-table">
-                      <div className="order-title row mx-0">
-                        <div className="col-2">
-                          <h1>Order Id</h1>
-                        </div>
-                        <div className="col-2">
-                          <h1>Order Date</h1>
-                        </div>
-                        <div className="col-2">
-                          <h1>Product Items</h1>
-                        </div>
-                        <div className="col-2">
-                          <h1>Total Amount</h1>
-                        </div>
-                        <div className="col-2">
-                          <h1>Status</h1>
-                        </div>
-                        <div className="col-2">
-                          <h1>Action</h1>
-                        </div>
-                      </div>
-                      <div className="order-content row mx-0 justify-content-between align-items-center">
-                        {currentOrders?.map((order, index) => {
-                          const dateOnly = order.order_date.split(" ")[0];
-                          const [year, month, day] = dateOnly.split("-");
-                          return (
-                            <React.Fragment key={index}>
-                              <div className="col-2">
-                                <span>{order.order_id}</span>
-                              </div>
-                              <div className="col-2 date-section">
-                                <span>
-                                  {/* {dateOnly} */}
-                                  {day}-{month}-{year}
-                                </span>
-                              </div>
-                              <div className="col-2">
-                                <span>{order.items.length}</span>
-                              </div>
-                              <div className="col-2">
-                                <span>{order.order_total}</span>
-                              </div>
-                              <div className="col-2">
-                                <span>
-                                  {order.status.replace(/wc-|wc-/, "")}
-                                </span>
-                              </div>
-                              <div className="col-2 px-0 action-button d-flex align-items-center justify-content-center">
-                                <i
-                                  className="d-flex d-sm-none d-md-none d-lg-none fa-solid fa-angles-right"
-                                  onClick={() => {
-                                    navigate("/order-details-info");
-                                    localStorage.setItem(
-                                      "OrderId",
-                                      order.order_id
-                                    );
-                                  }}
-                                ></i>
-                                <button
-                                  className="d-none d-sm-block d-md-block d-lg-block btn btn-dark mx-1"
-                                  onClick={() => {
-                                    navigate("/order-details-info");
-                                    localStorage.setItem(
-                                      "OrderId",
-                                      order.order_id
-                                    );
-                                  }}
-                                >
-                                  View
-                                </button>
-                              </div>
-                            </React.Fragment>
-                          );
-                        })}
-                        {/* <OrderDetailsInfo ></OrderDetailsInfo> */}
-                      </div>
-                    </div>
-                    {/* <input type="number" id="itemsPerPage" value={itemPerPage} onChange={handlePageChange} min="1" max={OrderDetail.length}></input> */}
-                    <OrderPagination
-                      itemPerPage={itemPerPage}
-                      totalItems={OrderDetail.length}
-                      onPageChange={handlePageChange}
-                      currentPage={currentPage}
-                      onRowsPerPageChange={handleItemsPerPageChange} 
-                    ></OrderPagination>
-                  </>
-                ) : (
-                  <>
-                    <div className="d-flex align-items-center justify-content-center h-100">
-                      {ApiLoader === true ? (
-                        <Loader></Loader>
-                      ) : (
-                        <div className="d-block text-center  order-main">
-                          <p>No Order details found!</p>
-                          <p>
-                            Please your first Order
-                            <Link to="/products" style={{ color: "#c39428" }}>
-                              {" "}
-                              ShopNow
-                            </Link>
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </>
-                )}
-              </div>
+              // <div className="order-section d-inline">
+              //   {/* <p>Orders section coming soon...</p> */}
+              //   {OrderDetail.length !== 0 ? (
+              //     <>
+              //       <h2 className="order-details-title section-title">
+              //         Order Details
+              //       </h2>
+              //       <div className="order-table">
+              //         <div className="order-title row mx-0">
+              //           <div className="col-2">
+              //             <h1>Order Id</h1>
+              //           </div>
+              //           <div className="col-2">
+              //             <h1>Order Date</h1>
+              //           </div>
+              //           <div className="col-2">
+              //             <h1>Product Items</h1>
+              //           </div>
+              //           <div className="col-2">
+              //             <h1>Total Amount</h1>
+              //           </div>
+              //           <div className="col-2">
+              //             <h1>Status</h1>
+              //           </div>
+              //           <div className="col-2">
+              //             <h1>Action</h1>
+              //           </div>
+              //         </div>
+              //         <div className="order-content row mx-0 justify-content-between align-items-center">
+              //           {currentOrders?.map((order, index) => {
+              //             const dateOnly = order.order_date.split(" ")[0];
+              //             const [year, month, day] = dateOnly.split("-");
+              //             return (
+              //               <React.Fragment key={index}>
+              //                 <div className="col-2">
+              //                   <span>{order.order_id}</span>
+              //                 </div>
+              //                 <div className="col-2 date-section">
+              //                   <span>
+              //                     {/* {dateOnly} */}
+              //                     {day}-{month}-{year}
+              //                   </span>
+              //                 </div>
+              //                 <div className="col-2">
+              //                   <span>{order.items.length}</span>
+              //                 </div>
+              //                 <div className="col-2">
+              //                   <span>{order.order_total}</span>
+              //                 </div>
+              //                 <div className="col-2">
+              //                   <span>
+              //                     {order.status.replace(/wc-|wc-/, "")}
+              //                   </span>
+              //                 </div>
+              //                 <div className="col-2 px-0 action-button d-flex align-items-center justify-content-center">
+              //                   <i
+              //                     className="d-flex d-sm-none d-md-none d-lg-none fa-solid fa-angles-right"
+              //                     onClick={() => {
+              //                       navigate("/order-details-info");
+              //                       localStorage.setItem(
+              //                         "OrderId",
+              //                         order.order_id
+              //                       );
+              //                     }}
+              //                   ></i>
+              //                   <button
+              //                     className="d-none d-sm-block d-md-block d-lg-block btn btn-dark mx-1"
+              //                     onClick={() => {
+              //                       navigate("/order-details-info");
+              //                       localStorage.setItem(
+              //                         "OrderId",
+              //                         order.order_id
+              //                       );
+              //                     }}
+              //                   >
+              //                     View
+              //                   </button>
+              //                 </div>
+              //               </React.Fragment>
+              //             );
+              //           })}
+              //           {/* <OrderDetailsInfo ></OrderDetailsInfo> */}
+              //         </div>
+              //       </div>
+              //       {/* <input type="number" id="itemsPerPage" value={itemPerPage} onChange={handlePageChange} min="1" max={OrderDetail.length}></input> */}
+              //       <OrderPagination
+              //         itemPerPage={itemPerPage}
+              //         totalItems={OrderDetail.length}
+              //         onPageChange={handlePageChange}
+              //         currentPage={currentPage}
+              //         onRowsPerPageChange={handleItemsPerPageChange} 
+              //       ></OrderPagination>
+              //     </>
+              //   ) : (
+              //     <>
+              //       <div className="d-flex align-items-center justify-content-center h-100">
+              //         {ApiLoader === true ? (
+              //           <Loader></Loader>
+              //         ) : (
+              //           <div className="d-block text-center  order-main">
+              //             <p>No Order details found!</p>
+              //             <p>
+              //               Please your first Order
+              //               <Link to="/products" style={{ color: "#c39428" }}>
+              //                 {" "}
+              //                 ShopNow
+              //               </Link>
+              //             </p>
+              //           </div>
+              //         )}
+              //       </div>
+              //     </>
+              //   )}
+              // </div>
+              <OrderDetails
+                OrderDetail={OrderDetail}
+                ApiLoader={ApiLoader}
+                currentOrders={currentOrders}
+                itemPerPage={itemPerPage}
+                currentPage={currentPage}
+                handlePageChange={handlePageChange}
+                handleItemsPerPageChange={handleItemsPerPageChange}
+              />
             )}
             {selectedSection === "address" && (
               <div className="address-section">
