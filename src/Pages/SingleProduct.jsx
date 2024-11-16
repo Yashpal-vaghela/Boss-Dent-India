@@ -39,7 +39,7 @@ const SingleProduct = () => {
   const navigate = useNavigate();
   const [selectedColor, setSelectedColor] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [discountProductPrice, setDiscountProdcutPrice] = useState(null);
+  const [discountProductPrice, setDiscountProductPrice] = useState(null);
   const [largeImageLoaded, setLargeImageLoaded] = useState(false);
   // const [ProductId] = useState(() => {
   //  return  localStorage.getItem("productId")
@@ -127,9 +127,9 @@ const SingleProduct = () => {
       );
       if (regularPrice1 && salePrice < regularPrice1) {
         const discount = ((regularPrice1 - salePrice) / regularPrice1) * 100;
-        setDiscountProdcutPrice(Math.round(discount)); // Store the discount percentage in state
+        setDiscountProductPrice(Math.round(discount)); // Store the discount percentage in state
       } else {
-        setDiscountProdcutPrice(0); // No discount
+        setDiscountProductPrice(0); // No discount
       }
       setSalePrice(salePrice);
       setRegularPrice(regularPrice1);
@@ -166,6 +166,7 @@ const SingleProduct = () => {
   const handleAttributeSelect = async (
     attribute,
     value,
+    keys,
     salePrice,
     RegularPrice
   ) => {
@@ -184,7 +185,7 @@ const SingleProduct = () => {
       ((RegularPrice - salePrice) / RegularPrice) *
       100
     ).toFixed(0);
-    setDiscountProdcutPrice(Number(ProductDiscountPrice));
+    setDiscountProductPrice(Number(ProductDiscountPrice));
     setRegularPrice(RegularPrice);
     if (selectedVariation) {
       setSalePrice(selectedVariation.price);

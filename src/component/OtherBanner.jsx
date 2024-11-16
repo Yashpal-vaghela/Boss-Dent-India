@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 const OtherBanner = () => {
@@ -51,7 +49,7 @@ const OtherBanner = () => {
             return (
               <div
                 key={index}
-                className="col-lg-3 col-md-6 col-sm-6 col-12 mb-lg-0 mb-4 "
+                className="col-lg-3 col-md-3 col-sm-6 col-12 mb-lg-0 mb-4 "
                 data-aos="zoom-out"
               >
                 <Link to={item?.slug}>
@@ -69,7 +67,7 @@ const OtherBanner = () => {
             );
           })}
         </div>
-        <div className="more-product-image mt-4">
+        <div className="more-product-image">
           <Link
             to="/gallery"
             onMouseEnter={() => setIsHovered(true)}

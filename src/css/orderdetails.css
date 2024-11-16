@@ -525,22 +525,34 @@
   color: #222;
   font-weight: bold;
 }
+.row_page .form-select{
+  padding: 0.175rem 1.3rem 0.175rem 0.55rem;
+  width: 30%;
+  background-position: right .35rem center;
+  /* backgroundPosition: "right .35rem center", */
+}
+.row_page .form-select:hover option{
+  background-color: #c39428 !important;
+}
+option:hover{
+  background-color: #fff;
+}
 @media (max-width: 991px) {
   .Orderpagination {
-    margin: 15px auto;
+    margin: 12px auto;
   }
   .Orderpagination button span,
   .OrderPagination-list button {
-    margin: 4px 8px;
+    margin: 4px 6px;
   }
 }
 
 @media(max-width:576px){
   .OrderProductRowPage{
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 0px;
+    padding-right: 6px;
   }
-  /* .row_page h6{
-    font-size: 14px;
-  } */
+  .row_page h6{
+    font-size: 15px;
+  }
 }

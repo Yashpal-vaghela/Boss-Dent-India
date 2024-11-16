@@ -23,8 +23,15 @@ const Product = () => {
     const a = localStorage.getItem("Product_page");
     return a ? Number(localStorage.getItem("Product_page")) : 1;
   });
-  const [itemsPerPage,setItemsPerPage] = useState(() => {
-    return window.innerWidth >= 1400 ? 12 : 9;
+  const [itemsPerPage, setItemsPerPage] = useState(() => {
+    if(window.innerWidth >= 1400){
+      return 12;
+    }
+    else if(window.innerWidth <= 1024){
+      return 10;
+    }else{
+      return 9;
+    }
   });
   const {
     watchlist,
@@ -81,7 +88,6 @@ const Product = () => {
         );
         // console.warn("combined",combinedStockStatuses)
         setStockStatuses(combinedStockStatuses);
-        // setProducts(paginatedProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -91,22 +97,31 @@ const Product = () => {
     },
     [category, itemsPerPage]
   );
-  const displayWindowSize = ()=>{
-    var width = document.documentElement.clientWidth;
-    setItemsPerPage(width >= 1400 ? 12 : 9);
-  }
+  const displayWindowSize = () => {
+    const width = document.documentElement.clientWidth;
+    let a = "";
+    if(width >= 1400){
+     a = 12;
+    }else if(width <= 1024){
+      a = 10;
+    }else{
+       a = 9;
+    }
+    setItemsPerPage(a);
+    // setItemsPerPage(width >= 1400 ? 12 : width >= 1024 ? 9 : 10);
+  };
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem("token");
     setIsLoggedIn(userLoggedIn);
     if (getCartList) {
       setCartProductId(getCartList);
     }
-    window.addEventListener("resize",displayWindowSize);
+    window.addEventListener("resize", displayWindowSize);
   }, []);
 
   useEffect(() => {
     fetchProducts(currentPage);
-  }, [fetchProducts, currentPage]);
+  }, [fetchProducts]);
 
   useEffect(() => {
     if (alertMessage) {

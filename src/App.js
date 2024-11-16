@@ -8,8 +8,8 @@ import "./css/navbar1.css";
 import "./css/otherBanner.css";
 import "./css/gallery.css";
 import "./css/orderdetails.css";
+import "./css/footer.css";
 import Allroutes from "./component/Allroutes";
-import Footer from "./component/Footer";
 import BackToTopButton from "./component/BackToTopButton";
 import { WatchlistProvider } from "./Pages/WatchlistContext";
 import { BrowserRouter } from "react-router-dom";
@@ -20,6 +20,7 @@ import Aos from "aos";
 import NewNav1 from "./component/NewNav1";
 import Loader1 from "./component/Loader1";
 import ScrollTop from "./component/ScrollTop";
+import NewFooter from "./component/NewFooter";
 
 // Main App Component
 const App = () => {
@@ -48,7 +49,7 @@ const App = () => {
             <NewNav1 />
             {/* <NewNav /> */}
             <Allroutes />
-            <Footer />
+            <NewFooter/>
             <BackToTopButton />
           </WatchlistProvider>
         </BrowserRouter>

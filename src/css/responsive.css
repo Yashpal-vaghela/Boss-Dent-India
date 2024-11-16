@@ -315,7 +315,7 @@ body {
   }
   
   /* Product page */
-  .shop-content {
+  /* .shop-content {
     flex-direction: column;
   }
   .shop-container {
@@ -329,7 +329,7 @@ body {
   .products-grid {
     width: 100%;
     grid-template-columns: repeat(2, 1fr);
-  }
+  } */
 }
 
 @media only screen and (max-width: 600px) {
@@ -464,7 +464,7 @@ body {
     margin-left: 25px;
   }
   /* Product page */
-  .products-grid {
+  /* .products-grid {
     grid-template-columns: repeat(1, 1fr);
   }
   .shop-content {
@@ -497,27 +497,27 @@ body {
 
   .product-description {
     font-size: 12px;
-  }
+  } */
 
   .add-to-cart-btn {
     padding: 8px 16px;
     font-size: 14px;
   }
 
-  .shop-title {
+  /* .shop-title {
     font-size: 28px;
   }
 
   .shop-header {
     flex-direction: column;
     align-items: flex-start;
-  }
+  } */
 
   .sorting-select {
     margin-top: 10px;
   }
 
-  .shop-content {
+  /* .shop-content {
     flex-direction: column;
   }
 
@@ -529,15 +529,14 @@ body {
 
   .products-grid {
     grid-template-columns: 1fr;
-  }
-  .product-title{
-    /* height: 50px !important; */
+  } */
+  /* .product-title{
     margin-top: 0px;
     margin-bottom: 0px;
-  }
-  .product-price{
+  } */
+  /* .product-price{
     margin-bottom: 20px;
-  }
+  } */
 }
 @media only screen and (max-width:576px){
   .home-cat-sub{
@@ -680,25 +679,25 @@ body {
     margin-left: 20px;
   }
   /* Product page */
-  .shop-container {
+  /* .shop-container {
     padding: 0px;
-  }
+  } */
 
-  .shop-sidebar ul {
-    display: block; /* Ensure list displays in block for mobile */
-  }
+  /* .shop-sidebar ul {
+    display: block;  (Ensure list displays in block for mobile)
+  } */
 
-  .shop-sidebar ul li {
-    padding: 8px; /* Adjust padding for mobile */
-  }
+  /* .shop-sidebar ul li {
+    padding: 8px; Adjust padding for mobile
+  } */
 
-  .shop-sidebar ul li.active {
+  /* .shop-sidebar ul li.active {
     background-color: #c89c31;
     color: white !important;
-  }
+  } */
 
   /* Product grid adjustments for mobile */
-  .products-grid {
+  /* .products-grid {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -715,16 +714,16 @@ body {
   .product-image {
     max-width: 100%;
     height: auto;
-  }
+  } */
 
-  .product-title {
+  /* .product-title {
     font-size: 16px;
     margin: 0px 0 !important;
     text-align: center;
-    /* height: 40px !important; */
-  }
+    height: 40px !important;//comment
+  } */
 
-  .product-price {
+  /* .product-price {
     font-size: 15px;
     text-align: center;
   }
@@ -733,18 +732,18 @@ body {
     display: flex;
     justify-content: space-around;
     margin-top: 10px;
-  }
+  } */
 
   /* Adjust buttons for mobile */
-  .product-button,
+  /* .product-button,
   .btn-quick-add,
   .item-product__wishlist {
     padding: 10px;
     font-size: 14px;
-  }
+  } */
 
   /* Pagination buttons */
-  .pagination {
+  /* .pagination {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
@@ -757,5 +756,5 @@ body {
   .paginate_button {
     font-size: 10px;
     padding: 5px 5px;
-  }
+  } */
 }

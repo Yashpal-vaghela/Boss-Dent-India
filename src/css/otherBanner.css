@@ -8,6 +8,10 @@
   padding-right: calc((2rem) * 0.5);
 }
 
+.OtherBanner-section .row .col-12{
+  padding-left: calc((2rem) * 0.5);
+  padding-right: calc((2rem) * 0.5);
+}
 .lightbox-button {
   position: absolute;
   top: 50%;
@@ -34,6 +38,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  margin-top: 1.5rem;
   /* background-color: #222; */
 }
 
@@ -79,22 +84,43 @@
 
 @media (max-width: 992px) {
   .OtherBanner-section .container-fluid {
-    margin-bottom: 3.3rem;
+    margin-bottom: 1.5rem;
+  }
+  .OtherBanner-section .row .col-12{
+    padding-left: calc((1rem) * 0.5);
+    padding-right: calc((1rem) * 0.5);
+    margin-bottom: 1rem !important;
+  }
+  .more-product-image{
+    margin-top: 1rem;
   }
 }
 @media (max-width: 768px) {
-  .OtherBanner-section .container-fluid {
-    margin-bottom: 3.1rem;
+  /* .OtherBanner-section .container-fluid {
+    margin-bottom: 1.5rem;
+  } */
+  .OtherBanner-section .row .col-12{
+    padding-left: calc((1.5rem) * 0.5);
+    padding-right: calc((1.5rem) * 0.5);
+    margin-bottom: 1.5rem !important;
   }
 }
 @media (max-width: 576px) {
+  .more-product-image{
+    margin-top: 0.5rem;
+  }
+  .OtherBanner-section .row .col-12{
+    padding-left: calc((2rem) * 0.5);
+    padding-right: calc((2rem) * 0.5);
+    /* margin-bottom: 1.5rem !important; */
+  }
   .OtherBanner-wrapper .col-12 {
-    margin-bottom: 0.9rem !important;
+    margin-bottom: 1rem !important;
   }
   .OtherBanner-wrapper img {
-    height: 400px;
+    height: 480px;
   }
   .OtherBanner-section .container-fluid {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 }

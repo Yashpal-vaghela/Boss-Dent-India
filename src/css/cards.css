@@ -228,7 +228,7 @@
 }
 @media(max-width:650px){
   .cards-1-main{
-    gap: 40px;
+    gap: 30px;
   }
   .cards-1-main .cards-1{
     width: 50%;
@@ -239,6 +239,9 @@
   .cards-1-main{
     margin-left: -20px;
   }
+  .variable-cards-main{
+    margin-top: 25px;
+  }
 }
 @media(max-width:480px){
   .cards-1-main{
@@ -246,5 +249,6 @@
   }
   .variable-cards-title{
     font-size: 25px;
+    margin-left: 18px;
   }
 }

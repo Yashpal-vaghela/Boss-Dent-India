@@ -52,13 +52,11 @@ body {
 }
 
 /* Home Category */
-
 .home-cat-sub {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  /* gap: 40px; */
-  margin: 40px 20px 28px;
+  margin: 40px 20px 35px;
 }
 
 .home-cat-img-div {
@@ -1057,7 +1055,9 @@ a {
   .homebanner_pause_btn{
     padding: 0px 5px;
   }
-  
+  .already-logged-in{
+    width: 100%;
+  }
   /* login page */
   .login-container {
     margin: 20px auto 90px;

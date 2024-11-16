@@ -26,19 +26,19 @@ const OrderPagination = ({
           <b>Total Items:</b> {totalItems}
         </div>
         <div className="col-lg-3 col-md-6 col-6  OrderProductRowPage">
-          <div className="row_page d-flex align-items-center justify-content-lg-end justify-content-md-end justify-content-between">
-            <h6 className="mb-0 me-md-2 me-lg-2">Row Per Page</h6>
+          <div className="row_page d-flex align-items-center justify-content-end justify-content-md-end justify-content-between">
+            <h6 className="mb-0 me-2 me-md-2 me-lg-2">Row Per Page</h6>
             {/* Row Per Page */}
             <select
               className="form-select"
               aria-label="Rows per page selector"
               value={rowPerPage}
               onChange={handleRowPerPageChange}
-              style={{
-                width: "30%",
-                padding: ".175rem 1.3rem .175rem .55rem",
-                backgroundPosition: "right .35rem center",
-              }}
+              // style={{
+              //   width: "30%",
+              //   padding: ".175rem 1.3rem .175rem .55rem",
+              //   backgroundPosition: "right .35rem center",
+              // }}
             >
               <option value={5}>5</option>
               <option value={10}>10</option>
