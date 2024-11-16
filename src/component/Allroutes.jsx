@@ -26,9 +26,9 @@ import OrderDetailsInfo from "../Pages/OrderDetailsInfo";
 const LazyHomePage = React.lazy(()=>import("../Pages/Home"))
 const Allroutes = () => {
   return (
-    <React.Suspense fallback={<div>Loading...</div>}>
+    // <React.Suspense fallback={<div>Loading...</div>}>
       <Routes>
-        <Route path="/" element={<LazyHomePage />} />
+        <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<About />} />
         <Route path="/my-account" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />
@@ -55,7 +55,7 @@ const Allroutes = () => {
         <Route path="/success" element={<Success/>} />
         <Route path="*" element={<Home/>}></Route>
       </Routes>
-    </React.Suspense>
+    // </React.Suspense>
   );
 };
 
