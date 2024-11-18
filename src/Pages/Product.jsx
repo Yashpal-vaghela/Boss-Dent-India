@@ -24,12 +24,11 @@ const Product = () => {
     return a ? Number(localStorage.getItem("Product_page")) : 1;
   });
   const [itemsPerPage, setItemsPerPage] = useState(() => {
-    if(window.innerWidth >= 1400){
+    if (window.innerWidth >= 1400) {
       return 12;
-    }
-    else if(window.innerWidth <= 1024){
+    } else if (window.innerWidth <= 1024) {
       return 10;
-    }else{
+    } else {
       return 9;
     }
   });
@@ -100,12 +99,12 @@ const Product = () => {
   const displayWindowSize = () => {
     const width = document.documentElement.clientWidth;
     let a = "";
-    if(width >= 1400){
-     a = 12;
-    }else if(width <= 1024){
+    if (width >= 1400) {
+      a = 12;
+    } else if (width <= 1024) {
       a = 10;
-    }else{
-       a = 9;
+    } else {
+      a = 9;
     }
     setItemsPerPage(a);
     // setItemsPerPage(width >= 1400 ? 12 : width >= 1024 ? 9 : 10);
@@ -121,7 +120,7 @@ const Product = () => {
 
   useEffect(() => {
     fetchProducts(currentPage);
-  }, [fetchProducts]);
+  }, [fetchProducts,currentPage]);
 
   useEffect(() => {
     if (alertMessage) {
@@ -378,25 +377,12 @@ const Product = () => {
                                   onLoad={handleImageLoad}
                                 />
                               )}
-                              <h3
-                                className="product-title"
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  height: "60px",
-                                }}
-                              >
+                              <h3 className="product-title d-flex justify-content-center align-items-center">
                                 {product.title.rendered}
                               </h3>
                             </Link>
                           </div>
-                          <h3
-                            className="product-price"
-                            style={{
-                              textAlign: "center",
-                            }}
-                          >
+                          <h3 className="product-price text-center">
                             {product?.regular_price && product?.price ? (
                               product.regular_price === product.price ? (
                                 // If both values are the same, show only one value
