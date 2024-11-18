@@ -124,14 +124,6 @@ const ForgotPassword = () => {
     // console.log("message", alertMessage);
     
 
-    // useEffect(() => {
-    //     Aos.init({
-    //       duration: 1000, // Animation duration in milliseconds
-    //       once: false,    // Allow animations to trigger multiple times
-    //       mirror: true,   // Trigger animations on scroll up
-    //     });
-    //   }, []);
-
 
     return (
         <div className="forgot-password-container" data-aos="fade">

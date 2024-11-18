@@ -45,30 +45,6 @@ const WatchList = () => {
         console.log("error", err);
       });
   };
-  // fetch stock status data
-  // const fetchStockStatuses = async (response) => {
-  //   // Batch request for stock statuses
-  //   const stockStatusPromises = response.data.map(async (product) => {
-  //     try {
-  //       const stockResponse = await axios.get(
-  //         `https://admin.bossdentindia.com/wp-json/custom/v1/stock-status/${product.product_id}`
-  //       );
-  //       return { [product.product_id]: stockResponse.data.stock_status };
-  //     } catch (error) {
-  //       console.error("Error fetching stock status:", error);
-  //       return { [product.product_id]: "unknown" };
-  //     }
-  //   });
-
-  //   // Combine stock statuses into a single object
-  //   const stockStatusesResults = await Promise.all(stockStatusPromises);
-  //   const combinedStockStatuses = Object.assign({}, ...stockStatusesResults);
-  //   setStockStatuses(combinedStockStatuses);
-  //   localStorage.setItem(
-  //     "stockStatuses",
-  //     JSON.stringify(combinedStockStatuses)
-  //   );
-  // };
 
   useEffect(() => {
     const cachedWishListProdcts = JSON.parse(
@@ -167,7 +143,7 @@ const WatchList = () => {
               toast.success("Product added to cart!");
             })
             .catch((err) => {
-              console.log("watchlist-error", err);
+              console.error("watchlist-error", err);
             });
         } else {
           const updateQty =
@@ -206,10 +182,6 @@ const WatchList = () => {
       [productId]: true,
     }));
   };
-
-  // if (error) {
-  //   return <div>{error}</div>;
-  // }
 
   return (
     <>
