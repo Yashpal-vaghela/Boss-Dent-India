@@ -68,7 +68,6 @@ const HomeBanner = () => {
           clickable: true,
         }}
         navigation={true}
-        lazy={true}
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
@@ -91,7 +90,6 @@ const HomeBanner = () => {
                 src={bannerImages[0]}
                 alt="banner1"
                 className="banner-img"
-                loading="eager"
               />
             </div>
           </Link>
@@ -115,7 +113,6 @@ const HomeBanner = () => {
                 src={bannerImages[1]}
                 alt="banner3"
                 className="banner-img"
-                loading="lazy"
               />
             </div>
           </Link>
@@ -134,7 +131,6 @@ const HomeBanner = () => {
                 src={bannerImages[2]}
                 alt="banner4"
                 className="banner-img"
-                loading="lazy"
               />
             </div>
           </Link>
@@ -153,7 +149,6 @@ const HomeBanner = () => {
                 src={bannerImages[3]}
                 alt="banner2"
                 className="banner-img"
-                loading="lazy"
               />
             </div>
           </Link>
