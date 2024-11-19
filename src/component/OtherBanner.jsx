@@ -67,8 +67,8 @@ const OtherBanner = () => {
                     <img
                       src={item.src}
                       alt={item.alt}
-                      width="100%"
-                      height="300"
+                      width={item.width}
+                      height={item.height}
                       className="img-fluid"
                     ></img>
                   </picture>

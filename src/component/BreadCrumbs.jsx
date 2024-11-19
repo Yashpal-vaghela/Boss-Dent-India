@@ -1,15 +1,8 @@
-// import React, { useEffect,useState } from 'react'
+import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 const BreadCrumbs = () => {
     const pathName = useLocation();
-    // const pathName1 = useRoutes();
-    // const [pathname,setPathname] = useState([])
-    // useEffect(()=>{
-        
-    //     setPathname(pathName?.pathname?.split("/"))
-    //     // console.log("pathName",pathName1)
-    // },[pathName])
   return (
     <div>
       <nav className="bread-crumbs">

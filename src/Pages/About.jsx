@@ -1,6 +1,6 @@
 import React,{useEffect} from "react";
 import AOS from 'aos';
-import 'aos/dist/aos.css'; // Import AOS styles
+import 'aos/dist/aos.css'; 
 import "../css/about.css";
 import { Link } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";

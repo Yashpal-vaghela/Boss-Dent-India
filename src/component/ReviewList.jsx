@@ -11,7 +11,7 @@ const ReviewList = ({productId}) => {
                 const response = await axios.get(
                     `https://admin.bossdentindia.com/wp-json/wp/v2/reviews?product_id=${productId}`
                 );
-                console.log("respnse",response.data)
+                // console.log("respnse",response.data)
                 setReviews(response.data);
             } catch (error) {
                 console.error("Error fetching reviews:", error);
