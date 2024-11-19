@@ -22,11 +22,10 @@ import Gallery from "../Pages/Gallery";
 import Success from "../Pages/success";
 import ReturnExchange from "../Pages/ReturnExchange";
 import OrderDetailsInfo from "../Pages/OrderDetailsInfo";
-
-const LazyHomePage = React.lazy(()=>import("../Pages/Home"))
+import CanonicalURL from "./CanonicalURL";
 const Allroutes = () => {
   return (
-    // <React.Suspense fallback={<div>Loading...</div>}>
+    <CanonicalURL>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<About />} />
@@ -34,7 +33,7 @@ const Allroutes = () => {
         <Route path="/sign-up" element={<Signup />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/products" element={<Product />} />
-        <Route path="/shop" element={<Product/>}></Route>
+        <Route path="/shop" element={<Product />}></Route>
         <Route path="/products/:id" element={<SingleProduct />} />
         {/* <Route path='/products/:slug' element={<SingleProduct />} /> */}
         {/* <Route path= '/cart' element={<NewCart />}/> */}
@@ -46,16 +45,16 @@ const Allroutes = () => {
         <Route path="/refund-and-returns-policy" element={<RefundPolicy />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-and-conditions" element={<TermAndCondition />} />
-        <Route path="/return-exchange" element={<ReturnExchange/>}></Route>
+        <Route path="/return-exchange" element={<ReturnExchange />}></Route>
         <Route path="/new-nav" element={<NewNav1 />} />
-        <Route path="/cart" element={<ProtectedRoute><NewCart/></ProtectedRoute>}/>
-        <Route path="/checkout" element={<ProtectedRoute><CheckOut/></ProtectedRoute>}/>
-        <Route path="/order-details-info" element={<OrderDetailsInfo/>}></Route>
-        <Route path="/gallery" element={<Gallery/>}></Route>
-        <Route path="/success" element={<Success/>} />
-        <Route path="*" element={<Home/>}></Route>
+        <Route path="/cart" element={<ProtectedRoute><NewCart /></ProtectedRoute>} />
+        <Route path="/checkout" element={<ProtectedRoute><CheckOut /></ProtectedRoute>} />
+        <Route path="/order-details-info" element={<OrderDetailsInfo />}></Route>
+        <Route path="/gallery" element={<Gallery />}></Route>
+        <Route path="/success" element={<Success />} />
+        <Route path="*" element={<Home />}></Route>
       </Routes>
-    // </React.Suspense>
+    </CanonicalURL>
   );
 };
 
