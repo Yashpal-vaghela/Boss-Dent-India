@@ -7,6 +7,7 @@ import "../css/othercard.css";
 import OtherBanner from "../component/OtherBanner";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { Helmet } from "react-helmet";
 const Home = () => {
   const CategoryData = [
     {
@@ -37,6 +38,10 @@ const Home = () => {
   },[])
   return (
     <div className="home-main overflow-hidden">
+      <Helmet>
+        <title>Home Page -Boss Dent India</title>
+        <link rel="canonical" href="https://bossdentindia.com/"/>
+      </Helmet>
       {/* home banner section */}
       <HomeBanner />
 
