@@ -53,7 +53,7 @@ const OtherBanner = () => {
                 data-aos="zoom-in"
               >
                 <Link to={item?.slug}>
-                  <img
+                  {/* <img
                     src={item.src}
                     className="img-fluid"
                     alt={item.alt}
@@ -61,7 +61,17 @@ const OtherBanner = () => {
                     height={item.height}
                     // loading="lazy"
                     // onClick={() => handleShowImage(item, index)}
-                  />
+                  /> */}
+                  <picture>
+                    <source srcSet={item.src} type="image/webp"></source>
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      width="100%"
+                      height="300"
+                      className="img-fluid"
+                    ></img>
+                  </picture>
                 </Link>
               </div>
             );
