@@ -5,7 +5,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-cards";
-import "../css/cards.css";
 
 // import required modules
 import { EffectCards } from "swiper/modules";
@@ -87,27 +86,28 @@ const Cards = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="cards-main">
-      <div className="variable-cards-title-main">
-        <h2 className="variable-cards-title">Our Products</h2>
-      </div>
-      <div className="variable-cards-main">
-        <div className="cards-1-main">
-          <Link className="cards-1" to="/products/tieon-surgeon-cap-washable">
-            <Swiper
-              effect={"cards"}
-              grabCursor={true}
-              modules={[EffectCards]}
-              className="mySwiper-1"
-            >
-              {surgoncaps.map((product, index) => (
-                <SwiperSlide key={index} className="slide">
-                  <img
-                    src={product.capimage}
-                    alt={`Slide ${index + 1}`}
-                    className="slide-image"
-                  />
-                  {/* <Link
+    <section className="Product-cards">
+      <div className="cards-main">
+        <div className="variable-cards-title-main">
+          <h2 className="variable-cards-title">Our Products</h2>
+        </div>
+        <div className="variable-cards-main">
+          <div className="cards-1-main">
+            <Link className="cards-1" to="/products/tieon-surgeon-cap-washable">
+              <Swiper
+                effect={"cards"}
+                grabCursor={true}
+                modules={[EffectCards]}
+                className="mySwiper-1"
+              >
+                {surgoncaps.map((product, index) => (
+                  <SwiperSlide key={index} className="slide">
+                    <img
+                      src={product.capimage}
+                      alt={`Slide ${index + 1}`}
+                      className="slide-image"
+                    />
+                    {/* <Link
                     className="card-product-name"
                     to="/products/tieon-surgeon-cap-washable"
                     // onClick={() => {
@@ -116,72 +116,73 @@ const Cards = () => {
                   >
                     {product.capname}
                   </Link> */}
-                  <span
-                    className="card-product-name"
-                    onClick={() =>
-                      navigate("/products/tieon-surgeon-cap-washable")
-                    }
-                  >
-                    {product.capname}
-                  </span>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </Link>
+                    <span
+                      className="card-product-name"
+                      onClick={() =>
+                        navigate("/products/tieon-surgeon-cap-washable")
+                      }
+                    >
+                      {product.capname}
+                    </span>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </Link>
 
-          <Link to="/products?category=118" className="cards-1">
-            <Swiper
-              effect={"cards"}
-              grabCursor={true}
-              modules={[EffectCards]}
-              className="mySwiper-1"
-            >
-              {masks.map((product, index) => (
-                <SwiperSlide key={index} className="slide">
-                  <img
-                    src={product.airimage}
-                    alt={`Slide ${index + 1}`}
-                    className="slide-image"
-                  />
-                  <span
-                    className="card-product-name"
-                    onClick={() => navigate("/products?category=118")}
-                  >
-                    {product.airname}
-                  </span>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </Link>
-          <Link to="/products/micro-applicator-tips" className="cards-1">
-            <Swiper
-              effect={"cards"}
-              grabCursor={true}
-              modules={[EffectCards]}
-              className="mySwiper-1"
-            >
-              {applicators.map((product, index) => (
-                <SwiperSlide key={index} className="slide">
-                  <img
-                    src={product.appimage}
-                    alt={`Slide ${index + 1}`}
-                    className="slide-image"
-                  />
-                  <span
-                    className="card-product-name"
-                    onClick={() => {
-                      navigate("/products/micro-applicator-tips");
-                    }}
-                  >
-                    {product.appname}
-                  </span>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </Link>
+            <Link to="/products?category=118" className="cards-1">
+              <Swiper
+                effect={"cards"}
+                grabCursor={true}
+                modules={[EffectCards]}
+                className="mySwiper-1"
+              >
+                {masks.map((product, index) => (
+                  <SwiperSlide key={index} className="slide">
+                    <img
+                      src={product.airimage}
+                      alt={`Slide ${index + 1}`}
+                      className="slide-image"
+                    />
+                    <span
+                      className="card-product-name"
+                      onClick={() => navigate("/products?category=118")}
+                    >
+                      {product.airname}
+                    </span>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </Link>
+            <Link to="/products/micro-applicator-tips" className="cards-1">
+              <Swiper
+                effect={"cards"}
+                grabCursor={true}
+                modules={[EffectCards]}
+                className="mySwiper-1"
+              >
+                {applicators.map((product, index) => (
+                  <SwiperSlide key={index} className="slide">
+                    <img
+                      src={product.appimage}
+                      alt={`Slide ${index + 1}`}
+                      className="slide-image"
+                    />
+                    <span
+                      className="card-product-name"
+                      onClick={() => {
+                        navigate("/products/micro-applicator-tips");
+                      }}
+                    >
+                      {product.appname}
+                    </span>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

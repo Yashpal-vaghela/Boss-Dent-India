@@ -54,7 +54,7 @@ const HomeBanner = () => {
   };
 
   return (
-    <section style={{ position: "relative" }} className="banner-section" data-aos="fade-down">
+    <section className="banner-section position-relative" data-aos="fade-down">
       <Swiper
         ref={swiperRef}
         spaceBetween={30}

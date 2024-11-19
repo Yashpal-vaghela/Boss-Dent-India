@@ -49,8 +49,8 @@ const OtherBanner = () => {
             return (
               <div
                 key={index}
-                className="col-lg-3 col-md-3 col-sm-6 col-12 mb-lg-0 mb-4 "
-                data-aos="zoom-out"
+                className="col-lg-3 col-md-3 col-sm-6 col-12 mb-lg-0 mb-4"
+                data-aos="zoom-in"
               >
                 <Link to={item?.slug}>
                   <img
@@ -59,7 +59,7 @@ const OtherBanner = () => {
                     alt={item.alt}
                     width={item.width}
                     height={item.height}
-                    loading="lazy"
+                    // loading="lazy"
                     // onClick={() => handleShowImage(item, index)}
                   />
                 </Link>

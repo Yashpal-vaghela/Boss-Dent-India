@@ -395,11 +395,11 @@ const SingleProduct = () => {
       ) : (
         <div className="single-product">
           <div className="header">
-            <h1 className="shop-title">Shop</h1>
+            <h1 className="shop-title">Products</h1>
             <nav className="bread-crumbs">
               <Link to="/">Home</Link>
               <i className="fa-solid fa-angle-right"></i>{" "}
-              <Link to="/products">Shop</Link>{" "}
+              <Link to="/products">Products</Link>{" "}
               <i className="fa-solid fa-angle-right"></i>
               <Link
                 to={`/products?category=${product.categories[0].id}`}

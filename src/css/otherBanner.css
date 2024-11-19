@@ -3,16 +3,16 @@
   height: auto;
   aspect-ratio: 3 / 4;
 }
-.OtherBanner-section .row {
+/* .OtherBanner-section .row {
   padding-left: calc((2rem) * 0.5);
   padding-right: calc((2rem) * 0.5);
-}
+} */
 
 .OtherBanner-section .row .col-12{
-  padding-left: calc((2rem) * 0.5);
-  padding-right: calc((2rem) * 0.5);
+  padding-left: calc((1rem) * 0.5);
+  padding-right: calc((1rem) * 0.5);
 }
-.lightbox-button {
+/* .lightbox-button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -22,15 +22,15 @@
   cursor: pointer;
   font-size: 20px;
   color: #fff;
-}
-
+} */
+/* start gallery page */
 .btn-next {
   right: 20px;
 }
-
 .btn-prev {
   left: 20px;
 }
+/* end gallery page */
 
 /* more image load */
 .more-product-image {
@@ -92,7 +92,7 @@
     margin-bottom: 1rem !important;
   }
   .more-product-image{
-    margin-top: 1rem;
+    margin-top: 0rem;
   }
 }
 @media (max-width: 768px) {
@@ -102,17 +102,17 @@
   .OtherBanner-section .row .col-12{
     padding-left: calc((1.5rem) * 0.5);
     padding-right: calc((1.5rem) * 0.5);
-    margin-bottom: 1.5rem !important;
+    margin-bottom: 1.3rem !important;
   }
 }
 @media (max-width: 576px) {
   .more-product-image{
-    margin-top: 0.5rem;
+    margin-top: 0.2rem;
   }
   .OtherBanner-section .row .col-12{
-    padding-left: calc((2rem) * 0.5);
-    padding-right: calc((2rem) * 0.5);
-    /* margin-bottom: 1.5rem !important; */
+    /* padding-left: calc((1.5rem) * 0.5);
+    padding-right: calc((1.5rem) * 0.5); */
+    margin-bottom: 0.8rem !important;
   }
   .OtherBanner-wrapper .col-12 {
     margin-bottom: 1rem !important;

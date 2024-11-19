@@ -1,14 +1,20 @@
 import "./App.css";
+import "./css/common.css"
 import "./css/checkout.css";
 import "./css/style.css";
 import "./css/responsive.css";
 import "./css/product.css";
+import "./css/singleproduct.css";
 import "./css/success.css";
 import "./css/navbar1.css";
-import "./css/otherBanner.css";
+// import "./css/othercard.css";
+// import "./css/cards.css";
+// import "./css/otherBanner.css";
 import "./css/gallery.css";
 import "./css/orderdetails.css";
 import "./css/footer.css";
+import "./css/contact.css";
+import "./css/Home.css";
 import Allroutes from "./component/Allroutes";
 import BackToTopButton from "./component/BackToTopButton";
 import { WatchlistProvider } from "./Pages/WatchlistContext";

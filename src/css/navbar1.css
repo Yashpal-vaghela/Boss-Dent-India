@@ -542,6 +542,10 @@
 .navbar-contact-link .navbar-contact-link-icon a:hover {
   color: #c39428;
 }
+.navbar-contact-link-icon a svg{
+  text-decoration: none;
+  color: #222;
+}
 
 /* navbar-top search main icon */
 .navbar-top-search-main {

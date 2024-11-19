@@ -75,7 +75,7 @@ const RelatedProducts = ({
                                                         className="regular-price"
                                                         style={{ textDecoration: "line-through" }}
                                                     >
-                                                        {relatedProduct.regular_price} ₹
+                                                        {relatedProduct.regular_price}
                                                     </span>
                                                     <span className="sale-price">
                                                         {relatedProduct.price} ₹

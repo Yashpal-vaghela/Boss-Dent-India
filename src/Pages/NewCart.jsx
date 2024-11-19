@@ -193,7 +193,7 @@ const NewCart = () => {
                     Clear Cart
                   </button>
                   <div className="cart-summary-item">
-                    <h2>Total</h2>
+                    <h2 className="mb-0">Total</h2>
                     <span>₹{CartgetTotal?.total_price}.00</span>
                   </div>
 
@@ -297,14 +297,6 @@ const CartListItem = React.memo(
           } else {
             setProductPrice(ProductFilterPrice[0].price);
           }
-          // console.log(
-          //   "response",
-          //   response.data,
-          //   "updateCartData",
-          //   UpdatedCartData,
-          //   "a",
-          //   ProductFilterRegularPrice
-          // );
           localStorage.setItem(
             "cart",
             JSON.stringify({
@@ -336,14 +328,12 @@ const CartListItem = React.memo(
           select_Attributes: selectedAttributes,
         })
         .then((response) => {
-          // console.log("res",response.data)
           const UpdatedProduct = response?.data?.cart_item[0];
           const UpdatedCartData = CartData?.cart_items.map((item) => {
             return item.product_id === UpdatedProduct.product_id
               ? { ...item, product_quantity: UpdatedProduct.product_quantity }
               : item;
           });
-          // console.log("Cart", UpdatedCartData);
           localStorage.setItem(
             "cart",
             JSON.stringify({
@@ -520,8 +510,8 @@ const CartListItem = React.memo(
           </div>
           <div className="cart-price">
             {/* {console.log("pro", productPrice)} */}
-            <p className="cart-item-price">₹{Number(productPrice).toFixed(2)}</p>
-            <p className="cart-item-total">
+            <p className="cart-item-price mb-0">₹{Number(productPrice).toFixed(2)}</p>
+            <p className="cart-item-total mb-0">
               ₹
               {product.product_quantity !== undefined
                 ? productPrice * product.product_quantity

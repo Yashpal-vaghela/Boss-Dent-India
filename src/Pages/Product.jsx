@@ -315,7 +315,7 @@ const Product = () => {
         <>
           <div className="shop-container">
             <div className="header" data-aos="fade-up">
-              <h1 className="shop-title">Shop</h1>
+              <h1 className="shop-title">Products</h1>
               <BreadCrumbs />
             </div>
             <div className="shop-header">
