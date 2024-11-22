@@ -9,6 +9,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Success from "./success";
 import { useWatchlist } from "./WatchlistContext";
+import "../css/checkout.css";
 
 const checkoutSchema = yup.object().shape({
   first_name: yup.string().required("First Name field is required"),

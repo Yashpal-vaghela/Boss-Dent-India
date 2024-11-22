@@ -1,5 +1,6 @@
 import React from "react";
 import BreadCrumbs from "../component/BreadCrumbs";
+import "../css/privacyPolicy.css";
 
 const PrivacyPolicy = () => {
   return (

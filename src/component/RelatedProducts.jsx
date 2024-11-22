@@ -71,9 +71,9 @@ const RelatedProducts = ({
                                                 relatedProduct.price ? (
                                                 // If regular_price and price are different, show both
                                                 <>
+                                                Price:{" "}
                                                     <span
                                                         className="regular-price"
-                                                        style={{ textDecoration: "line-through" }}
                                                     >
                                                         {relatedProduct.regular_price}
                                                     </span>

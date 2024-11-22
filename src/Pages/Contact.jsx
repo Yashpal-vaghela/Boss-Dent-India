@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import "../css/contact.css";
 
 const contactSchema = Yup.object().shape({
   name: Yup.string().required("Name Field is required."),

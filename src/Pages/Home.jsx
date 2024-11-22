@@ -6,7 +6,9 @@ import HomeProductCategory from "../component/HomeProductCategory";
 import ProductServices from "../component/ProductServices";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import "../css/home.css";
 import { Helmet } from "react-helmet";
+
 const Home = () => {
   useEffect(() => {
     AOS.init({

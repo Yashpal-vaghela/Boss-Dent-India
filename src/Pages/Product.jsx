@@ -13,6 +13,7 @@ import Loader from "../component/Loader";
 import { toast } from "react-toastify";
 import ProductPagination from "../component/ProductPagination";
 import { Link } from "react-router-dom";
+import "../css/product.css";
 
 const Product = () => {
   const [products, setProducts] = useState([]);

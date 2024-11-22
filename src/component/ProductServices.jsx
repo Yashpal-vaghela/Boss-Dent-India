@@ -1,8 +1,13 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { MdLocalShipping, MdSecurity, MdSupportAgent } from "react-icons/md";
-
+import AOS from "aos";
 
 const ProductServices = () => {
+  useEffect(() => {
+    AOS.init({
+      disable: "mobile",
+    });
+  }, []);
   return (
     <section className="other-cards-main-section" >
       <div className="main-title-other-card-main">

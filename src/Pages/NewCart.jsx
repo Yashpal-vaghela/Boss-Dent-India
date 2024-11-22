@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaTrashAlt } from "react-icons/fa";
-import "../css/cartresponsive.css";
+import '../css/cart.css';
 import BreadCrumbs from "../component/BreadCrumbs";
 import axios from "axios";
 import { useWatchlist } from "./WatchlistContext";
 import { FaCheckCircle } from "react-icons/fa";
-// import Loader1 from "../component/Loader1";
 import ConfirmationDialog from "../component/ConfirmationDialog";
 import Loader from "../component/Loader";
 

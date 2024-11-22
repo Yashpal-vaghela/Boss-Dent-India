@@ -1,6 +1,7 @@
 import React from 'react'
 import BreadCrumbs from '../component/BreadCrumbs'
 import { Link } from 'react-router-dom'
+import "../css/Terms_Condition.css";
 
 const TermAndCondition = () => {
   return (
@@ -13,7 +14,6 @@ const TermAndCondition = () => {
         <div className="term-info" data-aos="zoom-in-up">
             <h1>Terms and Conditions</h1>
             {/* <h2>Terms and Conditions</h2> */}
-
             <p>Welcome to bossdentindia.com!</p>
             <p>
             These terms and conditions outline the rules and regulations for the use of bossdentindia’s Website, located at  

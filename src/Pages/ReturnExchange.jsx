@@ -146,7 +146,6 @@ const ReturnExchange = () => {
                   ? "col-lg-6 col-12 my-1"
                   : "col-lg-6 col-12 mb-4"
               }`}
-              // className="col-lg-6 col-12 my-2"
             >
               <input
                 type="text"
@@ -167,7 +166,6 @@ const ReturnExchange = () => {
               className={`${
                 formik?.errors?.order_number ? "col-12 my-1" : "col-12 mb-4"
               }`}
-              // className="col-12 my-2"
             >
               <input
                 type="number"
@@ -188,7 +186,6 @@ const ReturnExchange = () => {
               className={`${
                 formik?.errors?.order_number ? "col-12 my-1" : "col-12 mb-4"
               }`}
-              // className="col-12 my-2"
             >
               <input
                 type="number"
@@ -210,7 +207,6 @@ const ReturnExchange = () => {
               className={`${
                 formik?.errors.query ? "col-12 my-1" : "col-12 mb-4"
               }`}
-              // className="col-12 my-2"
             >
               <textarea
                 name="query"
@@ -226,7 +222,6 @@ const ReturnExchange = () => {
                 </span>
               )}
             </div>
-            {/* {console.log("formik", formik.errors)} */}
             <div className="col-12 mb-3">
               <button type="submit" className="btn btn-dark w-100">
                 Submit Form
@@ -238,7 +233,6 @@ const ReturnExchange = () => {
           <div className="return-content-img">
             <div className="return-content-img1"></div>
             <img src="/asset/images/contact.png" className="img-fluid"></img>
-            {/* <div className="return-content-img2"></div> */}
           </div>
         </div>
       </div>

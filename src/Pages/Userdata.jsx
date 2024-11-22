@@ -2,13 +2,13 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AddressForm from "../component/AddressForm";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "../css/responsiveuserdata.css";
 import AlertSuccess from "../component/AlertSuccess";
 import { toast } from "react-toastify";
 import Loader1 from "../component/Loader1";
 import { useWatchlist } from "./WatchlistContext";
 import axios from "axios";
 import OrderDetails from "../component/OrderDetails";
+
 
 const UserData = () => {
   const [user, setUser] = useState(null);

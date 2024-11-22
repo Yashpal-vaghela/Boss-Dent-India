@@ -7,6 +7,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Loader1 from "../component/Loader1";
 import { useWatchlist } from "./WatchlistContext";
 
+
 const Login = () => {
   const [userIdentifier, setUserIdentifier] = useState("");
   const [password, setPassword] = useState("");

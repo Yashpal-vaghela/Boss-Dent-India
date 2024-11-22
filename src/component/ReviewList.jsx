@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { FaStar } from 'react-icons/fa';
-import "../css/review.css";
 
 const ReviewList = ({productId}) => {
     const [reviews, setReviews] = useState([]);

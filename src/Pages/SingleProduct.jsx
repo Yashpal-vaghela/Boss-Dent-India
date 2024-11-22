@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-// import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { useWatchlist } from "./WatchlistContext";
 import axios from "axios";
-import "../css/productview.css";
+import "../css/singleproduct.css";
 import ReviewList from "../component/ReviewList";
 import ReviewForm from "../component/ReviewForm";
 import { toast } from "react-toastify";
@@ -41,12 +40,8 @@ const SingleProduct = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [discountProductPrice, setDiscountProductPrice] = useState(null);
   const [largeImageLoaded, setLargeImageLoaded] = useState(false);
-  // const [ProductId] = useState(() => {
-  //  return  localStorage.getItem("productId")
-  //     ? localStorage.getItem("productId")
-  //     : [];
-  // });
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
+  
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem("token");
     setIsLoggedIn(userLoggedIn);
@@ -398,8 +393,8 @@ const SingleProduct = () => {
             <h1 className="shop-title">Products</h1>
             <nav className="bread-crumbs">
               <Link to="/">Home</Link>
-              <i className="fa-solid fa-angle-right"></i>{" "}
-              <Link to="/products">Products</Link>{" "}
+              <i className="fa-solid fa-angle-right"></i>
+              <Link to="/products">Products</Link>
               <i className="fa-solid fa-angle-right"></i>
               <Link
                 to={`/products?category=${product.categories[0].id}`}
@@ -412,7 +407,7 @@ const SingleProduct = () => {
                 }}
               >
                 {category}
-              </Link>{" "}
+              </Link>
               <i className="fa-solid fa-angle-right"></i>
               <span>{product.name}</span>
             </nav>
@@ -521,7 +516,6 @@ const SingleProduct = () => {
                         key={attribute}
                         className="variation-main align-items-center"
                       >
-                        {/* {console.log("attribute", attribute)} */}
                         <h4 className="mb-0">
                           {attribute.replace(/pa_|attribute_/, "")}:
                         </h4>

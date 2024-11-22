@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import BreadCrumbs from "../component/BreadCrumbs";
 import { Link, useLocation } from "react-router-dom";
 
 import axios from "axios";
@@ -53,7 +52,7 @@ const OrderDetailsInfo = () => {
             ) : null}
           </nav>
         </div>
-        <div className="row  position-relative flex-md-row m-0 col-12 p-0  py-4">
+        <div className="row position-relative flex-md-row m-0 col-12 p-0  py-4">
           <div
             id="order-items"
             className="position-relative col-lg-8 col-12 px-sm-0 mb-4 mb-lg-0"

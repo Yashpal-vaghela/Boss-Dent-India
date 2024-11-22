@@ -3,10 +3,11 @@ import { FaFacebook, FaInstagram, FaPhoneAlt } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoMdMail } from "react-icons/io";
 import { Link } from "react-router-dom";
+import "../css/footer.css";
 
 const NewFooter = () => {
   return (
-    <div>
+    <>
       <footer className="footer-main-section">
         <div className="row mx-0">
           <div className="col-lg-3 col-sm-6 col-md-6 col-12">
@@ -132,7 +133,7 @@ const NewFooter = () => {
           <p>2024 © all right reserved by BossDentIndia</p>
         </div>
       </footer>
-    </div>
+    </>
   );
 };
 

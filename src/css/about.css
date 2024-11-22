@@ -3,7 +3,6 @@ body {
   box-sizing: border-box;
 }
 
-
 .about-main-page {
   height: auto;
   margin-top: 70px;
@@ -12,7 +11,6 @@ body {
 }
 
 .about-img-main {
-  /* width: 50%; */
   padding-left: 10%;
   height: auto;
   background-image: url(../../public/asset/images/element_22.png);
@@ -140,6 +138,23 @@ body {
 }
 
 /* Responsive Styles */
+@media(max-width:1399px){
+  .about-sub-title {
+    padding-bottom: 10px;
+    margin-bottom: 0px;
+  }
+  .about-title{
+    line-height: 1.2em;
+    margin-bottom: 0px;
+  }
+  .about-txt {
+    padding-top: 5px;
+    margin-bottom: 5px;
+  }
+  .about-btn{
+    margin: 20px 0 20px;
+  }
+}
 @media only screen and (max-width: 1200px) {
   .about-main-page {
     gap: 50px;
@@ -156,15 +171,22 @@ body {
     align-items: center;
     gap: 30px;
   }
+  .about-sub-title {
+    margin-bottom: .5rempx;
+  }
+  .about-txt {
+    padding-top: 10px;
+    margin-bottom: 1rem;
+  }
+ 
   .about-btn {
-    margin: 0 auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
+    margin: 30px auto 30px;
+  }
 
   .about-title {
     text-align: center;
-}
+    margin-bottom: .5rem;
+  }
   .about-img-main {
     padding-left: 0px;
   }
@@ -178,15 +200,14 @@ body {
   .q-txt-main {
     padding: 0px 60px;
   }
- 
 }
-@media only screen and (max-width:991px){
-  .about-container{
+@media only screen and (max-width: 991px) {
+  .about-container {
     padding-top: 40px;
   }
 }
 @media only screen and (max-width: 768px) {
-  .about-container{
+  .about-container {
     padding-top: 0px;
   }
   .about-main-page {
@@ -200,17 +221,15 @@ body {
 
   .about-title {
     font-size: 28px;
-    text-align: center;
   }
 
   .about-btn {
-    font-size: 13px;
-    margin: 0 auto;
+    font-size: 15px;
     margin-bottom: 30px;
     margin-top: 30px;
   }
   .about-icon {
-    font-size: 13px;
+    font-size: 15px;
     padding: 6px;
   }
 
@@ -232,39 +251,30 @@ body {
   .about-img-item-2 {
     bottom: 0px;
     left: 20%;
-}
-
+  }
   .about-txt-main {
     width: 100%;
-    text-align: center;
-    margin: 0 auto;
   }
 
   .about-txt-p {
     padding-right: 0px;
+    margin-top: 10px;
   }
 
   .about-title {
     font-size: 24px;
   }
-  .about-btn {
+  /* .about-btn {
     font-size: 13px;
     margin: 0 auto;
     margin-bottom: 30px;
     margin-top: 30px;
-  }
-  .about-icon {
+  } */
+  /* .about-icon {
     font-size: 13px;
     padding: 6px;
-  }
-
+  } */
   .q-txt-main {
     padding: 0px 20px;
   }
 }
-/* 
-@media(max-width:576px){
-  .about-container {
-    padding:0px 20px;
-  }
-} */

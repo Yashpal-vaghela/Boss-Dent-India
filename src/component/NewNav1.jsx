@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import { useWatchlist } from "../Pages/WatchlistContext";
 import axios from "axios";
+import "../css/navbar1.css";
 
 const NewNav1 = () => {
   const { watchlist, cartList } = useWatchlist();
@@ -144,15 +145,6 @@ const NewNav1 = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const scrollFunction = () => {
-      // setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", scrollFunction);
-    return () => {
-      window.removeEventListener("scroll", scrollFunction);
-    };
-  }, []);
   return (
     <div className="navbar-main">
       {/* navbar-top */}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import BreadCrumbs from "../component/BreadCrumbs";
+import "../css/help_center.css";
 
 const faqData = [
   {

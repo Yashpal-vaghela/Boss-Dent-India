@@ -4,7 +4,6 @@ import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 // import Aos from 'aos';
 import AlertSuccess from './AlertSuccess';
-import "../css/forgotpassword.css";
 // import { toast } from "react-toastify";
 
 const ForgotPassword = () => {

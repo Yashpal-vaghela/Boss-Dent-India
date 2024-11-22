@@ -65,7 +65,7 @@ footer {
   display: inline-block;
   width: 20px;
   height: 2px;
-  background-color: #ffc107;
+  background-color: #bf8e22;
   margin-left: 10px;
   margin-bottom: 3px;
 }
@@ -85,6 +85,7 @@ footer {
 .footer-section h1 {
   color: #bf8e22;
   font-size: 30px;
+  font-weight: bold;
 }
 .footer-quick-links {
   margin-left: 5px;
@@ -160,6 +161,9 @@ footer {
 @media (max-width: 576px) {
   .footer-section {
     margin-bottom: 20px;
+  }
+  .footer-section h1{
+    margin-bottom: 0px !important;
   }
   .footer-quick-links li {
     padding-top: 5px;

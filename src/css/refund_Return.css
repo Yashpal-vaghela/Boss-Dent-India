@@ -1,0 +1,19 @@
+.refund-policy {
+  font-family: sans-serif;
+  padding-top: 0px;
+  margin: 0px auto;
+  color: rgb(100, 100, 100);
+  text-align: left;
+}
+
+@media (max-width: 991px) {
+  .refund-policy {
+    padding-top: 35px;
+  }
+}
+
+@media (max-width: 768px) {
+  .refund-policy {
+    padding-top: 0px;
+  }
+}

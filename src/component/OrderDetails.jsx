@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import OrderPagination from './OrderPagination';
 import Loader1 from './Loader1';
-
+import "../css/orderdetails.css";
 
 const OrderDetails = ({
     OrderDetail,

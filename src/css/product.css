@@ -399,10 +399,12 @@
   .shop-title {
     font-size: 28px !important;
   }
+  .product-button {
+    margin: 10px 0;
+  }
   .pagination button {
     padding: 5px 12px;
   }
-
   .ellipsis {
     padding: 5px 10px;
   }
