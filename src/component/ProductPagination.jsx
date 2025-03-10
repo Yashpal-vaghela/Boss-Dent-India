@@ -12,7 +12,7 @@ const ProductPagination = ({
   const renderPagination = () => {
     const paginationButtons = [];
 
-    if (totalProducts == 170) {
+    if (totalProducts === 170) {
       if (totalPages <= 1) return paginationButtons; // No need to show pagination if there's only one page
       // Always show the first page
       paginationButtons.push(

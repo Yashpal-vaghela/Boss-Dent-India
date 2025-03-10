@@ -20,9 +20,9 @@ const SingleProduct = () => {
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [salePrice, setSalePrice] = useState(null);
-  const [regluarPrice, setRegularPrice] = useState(null);
+  const [regularPrice, setRegularPrice] = useState(null);
   const [variations, setVariations] = useState([]);
-  const [selectedAttributes, setSelectedAttributes] = useState({});
+  const [selectedAttributes, setSelectedAttributes] = useState(null);
   const [stockStatus, setStockStatus] = useState("unknown");
   const {
     watchlist,
@@ -41,7 +41,7 @@ const SingleProduct = () => {
   const [discountProductPrice, setDiscountProductPrice] = useState(null);
   const [largeImageLoaded, setLargeImageLoaded] = useState(false);
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
-  
+
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem("token");
     setIsLoggedIn(userLoggedIn);
@@ -70,77 +70,91 @@ const SingleProduct = () => {
   // fetch single product ,stock status and weight api integrate
   const fetchProduct = async () => {
     setLoading(true);
-    // const productId = localStorage.getItem('productId')
     try {
       const response = await axios.get(
         `https://admin.bossdentindia.com/wp-json/custom/v1/product/${id}`
       );
+
       setProduct(response.data);
-      // preload the main product image
+      console.log("Product Response:", response.data);
+
+      // Preload the main product image
       if (response.data.yoast_head_json?.og_image?.[0]?.url) {
         const img = new Image();
         img.src = response.data.yoast_head_json.og_image[0].url;
-        // setImageUrl(img.src);
       }
 
-      // Extract and set variations if available
-      if (response.data.variations) {
+      let minSalePrice = null;
+      let maxSalePrice = null;
+
+      // Extract sale price range from variations
+      if (response.data.variations && response.data.variations.length > 0) {
+        // console.log("response-variations",response.data.variations)
         setVariations(response.data.variations);
-      } else {
-        setVariations([]);
+        // Extract sale prices, convert them to numbers, and filter valid values
+        const salePrices = response.data.variations
+          .map((variation) => parseFloat(variation.sale_price))
+          .filter((price) => !isNaN(price) && price > 0);
+
+        if (salePrices.length > 0) {
+          minSalePrice = Math.min(...salePrices);
+          maxSalePrice = Math.max(...salePrices);
+        } else {
+          console.warn("No valid sale prices found.");
+        }
       }
-      // Fetch related products based on category
+
+      // Fallback to main product price if variations are missing or incorrect
+      if (minSalePrice === null || maxSalePrice === null) {
+        minSalePrice = parseFloat(response.data.price) || 0;
+        maxSalePrice = parseFloat(response.data.price) || minSalePrice;
+      }
+
+      setSalePrice(minSalePrice);
+      setRegularPrice(maxSalePrice);
+
+      // Fetch related products
       if (response.data.categories && response.data.categories.length > 0) {
         const categoryId = response.data.categories[0].id;
         setCategory(response.data.categories[0].name);
 
-        // Fetch related products in the same category
         const relatedProductsResponse = await axios.get(
           `https://admin.bossdentindia.com/wp-json/wp/v2/product?product_cat=${categoryId}&exclude=${response.data.id}&per_page=20`
         );
-        const shuffledProducts = relatedProductsResponse.data.sort(
-          () => 0.5 - Math.random()
-        );
-        const productwithDiscount = shuffledProducts.map((product) => {
+
+        const shuffledProducts = relatedProductsResponse.data.sort(() => 0.5 - Math.random());
+
+        const productWithDiscount = shuffledProducts.map((product) => {
           const regularPrice = parseFloat(product.regular_price);
           const salePrice = parseFloat(product.price);
-
           let discount = 0;
+
           if (regularPrice && salePrice < regularPrice) {
-            discount = Math.round(
-              ((regularPrice - salePrice) / regularPrice) * 100
-            );
+            discount = Math.round(((regularPrice - salePrice) / regularPrice) * 100);
           }
+
           return { ...product, discount };
         });
-        setRelatedProducts(productwithDiscount.slice(0, 10));
+
+        setRelatedProducts(productWithDiscount.slice(0, 10));
       }
 
-      const regularPrice1 = parseFloat(response.data.regular_price);
-      const salePrice = parseFloat(
-        response.data.sale_price || response.data.price
-      );
-      if (regularPrice1 && salePrice < regularPrice1) {
-        const discount = ((regularPrice1 - salePrice) / regularPrice1) * 100;
-        setDiscountProductPrice(Math.round(discount)); // Store the discount percentage in state
-      } else {
-        setDiscountProductPrice(0); // No discount
-      }
-      setSalePrice(salePrice);
-      setRegularPrice(regularPrice1);
       setWeight(response.data.weight);
       setStockStatus(response.data.stock_status);
     } catch (error) {
+      console.error("Error fetching product:", error);
       toast.error("Failed to fetch product details.");
     } finally {
       setLoading(false);
     }
   };
 
+
   useEffect(() => {
     if (id) {
       fetchProduct();
     }
+    handleAttributeSelect()
   }, [id]);
 
   useEffect(() => {
@@ -165,28 +179,44 @@ const SingleProduct = () => {
     salePrice,
     RegularPrice
   ) => {
-    const newSelectedAttributes = {
-      ...selectedAttributes,
-      [attribute]: value,
-    };
-    setSelectedColor(value);
-    setSelectedAttributes(newSelectedAttributes);
-    const selectedVariation = variations.find((variation) => {
-      return Object.keys(variation.attributes).every((key) => {
-        return newSelectedAttributes[key] === variation.attributes[key];
+    if(attribute && value){
+      const newSelectedAttributes = {
+        ...selectedAttributes,
+        [attribute]: value,
+      };
+      setSelectedAttributes(newSelectedAttributes);
+      const selectedVariation = variations.find((variation) => {
+        // console.log("va", Object.keys(variation.attributes));
+        return Object.keys(variation.attributes).every((key) => {
+          // console.log("select", newSelectedAttributes[key], variation.attributes[key]);
+          return newSelectedAttributes[key] === variation.attributes[key];
+        });
       });
-    });
-    const ProductDiscountPrice = (
-      ((RegularPrice - salePrice) / RegularPrice) *
-      100
-    ).toFixed(0);
-    setDiscountProductPrice(Number(ProductDiscountPrice));
-    setRegularPrice(RegularPrice);
-    if (selectedVariation) {
-      setSalePrice(selectedVariation.price);
-    } else {
-      setSalePrice(salePrice);
+      if (selectedVariation) {
+        setSalePrice(selectedVariation.price);
+        setRegularPrice(null);
+        
+      } else {
+        setSalePrice(salePrice);
+        setRegularPrice(RegularPrice);
+      }
+    }else{
+      setSelectedAttributes(null);
     }
+    setSelectedColor(value);
+    console.log("attr",attribute,value,salePrice,RegularPrice)
+  
+    // localStorage.setItem('selectAttributes',JSON.stringify(newSelectedAttributes))
+    // console.log("variations", selectedVariation)
+
+    // discount code
+    // const ProductDiscountPrice = (
+    //   ((RegularPrice - salePrice) / RegularPrice) *
+    //   100
+    // ).toFixed(0);
+    // setDiscountProductPrice(Number(ProductDiscountPrice));
+    
+   
   };
 
   // watchlist delete api integrate
@@ -242,6 +272,7 @@ const SingleProduct = () => {
 
   // Addtocart product and related product api integrate
   const handleAddToCart = async (e, relatedProduct) => {
+    console.log("asd",stockStatus)
     e.preventDefault();
     if (isLoggedIn) {
       if (stockStatus === "instock") {
@@ -326,13 +357,13 @@ const SingleProduct = () => {
                     getUserData
                   );
                   toast.success("Product update to cart successfully!");
-                  
+
                 })
                 .catch((err) => console.log("err", err));
             }
           }
         }
-        
+
       } else {
         toast.info("Product is out of stock");
       }
@@ -453,7 +484,7 @@ const SingleProduct = () => {
                       width: "100%",
                       height: "100%",
                     },
-                    enlargedImageContainerStyle: { 
+                    enlargedImageContainerStyle: {
                       position: window.innerWidth < 768 ? "static" : "absolute",
                       zIndex: 9,
                       marginTop: window.innerWidth < 768 ? "20px" : "0",
@@ -461,42 +492,39 @@ const SingleProduct = () => {
                   }}
                 />
               ) : (
-                <p><Loader1 /></p> 
+                <p><Loader1 /></p>
               )}
             </div>
             <div className="single-product-details">
               <h2 className="single-product-title">{product?.name}</h2>
               <h3 className="single-product-price align-item-center justify-contents-center">
-                {salePrice && regluarPrice ? (
+                {console.log("variat", variations)}
+                {variations.length > 0 ? (
                   <>
-                    Price:&nbsp;
-                    {salePrice !== regluarPrice ? (
+                    <span className="sale-price">
+                      ₹{salePrice} 
+                      {
+                        selectedAttributes === null ? <>- ₹{regularPrice}</> : <></>
+                      }
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    {salePrice && regularPrice ? (
                       <>
-                        <span className="regular-price">{regluarPrice}</span>
-                        <span className="sale-price">{salePrice} ₹ </span>
-                        {discountProductPrice && (
-                          <span
-                            className="position-relative"
-                            style={{ fontSize: "16px", color: "red" }}
-                          >
-                            ({`${discountProductPrice}% off`})
-                          </span>
+                        {salePrice !== regularPrice ? (
+                          <>
+                            <span className="regular-price">₹{regularPrice}</span>
+                            <span className="sale-price">₹{salePrice}</span>
+                          </>
+                        ) : (
+                          <span className="sale-price">₹{salePrice}</span>
                         )}
                       </>
                     ) : (
-                      <>
-                        <span className="sale-price">{salePrice} ₹ </span>
-                      </>
+                      `Price: ₹${product.price}`
                     )}
-                    {/* <div className=" position-relative"></div> */}
-                    {/* {discountProductPrice && (
-                      <div className="discount-badge">
-                        {`${discountProductPrice}% off`}
-                      </div>
-                    )} */}
                   </>
-                ) : (
-                  `Price: ${product.price} ₹`
                 )}
               </h3>
 
@@ -673,7 +701,7 @@ const SingleProduct = () => {
               <ReviewForm productId={product.id} />
             </div>
           )}
-          <RelatedProducts 
+          <RelatedProducts
             relatedProducts={relatedProducts}
             watchlist={watchlist}
             handleWatchlistToggle={handleWatchlistToggle}
