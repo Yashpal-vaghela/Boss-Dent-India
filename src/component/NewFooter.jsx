@@ -130,7 +130,7 @@ const NewFooter = () => {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>2024 © all right reserved by BossDentIndia</p>
+          <p>2025 © all right reserved by BossDentIndia</p>
         </div>
       </footer>
     </>

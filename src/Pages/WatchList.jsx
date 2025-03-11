@@ -328,7 +328,7 @@ const WatchlistItem = React.memo(
                               )}
                               :{""}
                             </h4>
-                            {attribute === "color" ? (
+                            {attribute === "attribute_pa_color" || attribute === "color" ? (
                               <div style={{ display: "flex" }}>
                                 {productVariations.map((variation, index) => {
                                   return (
