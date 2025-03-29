@@ -317,6 +317,7 @@ const NewNav1 = () => {
             <div className="cart-icon icon">
               <Link to="/cart">
                 <FaCartPlus />
+                {console.log("cartList",cartList)}
                 <span>{cartList?.length}</span>
               </Link>
             </div>

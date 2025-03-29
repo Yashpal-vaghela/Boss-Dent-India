@@ -270,6 +270,7 @@ const WatchList = () => {
                         minValue={minValue}
                         maxValue={maxValue}
                         setWatchListData={setWatchListData}
+                        WatchListData={WatchListData}
                       ></WatchlistItem>
                     );
                   })}
@@ -299,6 +300,7 @@ const WatchlistItem = React.memo(
     setWatchListData,
     setMaxvalue,
     setMinvalue,
+    WatchListData
   }) => {
     const [selectedAttributes, setSelectedAttributes] = useState(() => {
       const storedAttributes = product.selected_attribute;
@@ -316,7 +318,7 @@ const WatchlistItem = React.memo(
       value,
       keys,
       minValue,
-      maxValue
+      max
     ) => {
       console.log(
         "attribute--",
@@ -328,7 +330,7 @@ const WatchlistItem = React.memo(
         "keys--",
         keys,
         "max--",
-        maxValue,
+        max,
         "min--",
         minValue
       );
@@ -338,25 +340,27 @@ const WatchlistItem = React.memo(
           [attribute]: value,
         };
         setSelectedAttributes(updatedAttributes);
-        // const selectedVariation = variations.find((variation) => {
-        //   // console.log("va", Object.keys(variation.attributes));
-        //   return Object.keys(variation.attributes).every((key) => {
-        //     // console.log("select", newSelectedAttributes[key], variation.attributes[key]);
-        //     return updatedAttributes[key] === variation.attributes[key];
-        //   });
-        // });
-        // setWatchListData({...product,"price":selectedVariation.price})
-        // if (selectedVariation) {
-        //   setMinvalue(selectedVariation.price);
-        //   setMaxvalue([]);
+        const selectedVariation = product.product_variations.find((variation) => {
+          // console.log("va", Object.keys(variation.attributes));
+          return Object.keys(variation.attributes).every((key) => {
+            // console.log("select", newSelectedAttributes[key], variation.attributes[key]);
+            return updatedAttributes[key] === variation.attributes[key];
+          });
+        });
+        console.log("sele",selectedVariation)
+        const a = {...product,product_price:selectedVariation.price}
+        console.log("a",a)
+        // setWatchListData({...WatchListData,product_price:selectedVariation.price})
+        if (selectedVariation) {
+          setMinvalue(selectedVariation.price);
+          maxValue.push([]);
+          // setMaxvalue([]);
 
-        // } else {
-        //   setMinvalue(minValue);
-        //   setMaxvalue(maxValue);
-        // }
-      } else {
-        setSelectedAttributes(value);
-      }
+        } else {
+          setMinvalue(minValue);
+          setMaxvalue(max);
+        }
+      } 
 
       // await axios
       //   .post(
@@ -377,6 +381,7 @@ const WatchlistItem = React.memo(
       <>
         <div className="watchlist-item">
           <div className="watchlist-item-image-wrapper">
+            
             <img
               src={product.product_image}
               alt={product.product_title}
@@ -401,39 +406,44 @@ const WatchlistItem = React.memo(
                   {console.log(
                     "salePrice",
                     salePrice,
+                    productVariations,
+
                     // minValue,
                     // maxValue,
                     Object.entries(salePrice)
                   )}
-
-                  {/* {
-                    product.product_variations.length > 0 ? 
-                    <>
-                      <span className="sale-price">
-                        price :  ₹{minValue}
-                        {
-                          selectedAttributes === undefined ? <>-₹{maxValue}</> : <></>
-                        }
-                      </span>
-                    </>
-                    :<></>
-                  } */}
                   {salePrice !== null
                     ? Object.entries(salePrice).map(
                         ([productId, [min, max]]) => {
-                          // console.log("pro", productId, product.product_id);
+                          const selectedKey = Object.keys(selectedAttributes)[0]; 
+                          const matchedVariation = product.product_variations?.find(variation => {
+                            return variation.attributes[selectedKey] === selectedAttributes[selectedKey];
+                          });
+                          console.log("selectAttributes",selectedAttributes,min,max, matchedVariation?.price);
                           return productId === product.product_id ? (
                             <span className="sale-price" key={productId}>
-                              Price: ₹{min}
-                              {selectedAttributes !== undefined ? (
-                                <>- ₹{max}</>
-                              ) : (
-                                <></>
-                              )}
+                              Price: ₹{selectedAttributes[selectedKey]  ? matchedVariation?.price : `${min} - ₹${max}`}
+                              {/* Price: ₹{product.product_price}
+                              {
+                                selectedAttributes !== undefined ? (
+                                  <>Price: ₹{min} - ₹{max}</>
+                                ) : (
+                                  <></>
+                                )
+                              } */}
+                              {/* {
+                                product.product_variations?.map((variation)=>{
+                                  console.log("variations",variation)
+                                  return selectedAttributes !== undefined ? (
+                                    <>Price: ₹{min} - ₹{max}</>
+                                  ) : (
+                                    <></>
+                                  )
+                                })
+                              } */}
                             </span>
                           ) : ( 
                             <></>
-                            // `Price: ₹${product.product_price}`
                           );
                         }
                       )
@@ -482,6 +492,7 @@ const WatchlistItem = React.memo(
                             attribute === "color" ? (
                               <div style={{ display: "flex" }}>
                                 {productVariations.map((variation, index) => {
+                                   {console.log(attribute)}
                                   return (
                                     <div
                                       key={index}
@@ -493,6 +504,7 @@ const WatchlistItem = React.memo(
                                           ? "selected"
                                           : ""
                                       }`}
+                                     
                                       onClick={() =>
                                         handleAttributeSelect(
                                           attribute,
@@ -500,15 +512,18 @@ const WatchlistItem = React.memo(
                                           Object.values(
                                             variation.attributes
                                           )[0],
+                                          product.product_price
                                           // Object.keys(variation.attributes)[0],
                                           // minValue,
                                           // maxValue
                                         )
                                       }
+                                      
                                     ></div>
                                   );
                                 })}
                               </div>
+                              
                             ) : (
                               <div className="variation-buttons">
                                 {productVariations.map((variation, index) => {
