@@ -91,11 +91,12 @@ const SingleProduct = () => {
       if (response.data.variations && response.data.variations.length > 0) {
         // console.log("response-variations",response.data.variations)
         setVariations(response.data.variations);
+        // console.log("res",response.data)
         // Extract sale prices, convert them to numbers, and filter valid values
         const salePrices = response.data.variations
-          .map((variation) => parseFloat(variation.sale_price))
+          .map((variation) => parseFloat(variation.price))
           .filter((price) => !isNaN(price) && price > 0);
-
+        // console.log("salePrice",salePrices)
         if (salePrices.length > 0) {
           minSalePrice = Math.min(...salePrices);
           maxSalePrice = Math.max(...salePrices);
@@ -109,7 +110,8 @@ const SingleProduct = () => {
         minSalePrice = parseFloat(response.data.price) || 0;
         maxSalePrice = parseFloat(response.data.price) || minSalePrice;
       }
-
+      
+      // console.log("maxSalePrice",maxSalePrice)
       setSalePrice(minSalePrice);
       setRegularPrice(maxSalePrice);
 
@@ -193,6 +195,7 @@ const SingleProduct = () => {
           return newSelectedAttributes[key] === variation.attributes[key];
         });
       });
+      // console.log("selesct",selectedVariation)
       if (selectedVariation) {
         setSalePrice(selectedVariation.price);
         setRegularPrice(null);
@@ -202,8 +205,9 @@ const SingleProduct = () => {
         setRegularPrice(RegularPrice);
       }
     }else{
-      setSelectedAttributes(null);
+      setSelectedAttributes(value);
     }
+    // console.log("v++++++",value)
     setSelectedColor(value);
     // console.log("attr",attribute,value,salePrice,RegularPrice)
   
@@ -499,13 +503,13 @@ const SingleProduct = () => {
             <div className="single-product-details">
               <h2 className="single-product-title">{product?.name}</h2>
               <h3 className="single-product-price align-item-center justify-contents-center">
-                {/* {console.log("variat", variations)} */}
+                {/* {console.log("variat", variations,selectedAttributes)} */}
                 {variations.length > 0 ? (
                   <>
                     <span className="sale-price">
-                      ₹{salePrice} 
+                      ₹{salePrice}
                       {
-                        selectedAttributes === null ? <>- ₹{regularPrice}</> : <></>
+                        selectedAttributes === undefined ? <>- ₹{regularPrice}</> : <></>
                       }
                     </span>
                   </>
@@ -581,14 +585,16 @@ const SingleProduct = () => {
                           <div className="variation-buttons">
                             
                             {variations.map((value, index) => {
-                              // console.log("value---",value,attribute,Object.values(value.attributes)[0])
+                              // console.log("value---",selectedAttributes,Object.values(value.attributes)[0])
                               return (
                                 <button
                                   key={index}
                                   className={`variation-button ${Object.values(value.attributes)[0]}
-                                  ${Object.values(value.attributes)[0]
+                                  ${selectedAttributes !== undefined && selectedAttributes !== null ? 
+                                    (Object.values(selectedAttributes)[0] === Object.values(value.attributes)[0]
                                     ? "selected"
-                                    : ""
+                                    : "")
+                                    :""
                                     }`}
                                   onClick={() =>
                                     handleAttributeSelect(
