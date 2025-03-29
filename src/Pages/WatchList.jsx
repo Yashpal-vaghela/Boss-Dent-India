@@ -21,6 +21,10 @@ const WatchList = () => {
   const [WatchListData, setWatchListData] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
   const [productToRemove, setProductToRemove] = useState(null);
+  const [salePrice, setSalePrice] = useState(null);
+  const [regularPrice, setRegularPrice] = useState(null);
+  const [minValue, setMinvalue] = useState([]);
+  const [maxValue, setMaxvalue] = useState([]);
 
   // Function to fetch product and stock status data
   const fetchWatchlistData = async () => {
@@ -31,10 +35,42 @@ const WatchList = () => {
         `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist?user_id=${getUserData.user_id}`
       )
       .then((response) => {
-        // console.log("watchlist", response.data,Object.keys(response.data));
+        // console.log("watchlist", response.data);
         setWatchListData(response.data);
         // setStockStatuses(response.data)
         // fetchStockStatuses(response);
+
+        if (response.data && response.data.length > 0) {
+          console.log("response-variations", response.data);
+          // Extract sale prices, convert them to numbers, and filter valid values
+          const salePrices = response.data.map((item) => {
+            console.log("variations", item);
+            return item.product_variations.map((variation) => {
+              console.log(
+                "variation price",
+                variation,
+                Math.min(variation.price)
+              );
+              return Math.min(variation.price);
+            });
+          });
+          const minMaxByProductId = response.data.reduce((acc, item) => {
+            const prices = item.product_variations.map(
+              (variation) => variation.price
+            );
+            acc[item.product_id] = [Math.min(...prices), Math.max(...prices)];
+            return acc;
+          }, {});
+          setSalePrice(minMaxByProductId);
+          Object.entries(minMaxByProductId).map(([productId, [min, max]]) => {
+            maxValue.push(max);
+            minValue.push(min);
+            // setMinvalue([...minValue,min]);
+            // setMaxvalue([...maxValue,max]);
+          });
+          console.log("sale", salePrices, "minValyue", minMaxByProductId);
+        }
+
         setLoading(false);
         response.data.map((item) => {
           return addToWatchlist(Number(item.product_id));
@@ -60,7 +96,6 @@ const WatchList = () => {
         cachedStockStatuses &&
         cachedWishListProdcts.length === watchlist.length
       ) {
-        // setStockStatuses(cachedStockStatuses);
         setLoading(false);
       }
       fetchWatchlistData();
@@ -71,7 +106,6 @@ const WatchList = () => {
   }, []);
 
   const confirmDelete = (e, product) => {
-    // console.log("confirmDelete", e, product);
     setProductToRemove(product);
     setShowDialog(true);
   };
@@ -229,6 +263,13 @@ const WatchList = () => {
                         imageLoading={imageLoading[product.product_id]}
                         selectedAttributes={selectedAttributes}
                         getUserData={getUserData}
+                        salePrice={salePrice}
+                        regularPrice={regularPrice}
+                        setMinvalue={setMinvalue}
+                        setMaxvalue={setMaxvalue}
+                        minValue={minValue}
+                        maxValue={maxValue}
+                        setWatchListData={setWatchListData}
                       ></WatchlistItem>
                     );
                   })}
@@ -252,6 +293,12 @@ const WatchlistItem = React.memo(
     handleImageLoad,
     imageLoading,
     getUserData,
+    salePrice,
+    minValue,
+    maxValue,
+    setWatchListData,
+    setMaxvalue,
+    setMinvalue,
   }) => {
     const [selectedAttributes, setSelectedAttributes] = useState(() => {
       const storedAttributes = product.selected_attribute;
@@ -263,25 +310,67 @@ const WatchlistItem = React.memo(
     });
     // console.log("productdata", product);
     // Function to handle attribute selection
-    const handleAttributeSelect = async (attribute, value) => {
-      const updatedAttributes = {
-        ...selectedAttributes,
-        [attribute]: value,
-      };
-      setSelectedAttributes(updatedAttributes);
-      await axios
-        .post(
-          `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/update`,
-          {
-            user_id: getUserData.user_id,
-            product_id: product.product_id,
-            selected_attribute: updatedAttributes,
-          }
-        )
-        .then((response) => {
-          // console.log("update-wishlist-response", response.data);
-        })
-        .catch((error) => console.log("update-error", error));
+    const handleAttributeSelect = async (
+      attribute,
+      attributes1,
+      value,
+      keys,
+      minValue,
+      maxValue
+    ) => {
+      console.log(
+        "attribute--",
+        attribute,
+        "attribute1",
+        attributes1,
+        "value--",
+        value,
+        "keys--",
+        keys,
+        "max--",
+        maxValue,
+        "min--",
+        minValue
+      );
+      if (attribute && value) {
+        const updatedAttributes = {
+          ...selectedAttributes,
+          [attribute]: value,
+        };
+        setSelectedAttributes(updatedAttributes);
+        // const selectedVariation = variations.find((variation) => {
+        //   // console.log("va", Object.keys(variation.attributes));
+        //   return Object.keys(variation.attributes).every((key) => {
+        //     // console.log("select", newSelectedAttributes[key], variation.attributes[key]);
+        //     return updatedAttributes[key] === variation.attributes[key];
+        //   });
+        // });
+        // setWatchListData({...product,"price":selectedVariation.price})
+        // if (selectedVariation) {
+        //   setMinvalue(selectedVariation.price);
+        //   setMaxvalue([]);
+
+        // } else {
+        //   setMinvalue(minValue);
+        //   setMaxvalue(maxValue);
+        // }
+      } else {
+        setSelectedAttributes(value);
+      }
+
+      // await axios
+      //   .post(
+      //     `https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/update`,
+      //     {
+      //       user_id: getUserData.user_id,
+      //       product_id: product.product_id,
+      //       selected_attribute: updatedAttributes,
+      //     }
+      //   )
+      //   .then((response) => {
+      //     // console.log("update-wishlist-response", response.data);
+      //   })
+      //   .catch((error) => console.log("update-error", error));
     };
 
     return (
@@ -301,7 +390,6 @@ const WatchlistItem = React.memo(
           <div className="watchlist-item-details">
             <div className="d-lg-block d-md-block">
               <div className="watchlist-item-info">
-                {/* {console.log("s",product)} */}
                 <Link
                   to={`/products/${product.product_slug}`}
                   className="watchlist-item-link"
@@ -309,7 +397,68 @@ const WatchlistItem = React.memo(
                   <h5 className="mb-0">{product?.product_title}</h5>
                 </Link>
                 <p className="watchlist-item-price mb-0">
-                  Price: ₹{product.product_price}
+                  {/* {console.log("product",salePrice,regularPrice)} */}
+                  {console.log(
+                    "salePrice",
+                    salePrice,
+                    // minValue,
+                    // maxValue,
+                    Object.entries(salePrice)
+                  )}
+
+                  {/* {
+                    product.product_variations.length > 0 ? 
+                    <>
+                      <span className="sale-price">
+                        price :  ₹{minValue}
+                        {
+                          selectedAttributes === undefined ? <>-₹{maxValue}</> : <></>
+                        }
+                      </span>
+                    </>
+                    :<></>
+                  } */}
+                  {salePrice !== null
+                    ? Object.entries(salePrice).map(
+                        ([productId, [min, max]]) => {
+                          // console.log("pro", productId, product.product_id);
+                          return productId === product.product_id ? (
+                            <span className="sale-price" key={productId}>
+                              Price: ₹{min}
+                              {selectedAttributes !== undefined ? (
+                                <>- ₹{max}</>
+                              ) : (
+                                <></>
+                              )}
+                            </span>
+                          ) : ( 
+                            <></>
+                            // `Price: ₹${product.product_price}`
+                          );
+                        }
+                      )
+                    : `Price: ₹${product.product_price}`}
+                  {/* {product.product_variations.length > 0 ? "": (
+                    <>
+                      {salePrice && regularPrice ? (
+                        <>
+                          {salePrice !== regularPrice ? (
+                            <>
+                              <span className="regular-price">
+                                ₹{regularPrice}
+                              </span>
+                              <span className="sale-price">₹{salePrice}</span>
+                            </>
+                          ) : (
+                            <span className="sale-price">₹{salePrice}</span>
+                          )}
+                        </>
+                      ) : (
+                        `Price: ₹${product.product_price}`
+                      )}
+                    </>
+                  )} */}
+                  {/* {product.product_price} */}
                   {/* price: {product.regularprice} */}
                 </p>
               </div>
@@ -328,7 +477,9 @@ const WatchlistItem = React.memo(
                               )}
                               :{""}
                             </h4>
-                            {attribute === "attribute_pa_color" || attribute === "color" ? (
+                            {/* {console.log("min", minValue, "max", maxValue)} */}
+                            {attribute === "attribute_pa_color" ||
+                            attribute === "color" ? (
                               <div style={{ display: "flex" }}>
                                 {productVariations.map((variation, index) => {
                                   return (
@@ -345,7 +496,13 @@ const WatchlistItem = React.memo(
                                       onClick={() =>
                                         handleAttributeSelect(
                                           attribute,
-                                          variation.attributes[attribute]
+                                          variation.attributes[attribute],
+                                          Object.values(
+                                            variation.attributes
+                                          )[0],
+                                          // Object.keys(variation.attributes)[0],
+                                          // minValue,
+                                          // maxValue
                                         )
                                       }
                                     ></div>
@@ -367,7 +524,13 @@ const WatchlistItem = React.memo(
                                       onClick={() =>
                                         handleAttributeSelect(
                                           attribute,
-                                          variation.attributes[attribute]
+                                          variation.attributes[attribute],
+                                          Object.values(
+                                            variation.attributes
+                                          )[0],
+                                          // Object.keys(variation.attributes)[0],
+                                          // minValue,
+                                          // maxValue
                                         )
                                       }
                                     >

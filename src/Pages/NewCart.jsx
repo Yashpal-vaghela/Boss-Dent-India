@@ -18,7 +18,7 @@ const NewCart = () => {
     return d ? JSON.parse(d) : null;
   });
   const [CartgetTotal, setCartgetTotal] = useState([]);
-  const { alertMessage, removeFromCartList, addToCartList } = useWatchlist();
+  const { alertMessage, removeFromCartList, addToCartList ,EmptyCart} = useWatchlist();
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
   const [loading, setLoading] = useState(false);
 
@@ -85,23 +85,9 @@ const NewCart = () => {
       });
   };
 
-  const handleEmptyCart = async () => {
-    await axios
-      .delete(
-        "https://admin.bossdentindia.com/wp-json/custom/v1/cart/delete_all",
-        {
-          data: { user_id: getUserData.user_id },
-        }
-      )
-      .then((response) => {
-        setCartData({ cart_items: [], cart_total: {} });
-        localStorage.setItem("cart_productId", JSON.stringify([]));
-        localStorage.setItem(
-          "cart",
-          JSON.stringify({ cart_items: [], cart_total: {} })
-        );
-      })
-      .catch((error) => console.log("error-delete-all", error));
+  const handleEmptyCart = () => {
+    EmptyCart(getUserData);
+    setCartData({ cart_items: [], cart_total: {} });
   };
 
   const AdddeliveryCharge = (CartTotal) => {
@@ -263,6 +249,7 @@ const CartListItem = React.memo(
       return product.selected_attribute ? product.selected_attribute : {};
     });
     const [showDialogBox, setShowDialogBox] = useState(false);
+    console.log("product",product)
     const [productPrice, setProductPrice] = useState(product.product_price);
     const handleAttributeSelect = async (product, attribute, value) => {
       const updateAttributes = {
@@ -291,6 +278,7 @@ const CartListItem = React.memo(
             response.data?.cart_item[0].product_attributes.filter(
               (item) => Object.values(item.attributes)[0] == value
             );
+            // console.log("productFilterDta",ProductFilterPrice,response.data)
           if (ProductFilterPrice[0].sale_price) {
             setProductPrice(ProductFilterPrice[0].sale_price);
           } else {
@@ -508,7 +496,7 @@ const CartListItem = React.memo(
             </button>
           </div>
           <div className="cart-price">
-            {/* {console.log("pro", productPrice)} */}
+            {console.log("pro", productPrice)}
             <p className="cart-item-price mb-0">₹{Number(productPrice).toFixed(2)}</p>
             <p className="cart-item-total mb-0">
               ₹

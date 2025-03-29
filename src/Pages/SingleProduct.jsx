@@ -96,7 +96,7 @@ const SingleProduct = () => {
         const salePrices = response.data.variations
           .map((variation) => parseFloat(variation.price))
           .filter((price) => !isNaN(price) && price > 0);
-        // console.log("salePrice",salePrices)
+        console.log("salePrice",salePrices)
         if (salePrices.length > 0) {
           minSalePrice = Math.min(...salePrices);
           maxSalePrice = Math.max(...salePrices);
@@ -181,7 +181,7 @@ const SingleProduct = () => {
     salePrice,
     RegularPrice
   ) => {
-    // console.log("attribute",attribute,value)
+    console.log("attribute",attribute,value,keys,salePrice,RegularPrice)
     if(attribute && value){
       const newSelectedAttributes = {
         ...selectedAttributes,
@@ -195,6 +195,7 @@ const SingleProduct = () => {
           return newSelectedAttributes[key] === variation.attributes[key];
         });
       });
+      setProduct({...product,"price":selectedVariation.price})
       // console.log("selesct",selectedVariation)
       if (selectedVariation) {
         setSalePrice(selectedVariation.price);
@@ -205,10 +206,11 @@ const SingleProduct = () => {
         setRegularPrice(RegularPrice);
       }
     }else{
-      setSelectedAttributes(value);
+      setSelectedAttributes(value); 
     }
-    // console.log("v++++++",value)
     setSelectedColor(value);
+    // console.log("v++++++",value)
+    
     // console.log("attr",attribute,value,salePrice,RegularPrice)
   
     // localStorage.setItem('selectAttributes',JSON.stringify(newSelectedAttributes))
@@ -220,12 +222,11 @@ const SingleProduct = () => {
     //   100
     // ).toFixed(0);
     // setDiscountProductPrice(Number(ProductDiscountPrice));
-    
-   
   };
 
   // watchlist delete api integrate
   const handleWatchlistToggle = async (product) => {
+   
     if (isLoggedIn) {
       if (watchlist.includes(product.id)) {
         await axios
@@ -244,8 +245,17 @@ const SingleProduct = () => {
           })
           .catch((error) => console.log("error", error));
       } else {
-        const productTitle = product.title?.rendered || "Default Title";
+        const productTitle = product?.name || "Default Title";
         const productImage = product.yoast_head_json?.og_image?.[0]?.url || "";
+        // let ProductPrice = selectedAttributes === undefined ? product.variations.map((price)=>price.price) : product.price
+        // console.log("select",product,selectedAttributes)
+        // if(selectedAttributes === undefined){
+        //   // console.log("pro",product.variations.Object.values())
+        //     ProductPrice = 
+        // }else{
+        //   ProductPrice = ;
+        // }
+        // console.log("ProductPrice",ProductPrice)
         await axios
           .post(
             "https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/add",
@@ -384,6 +394,7 @@ const SingleProduct = () => {
 
   // product addtocart api  integrate
   const handleAddToCartApi = async (product, userData) => {
+    // console.log("product",product.price)
     axios
       .post(`https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`, {
         user_id: userData.user_id,
@@ -397,6 +408,7 @@ const SingleProduct = () => {
         selected_attribute: selectedAttributes,
       })
       .then((res) => {
+        console.log("res",res)
         toast.success("product added to cart successfully!");
         addToCartListProduct(product.id, selectedAttributes, getUserData);
       })
@@ -583,7 +595,6 @@ const SingleProduct = () => {
                           </div>
                         ) : (
                           <div className="variation-buttons">
-                            
                             {variations.map((value, index) => {
                               // console.log("value---",selectedAttributes,Object.values(value.attributes)[0])
                               return (
@@ -639,6 +650,7 @@ const SingleProduct = () => {
               </div>
               <div className="btn-icon-main">
                 <div>
+                {/* {console.log("pridu",product)} */}
                   <button
                     className={`add-to-cart-btn ${stockStatus === "outofstock" ? "disable-button" : ""
                       }`}
@@ -650,8 +662,7 @@ const SingleProduct = () => {
                 </div>
                 <div>
                   <span
-                    className={`like-icon ${!watchlist.includes(product.id) ? "" : "inactive-heart"
-                      }`}
+                    className={`like-icon ${!watchlist.includes(product.id) ? "" : "inactive-heart" }`}
                     onClick={() => handleWatchlistToggle(product)}
                   >
                     {watchlist.includes(product.id) ? (
