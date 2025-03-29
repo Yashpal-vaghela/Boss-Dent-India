@@ -22,7 +22,7 @@ const SingleProduct = () => {
   const [salePrice, setSalePrice] = useState(null);
   const [regularPrice, setRegularPrice] = useState(null);
   const [variations, setVariations] = useState([]);
-  const [selectedAttributes, setSelectedAttributes] = useState(null);
+  const [selectedAttributes, setSelectedAttributes] = useState([]);
   const [stockStatus, setStockStatus] = useState("unknown");
   const {
     watchlist,
@@ -76,7 +76,7 @@ const SingleProduct = () => {
       );
 
       setProduct(response.data);
-      console.log("Product Response:", response.data);
+      // console.log("Product Response:", response.data);
 
       // Preload the main product image
       if (response.data.yoast_head_json?.og_image?.[0]?.url) {
@@ -123,7 +123,7 @@ const SingleProduct = () => {
         );
 
         const shuffledProducts = relatedProductsResponse.data.sort(() => 0.5 - Math.random());
-
+        // console.log("shuff",shuffledProducts)
         const productWithDiscount = shuffledProducts.map((product) => {
           const regularPrice = parseFloat(product.regular_price);
           const salePrice = parseFloat(product.price);
@@ -179,6 +179,7 @@ const SingleProduct = () => {
     salePrice,
     RegularPrice
   ) => {
+    // console.log("attribute",attribute,value)
     if(attribute && value){
       const newSelectedAttributes = {
         ...selectedAttributes,
@@ -204,7 +205,7 @@ const SingleProduct = () => {
       setSelectedAttributes(null);
     }
     setSelectedColor(value);
-    console.log("attr",attribute,value,salePrice,RegularPrice)
+    // console.log("attr",attribute,value,salePrice,RegularPrice)
   
     // localStorage.setItem('selectAttributes',JSON.stringify(newSelectedAttributes))
     // console.log("variations", selectedVariation)
@@ -272,7 +273,7 @@ const SingleProduct = () => {
 
   // Addtocart product and related product api integrate
   const handleAddToCart = async (e, relatedProduct) => {
-    console.log("asd",stockStatus)
+    // console.log("asd",stockStatus)
     e.preventDefault();
     if (isLoggedIn) {
       if (stockStatus === "instock") {
@@ -498,7 +499,7 @@ const SingleProduct = () => {
             <div className="single-product-details">
               <h2 className="single-product-title">{product?.name}</h2>
               <h3 className="single-product-price align-item-center justify-contents-center">
-                {console.log("variat", variations)}
+                {/* {console.log("variat", variations)} */}
                 {variations.length > 0 ? (
                   <>
                     <span className="sale-price">
@@ -536,6 +537,7 @@ const SingleProduct = () => {
                 Stock Status:{" "}
                 <span>{stockStatus === "instock" ? "In Stock" : "Out of Stock"}</span>
               </h4>
+              {/* {console.log("variations",variations)} */}
               {variations.length > 0 &&
                 Object.keys(variations[0]?.attributes || {}).map(
                   (attribute, index) => {
@@ -549,9 +551,10 @@ const SingleProduct = () => {
                         </h4>
 
                         {/* color theme */}
-                        {attribute === "pa_color" || attribute === "color" ? (
+                        {attribute === "pa_color" || attribute === "color"    ? (
                           <div style={{ display: "flex" }}>
                             {variations.map((color, index) => {
+                              // {console.log("value",color,selectedAttributes)}
                               return (
                                 <div
                                   className={`color-option ${Object.values(color.attributes)[0]
@@ -576,12 +579,14 @@ const SingleProduct = () => {
                           </div>
                         ) : (
                           <div className="variation-buttons">
+                            
                             {variations.map((value, index) => {
+                              // console.log("value---",value,attribute,Object.values(value.attributes)[0])
                               return (
                                 <button
                                   key={index}
-                                  className={`variation-button ${selectedAttributes[attribute] ===
-                                    Object.values(value.attributes)[0]
+                                  className={`variation-button ${Object.values(value.attributes)[0]}
+                                  ${Object.values(value.attributes)[0]
                                     ? "selected"
                                     : ""
                                     }`}
@@ -589,7 +594,7 @@ const SingleProduct = () => {
                                     handleAttributeSelect(
                                       attribute,
                                       Object.values(value.attributes)[0],
-                                      "",
+                                      Object.keys(value.attributes)[0],
                                       value.sale_price,
                                       value.regular_price
                                     )
