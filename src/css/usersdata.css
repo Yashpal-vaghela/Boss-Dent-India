@@ -101,7 +101,7 @@
 }
 .user-details-form div {
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
 }
 .user-details-form label {
@@ -871,4 +871,10 @@
   .order-content .date-section {
     padding: 0px;
   }
+}
+
+
+.user_details {
+  color: black;
+  text-align: start;
 }

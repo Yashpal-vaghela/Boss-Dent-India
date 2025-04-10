@@ -8,6 +8,7 @@ import AlertSuccess from './AlertSuccess';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState([]);
     const [otp, setOtp] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -28,24 +29,33 @@ const ForgotPassword = () => {
         }
     };
 
+    const handlePhoneChange = (e) => {
+        if (phone.length !== 10) {
+          setPhone(e.target.value);
+        } else {
+          setPhone([]);
+        }
+      };
+
     const handleForgotPassword = async () => {
         setLoading(true);
         try {
+            console.log("step1");
+            
             const response = await axios.post('https://admin.bossdentindia.com/wp-json/custom/v1/forgot-password', {
-                email
+               "phone_number": phone
             });
+            console.log("step2", phone);
+            console.log("Full Response:", response.data);
             if (response.data.success) {
+                console.log("step3");
                 setLoading(false);
                 setShowAlert(true);
-                setAlertMessage('Password reset email sent successfully! Please check your inbox.');
+                setAlertMessage('Password reset phone sent successfully! Please check your inbox.');
                 setStep(2); // Move to the next step
             } else {
                 throw new Error('Failed to send reset password email');
             }
-
-            setTimeout(() => {
-                setShowAlert(false);
-            }, 3000);
         } catch (error) {
             console.error('Error sending reset password email:', error);
             alert(error.response?.data?.message || 'Error sending reset password email');
@@ -58,7 +68,7 @@ const ForgotPassword = () => {
         try {
             setLoading(true);
             const response = await axios.post('https://admin.bossdentindia.com/wp-json/custom/v1/verify-reset-otp', {
-                email,
+                "phone_number": phone,
                 otp
             });
             if (response.data.success) {
@@ -132,12 +142,12 @@ const ForgotPassword = () => {
                 <div className="step-1">
                     <h2>Forgot Password</h2>
                     <div>
-                        <label>Please enter your registered email address to receive an OTP for resetting your password.</label>
+                        <label>Please enter your registered mobile number to receive an OTP for resetting your password.</label>
                         <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter your registered email address"
+                            type="phone"
+                            value={phone || ""}
+                            onChange={(e) => handlePhoneChange(e)}
+                            placeholder="Enter your registered Mobile number"
                             required
                         />
                     </div>

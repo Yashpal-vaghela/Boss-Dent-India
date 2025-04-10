@@ -122,7 +122,8 @@ const UserData = () => {
     setNewPassword(value);
     validatePassword(value);
   };
-
+   console.log("address",user);
+   
   const handleSave = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -386,23 +387,28 @@ const UserData = () => {
                 <h2 className="section-title">Contact Details</h2>
                 <div>
                   <label>Name:</label>
-                  <input type="text" value={user.username} readOnly />
+                  {/* <input type="text" value={user.username} readOnly /> */}
+                  <div className="user_details ">{user.username || "user Name not found"}</div>
                 </div>
                 <div>
                   <label>Email:</label>
-                  <input
+                  {/* <input
                     type="email"
                     value={user.email || "Email not available"}
                     readOnly
-                  />
+                  /> */}
+
+                <div className="user_details ">{user.email  || "Email not available"}</div>
                 </div>
                 <div>
                   <label>Contact Number:</label>
-                  <input
+                  {/* <input
                     type="number"
-                    value={contactNumber}
+                    value={user.contactNumber || "Contact number not available"}
                     onChange={(e) => setContactNumber(e.target.value)}
-                  />
+                  /> */}
+                  
+                  <div className="user_details ">{user.contactNumber || "Contact number not available"}</div>
                 </div>
                 <div>
                   <label>Gender:</label>
@@ -413,6 +419,7 @@ const UserData = () => {
                         value="male"
                         checked={gender === "male"}
                         onChange={(e) => setGender(e.target.value)}
+                        className="user_details"
                       />
                       Male
                     </label>
