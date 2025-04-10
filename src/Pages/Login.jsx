@@ -60,7 +60,7 @@ const Login = () => {
       };
       LoginUserCartList(response.data.user_id, {});
       LoginUserWatchList(response.data.user_id, {});
-      // console.log("res==",response,ObjectUserData)
+      // console.log("res==",response)
       localStorage.setItem("token", token);
       localStorage.setItem("UserData", JSON.stringify(ObjectUserData));
       // localStorage.setItem("user_id", userId);

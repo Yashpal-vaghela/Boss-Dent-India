@@ -84,7 +84,7 @@ const Signup = () => {
         setLoading(false);
         setStep(2);
         setAlertMessage(
-          "Registration successful. Please check your email for the OTP."
+          "Registration successful. Please check your Whatsapp for the OTP."
         );
       }
     } catch (error) {
@@ -120,10 +120,19 @@ const Signup = () => {
       if (loginResponse.status === 200) {
         const token = loginResponse.data.token;
         localStorage.setItem("token", token);
+        const ObjectUserData = {
+          user_display_name: loginResponse.data.user_display_name,
+          user_email: loginResponse.data.user_email,
+          user_id: loginResponse.data.user_id,
+        };
+        localStorage.setItem("UserData", JSON.stringify(ObjectUserData));
+        localStorage.setItem("username",username );
+        localStorage.setItem("password", password);
         Swal.fire({
           icon: "success",
           title: "Login Successful",
           text: "You are now logged in.",
+          timer: 2000,
           showConfirmButton: false,
         });
         navigate("/");
@@ -135,6 +144,7 @@ const Signup = () => {
         icon: "error",
         title: "Error",
         text: "Login Failed. Please try again.",
+        timer: 2000,
         showConfirmButton: true,
       });
     }
@@ -147,13 +157,20 @@ const Signup = () => {
         "https://admin.bossdentindia.com/wp-json/custom/v1/verify-otp",
         {
           email,
+          "phone_number": phone,
           otp,
         }
       );
 
       if (response.status === 200) {
         setLoading(false);
-        setAlertMessage("OTP verified successfully. Loggin in....");
+        Swal.fire({
+          icon:"success",
+          title: "Verified!",
+          text: "Your OTP has been successfully verified. Logging you in...",
+          showConfirmButton: false,
+          timer: 2000,
+        })
         await handleLogin();
       }
     } catch (error) {
@@ -161,8 +178,8 @@ const Signup = () => {
       console.error("Error verifying OTP:", error);
       Swal.fire({
         icon: "error",
-        title: "Error",
-        text: "OTP verification failed.",
+        title: "Verification Failed",
+        text: "The OTP entered is incorrect or expired. Please try again.",
         showConfirmButton: true,
       });
     }
@@ -174,13 +191,13 @@ const Signup = () => {
       const response = await axios.post(
         "https://admin.bossdentindia.com/wp-json/custom/v1/resend-otp",
         {
-          email,
+          "phone_number": phone,
         }
       );
 
       if (response.status === 200) {
         setLoading(false);
-        setAlertMessage("OTP has been resent. Please check your email.");
+        setAlertMessage("OTP has been resent. Please check your Whatsapp.");
       }
     } catch (error) {
       setLoading(false);
@@ -207,7 +224,7 @@ const Signup = () => {
           <>
             <h2 className="signup-title">Sign Up</h2>
             {alertMessage && (
-              <AlertSuccess message="Otp sent in your email succesfully." />
+              <AlertSuccess message="Otp has been sent to your WhatsApp! Please check and verify." />
             )}
             {step === 1 ? (
               <form className="signup-form" onSubmit={handleSubmit}>
@@ -336,7 +353,7 @@ const Signup = () => {
                   </label>
                   <small className="form-text">
                     A one-time password (OTP) has been sent to{" "}
-                    <span className="from-txt-otp">{email}</span>. Please enter
+                    <span className="from-txt-otp">{phone}</span> Number. Please enter
                     it above to complete your registration.
                   </small>
                   <input
