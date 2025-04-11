@@ -13,7 +13,7 @@ import OrderDetails from "../component/OrderDetails";
 const UserData = () => {
   const [user, setUser] = useState(null);
   const [selectedSection, setSelectedSection] = useState("welcome");
-  const [contactNumber, setContactNumber] = useState("");
+  // const [contactNumber, setContactNumber] = useState("");
   const [gender, setGender] = useState("");
   const [address, setAddress] = useState([]);
   const [oldPassword, setOldPassword] = useState("");
@@ -78,7 +78,7 @@ const UserData = () => {
         handleOrderApiData(a, userDetailData);
         localStorage.removeItem("userSidebar");
       }
-      setContactNumber(userDetailData.contactNumber || "");
+      // setContactNumber(userDetailData.contactNumber || "");
       setGender(userDetailData.gender || "");
 
       // Fetch address data
@@ -133,7 +133,7 @@ const UserData = () => {
     }
 
     const userData = {
-      contactNumber,
+      // contactNumber,
       gender,
     };
 

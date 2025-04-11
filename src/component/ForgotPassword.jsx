@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
@@ -29,6 +29,19 @@ const ForgotPassword = () => {
         }
     };
 
+    useEffect(() => {
+        // Replace with your actual backend endpoint
+        axios.get('/api/get-email') // e.g., http://localhost:8000/api/get-email
+          .then(response => {
+            if (response.data.email) {
+              setEmail(response.data.email);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching email:', error);
+          });
+      }, []);
+
     const handlePhoneChange = (e) => {
         if (phone.length !== 10) {
           setPhone(e.target.value);
@@ -54,11 +67,11 @@ const ForgotPassword = () => {
                 setAlertMessage('Password reset phone sent successfully! Please check your inbox.');
                 setStep(2); // Move to the next step
             } else {
-                throw new Error('Failed to send reset password email');
+                throw new Error('Failed to send reset password Whatsapp');
             }
         } catch (error) {
-            console.error('Error sending reset password email:', error);
-            alert(error.response?.data?.message || 'Error sending reset password email');
+            console.error('Error sending reset password Whatsapp:', error);
+            alert(error.response?.data?.message || 'Error sending reset password Whatsapp');
         } finally {
             setLoading(false);
         }
@@ -95,8 +108,10 @@ const ForgotPassword = () => {
     const handleChangePassword = async () => {
         setLoading(true);
         try {
+            console.log("email ==>", phone);
+            
             const response = await axios.post('https://admin.bossdentindia.com/wp-json/custom/v1/reset-password', {
-                email,
+                "phone_number": phone,  
                 password: newPassword
             });
             if (response.data.success) {
@@ -168,7 +183,7 @@ const ForgotPassword = () => {
 
             {step === 2 && (
                 <div className="step-2" data-aos="fade">
-                    <label>Enter the OTP sent to your registered email address:</label>
+                    <label>Enter the OTP sent to your registered whatsapp address:</label>
                     <div>
                         <input
                             type="text"
