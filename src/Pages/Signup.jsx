@@ -23,16 +23,35 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const validatePassword = (value) => {
-    const strongPasswordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!strongPasswordRegex.test(value)) {
-      setError(
-        "Create a strong password: min 8 characters, uppercase, lowercase, number, special character"
-      );
-    } else {
-      setError("");
+    const errors = [];
+
+    if (value.length < 8) {
+        errors.push("at least 8 characters");
     }
-  };
+
+    if (!/[A-Z]/.test(value)) {
+        errors.push("an uppercase letter");
+    }
+
+    if (!/[a-z]/.test(value)) {
+        errors.push("a lowercase letter");
+    }
+
+    if (!/\d/.test(value)) {
+        errors.push("a number");
+    }
+
+    if (!/[@$!%*?&]/.test(value)) {
+        errors.push("a special character (@$!%*?&)");
+    }
+
+    if (errors.length > 0) {
+        setPasswordError(`Password must contain ${errors.join(", ")}.`);
+    } else {
+        setPasswordError('');
+    }
+};
+
 
   const handlePasswordChange = (e) => {
     const value = e.target.value;

@@ -107,16 +107,35 @@ const UserData = () => {
   }, [fetchUserData]);
 
   const validatePassword = (value) => {
-    const strongPasswordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!strongPasswordRegex.test(value)) {
-      setPasswordError(
-        "Create a strong password with 8 characters,  uppercase, lowercase, number, and special character"
-      );
-    } else {
-      setPasswordError("");
+    const errors = [];
+
+    if (value.length < 8) {
+        errors.push("at least 8 characters");
     }
-  };
+
+    if (!/[A-Z]/.test(value)) {
+        errors.push("an uppercase letter");
+    }
+
+    if (!/[a-z]/.test(value)) {
+        errors.push("a lowercase letter");
+    }
+
+    if (!/\d/.test(value)) {
+        errors.push("a number");
+    }
+
+    if (!/[@$!%*?&]/.test(value)) {
+        errors.push("a special character (@$!%*?&)");
+    }
+
+    if (errors.length > 0) {
+        setPasswordError(`Password must contain ${errors.join(", ")}.`);
+    } else {
+        setPasswordError('');
+    }
+};
+
   const handlePasswordChange = (e) => {
     const value = e.target.value;
     setNewPassword(value);
@@ -239,6 +258,9 @@ const UserData = () => {
         toast.success("Logged in successfully with the new password!");
       } else {
         toast.error("Automatic login failed. Please log in manually.");
+        setTimeout(() =>{
+          navigate('/my-account');
+      }, 2000);
       }
     } catch (error) {
       console.error("Error changing password:", error);

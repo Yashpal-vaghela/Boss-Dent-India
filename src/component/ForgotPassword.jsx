@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
@@ -7,7 +7,6 @@ import AlertSuccess from './AlertSuccess';
 // import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
-    const [email, setEmail] = useState('');
     const [phone, setPhone] = useState([]);
     const [otp, setOtp] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -21,26 +20,35 @@ const ForgotPassword = () => {
     const navigate = useNavigate();
 
     const validatePassword = (value) => {
-        const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-        if (!strongPasswordRegex.test(value)) {
-            setPasswordError('Create a strong password: min 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character');
+        const errors = [];
+    
+        if (value.length < 8) {
+            errors.push("at least 8 characters");
+        }
+    
+        if (!/[A-Z]/.test(value)) {
+            errors.push("an uppercase letter");
+        }
+    
+        if (!/[a-z]/.test(value)) {
+            errors.push("a lowercase letter");
+        }
+    
+        if (!/\d/.test(value)) {
+            errors.push("a number");
+        }
+    
+        if (!/[@$!%*?&]/.test(value)) {
+            errors.push("a special character (@$!%*?&)");
+        }
+    
+        if (errors.length > 0) {
+            setPasswordError(`Password must contain ${errors.join(", ")}.`);
         } else {
             setPasswordError('');
         }
     };
-
-    useEffect(() => {
-        // Replace with your actual backend endpoint
-        axios.get('/api/get-email') // e.g., http://localhost:8000/api/get-email
-          .then(response => {
-            if (response.data.email) {
-              setEmail(response.data.email);
-            }
-          })
-          .catch(error => {
-            console.error('Error fetching email:', error);
-          });
-      }, []);
+    
 
     const handlePhoneChange = (e) => {
         if (phone.length !== 10) {
@@ -115,21 +123,29 @@ const ForgotPassword = () => {
                 password: newPassword
             });
             if (response.data.success) {
+                const username = response.data.username;
+                const password = response.data.password;
                 setAlertMessage('Password changed successfully!');
                 setLoading(false);
                 setShowAlert(true);
-                // setAlertMessage('OTP verified successfully! You can now reset your password.');
-                // setTimeout(() => {
-                //     navigate('/my-account');
-                // }, 3000)
-                // navigate('/my-account');
+                
+                const loginResponse = await axios.post(
+                    "https://admin.bossdentindia.com/wp-json/jwt-auth/v1/token",
+                    {
+                        username,
+                        password
+                    }
+                );
+                const token = loginResponse.data.token;
+                localStorage.setItem("token", token);
+                localStorage.setItem("password", password)
             } else {
                 throw new Error('Failed to change password');
             }
             setTimeout(() =>{
                 setShowAlert(false);
-                navigate('/my-account');
-            }, 3000);
+                navigate('/');
+            }, 2000);
         } catch (error) {
             console.error('Error changing password:', error);
             setError(error.response?.data?.message || 'Failed to change password');
