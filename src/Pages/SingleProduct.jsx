@@ -38,7 +38,7 @@ const SingleProduct = () => {
   const navigate = useNavigate();
   const [selectedColor, setSelectedColor] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [discountProductPrice, setDiscountProductPrice] = useState(null);
+  // const [discountProductPrice, setDiscountProductPrice] = useState(null);
   const [largeImageLoaded, setLargeImageLoaded] = useState(false);
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
 

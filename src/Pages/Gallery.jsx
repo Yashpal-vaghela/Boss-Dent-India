@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import BreadCrumbs from "../component/BreadCrumbs";
 // import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";

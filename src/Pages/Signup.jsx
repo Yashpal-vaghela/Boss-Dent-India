@@ -108,7 +108,7 @@ const Signup = () => {
       }
     } catch (error) {
       setLoading(false);
-      console.error("Error signing up:", error);
+      setError(error)
       let errorMessage = "Registration failed.";
       if (error.response && error.response.data) {
         const serverError = error.response.data;
