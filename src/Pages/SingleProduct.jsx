@@ -67,6 +67,15 @@ const SingleProduct = () => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    console.log("id",id)
+    if (id) {
+      fetchProduct();
+    }
+    handleAttributeSelect()
+  }, [id]);
+
   // fetch single product ,stock status and weight api integrate
   const fetchProduct = async () => {
     setLoading(true);
@@ -88,8 +97,8 @@ const SingleProduct = () => {
       let maxSalePrice = null;
 
       // Extract sale price range from variations
-      if (response.data.variations && response.data.variations.length > 0) {
-        // console.log("response-variations",response.data.variations)
+      if (response.data.variations && response.data.variations.length > 0 ) {
+        console.log("response-variations",response.data.variations)
         setVariations(response.data.variations);
         // console.log("res",response.data)
         // Extract sale prices, convert them to numbers, and filter valid values
@@ -103,6 +112,10 @@ const SingleProduct = () => {
         } else {
           console.warn("No valid sale prices found.");
         }
+      }
+      
+      if(response.data.variations === null){
+        setVariations([])
       }
 
       // Fallback to main product price if variations are missing or incorrect
@@ -151,14 +164,6 @@ const SingleProduct = () => {
     }
   };
 
-
-  useEffect(() => {
-    if (id) {
-      fetchProduct();
-    }
-    handleAttributeSelect()
-  }, [id]);
-
   useEffect(() => {
     const img = new Image();
     img.src = product.yoast_head_json?.og_image?.[0]?.url || "";
@@ -181,7 +186,7 @@ const SingleProduct = () => {
     salePrice,
     RegularPrice
   ) => {
-    console.log("attribute",attribute,value,keys,salePrice,RegularPrice)
+    // console.log("attribute",attribute,value,keys,salePrice,RegularPrice)
     if(attribute && value){
       const newSelectedAttributes = {
         ...selectedAttributes,
@@ -408,7 +413,6 @@ const SingleProduct = () => {
         selected_attribute: selectedAttributes,
       })
       .then((res) => {
-        console.log("res",res)
         toast.success("product added to cart successfully!");
         addToCartListProduct(product.id, selectedAttributes, getUserData);
       })
