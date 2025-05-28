@@ -13,11 +13,11 @@ const HomeProductCategory = () => {
       src_slug: "/products?category=75",
       cat_title: "General Dentistry",
     },
-    {
-      src: "/asset/images/vinsimle.png",
-      src_slug: "/products?category=127",
-      cat_title: "Vincismile",
-    },
+    // {
+    //   src: "/asset/images/vinsimle.png",
+    //   src_slug: "/products?category=127",
+    //   cat_title: "Vincismile",
+    // },
     {
       src: "/asset/images/retractornew.png",
       src_slug: "/products?category=125",
