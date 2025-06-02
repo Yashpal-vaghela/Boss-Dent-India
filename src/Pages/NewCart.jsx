@@ -109,7 +109,7 @@ const NewCart = () => {
     // }
   };
 
-  const grandTotal = CartgetTotal?.total_price + deliveryCharge;
+  const grandTotal = (CartgetTotal?.total_price || 0) + (deliveryCharge || 0);
 
   const handleImageLoad = (productId) => {
     setImageLoading((prevState) => ({

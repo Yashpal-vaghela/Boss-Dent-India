@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import BreadCrumbs from "../component/BreadCrumbs";
@@ -10,6 +11,8 @@ import { toast } from "react-toastify";
 import Success from "./success";
 import { useWatchlist } from "./WatchlistContext";
 import "../css/checkout.css";
+import Swal from "sweetalert2";
+// import withReactContent from "sweetalert2-react-content";
 
 const checkoutSchema = yup.object().shape({
   first_name: yup.string().required("First Name field is required"),
@@ -33,6 +36,39 @@ const CheckOut = () => {
   const { removeFromCartListProduct } = useWatchlist();
   const deliveryChargData = localStorage.getItem("deliveryCharge");
   const [coupon, setCoupon] = useState("");
+  const [applycouponCode, setApplyCouponCode] = useState("");
+  // const [selectCoupon, setSelectCoupon] = useState([]);
+  const [selectCouponAmount, setSelectCouponAmount] = useState(0);
+  const [offers, setOffers] = useState([
+    {
+      title: "Flat 10% Discount",
+      desc: "Get flat 10% Discount on your order above ₹2500",
+      code: "BOSS10",
+      tag: "Get up to 10% off with this code",
+      tagColor: "#00bcd4",
+    },
+    {
+      title: "Flat 12% Discount",
+      desc: "Get upon ₹4000 flat 12% Discount on your order",
+      code: "BOSS12",
+      tag: "Get up to 12% off with this code",
+      tagColor: "#2196f3",
+    },
+    {
+      title: "Flat 15% Discount",
+      desc: "Get flat 15% Discount on your order upon ₹5000",
+      code: "BOSS15",
+      tag: "Get up to 15% off with this code",
+      tagColor: "#2196f3",
+    },
+    {
+      title: "Flat 20% Discount",
+      desc: "Get flat 20% Discount on your order above ₹10000",
+      code: "BOSS20",
+      tag: "Get up to 20% off with this code",
+      tagColor: "#2196f3",
+    },
+  ]);
   const [couponError, setCouponError] = useState("");
   const [paymentMethod] = useState("PhonePe");
   const [States, setStates] = useState([]);
@@ -41,12 +77,13 @@ const CheckOut = () => {
   const token = localStorage.getItem("token");
   const [getCartData] = useState(JSON.parse(localStorage.getItem("cart")));
   const [cartTotal] = useState(getCartData?.cart_total.total_price);
-  const [finalTotal, setFinalTotal] = useState();
-  const [discountAmount, setDiscountAmount] = useState();
+  const [finalTotal, setFinalTotal] = useState("");
+  const [discountAmount, setDiscountAmount] = useState(0);
   const [HandleSubmit, setHandleSubmit] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
+
   const getCoupon = async () => {
     // setLoading(true)
     await axios
@@ -58,7 +95,6 @@ const CheckOut = () => {
       })
       .catch((err) => {
         setLoading(false);
-        console.log("err", err);
       });
   };
 
@@ -67,39 +103,147 @@ const CheckOut = () => {
     getCoupon();
   }, []);
 
-  const handleApplyCouponCode = () => {
-    const filtercoupon = getCouponData.filter(
-      (item) => item.post_title === coupon
-    );
-
-    if (filtercoupon && finalTotal > 2000) {
-      const total = finalTotal - (finalTotal * 10) / 100;
-      const discount = finalTotal - total;
-      setDiscountAmount(discount.toFixed(2));
-      setFinalTotal(total);
-      setCouponError("");
-    } else {
-      setCouponError(
-        `${coupon} discount code apply on only more than ₹2000 price.`
+  const handleApplyCouponCode = (code, apply) => {
+    if (apply !== undefined) {
+      const filtercoupon = getCouponData.filter(
+        (item) => item.post_title == code
       );
+      if(filtercoupon.length !== 0){
+        if(Number(filtercoupon[0].minimum_spend) <= finalTotal){
+          const ApplyCoupon = filtercoupon.map((item)=> finalTotal - (finalTotal * Number(item.coupon_amount)) / 100);
+          const discount = finalTotal - ApplyCoupon[0];
+          setDiscountAmount(discount.toFixed(2));
+          setApplyCouponCode(coupon);
+          setCoupon(coupon);
+          setFinalTotal(ApplyCoupon[0]);
+          setCouponError(null);
+          setSelectCouponAmount(Number(filtercoupon[0].coupon_amount))
+        }else{
+            // setDiscountAmount(0);
+            // setApplyCouponCode("");
+            // setFinalTotal(getCartData?.cart_total.total_price)
+            setCouponError(
+              `${coupon} discount code apply on only more than ₹${filtercoupon[0].minimum_spend} price.`
+            );
+        }
+      }else{
+        setCouponError( `${coupon} discount code not valid.` );
+      }
+   
+    } else {
+      setApplyCouponCode(code);
+      setCoupon(code);
+      const filterdata = getCouponData.filter(
+        (item) => Number(item.minimum_spend) <= finalTotal
+      );
+      const s = filterdata.filter((item) => item.post_title == code);
+      const maxValue = Math.max(...s.map((item) => Number(item.coupon_amount)));
+      setSelectCouponAmount(maxValue);
+      if (discountAmount !== 0) {
+        let finalTotal1 = getCartData?.cart_total.total_price;
+        const discount = finalTotal1 - (finalTotal1 * maxValue) / 100;
+        const finaldiscount = finalTotal1 - discount;
+        setDiscountAmount(finaldiscount.toFixed(2));
+        setFinalTotal(discount);
+      } else {
+        const discount = finalTotal - (finalTotal * maxValue) / 100;
+        const finaldiscount = finalTotal - discount;
+        setFinalTotal(discount);
+        setDiscountAmount(finaldiscount.toFixed(2));
+      }
+      Swal.close();
     }
+  };
+  const handleModal = () => {
+    const html = `
+      <div class="offer-container">
+        <input placeholder="Enter Promocode" class="promo-input" />
+          ${offers
+            .map(
+              (offer, index) => `
+              <div class="offer-card ${
+                offer.active !== true ? "disable" : null
+              }">
+                <div class="offer-details text-start">
+                  <div class="offer-title">${offer.title}</div>
+                  <p class="offer-desc">${offer.desc}</p>
+                  <div class="offer-code">${offer.code}</div>
+                  <span class="offer-tag">${offer.tag}</span>
+                </div>
+                <div class="offer-apply">
+                  <button class="apply-btn" data-code="${
+                    offer.code
+                  }" data-index="${index}">Apply</button>
+                </div>
+              </div>`
+            )
+            .join("")}
+      </div>
+    `;
+
+    Swal.fire({
+      title: "All Offers for you",
+      html: html,
+      showConfirmButton: false,
+      showCloseButton: true,
+      width: 620,
+      didOpen: () => {
+        const container = Swal.getHtmlContainer();
+        const buttons = container.querySelectorAll(".apply-btn");
+        buttons.forEach((btn) => {
+          const code = btn.getAttribute("data-code");
+          btn.addEventListener("click", () => handleApplyCouponCode(code));
+        });
+      },
+      customClass: {
+        popup: "offer-popup",
+      },
+    });
   };
   useEffect(() => {
     setFinalTotal(
       getCartData?.cart_total.total_price + Number(deliveryChargData)
     );
-    if (coupon) {
-      handleApplyCouponCode();
+    const filterdata = getCouponData.filter(
+      (item) => Number(item.minimum_spend) <= finalTotal
+    );
+    if (filterdata.length !== 0) {
+      const maxValue = Math.max(
+        ...filterdata.map((item) => Number(item.coupon_amount))
+      );
+      const maxItems = filterdata.filter(
+        (item) => Number(item.coupon_amount) === maxValue
+      );
+      const updatedB = offers.map((item) => {
+        const isMatch = filterdata.find(
+          (coupon) => coupon.post_title === item.code
+        );
+        return {
+          ...item,
+          active: !!isMatch, // true if match found, false otherwise
+        };
+      });
+      setOffers(updatedB);
+      if(maxItems.length !== 0 ){
+        setApplyCouponCode(maxItems[0].post_title);
+        setCoupon(maxItems[0].post_title)
+      }
+      setSelectCouponAmount(maxValue);
+      const discount = finalTotal - (finalTotal * maxValue) / 100;
+      const finaldiscount = finalTotal - discount;
+      setDiscountAmount(finaldiscount.toFixed(2));
     }
-  }, [cartTotal, deliveryChargData]);
+    // setSelectCoupon(filterdata);
+    // if (coupon) {
+    //   handleApplyCouponCode();
+    // }
+  }, [cartTotal, deliveryChargData, getCouponData]);
 
   // const handlePaymentSelect = (method) => {
   //   setPaymentMethod(method);
   // };
 
-  // new form validation
   const initialValues = {
-    // name: "",
     first_name: "",
     last_name: "",
     email: "",
@@ -116,7 +260,6 @@ const CheckOut = () => {
     validateOnChange: true,
     validateOnBlur: false,
     onSubmit: async () => {
-      // console.log("finalsubmit", paymentMethod, getCartData,HandleSubmit,getCartData,formik?.values);
       if (paymentMethod && HandleSubmit === true) {
         try {
           setLoading(true);
@@ -137,7 +280,7 @@ const CheckOut = () => {
                   quantity: Number(item?.product_quantity),
                   selected_attribute: item?.selected_attribute,
                 })),
-                shipping_charge:deliveryChargData,
+                shipping_charge: deliveryChargData,
                 user_id: getUserData.user_id,
               }),
             }
@@ -150,7 +293,6 @@ const CheckOut = () => {
           } else {
             setLoading(false);
           }
-
           const orderData = await orderResponse.json();
           const newOrderId = orderData.orderId.toString();
           setOrderId(newOrderId);
@@ -176,12 +318,6 @@ const CheckOut = () => {
 
             if (!paymentResponse.ok) {
               const paymentErrorText = await paymentResponse.text();
-              // console.error(
-              //   "Payment response error text:",
-              //   paymentErrorText,
-              //   "paymentResponse",
-              //   paymentResponse
-              // );
               throw new Error("Failed to initiate payment.");
             }
 
@@ -217,13 +353,16 @@ const CheckOut = () => {
   //Applied coupon code
   const handleCouponChange = (e) => {
     setCoupon(e.target.value);
-    setCouponError("");
+    // setCouponError(null);
   };
 
   const handleRemoveCoupon = () => {
-    setDiscountAmount("");
+    setDiscountAmount(0);
+    setApplyCouponCode("");
     setCoupon("");
-    setCouponError("");
+    setCouponError(null);
+    setSelectCouponAmount(0);
+    setFinalTotal(getCartData?.cart_total.total_price);
   };
 
   if (paymentSuccess) {
@@ -516,9 +655,7 @@ const CheckOut = () => {
                         </>
                       )}
                     </div>
-                    <div
-                      className="order-coupon-code"
-                    >
+                    <div className="order-coupon-code">
                       <input
                         className="form-control w-75"
                         type="text"
@@ -527,23 +664,67 @@ const CheckOut = () => {
                         value={coupon || ""}
                         onChange={handleCouponChange}
                       ></input>
-
                       <button
                         className="btn btn-ApplyCouponCode"
-                        onClick={handleApplyCouponCode}
+                        onClick={() => handleApplyCouponCode(coupon, "apply")}
                       >
                         Apply
                       </button>
                     </div>
-                    {couponError && (
+                    {couponError !== null && (
                       <span className="text-danger">{couponError}</span>
                     )}
+
+                    {selectCouponAmount !== 0 ? (
+                      <>
+                        <div className="selectcouponWrapper d-flex align-items-center justify-content-between ">
+                          <p className="mb-0">
+                            <b>{selectCouponAmount}%</b> offers available for
+                            you
+                          </p>
+                          <button
+                            className="btn btn-viewMore"
+                            onClick={handleModal}
+                          >
+                            view All
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <></>
+                    )}
+
+                    {/* {selectCoupon.length > 1 ? (
+                      <div>
+                        <p>Please apply this coupon code</p>
+                        <span className="d-flex align-items-center mx-2 ">
+                          {selectCoupon.map((item) => (
+                            <p
+                              className="px-1 mt-0 mb-0 mx-1"
+                              style={{
+                                backgroundColor: "#333",
+                                borderRadius: "4px",
+                                textAlign: "center",
+                                color: "#fff",
+                                padding: "3px 3px",
+                                width: "fit-content",
+                                borderBottom: "0px",
+                              }}
+                            >
+                              {item.post_title}
+                            </p>
+                            // <span>{item.post_title}</span>
+                          ))}
+                        </span>
+                      </div>
+                    ) : null} */}
+                    {/* {filtercoupon} */}
                     <div className="order-summary-total mb-4">
                       <div className="d-flex justify-content-between ">
                         <h6 className="order_title">Subtotal</h6>
                         <p>₹{getCartData?.cart_total.total_price}.00</p>
                       </div>
-                      {discountAmount && (
+                      {discountAmount !== 0 && (
                         <div className="d-flex justify-content-between">
                           <div className="d-block">
                             <h6
@@ -553,17 +734,18 @@ const CheckOut = () => {
                               Order discount
                             </h6>
                             <span
-                              className="d-flex align-items-center justify-content-between "
+                              className="d-flex align-items-center  "
                               style={{
                                 backgroundColor: "#333",
                                 borderRadius: "4px",
                                 textAlign: "center",
                                 color: "#fff",
                                 padding: "3px 3px",
-                                width: "60%",
+                                width: "fit-content",
+                                borderBottom: "0px",
                               }}
                             >
-                              <p className="px-1 mt-0">{coupon}</p>
+                              <p className="px-1 mt-0">{applycouponCode}</p>
                               <i
                                 className="fa-solid fa-xmark px-1"
                                 style={{ fontSize: "13px" }}
