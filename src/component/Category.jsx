@@ -147,12 +147,12 @@ const Category = (props) => {
             >
               Endo Categories
             </li>
-            <li
+            {/* <li
               className={`category ${props.category === "127" ? "active" : ""}`}
               onClick={() => props.handleCategoryClick(127)}
             >
               Vincismiles
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
