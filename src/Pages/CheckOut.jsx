@@ -109,7 +109,7 @@ const CheckOut = () => {
         (item) => item.post_title == code
       );
       if(filtercoupon.length !== 0){
-        if(Number(filtercoupon[0].minimum_spend) <= finalTotal){
+        if(Number(filtercoupon[0].minimum_spend) <= getCartData?.cart_total.total_price){
           const ApplyCoupon = filtercoupon.map((item)=> finalTotal - (finalTotal * Number(item.coupon_amount)) / 100);
           const discount = finalTotal - ApplyCoupon[0];
           setDiscountAmount(discount.toFixed(2));
