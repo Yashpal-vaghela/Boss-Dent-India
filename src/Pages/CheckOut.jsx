@@ -226,12 +226,12 @@ const CheckOut = () => {
       setOffers(updatedB);
       if(maxItems.length !== 0 ){
         setApplyCouponCode(maxItems[0].post_title);
-        setCoupon(maxItems[0].post_title)
+        // setCoupon(maxItems[0].post_title)
       }
       setSelectCouponAmount(maxValue);
-      const discount = finalTotal - (finalTotal * maxValue) / 100;
-      const finaldiscount = finalTotal - discount;
-      setDiscountAmount(finaldiscount.toFixed(2));
+      // const discount = finalTotal - (finalTotal * maxValue) / 100;
+      // const finaldiscount = finalTotal - discount;
+      // setDiscountAmount(finaldiscount.toFixed(2));
     }
     // setSelectCoupon(filterdata);
     // if (coupon) {
@@ -361,7 +361,7 @@ const CheckOut = () => {
     setApplyCouponCode("");
     setCoupon("");
     setCouponError(null);
-    setSelectCouponAmount(0);
+    // setSelectCouponAmount(0);
     setFinalTotal(getCartData?.cart_total.total_price);
   };
 
