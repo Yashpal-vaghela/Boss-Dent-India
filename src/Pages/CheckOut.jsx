@@ -151,6 +151,7 @@ const CheckOut = () => {
         setFinalTotal(discount);
         setDiscountAmount(finaldiscount.toFixed(2));
       }
+      setCouponError("");
       Swal.close();
     }
   };
