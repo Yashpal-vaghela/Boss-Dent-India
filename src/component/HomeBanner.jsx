@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
 const HomeBanner = () => {
   const [isAutoplay, setIsAutoplay] = useState(true);
   const swiperRef = useRef(null);
@@ -15,7 +14,8 @@ const HomeBanner = () => {
     "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient-drape-banner.webp",
     "https://new-product-banner.s3.ap-south-1.amazonaws.com/Mask-banner.webp",
     "https://new-product-banner.s3.ap-south-1.amazonaws.com/Reactors-banner.webp",
-    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient-bibs-banner.webp"
+    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient-bibs-banner.webp",
+    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Discount-banner.webp",
   ];
 
   useEffect(() => {
@@ -30,7 +30,9 @@ const HomeBanner = () => {
 
     // Cleanup function to remove preloads if component unmounts
     return () => {
-      document.querySelectorAll("link[rel='preload'][as='image']").forEach((link) => link.remove());
+      document
+        .querySelectorAll("link[rel='preload'][as='image']")
+        .forEach((link) => link.remove());
     };
   }, []);
 
@@ -86,11 +88,7 @@ const HomeBanner = () => {
             }}
           >
             <div className="banneer-img-main">
-              <img
-                src={bannerImages[0]}
-                alt="banner1"
-                className="banner-img"
-              />
+              <img src={bannerImages[0]} alt="banner1" className="banner-img" />
             </div>
           </Link>
         </SwiperSlide>
@@ -109,11 +107,7 @@ const HomeBanner = () => {
             }}
           >
             <div className="banneer-img-main">
-              <img
-                src={bannerImages[1]}
-                alt="banner3"
-                className="banner-img"
-              />
+              <img src={bannerImages[1]} alt="banner3" className="banner-img" />
             </div>
           </Link>
         </SwiperSlide>
@@ -127,11 +121,7 @@ const HomeBanner = () => {
             onTouchEnd={handleHoldEnd}
           >
             <div className="banneer-img-main">
-              <img
-                src={bannerImages[2]}
-                alt="banner4"
-                className="banner-img"
-              />
+              <img src={bannerImages[2]} alt="banner4" className="banner-img" />
             </div>
           </Link>
         </SwiperSlide>
@@ -145,20 +135,45 @@ const HomeBanner = () => {
             onTouchEnd={handleHoldEnd}
           >
             <div className="banneer-img-main">
-              <img
-                src={bannerImages[3]}
-                alt="banner2"
-                className="banner-img"
-              />
+              <img src={bannerImages[3]} alt="banner2" className="banner-img" />
             </div>
           </Link>
         </SwiperSlide>
+        <SwiperSlide>
+          <Link
+            to="/products"
+            className="banner-2-main"
+            onMouseDown={handleHoldStart}
+            onMouseUp={handleHoldEnd}
+            onTouchStart={handleHoldStart}
+            onTouchEnd={handleHoldEnd}
+          >
+            <div className="banneer-img-main">
+              <img src={bannerImages[4]} alt="banner2" className="banner-img" />
+            </div>
+          </Link>
+          {/* <div className="banneer-img-main">
+            <img
+              src={bannerImages[4]}
+              alt="banner5"
+              className="banner-img"
+              useMap="#btn-group-1"
+              // style={{aspectRatio:"16/5"}}
+            />
+            <map name="btn-group-1">
+              <area
+                alt="discount-banner"
+                title="Discount"
+                href="/products"
+                coords="1100,396,680,320"
+                shape="rect"
+              ></area>
+            </map>
+          </div> */}
+        </SwiperSlide>
       </Swiper>
 
-      <button
-        onClick={toggleAutoplay}
-        className="homebanner_pause_btn"
-      >
+      <button onClick={toggleAutoplay} className="homebanner_pause_btn">
         {isAutoplay ? <FaPause /> : <FaPlay />}
       </button>
     </section>
@@ -166,3 +181,8 @@ const HomeBanner = () => {
 };
 
 export default HomeBanner;
+// solve xampp software error,
+// create blog edit form design layout in ace-scan admin panel,
+// create blog fetch data according to slug in blog get api,
+// discount banner resizer and add in bossdent hero section,
+// try to apply link on grab now button inside discount banner image.
