@@ -18,6 +18,7 @@ const Signup = () => {
   const  [passwordError, setPasswordError] = useState('')
   const [otp, setOTP] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
+  const [singupalertMessage,setSingupAlertMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -77,6 +78,7 @@ const Signup = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSingupAlertMessage("You are signup successfully.");
     if (error) {
       Swal.fire({
         icon: "error",
@@ -363,9 +365,9 @@ const Signup = () => {
               </form>
             ) : (
               <form className="otp-form" onSubmit={handleVerifyOTP}>
-                {alertMessage && (
+                {/* {singupalertMessage && (
                   <AlertSuccess message="You are signup successfully." />
-                )}
+                )} */}
                 <div className="form-group">
                   <label className="form-label" htmlFor="otp">
                     Enter OTP

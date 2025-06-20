@@ -10,14 +10,14 @@ const AlertSuccess = ({ message = "Success! Your action was completed." }) => {
     setShowAlert(true);
 
     // Hide the alert after 3 seconds
-    const timer = setTimeout(() => setShowAlert(false), 2000);
+    // const timer = setTimeout(() => setShowAlert(false), 15000);
 
     // Cleanup the timer when the component unmounts
-    return () => clearTimeout(timer);
+    // return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div>
+    <div className='position-relative'>
       {showAlert && (
         <div className="success-alert">
           <FaCheckCircle className="alert-icon" />
