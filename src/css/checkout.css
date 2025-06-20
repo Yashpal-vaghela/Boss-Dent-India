@@ -286,11 +286,21 @@
   color:#4caf50;
   font-size: 12px;
   font-weight: bold;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   display: inline-block;
   width: 100%;
 }
-
+.offer-warning{
+  color: red;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap:8px;
+}
+.offer-warning i{
+  font-size: 9px;
+}
 .offer-title {
   font-weight: 700;
   margin: 5px 0;
@@ -313,9 +323,15 @@
   border-radius: 4px;
   display: inline-block;
   font-weight: 500;
+  margin: 5px auto;
 }
 .offer-apply {
   margin-left: 10px;
+}
+.offer-card.disable .offer-apply .apply-btn:hover{
+  background-color: #4caf5036;
+  border: none;
+  color: #fff;
 }
 .offer-apply .apply-btn:hover{
   background-color: #fff;

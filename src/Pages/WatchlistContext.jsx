@@ -87,7 +87,11 @@ export const WatchlistProvider = ({ children }) => {
         //   "cart_productId",
         //   JSON.stringify(updateCartList)
         // );
-        localStorage.setItem("cart_productId", Number(updateCartList));
+        console.log("update",updateCartList)
+        if(updateCartList){
+           localStorage.setItem("cart_productId",  JSON.stringify(updateCartList));
+        }
+       
         return (updateCartList);
       }
       return prevCartlist;

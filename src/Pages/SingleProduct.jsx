@@ -69,7 +69,7 @@ const SingleProduct = () => {
   }, []);
 
   useEffect(() => {
-    console.log("id",id)
+    // console.log("id",id)
     if (id) {
       fetchProduct();
     }
@@ -98,14 +98,14 @@ const SingleProduct = () => {
 
       // Extract sale price range from variations
       if (response.data.variations && response.data.variations.length > 0 ) {
-        console.log("response-variations",response.data.variations)
+        // console.log("response-variations",response.data.variations)
         setVariations(response.data.variations);
         // console.log("res",response.data)
         // Extract sale prices, convert them to numbers, and filter valid values
         const salePrices = response.data.variations
           .map((variation) => parseFloat(variation.price))
           .filter((price) => !isNaN(price) && price > 0);
-        console.log("salePrice",salePrices)
+        // console.log("salePrice",salePrices)
         if (salePrices.length > 0) {
           minSalePrice = Math.min(...salePrices);
           maxSalePrice = Math.max(...salePrices);
@@ -292,7 +292,6 @@ const SingleProduct = () => {
 
   // Addtocart product and related product api integrate
   const handleAddToCart = async (e, relatedProduct) => {
-    // console.log("asd",stockStatus)
     e.preventDefault();
     if (isLoggedIn) {
       if (stockStatus === "instock") {
@@ -339,10 +338,10 @@ const SingleProduct = () => {
                   {
                     user_id: userData.user_id,
                     product_id: relatedProduct.id,
+                    category_id: [relatedProduct.categories[0].id],
                     product_quantity: quantity,
                     product_title: relatedProduct.name,
-                    product_image:
-                      relatedProduct.yoast_head_json.og_image[0].url,
+                    product_image: relatedProduct.yoast_head_json.og_image[0].url,
                     product_attributes: relatedProduct.variations,
                     product_weight: relatedProduct.weight,
                     product_price: relatedProduct.price,
@@ -399,11 +398,11 @@ const SingleProduct = () => {
 
   // product addtocart api  integrate
   const handleAddToCartApi = async (product, userData) => {
-    // console.log("product",product.price)
     axios
       .post(`https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`, {
         user_id: userData.user_id,
-        product_id: product.id,
+        // product_id: product.id,
+        // category_id:product.categories[0].id,
         product_quantity: quantity,
         product_title: product.title.rendered,
         product_image: product.yoast_head_json.og_image[0].url,
@@ -425,6 +424,7 @@ const SingleProduct = () => {
       .post(`https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`, {
         user_id: getUserData.user_id,
         product_id: product.id,
+        category_id: product.categories[0].id,
         product_quantity: Number(UpdatedProduct) + quantity,
         selected_attribute: selectedAttributes,
       })

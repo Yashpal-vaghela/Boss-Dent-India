@@ -21,6 +21,8 @@ const NewCart = () => {
   const { alertMessage, removeFromCartList, addToCartList ,EmptyCart} = useWatchlist();
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
   const [loading, setLoading] = useState(false);
+  // const [subTotal,setSubTotal] = useState([]);
+  // const excludedCategories = ['gloves'];
 
   useEffect(() => {
     fetchCartData();
@@ -37,6 +39,13 @@ const NewCart = () => {
         res.data.cart_items.map((item) => {
           return addToCartList(Number(item.product_id));
         });
+        // const a = res.data.cart_items.filter((product)=>product.category_id == 116)
+        // console.log("a",a)
+        // const eligibleTotal = res.data.cart_items
+        // .filter((item)=>!excludedCategories.includes(item.category_name.toLowerCase()))
+        // .reduce((sum,item)=> sum + item.product_price * item.product_quantity,0);
+        
+        // console.log("eli",eligibleTotal)
         localStorage.setItem("cart", JSON.stringify(res.data));
         localStorage.setItem("cart_length", res.data.cart_items.length);
         setLoading(false);
@@ -249,7 +258,7 @@ const CartListItem = React.memo(
       return product.selected_attribute ? product.selected_attribute : {};
     });
     const [showDialogBox, setShowDialogBox] = useState(false);
-    console.log("product",product)
+    // console.log("product",product)
     const [productPrice, setProductPrice] = useState(product.product_price);
     const handleAttributeSelect = async (product, attribute, value) => {
       const updateAttributes = {
@@ -265,6 +274,7 @@ const CartListItem = React.memo(
           selected_attribute: updateAttributes,
         })
         .then((response) => {
+          // console.log("response",response.data)
           const UpdatedProduct = response?.data?.cart_item[0];
           const UpdatedCartData = CartData?.cart_items?.map((item) => {
             return item.product_id === UpdatedProduct.product_id
@@ -299,7 +309,7 @@ const CartListItem = React.memo(
     };
 
     const handleUpdateQty = async (e, product, action) => {
-      console.log("select", selectedAttributes);
+      // console.log("select", selectedAttributes);
       let newQuantity =
         action === "PLUS"
           ? Number(product.product_quantity) + 1
@@ -496,7 +506,7 @@ const CartListItem = React.memo(
             </button>
           </div>
           <div className="cart-price">
-            {console.log("pro", productPrice)}
+            {/* {console.log("pro", productPrice)} */}
             <p className="cart-item-price mb-0">₹{Number(productPrice).toFixed(2)}</p>
             <p className="cart-item-total mb-0">
               ₹

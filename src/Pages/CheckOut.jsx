@@ -46,6 +46,7 @@ const CheckOut = () => {
       code: "BOSS10",
       tag: "Get up to 10% off with this code",
       tagColor: "#00bcd4",
+      // warning:"Gloves product price are not considered in thid discount coupon code"
     },
     {
       title: "Flat 12% Discount",
@@ -83,6 +84,8 @@ const CheckOut = () => {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
+  const excludedCategories = ["gloves"];
+  const [checksubTotal, setCheckSubTotal] = useState(null);
 
   const getCoupon = async () => {
     // setLoading(true)
@@ -103,56 +106,76 @@ const CheckOut = () => {
     getCoupon();
   }, []);
 
-  const handleApplyCouponCode = (code, apply) => {
-    if (apply !== undefined) {
-      const filtercoupon = getCouponData.filter(
-        (item) => item.post_title == code
-      );
-      if(filtercoupon.length !== 0){
-        if(Number(filtercoupon[0].minimum_spend) <= getCartData?.cart_total.total_price){
-          const ApplyCoupon = filtercoupon.map((item)=> finalTotal - (finalTotal * Number(item.coupon_amount)) / 100);
-          const discount = finalTotal - ApplyCoupon[0];
-          setDiscountAmount(discount.toFixed(2));
-          setApplyCouponCode(coupon);
-          setCoupon(coupon);
-          setFinalTotal(ApplyCoupon[0]);
-          setCouponError(null);
-          setSelectCouponAmount(Number(filtercoupon[0].coupon_amount))
-        }else{
+  const handleApplyCouponCode = (code, classList, apply) => {
+    // console.log("sub", checksubTotal);
+    // console.log("apply", apply, classList,coupon);
+    // if(coupon )
+    if (checksubTotal >= 2500) {
+      if (apply !== undefined) {
+        const filtercoupon = getCouponData.filter(
+          (item) => item.post_title == code
+        );
+        if (filtercoupon.length !== 0) {
+          if (
+            Number(filtercoupon[0].minimum_spend) <=
+            getCartData?.cart_total.total_price
+          ) {
+            const ApplyCoupon = filtercoupon.map(
+              (item) =>
+                checksubTotal -
+                (checksubTotal * Number(item.coupon_amount)) / 100
+            );
+            const discount = checksubTotal - ApplyCoupon[0];
+            setDiscountAmount(discount.toFixed(2));
+            setApplyCouponCode(coupon);
+            setCoupon(coupon);
+            setFinalTotal(ApplyCoupon[0]);
+            setCouponError(null);
+            setSelectCouponAmount(Number(filtercoupon[0].coupon_amount));
+          } else {
             // setDiscountAmount(0);
             // setApplyCouponCode("");
             // setFinalTotal(getCartData?.cart_total.total_price)
             setCouponError(
               `${coupon} discount code apply on only more than ₹${filtercoupon[0].minimum_spend} price.`
             );
+          }
+        } else {
+          setCouponError(`${coupon} discount code not valid.`);
         }
-      }else{
-        setCouponError( `${coupon} discount code not valid.` );
-      }
-   
-    } else {
-      setApplyCouponCode(code);
-      setCoupon(code);
-      const filterdata = getCouponData.filter(
-        (item) => Number(item.minimum_spend) <= finalTotal
-      );
-      const s = filterdata.filter((item) => item.post_title == code);
-      const maxValue = Math.max(...s.map((item) => Number(item.coupon_amount)));
-      setSelectCouponAmount(maxValue);
-      if (discountAmount !== 0) {
-        let finalTotal1 = getCartData?.cart_total.total_price;
-        const discount = finalTotal1 - (finalTotal1 * maxValue) / 100;
-        const finaldiscount = finalTotal1 - discount;
-        setDiscountAmount(finaldiscount.toFixed(2));
-        setFinalTotal(discount);
       } else {
-        const discount = finalTotal - (finalTotal * maxValue) / 100;
-        const finaldiscount = finalTotal - discount;
-        setFinalTotal(discount);
-        setDiscountAmount(finaldiscount.toFixed(2));
+        setApplyCouponCode(code);
+        setCoupon(code);
+        const filterdata = getCouponData.filter(
+          (item) => Number(item.minimum_spend) <= checksubTotal
+        );
+        const s = filterdata.filter((item) => item.post_title == code);
+        const maxValue = Math.max(
+          ...s.map((item) => Number(item.coupon_amount))
+        );
+        setSelectCouponAmount(maxValue);
+        if (discountAmount !== 0) {
+          // let finalTotal1 = getCartData?.cart_total.total_price;
+          // console.log("checkTotal", checksubTotal);
+          let finalTotal1 = checksubTotal;
+          // console.log("finalTotal", finalTotal1, discountAmount);
+          const discount = finalTotal1 - (finalTotal1 * maxValue) / 100;
+          const finaldiscount = finalTotal1 - discount;
+          setDiscountAmount(finaldiscount.toFixed(2));
+          setFinalTotal(discount);
+        } else {
+          const discount = checksubTotal - (checksubTotal * maxValue) / 100;
+          const finaldiscount = checksubTotal - discount;
+          setFinalTotal(discount);
+          setDiscountAmount(finaldiscount.toFixed(2));
+        }
+        setCouponError("");
+        Swal.close();
       }
-      setCouponError("");
-      Swal.close();
+    } else {
+      setCouponError(
+        `Gloves product price not considered in discount coupon code.`
+      );
     }
   };
   const handleModal = () => {
@@ -170,6 +193,7 @@ const CheckOut = () => {
                   <p class="offer-desc">${offer.desc}</p>
                   <div class="offer-code">${offer.code}</div>
                   <span class="offer-tag">${offer.tag}</span>
+                  <span class="offer-warning"><i class="fa-solid fa-star"></i> Expect Gloves product.</span>
                 </div>
                 <div class="offer-apply">
                   <button class="apply-btn" data-code="${
@@ -191,9 +215,21 @@ const CheckOut = () => {
       didOpen: () => {
         const container = Swal.getHtmlContainer();
         const buttons = container.querySelectorAll(".apply-btn");
+       
         buttons.forEach((btn) => {
           const code = btn.getAttribute("data-code");
-          btn.addEventListener("click", () => handleApplyCouponCode(code));
+          btn.addEventListener("click", (e) => {
+            const offerCard = btn.closest(".offer-card"); 
+
+    
+            if (offerCard.classList.contains("disable")) {
+              // console.log("Offer is disabled, skipping apply.");
+              return; // prevent calling handleApplyCouponCode
+            }
+
+            handleApplyCouponCode(code);
+          });
+          // btn.addEventListener("click", () => handleApplyCouponCode(code,offerCard));
         });
       },
       customClass: {
@@ -205,35 +241,52 @@ const CheckOut = () => {
     setFinalTotal(
       getCartData?.cart_total.total_price + Number(deliveryChargData)
     );
-    const filterdata = getCouponData.filter(
-      (item) => Number(item.minimum_spend) <= finalTotal
-    );
-    if (filterdata.length !== 0) {
-      const maxValue = Math.max(
-        ...filterdata.map((item) => Number(item.coupon_amount))
+    const eligibleTotal = getCartData.cart_items
+      .filter(
+        (item) => !excludedCategories.includes(item.category_name.toLowerCase())
+      )
+      .reduce(
+        (sum, item) => sum + item.product_price * item.product_quantity,
+        0
       );
-      const maxItems = filterdata.filter(
-        (item) => Number(item.coupon_amount) === maxValue
+    setCheckSubTotal(eligibleTotal);
+    // console.log("eli",eligibleTotal)
+    if (eligibleTotal >= 2500) {
+      const filterdata = getCouponData.filter(
+        (item) => Number(item.minimum_spend) <= eligibleTotal
       );
-      const updatedB = offers.map((item) => {
-        const isMatch = filterdata.find(
-          (coupon) => coupon.post_title === item.code
+
+      if (filterdata.length !== 0) {
+        const maxValue = Math.max(
+          ...filterdata.map((item) => {
+            // console.log("item", item);
+            return Number(item.coupon_amount);
+          })
         );
-        return {
-          ...item,
-          active: !!isMatch, // true if match found, false otherwise
-        };
-      });
-      setOffers(updatedB);
-      if(maxItems.length !== 0 ){
-        setApplyCouponCode(maxItems[0].post_title);
-        // setCoupon(maxItems[0].post_title)
+        const maxItems = filterdata.filter(
+          (item) => Number(item.coupon_amount) === maxValue
+        );
+        const updatedB = offers.map((item) => {
+          const isMatch = filterdata.find(
+            (coupon) => coupon.post_title === item.code
+          );
+          return {
+            ...item,
+            active: !!isMatch, // true if match found, false otherwise
+          };
+        });
+        setOffers(updatedB);
+        if (maxItems.length !== 0) {
+          setApplyCouponCode(maxItems[0].post_title);
+          // setCoupon(maxItems[0].post_title)
+        }
+        setSelectCouponAmount(maxValue);
+        // const discount = finalTotal - (finalTotal * maxValue) / 100;
+        // const finaldiscount = finalTotal - discount;
+        // setDiscountAmount(finaldiscount.toFixed(2));
       }
-      setSelectCouponAmount(maxValue);
-      // const discount = finalTotal - (finalTotal * maxValue) / 100;
-      // const finaldiscount = finalTotal - discount;
-      // setDiscountAmount(finaldiscount.toFixed(2));
     }
+    // console.log("a", getCartData, a);
     // setSelectCoupon(filterdata);
     // if (coupon) {
     //   handleApplyCouponCode();
@@ -667,7 +720,9 @@ const CheckOut = () => {
                       ></input>
                       <button
                         className="btn btn-ApplyCouponCode"
-                        onClick={() => handleApplyCouponCode(coupon, "apply")}
+                        onClick={() =>
+                          handleApplyCouponCode(coupon, [], "apply")
+                        }
                       >
                         Apply
                       </button>
@@ -772,37 +827,14 @@ const CheckOut = () => {
                     </div>
                   </div>
                   <div className="order-payment-section mt-3">
-                    <h2>Payment Methods</h2>
+                    {/* <h2>Payment Methods</h2> */}
                     <div className="order-payment-content">
-                      <div className="payment-logos">
-                        <img
-                          src="/asset/images/Phone-pe.png"
-                          alt="PhonePe"
-                          // onClick={() => handlePaymentSelect("PhonePe")}
-                          className={
-                            paymentMethod === "PhonePe" ? "selected" : ""
-                          }
-                        />
-                        {/* <img
-                          src="/asset/images/bank-transfer.png"
-                          alt="Bank Transfer"
-                          onClick={() => handlePaymentSelect("BankTransfer")}
-                          className={
-                            paymentMethod === "BankTransfer" ? "selected" : ""
-                          }
-                        /> */}
-                      </div>
-                      {formik?.errors?.paymentMethod && (
-                        <span className="text-danger text-center d-block">
-                          {formik?.errors?.paymentMethod}
-                        </span>
-                      )}
                       <button
                         type="submit"
                         className="payment-button"
                         onClick={() => setHandleSubmit((prev) => !prev)}
                       >
-                        Proceed to payment
+                        Procees to payment
                       </button>
                     </div>
                   </div>

@@ -164,8 +164,9 @@ const Product = () => {
                 getcartProductData?.cart_items?.filter(
                   (item) => Number(item.product_id) === product.id
                 ) || [];
-
+              // console.log("filterCartProduct",filterCartProduct);
               if (filterCartData.length === 0) {
+                // console.log("product",product)
                 await axios
                   .post(
                     `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
@@ -173,6 +174,7 @@ const Product = () => {
                       user_id: userData.user_id,
                       product_id: product.id,
                       product_quantity: qty,
+                      category_id:product.product_cat,
                       product_title: product.title.rendered,
                       product_image: product.yoast_head_json.og_image[0].url,
                       product_attributes: product.variations,
@@ -181,6 +183,7 @@ const Product = () => {
                     }
                   )
                   .then((res) => {
+                    // console.log("res",res)
                     setCartProductId((prevCartProductId) => {
                       if (!prevCartProductId.includes(product.id)) {
                         const updateCartProductId = [
@@ -204,6 +207,7 @@ const Product = () => {
                     `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
                     {
                       user_id: getUserData.user_id,
+                      category_id:product.product_cat,
                       product_id: product.id,
                       product_quantity:
                         Number(filterCartProduct[0].product_quantity) + 1,
