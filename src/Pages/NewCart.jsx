@@ -347,7 +347,9 @@ const CartListItem = React.memo(
             return item.product_id === UpdatedProduct.product_id
               ? {
                   ...item,
-                  selected_attribute: { [attribute]: value },
+                  selected_attribute: {
+                    ...item.selected_attribute, 
+                    [attribute]: value },
                 }
               : item;
           });
