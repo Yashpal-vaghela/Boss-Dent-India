@@ -34,7 +34,7 @@ const checkoutSchema = yup.object().shape({
 
 const CheckOut = () => {
   const { removeFromCartListProduct } = useWatchlist();
-  const deliveryChargData = localStorage.getItem("deliveryCharge");
+  const deliveryChargData = sessionStorage.getItem("deliveryCharge");
   const [coupon, setCoupon] = useState("");
   const [applycouponCode, setApplyCouponCode] = useState("");
   // const [selectCoupon, setSelectCoupon] = useState([]);
@@ -75,15 +75,15 @@ const CheckOut = () => {
   const [States, setStates] = useState([]);
   const [loading, setLoading] = useState(false);
   const [getCouponData, setGetCouponData] = useState([]);
-  const token = localStorage.getItem("token");
-  const [getCartData] = useState(JSON.parse(localStorage.getItem("cart")));
+  const token = sessionStorage.getItem("token");
+  const [getCartData] = useState(JSON.parse(sessionStorage.getItem("cart")));
   const [cartTotal] = useState(getCartData?.cart_total.total_price);
   const [finalTotal, setFinalTotal] = useState("");
   const [discountAmount, setDiscountAmount] = useState(0);
   const [HandleSubmit, setHandleSubmit] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [orderId, setOrderId] = useState("");
-  const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
+  const [getUserData] = useState(JSON.parse(sessionStorage.getItem("UserData")));
   const excludedCategories = ["gloves"];
   const [checksubTotal, setCheckSubTotal] = useState(null);
 
@@ -94,7 +94,7 @@ const CheckOut = () => {
       .then((res) => {
         setLoading(false);
         setGetCouponData(res.data);
-        localStorage.setItem("couponData", JSON.stringify(res.data));
+        sessionStorage.setItem("couponData", JSON.stringify(res.data));
       })
       .catch((err) => {
         setLoading(false);

@@ -69,14 +69,14 @@ const OrderDetails = ({
                           className="d-flex d-sm-none d-md-none d-lg-none fa-solid fa-angles-right"
                           onClick={() => {
                             navigate("/order-details-info");
-                            localStorage.setItem("OrderId", order.order_id);
+                            sessionStorage.setItem("OrderId", order.order_id);
                           }}
                         ></i>
                         <button
                           className="d-none d-sm-block d-md-block d-lg-block btn btn-dark mx-1"
                           onClick={() => {
                             navigate("/order-details-info");
-                            localStorage.setItem("OrderId", order.order_id);
+                            sessionStorage.setItem("OrderId", order.order_id);
                           }}
                         >
                           View

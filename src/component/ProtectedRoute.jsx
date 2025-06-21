@@ -3,7 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {  // Correct prop name
     const location = useLocation();
-    const token = localStorage.getItem("token");  // Check for token in localStorage
+    const token = sessionStorage.getItem("token");  // Check for token in sessionStorage
     
     if (!token) {
         // If the user is not logged in, redirect them to login page

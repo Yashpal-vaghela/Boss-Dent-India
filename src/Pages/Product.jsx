@@ -21,8 +21,8 @@ const Product = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [stockStatuses, setStockStatuses] = useState({});
   const [currentPage, setCurrentPage] = useState(() => {
-    const a = localStorage.getItem("Product_page");
-    return a ? Number(localStorage.getItem("Product_page")) : 1;
+    const a = sessionStorage.getItem("Product_page");
+    return a ? Number(sessionStorage.getItem("Product_page")) : 1;
   });
   const [itemsPerPage, setItemsPerPage] = useState(() => {
     if (window.innerWidth >= 1400) {
@@ -45,13 +45,13 @@ const Product = () => {
   const category = searchParams.get("category");
   const navigate = useNavigate();
   const location = useLocation();
-  const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
+  const [getUserData] = useState(JSON.parse(sessionStorage.getItem("UserData")));
   const [qty] = useState(1);
   const [getcartProductData, setgetcartProductData] = useState(
-    JSON.parse(localStorage.getItem("cart"))
+    JSON.parse(sessionStorage.getItem("cart"))
   );
   const [getCartList] = useState(
-    JSON.parse(localStorage.getItem("cart_productId"))
+    JSON.parse(sessionStorage.getItem("cart_productId"))
   );
   const [cartProductId, setCartProductId] = useState([]);
 
@@ -111,7 +111,7 @@ const Product = () => {
     // setItemsPerPage(width >= 1400 ? 12 : width >= 1024 ? 9 : 10);
   };
   useEffect(() => {
-    const userLoggedIn = !!localStorage.getItem("token");
+    const userLoggedIn = !!sessionStorage.getItem("token");
     setIsLoggedIn(userLoggedIn);
     if (getCartList) {
       setCartProductId(getCartList);
@@ -130,12 +130,12 @@ const Product = () => {
       }, 3000);
       return () => clearTimeout(timer);
     }
-    setgetcartProductData(JSON.parse(localStorage.getItem("cart")));
+    setgetcartProductData(JSON.parse(sessionStorage.getItem("cart")));
   }, [alertMessage]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    localStorage.setItem("Product_page", page);
+    sessionStorage.setItem("Product_page", page);
   };
 
   const handleCategoryClick = (newCategory) => {
@@ -154,7 +154,7 @@ const Product = () => {
       if (stockStatus === "instock") {
         if (isLoggedIn) {
           try {
-            const userData = JSON.parse(localStorage.getItem("UserData"));
+            const userData = JSON.parse(sessionStorage.getItem("UserData"));
             if (userData) {
               const filterCartData = cartProductId.filter(
                 (item) => item === product.id
@@ -190,7 +190,7 @@ const Product = () => {
                           ...prevCartProductId,
                           product.id,
                         ];
-                        localStorage.setItem(
+                        sessionStorage.setItem(
                           "cart_productId",
                           JSON.stringify(updateCartProductId)
                         );
@@ -257,7 +257,7 @@ const Product = () => {
             }
           )
           .then((response) => {
-            localStorage.setItem(
+            sessionStorage.setItem(
               "watchlist_length",
               response.data.wishlist_length
             );
@@ -287,7 +287,7 @@ const Product = () => {
             }
           )
           .then((response) => {
-            localStorage.setItem(
+            sessionStorage.setItem(
               "watchlist_length",
               response.data.wishlist_length
             );
@@ -388,6 +388,7 @@ const Product = () => {
                             </Link>
                           </div>
                           <h3 className="product-price text-center">
+                            {console.log("product",product)}
                             {product?.regular_price && product?.price ? (
                               product.regular_price === product.price ? (
                                 // If both values are the same, show only one value

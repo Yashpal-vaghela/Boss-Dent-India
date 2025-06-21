@@ -11,15 +11,15 @@ export const WatchlistProvider = ({ children }) => {
   const location = useLocation();
 
   const [watchlist, setWatchlist] = useState(() => {
-    const savedWatchlist = localStorage.getItem("watchlist");
+    const savedWatchlist = sessionStorage.getItem("watchlist");
     return savedWatchlist ? JSON.parse(savedWatchlist) : [];
   });
   const [cartList, setCartList] = useState(() => {
-    const savedCartlist = localStorage.getItem("cart_productId");
+    const savedCartlist = sessionStorage.getItem("cart_productId");
     return savedCartlist ? JSON.parse(savedCartlist) : [];
   });
   // const [selectAttribute, setSelectAttribute] = useState(() => {
-  //   const selectAttributeList = localStorage.getItem("selectedAttributes");
+  //   const selectAttributeList = sessionStorage.getItem("selectedAttributes");
   //   return selectAttributeList ? JSON.parse(selectAttributeList) : [];
   // });
   const [getCartId, setgetCartId] = useState([]);
@@ -27,11 +27,11 @@ export const WatchlistProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    localStorage.setItem("watchlist", JSON.stringify(watchlist));
+    sessionStorage.setItem("watchlist", JSON.stringify(watchlist));
   }, [watchlist]);
 
   const isAuthenticated = () => {
-    return !!localStorage.getItem("token");
+    return !!sessionStorage.getItem("token");
   };
 
   const ensureAuthenticated = () => {
@@ -54,7 +54,7 @@ export const WatchlistProvider = ({ children }) => {
     setWatchlist((prevWatchlist) => {
       if (!prevWatchlist.includes(id)) {
         const updatedWatchlist = [...prevWatchlist, id];
-        // localStorage.setItem("watchlist", JSON.stringify(updatedWatchlist));
+        // sessionStorage.setItem("watchlist", JSON.stringify(updatedWatchlist));
         return updatedWatchlist;
       }
       return prevWatchlist; // No change if ID already exists
@@ -67,7 +67,7 @@ export const WatchlistProvider = ({ children }) => {
       const updatedWatchlist = prevWatchlist.filter(
         (itemId) => itemId !== Number(id)
       );
-      localStorage.setItem("watchlist", JSON.stringify(updatedWatchlist));
+      sessionStorage.setItem("watchlist", JSON.stringify(updatedWatchlist));
       return updatedWatchlist;
     });
   };
@@ -79,17 +79,17 @@ export const WatchlistProvider = ({ children }) => {
     // Only add the product ID to the watchlist if it doesn't already exist
     // console.log("updateWatchList",updateCartList)
     setCartList((prevCartlist) => {
-      // console.log("preCartList",prevCartlist)
+      console.log("preCartList",prevCartlist)
       if (!prevCartlist.includes(id)) {
         const updateCartList = [...prevCartlist, Number(id)];
         // console.log("updateList",Number(updateCartList))
-        // localStorage.setItem(
+        // sessionStorage.setItem(
         //   "cart_productId",
         //   JSON.stringify(updateCartList)
         // );
         console.log("update",updateCartList)
         if(updateCartList){
-           localStorage.setItem("cart_productId",  JSON.stringify(updateCartList));
+           sessionStorage.setItem("cart_productId",  JSON.stringify(updateCartList));
         }
        
         return (updateCartList);
@@ -109,11 +109,11 @@ export const WatchlistProvider = ({ children }) => {
         `https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${fetchuserdata.user_id}`
       )
       .then((res) => {
-        localStorage.setItem("cart", JSON.stringify(res.data));
+        sessionStorage.setItem("cart", JSON.stringify(res.data));
         setCartList((prevCartlist) => {
           if (!prevCartlist.includes(id)) {
             const updateCartList = [...prevCartlist, id];
-            localStorage.setItem(
+            sessionStorage.setItem(
               "cart_productId",
               JSON.stringify(updateCartList)
             );
@@ -131,7 +131,7 @@ export const WatchlistProvider = ({ children }) => {
       const updateCartList = prevCartlist.filter(
         (itemId) => itemId !== Number(id)
       );
-      localStorage.setItem("cart_productId", JSON.stringify(updateCartList));
+      sessionStorage.setItem("cart_productId", JSON.stringify(updateCartList));
       return updateCartList;
     });
   };
@@ -149,13 +149,13 @@ export const WatchlistProvider = ({ children }) => {
           const updateCartList = prevCartlist.filter(
             (itemId) => itemId !== Number(product_id)
           );
-          localStorage.setItem(
+          sessionStorage.setItem(
             "cart_productId",
             JSON.stringify(updateCartList)
           );
           return updateCartList;
         });
-        localStorage.setItem(
+        sessionStorage.setItem(
           "cart",
           JSON.stringify({ cart_items: [], cart_total: {} })
         );
@@ -172,9 +172,9 @@ export const WatchlistProvider = ({ children }) => {
     })
     .then((response)=>{
       setCartList([])
-      localStorage.setItem("cart_length",response.data.cart_length);
-      localStorage.setItem("cart_productId", JSON.stringify([]));
-      localStorage.setItem(
+      sessionStorage.setItem("cart_length",response.data.cart_length);
+      sessionStorage.setItem("cart_productId", JSON.stringify([]));
+      sessionStorage.setItem(
         "cart",
         JSON.stringify({ cart_items: [], cart_total: {} })
       );
@@ -187,7 +187,7 @@ export const WatchlistProvider = ({ children }) => {
         `https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${fetchuserdata}`
       )
       .then((response) => {
-        localStorage.setItem("cart", JSON.stringify(response.data));
+        sessionStorage.setItem("cart", JSON.stringify(response.data));
         response.data.cart_items.map((item) => {
           if (!cartList.includes(item.product_id)) {
             setCartList((prevCartlist) => {
@@ -196,7 +196,7 @@ export const WatchlistProvider = ({ children }) => {
                   ...prevCartlist,
                   Number(item.product_id),
                 ];
-                localStorage.setItem(
+                sessionStorage.setItem(
                   "cart_productId",
                   JSON.stringify(updateCartList)
                 );
@@ -224,7 +224,7 @@ export const WatchlistProvider = ({ children }) => {
                 ...prevWatchlist,
                 Number(item.product_id),
               ];
-              localStorage.setItem(
+              sessionStorage.setItem(
                 "watchlist",
                 JSON.stringify(updateWatchList)
               );
@@ -240,11 +240,11 @@ export const WatchlistProvider = ({ children }) => {
   const LogoutUserList = () => {
     setgetCartId([]);
     setCartList([]);
-    localStorage.setItem("cart_productId", JSON.stringify([]));
+    sessionStorage.setItem("cart_productId", JSON.stringify([]));
     setWishlistId([]);
     setWatchlist([]);
-    localStorage.setItem("watchlist", JSON.stringify([]));
-    localStorage.setItem("watchlist_length", 0);
+    sessionStorage.setItem("watchlist", JSON.stringify([]));
+    sessionStorage.setItem("watchlist_length", 0);
   };
 
   return (

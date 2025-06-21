@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback,useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AddressForm from "../component/AddressForm";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -29,11 +29,15 @@ const UserData = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
   const { LogoutUserList } = useWatchlist();
+  const showedError = useRef(false);
 
   const fetchUserData = useCallback(async () => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (!token) {
-      toast.error("Not logged in!");
+      if(!showedError.current){
+        toast.error("Not logged in!");
+        showedError.current = true;
+      }
       navigate("/my-account");
       return;
     }
@@ -50,7 +54,10 @@ const UserData = () => {
       );
 
       if (response.status === 401) {
-        toast("Please log in!");
+        if(!showedError.current){
+           toast.error("Please log in!");
+           showedError.current(true);
+        }
         navigate("/my-account");
         return;
       }
@@ -67,16 +74,15 @@ const UserData = () => {
         }
       );
 
-      if (!userDetailResponse.ok)
-        throw new Error("Failed to fetch user details");
+      if (!userDetailResponse.ok) throw new Error("Failed to fetch user details");
       const userDetailData = await userDetailResponse.json();
 
       setUser(userDetailData);
-      const a = localStorage.getItem("userSidebar");
+      const a = sessionStorage.getItem("userSidebar");
       if (a == "orders") {
         setSelectedSection(a);
         handleOrderApiData(a, userDetailData);
-        localStorage.removeItem("userSidebar");
+        sessionStorage.removeItem("userSidebar");
       }
       // setContactNumber(userDetailData.contactNumber || "");
       setGender(userDetailData.gender || "");
@@ -97,7 +103,10 @@ const UserData = () => {
       // Fetch Order Details
     } catch (error) {
       console.error("Error fetching user data:", error);
-      toast.error("Error fetching user data");
+      if(!showedError.current){
+        toast.error("Error fetching user data");
+        showedError.current = true;
+      }
       navigate("/my-account");
     }
   }, [navigate]);
@@ -144,7 +153,7 @@ const UserData = () => {
    console.log("address",user);
    
   const handleSave = async () => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (!token) {
       toast.warn("Not logged in!");
       navigate("/my-account");
@@ -197,7 +206,7 @@ const UserData = () => {
       );
       const loginResult = await loginResponse.json();
       if (loginResponse.ok) {
-        localStorage.setItem("token", loginResult.token);
+        sessionStorage.setItem("token", loginResult.token);
         return true;
       } else {
         toast.error(loginResult.message || "Login failed.");
@@ -212,12 +221,12 @@ const UserData = () => {
     e.preventDefault();
     setLoading(true);
     let username = "";
-    const storeUserData = localStorage.getItem("UserData");
+    const storeUserData = sessionStorage.getItem("UserData");
     if (storeUserData) {
       const userData = JSON.parse(storeUserData);
       username = userData.user_email;
     }
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     if (!token) {
       toast.warn("Not logged in!");
@@ -274,9 +283,9 @@ const UserData = () => {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("cart");
-    localStorage.setItem(
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("cart");
+    sessionStorage.setItem(
       "cart",
       JSON.stringify({ cart_items: [], cart_total: {} })
     );
@@ -531,7 +540,7 @@ const UserData = () => {
               //                     className="d-flex d-sm-none d-md-none d-lg-none fa-solid fa-angles-right"
               //                     onClick={() => {
               //                       navigate("/order-details-info");
-              //                       localStorage.setItem(
+              //                       sessionStorage.setItem(
               //                         "OrderId",
               //                         order.order_id
               //                       );
@@ -541,7 +550,7 @@ const UserData = () => {
               //                     className="d-none d-sm-block d-md-block d-lg-block btn btn-dark mx-1"
               //                     onClick={() => {
               //                       navigate("/order-details-info");
-              //                       localStorage.setItem(
+              //                       sessionStorage.setItem(
               //                         "OrderId",
               //                         order.order_id
               //                       );
@@ -614,7 +623,7 @@ const UserData = () => {
                 ) : (
                   <>
                     <AddressForm
-                      token={localStorage.getItem("token")}
+                      token={sessionStorage.getItem("token")}
                       fetchUserData={fetchUserData}
                     />
                   </>

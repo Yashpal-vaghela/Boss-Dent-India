@@ -14,18 +14,19 @@ const NewCart = () => {
   const [imageLoading, setImageLoading] = useState({});
   const [deliveryCharge, setDeliveryCharge] = useState();
   const [CartData, setCartData] = useState(() => {
-    const d = localStorage.getItem("cart");
+    const d = sessionStorage.getItem("cart");
     return d ? JSON.parse(d) : null;
   });
   const [CartgetTotal, setCartgetTotal] = useState([]);
   const { alertMessage, removeFromCartList, addToCartList ,EmptyCart} = useWatchlist();
-  const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
+  const [getUserData] = useState(JSON.parse(sessionStorage.getItem("UserData")));
   const [loading, setLoading] = useState(false);
+  const [singleProduct,setSingleProduct] = useState([]);
   // const [subTotal,setSubTotal] = useState([]);
   // const excludedCategories = ['gloves'];
 
   useEffect(() => {
-    fetchCartData();
+    fetchCartData();    
   }, []);
 
   // fetchCartData
@@ -46,8 +47,8 @@ const NewCart = () => {
         // .reduce((sum,item)=> sum + item.product_price * item.product_quantity,0);
         
         // console.log("eli",eligibleTotal)
-        localStorage.setItem("cart", JSON.stringify(res.data));
-        localStorage.setItem("cart_length", res.data.cart_items.length);
+        sessionStorage.setItem("cart", JSON.stringify(res.data));
+        sessionStorage.setItem("cart_length", res.data.cart_items.length);
         setLoading(false);
         setCartData(res.data);
         if (res.data.cart_total.total_price < 2300) {
@@ -58,19 +59,57 @@ const NewCart = () => {
       })
       .catch((err) => {
         setLoading(false);
-        localStorage.setItem(
+        sessionStorage.setItem(
           "cart",
           JSON.stringify({ cart_items: [], cart_total: {} })
         );
       });
   };
 
+  const handleSingleProduct = (e,product) => {
+      const itemToUpdate = CartData.cart_items.find((item) => {
+        const isSameProduct = item.product_id === product.product_id;
+          if (item.selected_attribute && product.selected_attribute) {
+             const isSameAttribute = JSON.stringify(item.selected_attribute) === JSON.stringify(product.selected_attribute);
+             return isSameProduct && isSameAttribute;
+          }
+          // If product has no variations, just match by product_id
+          if (!item.selected_attribute && !product.selected_attribute) {
+             return isSameProduct;
+          }
+         return false; 
+      });
+      // singleProduct.push(itemToUpdate);
+      // setSingleProduct(itemToUpdate);
+      if (!itemToUpdate) return;
+  }
+
   const handleRemoveItem = async (e, product) => {
+    console.log("product",product,CartData,singleProduct)
     e.preventDefault();
+      const itemToUpdate = CartData.cart_items.find((item) => {
+        const isSameProduct = item.product_id === product.product_id;
+          if (item.selected_attribute && product.selected_attribute) {
+             const isSameAttribute = JSON.stringify(item.selected_attribute) === JSON.stringify(product.selected_attribute);
+             return isSameProduct && isSameAttribute;
+          }
+          // If product has no variations, just match by product_id
+          if (!item.selected_attribute && !product.selected_attribute) {
+             return isSameProduct;
+          }
+         return false; 
+      });
+      // singleProduct.push(itemToUpdate);
+      // setSingleProduct(itemToUpdate);
+      if (!itemToUpdate) return;
+    // handleSingleProduct(e,product);
+    // console.log("product",product)
+    // console.log("itemToUpdate",itemToUpdate) 
     const payload = {
       user_id: getUserData.user_id,
-      product_id: product.product_id,
+      product_id: itemToUpdate.product_id,
     };
+
     await axios
       .delete(`https://admin.bossdentindia.com/wp-json/custom/v1/cart/delete`, {
         data: payload,
@@ -83,15 +122,40 @@ const NewCart = () => {
         setCartgetTotal(res.data.cart_total);
         AdddeliveryCharge(res.data.cart_total, CartData);
         removeFromCartList(product.product_id);
-        localStorage.setItem(
+        sessionStorage.setItem(
           "cart",
           JSON.stringify({ cart_items: filterData, cart_total: CartgetTotal })
         );
-        // localStorage.setItem("cart_length", filterData.length);
+        // sessionStorage.setItem("cart_length", filterData.length);
       })
       .catch((error) => {
         console.log("Removing product with ID:", product.product_id);
       });
+
+    // if(itemToUpdate.length !== 0 ){
+        // await axios
+    //   .delete(`https://admin.bossdentindia.com/wp-json/custom/v1/cart/delete`, {
+    //     data: payload,
+    //   })
+    //   .then((res) => {
+    //     const filterData = CartData?.cart_items.filter(
+    //       (item) => item.id !== product.id
+    //     );
+    //     setCartData({ cart_items: filterData });
+    //     setCartgetTotal(res.data.cart_total);
+    //     AdddeliveryCharge(res.data.cart_total, CartData);
+    //     removeFromCartList(product.product_id);
+    //     sessionStorage.setItem(
+    //       "cart",
+    //       JSON.stringify({ cart_items: filterData, cart_total: CartgetTotal })
+    //     );
+    //     // sessionStorage.setItem("cart_length", filterData.length);
+    //   })
+    //   .catch((error) => {
+    //     console.log("Removing product with ID:", product.product_id);
+    //   });
+    // }
+  
   };
 
   const handleEmptyCart = () => {
@@ -105,10 +169,10 @@ const NewCart = () => {
     // console.log("getTotalAmount",getTotalAmount,CartTotal)
     if (getTotalAmount <= 2300) {
       setDeliveryCharge(90);
-      localStorage.setItem("deliveryCharge", 90);
+      sessionStorage.setItem("deliveryCharge", 90);
     } else {
       setDeliveryCharge(0);
-      localStorage.setItem("deliveryCharge", 0);
+      sessionStorage.setItem("deliveryCharge", 0);
     }
     // console.log("deliveryCharge",deliveryCharge)
     // if (getTotalWeight >= 1 && getTotalWeight <= 3) {
@@ -258,6 +322,7 @@ const CartListItem = React.memo(
       return product.selected_attribute ? product.selected_attribute : {};
     });
     const [showDialogBox, setShowDialogBox] = useState(false);
+    
     // console.log("product",product)
     const [productPrice, setProductPrice] = useState(product.product_price);
     const handleAttributeSelect = async (product, attribute, value) => {
@@ -294,7 +359,7 @@ const CartListItem = React.memo(
           } else {
             setProductPrice(ProductFilterPrice[0].price);
           }
-          localStorage.setItem(
+          sessionStorage.setItem(
             "cart",
             JSON.stringify({
               cart_items: UpdatedCartData,
@@ -309,7 +374,7 @@ const CartListItem = React.memo(
     };
 
     const handleUpdateQty = async (e, product, action) => {
-    const cart = JSON.parse(localStorage.getItem("cart"));
+    const cart = JSON.parse(sessionStorage.getItem("cart"));
     if (!cart || !cart.cart_items) return;
 
     // Find the correct cart item:
@@ -369,7 +434,7 @@ const CartListItem = React.memo(
         });
 
         // Update local storage
-        localStorage.setItem(
+        sessionStorage.setItem(
             "cart",
             JSON.stringify({
                 cart_items: updatedCartData,
@@ -386,8 +451,6 @@ const CartListItem = React.memo(
         console.log("Error while updating quantity:", err);
     }
 };
-
-
 
     const confirmDelete = () => {
       setShowDialogBox(true);
@@ -543,7 +606,7 @@ const CartListItem = React.memo(
               -
             </button>
             <span>
-              {console.log("productQuantity",product)}
+              {/* {console.log("productQuantity",product)} */}
               {product?.product_quantity && product?.product_quantity}
             </span>
             <button onClick={(e) => handleUpdateQty(e, product, "PLUS")}>

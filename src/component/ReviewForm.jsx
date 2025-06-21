@@ -10,7 +10,7 @@ const ReviewForm = ({ productId }) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const token = localStorage.getItem("token");
+  const token = sessionStorage.getItem("token");
   const handleRatingClick = (value) => {
     setRating(value);
   };

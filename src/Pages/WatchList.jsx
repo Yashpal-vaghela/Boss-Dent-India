@@ -16,8 +16,8 @@ const WatchList = () => {
   // const [error, setError] = useState(null);
   // const [stockStatuses, setStockStatuses] = useState({});
   const [imageLoading, setImageLoading] = useState({});
-  const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
-  const [getCartData] = useState(JSON.parse(localStorage.getItem("cart")));
+  const [getUserData] = useState(JSON.parse(sessionStorage.getItem("UserData")));
+  const [getCartData] = useState(JSON.parse(sessionStorage.getItem("cart")));
   const [WatchListData, setWatchListData] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
   const [productToRemove, setProductToRemove] = useState(null);
@@ -84,12 +84,12 @@ const WatchList = () => {
 
   useEffect(() => {
     const cachedWishListProdcts = JSON.parse(
-      localStorage.getItem("wishListProducts")
+      sessionStorage.getItem("wishListProducts")
     );
     const cachedStockStatuses = JSON.parse(
-      localStorage.getItem("stockStatuses")
+      sessionStorage.getItem("stockStatuses")
     );
-    const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+    const watchlist = JSON.parse(sessionStorage.getItem("watchlist")) || [];
     if (watchlist.length > 0) {
       if (
         cachedWishListProdcts &&
@@ -136,7 +136,7 @@ const WatchList = () => {
           (item) => item.product_id !== product.product_id
         );
         removeFromWatchlist();
-        localStorage.setItem("watchlist_length", response.data.wishlist_length);
+        sessionStorage.setItem("watchlist_length", response.data.wishlist_length);
         setWatchListData(deleteProduct);
       })
       .catch((error) => console.log("error", error));

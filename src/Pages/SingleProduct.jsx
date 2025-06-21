@@ -40,11 +40,11 @@ const SingleProduct = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // const [discountProductPrice, setDiscountProductPrice] = useState(null);
   const [largeImageLoaded, setLargeImageLoaded] = useState(false);
-  const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
+  const [getUserData] = useState(JSON.parse(sessionStorage.getItem("UserData")));
   const [error,setError] = useState(null);
 
   useEffect(() => {
-    const userLoggedIn = !!localStorage.getItem("token");
+    const userLoggedIn = !!sessionStorage.getItem("token");
     setIsLoggedIn(userLoggedIn);
     const imgElement = document.getElementById(`product-imagr-${product.id}`);
     const observer = new IntersectionObserver(
@@ -148,13 +148,10 @@ const SingleProduct = () => {
           if (regularPrice && salePrice < regularPrice) {
             discount = Math.round(((regularPrice - salePrice) / regularPrice) * 100);
           }
-
           return { ...product, discount };
         });
-
         setRelatedProducts(productWithDiscount.slice(0, 10));
       }
-
       setWeight(response.data.weight);
       setStockStatus(response.data.stock_status);
     } catch (error) {
@@ -193,7 +190,9 @@ const SingleProduct = () => {
         ...selectedAttributes,
         [attribute]: value,
       };
+      setError("");
       setSelectedAttributes(newSelectedAttributes);
+
       const selectedVariation = variations.find((variation) => {
         // console.log("va", Object.keys(variation.attributes));
         return Object.keys(variation.attributes).every((key) => {
@@ -206,7 +205,6 @@ const SingleProduct = () => {
       if (selectedVariation) {
         setSalePrice(selectedVariation.price);
         setRegularPrice(null);
-        
       } else {
         setSalePrice(salePrice);
         setRegularPrice(RegularPrice);
@@ -219,7 +217,7 @@ const SingleProduct = () => {
     
     // console.log("attr",attribute,value,salePrice,RegularPrice)
   
-    // localStorage.setItem('selectAttributes',JSON.stringify(newSelectedAttributes))
+    // sessionStorage.setItem('selectAttributes',JSON.stringify(newSelectedAttributes))
     // console.log("variations", selectedVariation)
 
     // discount code
@@ -289,13 +287,12 @@ const SingleProduct = () => {
       }, 2000);
     }
   };
-
   // Addtocart product and related product api integrate
   const handleAddToCart = async (e, relatedProduct) => {
     e.preventDefault();
     if (isLoggedIn) {
       if (stockStatus === "instock") {
-        const userData = JSON.parse(localStorage.getItem("UserData"));
+        const userData = JSON.parse(sessionStorage.getItem("UserData"));
         let filterCartProduct = [];
         let GetCartProduct = [];
         let RelatedCartProduct = [];
@@ -306,7 +303,7 @@ const SingleProduct = () => {
               `https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${getUserData.user_id}`
             )
             .then((response) => {
-              localStorage.setItem("cart", JSON.stringify(response.data));
+              sessionStorage.setItem("cart", JSON.stringify(response.data));
               GetCartProduct = response.data.cart_items;
               filterCartProduct = response.data.cart_items.filter(
                 (item) => Number(item.product_id) === product.id
@@ -317,18 +314,21 @@ const SingleProduct = () => {
                   {
                     (RelatedCartProduct = response.data.cart_items.filter(
                       (item) => {
-                        if(selectedAttributes !== undefined){
-                          setError("");
-                          console.log("item",item,Object.values(item.selected_attribute),Object.values(selectedAttributes));
-                         return Object.values(item.selected_attribute)[0] === Object.values(selectedAttributes)[0]
+                        // console.log("item",item,variations)
+                        if(variations.length > 0){
+                          if(selectedAttributes !== undefined){
+                            setError("");
+                            console.log("item",item,Object.values(item.selected_attribute),Object.values(selectedAttributes));
+                            return Object.values(item.selected_attribute)[0] === Object.values(selectedAttributes)[0]
+                          }
+                          else{
+                            setError("Please select variations");
+                            // return false;
+                          }
+                        }else{
+                          return Number(item.product_id) === relatedProduct.id;
                         }
-                        else{
-                          setError("Please select variations")
-                        }
-                        return error;
-                        // if(Object.values(selectedAttributes) !== null){
-                        //   return Object.values(item.selected_attribute)[0] === Object.values(selectedAttributes)[0]
-                        // }
+                        // return error;
                       } 
                     ))
                   }
@@ -377,7 +377,7 @@ const SingleProduct = () => {
                 .catch((err) => console.log("err", err));
             } else {
               const UpdatedProduct = RelatedCartProduct[0].product_quantity;
-              const a = JSON.parse(localStorage.getItem("cart"))
+              const a = JSON.parse(sessionStorage.getItem("cart"))
               const checkSelectAttribute = Object.values(RelatedCartProduct[0].selected_attribute);
               const filterSelectAttribute = RelatedCartProduct.filter((item)=>Object.values(item.selected_attribute)[0] == Object.values(selectedAttributes)[0]);
               console.log("filterSle",filterSelectAttribute,Object.values(RelatedCartProduct[0].selected_attribute)[0],selectedAttributes)
@@ -423,7 +423,6 @@ const SingleProduct = () => {
       }, 2000);
     }
   };
-
   // product addtocart api  integrate
   const handleAddToCartApi = async (product, userData) => {
     axios
@@ -479,8 +478,8 @@ const SingleProduct = () => {
               <Link
                 to={`/products?category=${product.categories[0].id}`}
                 onMouseOver={() => {
-                  return localStorage.getItem("Product_page") > 1 ? (
-                    localStorage.setItem("Product_page", 1)
+                  return sessionStorage.getItem("Product_page") > 1 ? (
+                    sessionStorage.setItem("Product_page", 1)
                   ) : (
                     <></>
                   );

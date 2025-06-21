@@ -82,8 +82,8 @@ const HomeBanner = () => {
             onTouchStart={handleHoldStart}
             onTouchEnd={handleHoldEnd}
             onClick={() => {
-              return localStorage.getItem("Product_page") > 1
-                ? localStorage.setItem("Product_page", 1)
+              return sessionStorage.getItem("Product_page") > 1
+                ? sessionStorage.setItem("Product_page", 1)
                 : null;
             }}
           >
@@ -101,8 +101,8 @@ const HomeBanner = () => {
             onTouchStart={handleHoldStart}
             onTouchEnd={handleHoldEnd}
             onClick={() => {
-              return localStorage.getItem("Product_page") > 1
-                ? localStorage.setItem("Product_page", 1)
+              return sessionStorage.getItem("Product_page") > 1
+                ? sessionStorage.setItem("Product_page", 1)
                 : null;
             }}
           >

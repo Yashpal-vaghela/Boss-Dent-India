@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import AlertSuccess from "../component/AlertSuccess"; // Adjust the path as needed
 import Loader1 from "../component/Loader1";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [step, setStep] = useState(1);
@@ -18,7 +19,7 @@ const Signup = () => {
   const  [passwordError, setPasswordError] = useState('')
   const [otp, setOTP] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
-  const [singupalertMessage,setSingupAlertMessage] = useState("");
+  // const [singupalertMessage,setSingupAlertMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -78,7 +79,7 @@ const Signup = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSingupAlertMessage("You are signup successfully.");
+    // setSingupAlertMessage("You are signup successfully.");
     if (error) {
       Swal.fire({
         icon: "error",
@@ -110,7 +111,9 @@ const Signup = () => {
       }
     } catch (error) {
       setLoading(false);
-      setError(error)
+      // setError(error.response.data.message);
+      // toast.error(error.response.data.message);
+      console.log("error",error);
       let errorMessage = "Registration failed.";
       if (error.response && error.response.data) {
         const serverError = error.response.data;
@@ -140,15 +143,15 @@ const Signup = () => {
       );
       if (loginResponse.status === 200) {
         const token = loginResponse.data.token;
-        localStorage.setItem("token", token);
+        sessionStorage.setItem("token", token);
         const ObjectUserData = {
           user_display_name: loginResponse.data.user_display_name,
           user_email: loginResponse.data.user_email,
           user_id: loginResponse.data.user_id,
         };
-        localStorage.setItem("UserData", JSON.stringify(ObjectUserData));
-        localStorage.setItem("username",username );
-        localStorage.setItem("password", password);
+        sessionStorage.setItem("UserData", JSON.stringify(ObjectUserData));
+        sessionStorage.setItem("username",username);
+        sessionStorage.setItem("password", password);
         Swal.fire({
           icon: "success",
           title: "Login Successful",
@@ -158,7 +161,6 @@ const Signup = () => {
         });
         navigate("/");
       }
-  
     }catch (error) {
       console.error("Error logging in:", error);
       Swal.fire({
@@ -258,7 +260,7 @@ const Signup = () => {
                     id="username"
                     placeholder="Enter Your Username"
                     className="form-input"
-                    value={username}
+                    value={username || ""}
                     onChange={(e) => setUsername(e.target.value)}
                     required
                   />
@@ -272,7 +274,7 @@ const Signup = () => {
                     id="email"
                     placeholder="Enter Your E-mail"
                     className="form-input"
-                    value={email}
+                    value={email || ""}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
@@ -304,7 +306,7 @@ const Signup = () => {
                       id="password"
                       placeholder="Create Your Password"
                       className="form-input"
-                      value={password}
+                      value={password || ""}
                       onChange={handlePasswordChange}
                       required
                     />
@@ -316,14 +318,14 @@ const Signup = () => {
                       {showPassword ? <FaEye /> : <FaEyeSlash />}
                     </span>
                   </div>
-                  {error && (
+                  {/* {error && (
                     <p
                       style={{ color: "red" }}
                       className={`${error ? "error" : ""} `}
                     >
                       {error}
                     </p>
-                  )}
+                  )} */}
                 </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="confirm-password">
@@ -335,7 +337,7 @@ const Signup = () => {
                       id="confirm-password"
                       placeholder="Confirm Your Password"
                       className="form-input"
-                      value={confirmPassword}
+                      value={confirmPassword || ""}
                       onChange={handleConfirmPasswordChange}
                       required
                     />
@@ -355,7 +357,6 @@ const Signup = () => {
                     </p>
                   )}
                 </div>
-
                 <button type="submit" className="signup-button">
                   Sign Up
                 </button>

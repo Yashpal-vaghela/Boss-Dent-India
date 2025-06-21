@@ -7,7 +7,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Loader1 from "../component/Loader1";
 import { useWatchlist } from "./WatchlistContext";
 
-
 const Login = () => {
   const [userIdentifier, setUserIdentifier] = useState("");
   const [password, setPassword] = useState("");
@@ -18,14 +17,13 @@ const Login = () => {
   const [userName, setUserName] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
-  const { LoginUserCartList, LoginUserWatchList, LogoutUserList } =
-    useWatchlist();
+  const { LoginUserCartList, LoginUserWatchList, LogoutUserList } = useWatchlist();
 
   useEffect(() => {
-    const savedUsername = localStorage.getItem("userIdentifier");
-    const savedPasssword = localStorage.getItem("password");
-    const token = localStorage.getItem("token");
-    const userData = JSON.parse(localStorage.getItem("UserData"));
+    const savedUsername = sessionStorage.getItem("userIdentifier");
+    const savedPasssword = sessionStorage.getItem("password");
+    const token = sessionStorage.getItem("token");
+    const userData = JSON.parse(sessionStorage.getItem("UserData"));
     if (token && userData) {
       setIsLoggedIn(true);
       setUserName(userData.user_dispaly_name);
@@ -61,16 +59,16 @@ const Login = () => {
       LoginUserCartList(response.data.user_id, {});
       LoginUserWatchList(response.data.user_id, {});
       // console.log("res==",response)
-      localStorage.setItem("token", token);
-      localStorage.setItem("UserData", JSON.stringify(ObjectUserData));
-      // localStorage.setItem("user_id", userId);
+      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("UserData", JSON.stringify(ObjectUserData));
+      // sessionStorage.setItem("user_id", userId);
       if (rememberMe) {
-        localStorage.setItem("userIdentifier", userIdentifier);
-        localStorage.setItem("password", password);
+        sessionStorage.setItem("userIdentifier", userIdentifier);
+        sessionStorage.setItem("password", password);
         setLoading(false);
       } else {
-        localStorage.removeItem("userIdentifier");
-        localStorage.removeItem("password");
+        sessionStorage.removeItem("userIdentifier");
+        sessionStorage.removeItem("password");
       }
       Swal.fire({
         icon: "success",
@@ -103,10 +101,10 @@ const Login = () => {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem("token");
-    localStorage.removeItem("UserData");
-    localStorage.removeItem("cart");
-    localStorage.setItem(
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("UserData");
+    sessionStorage.removeItem("cart");
+    sessionStorage.setItem(
       "cart",
       JSON.stringify({ cart_items: [], cart_total: {} })
     );

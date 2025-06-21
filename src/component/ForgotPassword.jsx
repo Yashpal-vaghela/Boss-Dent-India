@@ -137,8 +137,8 @@ const ForgotPassword = () => {
                     }
                 );
                 const token = loginResponse.data.token;
-                localStorage.setItem("token", token);
-                localStorage.setItem("password", password)
+                sessionStorage.setItem("token", token);
+                sessionStorage.setItem("password", password)
             } else {
                 throw new Error('Failed to change password');
             }
