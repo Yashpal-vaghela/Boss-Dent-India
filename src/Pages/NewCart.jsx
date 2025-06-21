@@ -310,19 +310,25 @@ const CartListItem = React.memo(
 
     const handleUpdateQty = async (e, product, action) => {
       // console.log("select", selectedAttributes);
+      const a = JSON.parse(localStorage.getItem("cart"));
+      console.log("a", a);
+      const itemToupdate = a?.cart_items?.find((i)=>i.id == product.id)
+      console.log("filter", itemToupdate);
+      if(!itemToupdate) return;
       let newQuantity =
         action === "PLUS"
-          ? Number(product.product_quantity) + 1
-          : Number(product.product_quantity) - 1;
+          ? Number(itemToupdate.product_quantity) + 1
+          : Number(itemToupdate.product_quantity) - 1;
       if (newQuantity <= 0) {
         return;
       }
       await axios
         .post("https://admin.bossdentindia.com/wp-json/custom/v1/cart/update", {
           user_id: getUserData.user_id,
+          id:product.id,
           product_id: product.product_id,
           product_quantity: newQuantity,
-          select_Attributes: selectedAttributes,
+          selected_attribute: selectedAttributes,
         })
         .then((response) => {
           const UpdatedProduct = response?.data?.cart_item[0];
@@ -499,6 +505,7 @@ const CartListItem = React.memo(
               -
             </button>
             <span>
+              {console.log("productQuantity",product)}
               {product?.product_quantity && product?.product_quantity}
             </span>
             <button onClick={(e) => handleUpdateQty(e, product, "PLUS")}>

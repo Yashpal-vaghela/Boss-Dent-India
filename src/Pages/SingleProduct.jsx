@@ -41,6 +41,7 @@ const SingleProduct = () => {
   // const [discountProductPrice, setDiscountProductPrice] = useState(null);
   const [largeImageLoaded, setLargeImageLoaded] = useState(false);
   const [getUserData] = useState(JSON.parse(localStorage.getItem("UserData")));
+  const [error,setError] = useState(null);
 
   useEffect(() => {
     const userLoggedIn = !!localStorage.getItem("token");
@@ -231,7 +232,6 @@ const SingleProduct = () => {
 
   // watchlist delete api integrate
   const handleWatchlistToggle = async (product) => {
-   
     if (isLoggedIn) {
       if (watchlist.includes(product.id)) {
         await axios
@@ -316,9 +316,27 @@ const SingleProduct = () => {
                 <>
                   {
                     (RelatedCartProduct = response.data.cart_items.filter(
-                      (item) => Number(item.product_id) === relatedProduct.id
+                      (item) => {
+                        if(selectedAttributes !== undefined){
+                          setError("");
+                          console.log("item",item,Object.values(item.selected_attribute),Object.values(selectedAttributes));
+                         return Object.values(item.selected_attribute)[0] === Object.values(selectedAttributes)[0]
+                        }
+                        else{
+                          setError("Please select variations")
+                        }
+                        return error;
+                        // if(Object.values(selectedAttributes) !== null){
+                        //   return Object.values(item.selected_attribute)[0] === Object.values(selectedAttributes)[0]
+                        // }
+                      } 
                     ))
                   }
+                  {/* {
+                    (RelatedCartProduct = response.data.cart_items.filter(
+                      (item) => Number(item.product_id) === relatedProduct.id
+                    ))
+                  } */}
                 </>
               ) : (
                 <></>
@@ -330,11 +348,11 @@ const SingleProduct = () => {
           } else if (relatedProduct === undefined) {
             handleUpdateCartApi(filterCartProduct, product, GetCartProduct);
           }
-          if (relatedProduct !== undefined) {
-            if (RelatedCartProduct.length === 0) {
-              axios
-                .post(
-                  `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
+          console.log("relatedCartProduct",RelatedCartProduct)
+          if (relatedProduct !== undefined && selectedAttributes) {
+           if(selectedAttributes){
+              if (RelatedCartProduct.length === 0 ) {
+              axios.post(`https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
                   {
                     user_id: userData.user_id,
                     product_id: relatedProduct.id,
@@ -359,6 +377,12 @@ const SingleProduct = () => {
                 .catch((err) => console.log("err", err));
             } else {
               const UpdatedProduct = RelatedCartProduct[0].product_quantity;
+              const a = JSON.parse(localStorage.getItem("cart"))
+              const checkSelectAttribute = Object.values(RelatedCartProduct[0].selected_attribute);
+              const filterSelectAttribute = RelatedCartProduct.filter((item)=>Object.values(item.selected_attribute)[0] == Object.values(selectedAttributes)[0]);
+              console.log("filterSle",filterSelectAttribute,Object.values(RelatedCartProduct[0].selected_attribute)[0],selectedAttributes)
+             //  if(chceckSelctAttribute )
+             console.log("checkSelctAttribute",checkSelectAttribute,GetCartProduct,"a",a)
               axios
                 .post(
                   `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
@@ -380,6 +404,10 @@ const SingleProduct = () => {
                 })
                 .catch((err) => console.log("err", err));
             }
+           }else{
+            setError(`please select variations`);
+               alert("plase select color variations")
+           } 
           }
         }
 
@@ -631,6 +659,7 @@ const SingleProduct = () => {
                     );
                   }
                 )}
+                {error !== null && <span className="text-danger">{error}</span>}
               <div
                 dangerouslySetInnerHTML={{
                   __html: product.short_description,
