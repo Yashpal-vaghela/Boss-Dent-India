@@ -309,47 +309,85 @@ const CartListItem = React.memo(
     };
 
     const handleUpdateQty = async (e, product, action) => {
-      // console.log("select", selectedAttributes);
-      const a = JSON.parse(localStorage.getItem("cart"));
-      console.log("a", a);
-      const itemToupdate = a?.cart_items?.find((i)=>i.id == product.id)
-      console.log("filter", itemToupdate);
-      if(!itemToupdate) return;
-      let newQuantity =
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    if (!cart || !cart.cart_items) return;
+
+    // Find the correct cart item:
+    const itemToUpdate = cart.cart_items.find((item) => {
+        const isSameProduct = item.product_id === product.product_id;
+
+        // If product has variations, match by selected_attribute also
+        if (item.selected_attribute && product.selected_attribute) {
+            const isSameAttribute = JSON.stringify(item.selected_attribute) === JSON.stringify(product.selected_attribute);
+            return isSameProduct && isSameAttribute;
+        }
+
+        // If product has no variations, just match by product_id
+        if (!item.selected_attribute && !product.selected_attribute) {
+            return isSameProduct;
+        }
+
+        return false; // In case of mismatch
+    });
+
+    if (!itemToUpdate) return;
+
+    // Calculate new quantity
+    let newQuantity =
         action === "PLUS"
-          ? Number(itemToupdate.product_quantity) + 1
-          : Number(itemToupdate.product_quantity) - 1;
-      if (newQuantity <= 0) {
-        return;
-      }
-      await axios
-        .post("https://admin.bossdentindia.com/wp-json/custom/v1/cart/update", {
-          user_id: getUserData.user_id,
-          id:product.id,
-          product_id: product.product_id,
-          product_quantity: newQuantity,
-          selected_attribute: selectedAttributes,
-        })
-        .then((response) => {
-          const UpdatedProduct = response?.data?.cart_item[0];
-          const UpdatedCartData = CartData?.cart_items.map((item) => {
-            return item.product_id === UpdatedProduct.product_id
-              ? { ...item, product_quantity: UpdatedProduct.product_quantity }
-              : item;
-          });
-          localStorage.setItem(
+            ? Number(itemToUpdate.product_quantity) + 1
+            : Number(itemToUpdate.product_quantity) - 1;
+
+    if (newQuantity <= 0) return;
+
+    try {
+        const response = await axios.post("https://admin.bossdentindia.com/wp-json/custom/v1/cart/update", {
+            user_id: getUserData.user_id,
+            product_id: itemToUpdate.product_id,
+            product_quantity: newQuantity,
+            // Send selected_attribute only if it exists
+            selected_attribute: itemToUpdate.selected_attribute ? itemToUpdate.selected_attribute : {},
+        });
+
+        const updatedProduct = response?.data?.cart_item[0];
+
+        const updatedCartData = cart.cart_items.map((item) => {
+            const isSameProduct = item.product_id === updatedProduct.product_id;
+
+            if (item.selected_attribute && updatedProduct.selected_attribute) {
+                const isSameAttribute = JSON.stringify(item.selected_attribute) === JSON.stringify(updatedProduct.selected_attribute);
+                if (isSameProduct && isSameAttribute) {
+                    return { ...item, product_quantity: updatedProduct.product_quantity };
+                }
+            } else if (!item.selected_attribute && !updatedProduct.selected_attribute) {
+                if (isSameProduct) {
+                    return { ...item, product_quantity: updatedProduct.product_quantity };
+                }
+            }
+
+            return item; // All others remain unchanged
+        });
+
+        // Update local storage
+        localStorage.setItem(
             "cart",
             JSON.stringify({
-              cart_items: UpdatedCartData,
-              cart_total: response.data.cart_total,
+                cart_items: updatedCartData,
+                cart_total: response.data.cart_total,
             })
-          );
-          AdddeliveryCharge(response.data.cart_total, response.data.cart_items);
-          setCartData({ cart_items: UpdatedCartData });
-          setCartgetTotal(response.data.cart_total);
-        })
-        .catch((err) => console.log("error", err));
-    };
+        );
+
+        // Update frontend state
+        AdddeliveryCharge(response.data.cart_total, response.data.cart_items);
+        setCartData({ cart_items: updatedCartData });
+        setCartgetTotal(response.data.cart_total);
+
+    } catch (err) {
+        console.log("Error while updating quantity:", err);
+    }
+};
+
+
 
     const confirmDelete = () => {
       setShowDialogBox(true);
