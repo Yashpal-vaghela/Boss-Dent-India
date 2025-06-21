@@ -104,10 +104,11 @@ const NewCart = () => {
       if (!itemToUpdate) return;
     // handleSingleProduct(e,product);
     // console.log("product",product)
-    // console.log("itemToUpdate",itemToUpdate) 
+    console.log("itemToUpdate",itemToUpdate) 
     const payload = {
       user_id: getUserData.user_id,
       product_id: itemToUpdate.product_id,
+      selected_attribute:itemToUpdate.selected_attribute
     };
 
     await axios
@@ -118,6 +119,7 @@ const NewCart = () => {
         const filterData = CartData?.cart_items.filter(
           (item) => item.id !== product.id
         );
+        console.log("res",res.data.cart_total)
         setCartData({ cart_items: filterData });
         setCartgetTotal(res.data.cart_total);
         AdddeliveryCharge(res.data.cart_total, CartData);
@@ -410,7 +412,6 @@ const CartListItem = React.memo(
             user_id: getUserData.user_id,
             product_id: itemToUpdate.product_id,
             product_quantity: newQuantity,
-            // Send selected_attribute only if it exists
             selected_attribute: itemToUpdate.selected_attribute ? itemToUpdate.selected_attribute : {},
         });
 
