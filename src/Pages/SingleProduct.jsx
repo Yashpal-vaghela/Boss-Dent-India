@@ -40,8 +40,10 @@ const SingleProduct = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // const [discountProductPrice, setDiscountProductPrice] = useState(null);
   const [largeImageLoaded, setLargeImageLoaded] = useState(false);
-  const [getUserData] = useState(JSON.parse(sessionStorage.getItem("UserData")));
-  const [error,setError] = useState(null);
+  const [getUserData] = useState(
+    JSON.parse(sessionStorage.getItem("UserData"))
+  );
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const userLoggedIn = !!sessionStorage.getItem("token");
@@ -74,7 +76,7 @@ const SingleProduct = () => {
     if (id) {
       fetchProduct();
     }
-    handleAttributeSelect()
+    handleAttributeSelect();
   }, [id]);
 
   // fetch single product ,stock status and weight api integrate
@@ -86,7 +88,7 @@ const SingleProduct = () => {
       );
 
       setProduct(response.data);
-      // console.log("Product Response:", response.data);
+      console.log("Product Response:", response.data);
 
       // Preload the main product image
       if (response.data.yoast_head_json?.og_image?.[0]?.url) {
@@ -98,7 +100,7 @@ const SingleProduct = () => {
       let maxSalePrice = null;
 
       // Extract sale price range from variations
-      if (response.data.variations && response.data.variations.length > 0 ) {
+      if (response.data.variations && response.data.variations.length > 0) {
         // console.log("response-variations",response.data.variations)
         setVariations(response.data.variations);
         // console.log("res",response.data)
@@ -114,9 +116,9 @@ const SingleProduct = () => {
           console.warn("No valid sale prices found.");
         }
       }
-      
-      if(response.data.variations === null){
-        setVariations([])
+
+      if (response.data.variations === null) {
+        setVariations([]);
       }
 
       // Fallback to main product price if variations are missing or incorrect
@@ -124,7 +126,7 @@ const SingleProduct = () => {
         minSalePrice = parseFloat(response.data.price) || 0;
         maxSalePrice = parseFloat(response.data.price) || minSalePrice;
       }
-      
+
       // console.log("maxSalePrice",maxSalePrice)
       setSalePrice(minSalePrice);
       setRegularPrice(maxSalePrice);
@@ -138,7 +140,9 @@ const SingleProduct = () => {
           `https://admin.bossdentindia.com/wp-json/wp/v2/product?product_cat=${categoryId}&exclude=${response.data.id}&per_page=20`
         );
 
-        const shuffledProducts = relatedProductsResponse.data.sort(() => 0.5 - Math.random());
+        const shuffledProducts = relatedProductsResponse.data.sort(
+          () => 0.5 - Math.random()
+        );
         // console.log("shuff",shuffledProducts)
         const productWithDiscount = shuffledProducts.map((product) => {
           const regularPrice = parseFloat(product.regular_price);
@@ -146,7 +150,9 @@ const SingleProduct = () => {
           let discount = 0;
 
           if (regularPrice && salePrice < regularPrice) {
-            discount = Math.round(((regularPrice - salePrice) / regularPrice) * 100);
+            discount = Math.round(
+              ((regularPrice - salePrice) / regularPrice) * 100
+            );
           }
           return { ...product, discount };
         });
@@ -185,7 +191,7 @@ const SingleProduct = () => {
     RegularPrice
   ) => {
     // console.log("attribute",attribute,value,keys,salePrice,RegularPrice)
-    if(attribute && value){
+    if (attribute && value) {
       const newSelectedAttributes = {
         ...selectedAttributes,
         [attribute]: value,
@@ -200,7 +206,7 @@ const SingleProduct = () => {
           return newSelectedAttributes[key] === variation.attributes[key];
         });
       });
-      setProduct({...product,"price":selectedVariation.price})
+      setProduct({ ...product, price: selectedVariation.price });
       // console.log("selesct",selectedVariation)
       if (selectedVariation) {
         setSalePrice(selectedVariation.price);
@@ -209,14 +215,14 @@ const SingleProduct = () => {
         setSalePrice(salePrice);
         setRegularPrice(RegularPrice);
       }
-    }else{
-      setSelectedAttributes(value); 
+    } else {
+      setSelectedAttributes(value);
     }
     setSelectedColor(value);
     // console.log("v++++++",value)
-    
+
     // console.log("attr",attribute,value,salePrice,RegularPrice)
-  
+
     // sessionStorage.setItem('selectAttributes',JSON.stringify(newSelectedAttributes))
     // console.log("variations", selectedVariation)
 
@@ -254,7 +260,7 @@ const SingleProduct = () => {
         // console.log("select",product,selectedAttributes)
         // if(selectedAttributes === undefined){
         //   // console.log("pro",product.variations.Object.values())
-        //     ProductPrice = 
+        //     ProductPrice =
         // }else{
         //   ProductPrice = ;
         // }
@@ -314,29 +320,22 @@ const SingleProduct = () => {
                   {
                     (RelatedCartProduct = response.data.cart_items.filter(
                       (item) => {
-                        // console.log("item",item,variations)
-                        if(variations.length > 0){
-                          if(selectedAttributes !== undefined){
+                        if (variations.length > 0) {
+                          if (selectedAttributes !== undefined) {
                             setError("");
-                            console.log("item",item,Object.values(item.selected_attribute),Object.values(selectedAttributes));
-                            return Object.values(item.selected_attribute)[0] === Object.values(selectedAttributes)[0]
-                          }
-                          else{
+                            return (
+                              Object.values(item.selected_attribute)[0] ===
+                              Object.values(selectedAttributes)[0]
+                            );
+                          } else {
                             setError("Please select variations");
-                            // return false;
                           }
-                        }else{
+                        } else {
                           return Number(item.product_id) === relatedProduct.id;
                         }
-                        // return error;
-                      } 
+                      }
                     ))
                   }
-                  {/* {
-                    (RelatedCartProduct = response.data.cart_items.filter(
-                      (item) => Number(item.product_id) === relatedProduct.id
-                    ))
-                  } */}
                 </>
               ) : (
                 <></>
@@ -346,71 +345,147 @@ const SingleProduct = () => {
           if (filterCartProduct.length === 0 && relatedProduct === undefined) {
             handleAddToCartApi(product, userData);
           } else if (relatedProduct === undefined) {
+            console.warn("update");
             handleUpdateCartApi(filterCartProduct, product, GetCartProduct);
           }
-          console.log("relatedCartProduct",RelatedCartProduct)
-          if (relatedProduct !== undefined && selectedAttributes) {
-           if(selectedAttributes){
-              if (RelatedCartProduct.length === 0 ) {
-              axios.post(`https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
-                  {
-                    user_id: userData.user_id,
-                    product_id: relatedProduct.id,
-                    category_id: [relatedProduct.categories[0].id],
-                    product_quantity: quantity,
-                    product_title: relatedProduct.name,
-                    product_image: relatedProduct.yoast_head_json.og_image[0].url,
-                    product_attributes: relatedProduct.variations,
-                    product_weight: relatedProduct.weight,
-                    product_price: relatedProduct.price,
-                    selected_attribute: selectedAttributes,
-                  }
-                )
-                .then((res) => {
-                  toast.success("Product added to cart successfully!");
-                  addToCartListProduct(
-                    relatedProduct.id,
-                    selectedAttributes,
-                    getUserData
-                  );
-                })
-                .catch((err) => console.log("err", err));
+          // console.log(
+          //   "relatedCartProduct",
+          //   RelatedCartProduct,
+          //   relatedProduct,
+          //   selectedAttributes
+          // );
+          if (relatedProduct !== undefined) {
+            if (RelatedCartProduct.length === 0) {
+              if (relatedProduct.variations !== null) {
+                if (selectedAttributes) {
+                  axios
+                    .post(
+                      `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
+                      {
+                        user_id: userData.user_id,
+                        product_id: relatedProduct.id,
+                        category_id: [relatedProduct.categories[0].id],
+                        product_quantity: quantity,
+                        product_title: relatedProduct.name,
+                        product_image:
+                          relatedProduct.yoast_head_json.og_image[0].url,
+                        product_attributes: relatedProduct.variations,
+                        product_weight: relatedProduct.weight,
+                        product_price: relatedProduct.price,
+                        selected_attribute: selectedAttributes,
+                      }
+                    )
+                    .then((res) => {
+                      // console.log("res",res)
+                      toast.success("Product added to cart successfully!");
+                      addToCartListProduct(
+                        res.data.cart_id,
+                        selectedAttributes,
+                        getUserData
+                      );
+                    })
+                    .catch((err) => console.log("err", err));
+                } else {
+                  setError(`please select variations`);
+                }
+              } else {
+                console.log("realtaed", relatedProduct);
+                axios
+                  .post(
+                    `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
+                    {
+                      user_id: userData.user_id,
+                      product_id: relatedProduct.id,
+                      category_id: [relatedProduct.product_cat[0]],
+                      product_quantity: quantity,
+                      product_title: relatedProduct.name,
+                      product_image:
+                        relatedProduct.yoast_head_json.og_image[0].url,
+                      product_attributes: relatedProduct.variations,
+                      product_weight: relatedProduct.weight,
+                      product_price: relatedProduct.price,
+                      selected_attribute: selectedAttributes,
+                    }
+                  )
+                  .then((res) => {
+                    toast.success("Product added to cart successfully!");
+                    addToCartListProduct(
+                      res.data.cart_id,
+                      selectedAttributes,
+                      getUserData
+                    );
+                  })
+                  .catch((err) => console.log("err", err));
+              }
             } else {
               const UpdatedProduct = RelatedCartProduct[0].product_quantity;
-              const a = JSON.parse(sessionStorage.getItem("cart"))
-              const checkSelectAttribute = Object.values(RelatedCartProduct[0].selected_attribute);
-              const filterSelectAttribute = RelatedCartProduct.filter((item)=>Object.values(item.selected_attribute)[0] == Object.values(selectedAttributes)[0]);
-              console.log("filterSle",filterSelectAttribute,Object.values(RelatedCartProduct[0].selected_attribute)[0],selectedAttributes)
-             //  if(chceckSelctAttribute )
-             console.log("checkSelctAttribute",checkSelectAttribute,GetCartProduct,"a",a)
-              axios
-                .post(
-                  `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
-                  {
+              // const a = JSON.parse(sessionStorage.getItem("cart"));
+              // const checkSelectAttribute = Object.values(
+              //   RelatedCartProduct[0].selected_attribute
+              // );
+              // const b = selectedAttributes
+              //   ? RelatedCartProduct.filter(
+              //       (item) =>
+              //         Object.values(item.selected_attribute)[0] ==
+              //         Object.values(selectedAttributes)[0]
+              //     )
+              //   : [];
+              // const filterSelectAttribute = RelatedCartProduct.filter((item)=>Object.values(item.selected_attribute)[0] == Object.values(selectedAttributes)[0]);
+              // console.log(
+              //   "filterSle",
+              //   b,
+              //   Object.values(RelatedCartProduct[0].selected_attribute)[0],
+              //   selectedAttributes,
+              //   RelatedCartProduct,
+              // );
+              // console.log(
+              //   "checkSelctAttribute",
+              //   checkSelectAttribute,
+              //   GetCartProduct,
+              // );
+              const payload = relatedProduct.categories
+                ? {
                     user_id: getUserData.user_id,
+                    category_id: [relatedProduct.categories[0].id],
                     product_id: relatedProduct.id,
                     product_quantity: Number(UpdatedProduct) + 1,
                     selected_attribute: selectedAttributes,
+                    cart_id: RelatedCartProduct[0].id,
                   }
+                : {
+                    user_id: getUserData.user_id,
+                    category_id: [relatedProduct.product_cat[0]],
+                    product_id: relatedProduct.id,
+                    product_quantity: Number(UpdatedProduct) + 1,
+                    selected_attribute: selectedAttributes,
+                    cart_id: RelatedCartProduct[0].id,
+                  };
+              axios
+                .post(
+                  `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
+                  payload
+                  // {
+                  //    user_id: getUserData.user_id,
+                  //     category_id: [relatedProduct.categories[0].id],
+                  //     product_id: relatedProduct.id,
+                  //     product_quantity: Number(UpdatedProduct) + 1,
+                  //     selected_attribute: selectedAttributes,
+                  //     cart_id:RelatedCartProduct[0].id
+                  // }
                 )
                 .then((res) => {
+                  console.log("resUpdate", res, relatedProduct);
                   addToCartListProduct(
-                    relatedProduct.id,
+                    res.data.cart_id,
                     selectedAttributes,
                     getUserData
                   );
                   toast.success("Product update to cart successfully!");
-
                 })
                 .catch((err) => console.log("err", err));
             }
-           }else{
-            setError(`please select variations`);
-               alert("plase select color variations")
-           } 
           }
         }
-
       } else {
         toast.info("Product is out of stock");
       }
@@ -440,7 +515,7 @@ const SingleProduct = () => {
       })
       .then((res) => {
         toast.success("product added to cart successfully!");
-        addToCartListProduct(product.id, selectedAttributes, getUserData);
+        addToCartListProduct(res.data.cart_id, selectedAttributes, getUserData);
       })
       .catch((err) => console.log("err", err));
   };
@@ -454,9 +529,10 @@ const SingleProduct = () => {
         category_id: product.categories[0].id,
         product_quantity: Number(UpdatedProduct) + quantity,
         selected_attribute: selectedAttributes,
+        cart_id: UpdatedProduct.id,
       })
       .then((res) => {
-        addToCartListProduct(product.id, selectedAttributes, getUserData);
+        addToCartListProduct(res.data.cart_id, selectedAttributes, getUserData);
         toast.success("Product update to cart successfully!");
       })
       .catch((err) => console.log("err", err));
@@ -540,7 +616,9 @@ const SingleProduct = () => {
                   }}
                 />
               ) : (
-                <p><Loader1 /></p>
+                <p>
+                  <Loader1 />
+                </p>
               )}
             </div>
             <div className="single-product-details">
@@ -551,9 +629,11 @@ const SingleProduct = () => {
                   <>
                     <span className="sale-price">
                       ₹{salePrice}
-                      {
-                        selectedAttributes === undefined ? <>- ₹{regularPrice}</> : <></>
-                      }
+                      {selectedAttributes === undefined ? (
+                        <>- ₹{regularPrice}</>
+                      ) : (
+                        <></>
+                      )}
                     </span>
                   </>
                 ) : (
@@ -562,7 +642,9 @@ const SingleProduct = () => {
                       <>
                         {salePrice !== regularPrice ? (
                           <>
-                            <span className="regular-price">₹{regularPrice}</span>
+                            <span className="regular-price">
+                              ₹{regularPrice}
+                            </span>
                             <span className="sale-price">₹{salePrice}</span>
                           </>
                         ) : (
@@ -582,7 +664,9 @@ const SingleProduct = () => {
               </h4>
               <h4 className="single-product-stock-status">
                 Stock Status:{" "}
-                <span>{stockStatus === "instock" ? "In Stock" : "Out of Stock"}</span>
+                <span>
+                  {stockStatus === "instock" ? "In Stock" : "Out of Stock"}
+                </span>
               </h4>
               {/* {console.log("variations",variations)} */}
               {variations.length > 0 &&
@@ -598,18 +682,20 @@ const SingleProduct = () => {
                         </h4>
 
                         {/* color theme */}
-                        {attribute === "pa_color" || attribute === "color"    ? (
+                        {attribute === "pa_color" || attribute === "color" ? (
                           <div style={{ display: "flex" }}>
                             {variations.map((color, index) => {
                               // {console.log("value",color,selectedAttributes)}
                               return (
                                 <div
-                                  className={`color-option ${Object.values(color.attributes)[0]
-                                    } ${selectedColor ===
-                                      Object.values(color.attributes)[0]
+                                  className={`color-option ${
+                                    Object.values(color.attributes)[0]
+                                  } ${
+                                    selectedColor ===
+                                    Object.values(color.attributes)[0]
                                       ? "selected"
                                       : ""
-                                    }`}
+                                  }`}
                                   key={index}
                                   onClick={() =>
                                     handleAttributeSelect(
@@ -631,13 +717,18 @@ const SingleProduct = () => {
                               return (
                                 <button
                                   key={index}
-                                  className={`variation-button ${Object.values(value.attributes)[0]}
-                                  ${selectedAttributes !== undefined && selectedAttributes !== null ? 
-                                    (Object.values(selectedAttributes)[0] === Object.values(value.attributes)[0]
-                                    ? "selected"
-                                    : "")
-                                    :""
-                                    }`}
+                                  className={`variation-button ${
+                                    Object.values(value.attributes)[0]
+                                  }
+                                  ${
+                                    selectedAttributes !== undefined &&
+                                    selectedAttributes !== null
+                                      ? Object.values(selectedAttributes)[0] ===
+                                        Object.values(value.attributes)[0]
+                                        ? "selected"
+                                        : ""
+                                      : ""
+                                  }`}
                                   onClick={() =>
                                     handleAttributeSelect(
                                       attribute,
@@ -658,7 +749,7 @@ const SingleProduct = () => {
                     );
                   }
                 )}
-                {error !== null && <span className="text-danger">{error}</span>}
+              {error !== null && <span className="text-danger">{error}</span>}
               <div
                 dangerouslySetInnerHTML={{
                   __html: product.short_description,
@@ -682,10 +773,11 @@ const SingleProduct = () => {
               </div>
               <div className="btn-icon-main">
                 <div>
-                {/* {console.log("pridu",product)} */}
+                  {/* {console.log("pridu",product)} */}
                   <button
-                    className={`add-to-cart-btn ${stockStatus === "outofstock" ? "disable-button" : ""
-                      }`}
+                    className={`add-to-cart-btn ${
+                      stockStatus === "outofstock" ? "disable-button" : ""
+                    }`}
                     disabled={stockStatus !== "instock"}
                     onClick={(e) => handleAddToCart(e, product)}
                   >
@@ -694,7 +786,9 @@ const SingleProduct = () => {
                 </div>
                 <div>
                   <span
-                    className={`like-icon ${!watchlist.includes(product.id) ? "" : "inactive-heart" }`}
+                    className={`like-icon ${
+                      !watchlist.includes(product.id) ? "" : "inactive-heart"
+                    }`}
                     onClick={() => handleWatchlistToggle(product)}
                   >
                     {watchlist.includes(product.id) ? (
@@ -713,22 +807,25 @@ const SingleProduct = () => {
                 <ul>
                   <li
                     onClick={() => setActivesection("description")}
-                    className={`des-title ${activeSection === "description" ? "active" : ""
-                      }`}
+                    className={`des-title ${
+                      activeSection === "description" ? "active" : ""
+                    }`}
                   >
                     Description
                   </li>
                   <li
                     onClick={() => setActivesection("additional")}
-                    className={`des-title ${activeSection === "additional" ? "active" : ""
-                      }`}
+                    className={`des-title ${
+                      activeSection === "additional" ? "active" : ""
+                    }`}
                   >
                     Additional Information
                   </li>
                   <li
                     onClick={() => setActivesection("review")}
-                    className={`des-title ${activeSection === "review" ? "active" : ""
-                      }`}
+                    className={`des-title ${
+                      activeSection === "review" ? "active" : ""
+                    }`}
                   >
                     Review
                   </li>

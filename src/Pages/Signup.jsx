@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -71,11 +71,15 @@ const Signup = () => {
   };
 
   const handlePhoneChange = (e) => {
-    if (phone.length !== 10) {
-      setPhone(e.target.value);
-    } else {
-      setPhone([]);
+    const value = e.target.value;
+    if(value.length <= 10){
+      setPhone(value)
     }
+    // if (phone.length !== 10) {
+    //   setPhone(e.target.value);
+    // } else {
+    //   setPhone([]);
+    // }
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -180,7 +184,7 @@ const Signup = () => {
         "https://admin.bossdentindia.com/wp-json/custom/v1/verify-otp",
         {
           email,
-          "phone_number": phone,
+          phone_number: phone,
           otp,
         }
       );
@@ -214,7 +218,7 @@ const Signup = () => {
       const response = await axios.post(
         "https://admin.bossdentindia.com/wp-json/custom/v1/resend-otp",
         {
-          "phone_number": phone,
+          phone_number: phone,
         }
       );
 
@@ -238,6 +242,9 @@ const Signup = () => {
     setShowPassword(!showPassword);
   };
 
+  useEffect(()=>{
+    console.log("e",window)
+  },[])
   return (
     <div className="container">
       <div className="signup-container" data-aos="fade">

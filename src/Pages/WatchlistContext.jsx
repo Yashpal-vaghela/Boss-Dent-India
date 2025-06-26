@@ -79,7 +79,7 @@ export const WatchlistProvider = ({ children }) => {
     // Only add the product ID to the watchlist if it doesn't already exist
     // console.log("updateWatchList",updateCartList)
     setCartList((prevCartlist) => {
-      console.log("preCartList",prevCartlist)
+      // console.log("preCartList",prevCartlist)
       if (!prevCartlist.includes(id)) {
         const updateCartList = [...prevCartlist, Number(id)];
         // console.log("updateList",Number(updateCartList))
@@ -109,7 +109,7 @@ export const WatchlistProvider = ({ children }) => {
         `https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${fetchuserdata.user_id}`
       )
       .then((res) => {
-        sessionStorage.setItem("cart", JSON.stringify(res.data));
+        // sessionStorage.setItem("cart", JSON.stringify(res.data));
         setCartList((prevCartlist) => {
           if (!prevCartlist.includes(id)) {
             const updateCartList = [...prevCartlist, id];
@@ -125,7 +125,7 @@ export const WatchlistProvider = ({ children }) => {
       .catch((err) => console.log("err", err));
   };
   const removeFromCartList = (id) => {
-    // console.log("id", id);
+    console.log("id", id);
     if (!ensureAuthenticated()) return;
     setCartList((prevCartlist) => {
       const updateCartList = prevCartlist.filter(
