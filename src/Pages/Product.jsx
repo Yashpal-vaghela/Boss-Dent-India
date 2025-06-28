@@ -166,12 +166,6 @@ const Product = () => {
                 getcartProductData?.cart_items?.filter(
                   (item) => Number(item.product_id) === product.id
                 ) || [];
-              // console.log(
-              //   "filterCartProduct",
-              //   filterCartProduct,
-              //   filterCartData,
-              //   product.variations
-              // );
               if (product.variations === null || product.variations.length === 0) {
                 if (filterCartData.length === 0) {
                   console.warn("AddtoCart");

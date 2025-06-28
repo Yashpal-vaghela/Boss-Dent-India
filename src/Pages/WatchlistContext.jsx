@@ -97,7 +97,6 @@ export const WatchlistProvider = ({ children }) => {
       return prevCartlist;
     });
   };
-
   const addToCartListProduct = async (
     id,
     selectedAttributes,
@@ -111,6 +110,7 @@ export const WatchlistProvider = ({ children }) => {
       .then((res) => {
         // sessionStorage.setItem("cart", JSON.stringify(res.data));
         setCartList((prevCartlist) => {
+          
           if (!prevCartlist.includes(id)) {
             const updateCartList = [...prevCartlist, id];
             sessionStorage.setItem(
