@@ -14,7 +14,7 @@ const OtherBanner = () => {
     },
     {
       id: 2,
-      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Suction-Tips_.webp",
+      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Suction-Tips-banner.webp",
       slug: "products?category=123",
       alt: "Suction-tips",
       width: 300,

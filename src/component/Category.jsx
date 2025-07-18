@@ -103,7 +103,7 @@ const Category = (props) => {
               className={`category ${props.category === "119" ? "active" : ""}`}
               onClick={() => props.handleCategoryClick(119)}
             >
-              Draps
+              Drapes
             </li>
             <li
               className={`category ${props.category === "122" ? "active" : ""}`}

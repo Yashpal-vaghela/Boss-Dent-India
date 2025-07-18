@@ -11,9 +11,9 @@ const HomeBanner = () => {
   const swiperRef = useRef(null);
 
   const bannerImages = [
-    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient-drape-banner.webp",
+    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient-Drape-premuim.webp",
     "https://new-product-banner.s3.ap-south-1.amazonaws.com/Mask-banner.webp",
-    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Reactors-banner.webp",
+    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Cheek-Reatractors.webp",
     "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient-bibs-banner.webp",
     "https://new-product-banner.s3.ap-south-1.amazonaws.com/Discount-banner.webp",
     "https://product-banner.s3.ap-south-1.amazonaws.com/Pepar-Point-offer.webp"

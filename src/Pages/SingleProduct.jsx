@@ -642,7 +642,8 @@ const SingleProduct = () => {
                                         )
                                       }
                                     >
-                                      {Object.values(color.attributes)[0]}
+                                      {Object.values(color.attributes)[0]?.charAt(0).toUpperCase() +
+                                      Object.values(color.attributes)[0]?.slice(1)}
                                     </option>
                                   );
                                 })}
