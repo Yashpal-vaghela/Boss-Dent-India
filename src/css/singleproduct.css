@@ -107,7 +107,12 @@
   background-color: #c89c31;
   color: #fff;
 }
-
+.pack-button{
+  margin-left: 10px;
+}
+.pack-button .form-check-input{
+  margin-top: 0px;
+}
 /* color variation */
 .color-option {
   width: 25px;

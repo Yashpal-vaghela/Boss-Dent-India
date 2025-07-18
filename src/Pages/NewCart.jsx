@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaTrashAlt } from "react-icons/fa";
-import '../css/cart.css';
+import "../css/cart.css";
 import BreadCrumbs from "../component/BreadCrumbs";
 import axios from "axios";
 import { useWatchlist } from "./WatchlistContext";
@@ -18,15 +18,18 @@ const NewCart = () => {
     return d ? JSON.parse(d) : null;
   });
   const [CartgetTotal, setCartgetTotal] = useState([]);
-  const { alertMessage, removeFromCartList, addToCartList ,EmptyCart} = useWatchlist();
-  const [getUserData] = useState(JSON.parse(sessionStorage.getItem("UserData")));
+  const { alertMessage, removeFromCartList, addToCartList, EmptyCart } =
+    useWatchlist();
+  const [getUserData] = useState(
+    JSON.parse(sessionStorage.getItem("UserData"))
+  );
   const [loading, setLoading] = useState(false);
   // const [singleProduct,setSingleProduct] = useState([]);
   // const [subTotal,setSubTotal] = useState([]);
   // const excludedCategories = ['gloves'];
 
   useEffect(() => {
-    fetchCartData();    
+    fetchCartData();
   }, []);
 
   // fetchCartData
@@ -40,19 +43,10 @@ const NewCart = () => {
         res.data.cart_items.map((item) => {
           return addToCartList(Number(item.id));
         });
-        // const a = res.data.cart_items.filter((product)=>product.category_id == 116)
-        // console.log("a",a)
-        // const eligibleTotal = res.data.cart_items
-        // .filter((item)=>!excludedCategories.includes(item.category_name.toLowerCase()))
-        // .reduce((sum,item)=> sum + item.product_price * item.product_quantity,0);
-        // console.log("eli",eligibleTotal)
         sessionStorage.setItem("cart", JSON.stringify(res.data));
         sessionStorage.setItem("cart_length", res.data.cart_items.length);
         setLoading(false);
         setCartData(res.data);
-        if (res.data.cart_total.total_price < 2300) {
-          setDeliveryCharge(90);
-        }
         setCartgetTotal(res.data.cart_total);
         AdddeliveryCharge(res.data.cart_total, res.data.cart_items);
       })
@@ -66,30 +60,27 @@ const NewCart = () => {
   };
 
   const handleRemoveItem = async (e, product) => {
-    // console.log("product",product,CartData,singleProduct)
     e.preventDefault();
-      const itemToUpdate = CartData.cart_items.find((item) => {
-        const isSameProduct = item.product_id === product.product_id;
-          if (item.selected_attribute && product.selected_attribute) {
-             const isSameAttribute = JSON.stringify(item.selected_attribute) === JSON.stringify(product.selected_attribute);
-             return isSameProduct && isSameAttribute;
-          }
-          // If product has no variations, just match by product_id
-          if (!item.selected_attribute && !product.selected_attribute) {
-             return isSameProduct;
-          }
-         return false; 
-      });
-      // singleProduct.push(itemToUpdate);
-      // setSingleProduct(itemToUpdate);
-      if (!itemToUpdate) return;
-    // console.log("product",product)
-    // console.log("itemToUpdate",itemToUpdate) 
+    const itemToUpdate = CartData.cart_items.find((item) => {
+      const isSameProduct = item.product_id === product.product_id;
+      if (item.selected_attribute && product.selected_attribute) {
+        const isSameAttribute =
+          JSON.stringify(item.selected_attribute) ===
+          JSON.stringify(product.selected_attribute);
+        return isSameProduct && isSameAttribute;
+      }
+      if (!item.selected_attribute && !product.selected_attribute) {
+        return isSameProduct;
+      }
+      return false;
+    });
+
+    if (!itemToUpdate) return;
     const payload = {
-      cart_id:Number(product.id),
+      cart_id: Number(product.id),
       user_id: getUserData.user_id,
       product_id: itemToUpdate.product_id,
-      selected_attribute:itemToUpdate.selected_attribute
+      selected_attribute: itemToUpdate.selected_attribute,
     };
 
     await axios
@@ -100,7 +91,6 @@ const NewCart = () => {
         const filterData = CartData?.cart_items.filter(
           (item) => item.id !== product.id
         );
-        // console.log("res",res.data.cart_total,res.data)
         setCartData({ cart_items: filterData });
         setCartgetTotal(res.data.cart_total);
         AdddeliveryCharge(res.data.cart_total, CartData);
@@ -113,31 +103,6 @@ const NewCart = () => {
       .catch((error) => {
         console.log("Removing product with ID:", product.product_id);
       });
-
-    // if(itemToUpdate.length !== 0 ){
-        // await axios
-    //   .delete(`https://admin.bossdentindia.com/wp-json/custom/v1/cart/delete`, {
-    //     data: payload,
-    //   })
-    //   .then((res) => {
-    //     const filterData = CartData?.cart_items.filter(
-    //       (item) => item.id !== product.id
-    //     );
-    //     setCartData({ cart_items: filterData });
-    //     setCartgetTotal(res.data.cart_total);
-    //     AdddeliveryCharge(res.data.cart_total, CartData);
-    //     removeFromCartList(product.product_id);
-    //     sessionStorage.setItem(
-    //       "cart",
-    //       JSON.stringify({ cart_items: filterData, cart_total: CartgetTotal })
-    //     );
-    //     // sessionStorage.setItem("cart_length", filterData.length);
-    //   })
-    //   .catch((error) => {
-    //     console.log("Removing product with ID:", product.product_id);
-    //   });
-    // }
-  
   };
 
   const handleEmptyCart = () => {
@@ -145,10 +110,8 @@ const NewCart = () => {
     setCartData({ cart_items: [], cart_total: {} });
   };
 
-  const AdddeliveryCharge = (CartTotal) => {
-    // const getTotalWeight = CartTotal.total_weight / 1000;
+  const AdddeliveryCharge = (CartTotal, CartItem) => {
     const getTotalAmount = CartTotal.total_price;
-    // console.log("getTotalAmount",getTotalAmount,CartTotal)
     if (getTotalAmount <= 2300) {
       setDeliveryCharge(90);
       sessionStorage.setItem("deliveryCharge", 90);
@@ -156,12 +119,6 @@ const NewCart = () => {
       setDeliveryCharge(0);
       sessionStorage.setItem("deliveryCharge", 0);
     }
-    // console.log("deliveryCharge",deliveryCharge)
-    // if (getTotalWeight >= 1 && getTotalWeight <= 3) {
-    //   setDeliveryCharge(125);
-    // } else if (getTotalWeight > 3) {
-    //   setDeliveryCharge(65);
-    // }
   };
 
   const grandTotal = (CartgetTotal?.total_price || 0) + (deliveryCharge || 0);
@@ -224,6 +181,7 @@ const NewCart = () => {
                           setCanCheckout={setCanCheckout}
                           addToCartList={addToCartList}
                           CartgetTotal={CartgetTotal}
+                          deliveryCharge={deliveryCharge}
                         ></CartListItem>
                       );
                     })}
@@ -255,18 +213,6 @@ const NewCart = () => {
                       Check Out
                     </button>
                   </Link>
-
-                  <div className="cart-payment-methods">
-                    <p>We Accept</p>
-                    <div className="payment-logos">
-                      <img src="/asset/images/Google-pay.png" alt="googlepay" />
-                      <img src="/asset/images/Phone-pe.png" alt="phone-pe" />
-                      <img
-                        src="/asset/images/bank-transfer.png"
-                        alt="banktransfer"
-                      />
-                    </div>
-                  </div>
                 </div>
               </div>
             )}
@@ -284,7 +230,6 @@ const CartListItem = React.memo(
     product,
     handleRemoveItem,
     handleImageLoad,
-    // handleUpdateQty,
     AdddeliveryCharge,
     imageLoading,
     canCheckout,
@@ -295,152 +240,105 @@ const CartListItem = React.memo(
     setCanCheckout,
     // addToCartList,
     CartgetTotal,
+    deliveryCharge,
   }) => {
     const [productVariations] = useState(() => {
       return product.product_attributes ? product.product_attributes : {};
     });
-    // const [selectedAttributes, setSelectedAttributes] = useState(() => {
-    //   return product.selected_attribute ? product.selected_attribute : {};
-    // });
-    // console.log("product-----",product.selected_attribute,"or",selectedAttributes,product)
     const [showDialogBox, setShowDialogBox] = useState(false);
-    
-    // console.log("product",product)
-    // const [productPrice, setProductPrice] = useState(product.product_price);
-    // const handleAttributeSelect = async (product, attribute, value) => {
-    //   const updateAttributes = {
-    //     ...selectedAttributes,
-    //     [attribute]: value,
-    //   };
-    //   // console.log("updateAttributes",updateAttributes,JSON.parse(updateAttributes))
-    //   setSelectedAttributes(updateAttributes);
-    //   await axios
-    //     .post(`https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`, {
-    //       user_id: getUserData.user_id,
-    //       product_id: product.product_id,
-    //       selected_attribute: updateAttributes,
-    //     })
-    //     .then((response) => {
-    //       // console.log("response",response.data)
-    //       const UpdatedProduct = response?.data?.cart_item[0];
-    //       const UpdatedCartData = CartData?.cart_items?.map((item) => {
-    //         return item.product_id === UpdatedProduct.product_id
-    //           ? {
-    //               ...item,
-    //               selected_attribute: {
-    //                 ...item.selected_attribute, 
-    //                 [attribute]: value },
-    //             }
-    //           : item;
-    //       });
-    //       const ProductFilterPrice =
-    //         response.data?.cart_item[0].product_attributes.filter(
-    //           (item) => Object.values(item.attributes)[0] == value
-    //         );
-    //         // console.log("productFilterDta",ProductFilterPrice,response.data)
-    //       if (ProductFilterPrice[0].sale_price) {
-    //         setProductPrice(ProductFilterPrice[0].sale_price);
-    //       } else {
-    //         setProductPrice(ProductFilterPrice[0].price);
-    //       }
-    //       sessionStorage.setItem(
-    //         "cart",
-    //         JSON.stringify({
-    //           cart_items: UpdatedCartData,
-    //           cart_total: CartgetTotal,
-    //         })
-    //       );
-    //       setCartData({ cart_items: UpdatedCartData });
-    //       AdddeliveryCharge(response.data.cart_total, response.data.cart_items);
-    //       setCartgetTotal(response.data.cart_total);
-    //     })
-    //     .catch((err) => console.log("error", err));
-    // };
 
     const handleUpdateQty = async (e, product, action) => {
-          // console.log('updateqty',product)
-        const cart = JSON.parse(sessionStorage.getItem("cart"));
-        if (!cart || !cart.cart_items) return;
+      const cart = JSON.parse(sessionStorage.getItem("cart"));
+      if (!cart || !cart.cart_items) return;
 
-        // Find the correct cart item:
-        const itemToUpdate = cart.cart_items.find((item) => {
-            const isSameProduct = item.product_id === product.product_id;
+      const itemToUpdate = cart.cart_items.find((item) => {
+        const isSameProduct = item.product_id === product.product_id;
 
-            // If product has variations, match by selected_attribute also
-            if (item.selected_attribute && product.selected_attribute) {
-                const isSameAttribute = JSON.stringify(item.selected_attribute) === JSON.stringify(product.selected_attribute);
-                return isSameProduct && isSameAttribute;
+        if (item.selected_attribute && product.selected_attribute) {
+          const isSameAttribute =
+            JSON.stringify(item.selected_attribute) ===
+            JSON.stringify(product.selected_attribute);
+          return isSameProduct && isSameAttribute;
+        }
+
+        if (!item.selected_attribute && !product.selected_attribute) {
+          return isSameProduct;
+        }
+
+        return false;
+      });
+
+      if (!itemToUpdate) return;
+
+      let newQuantity =
+        action === "PLUS"
+          ? Number(itemToUpdate.product_quantity) + 1
+          : Number(itemToUpdate.product_quantity) - 1;
+
+      if (newQuantity <= 0) return;
+
+      try {
+        const response = await axios.post(
+          "https://admin.bossdentindia.com/wp-json/custom/v1/cart/update",
+          {
+            user_id: getUserData.user_id,
+            product_id: itemToUpdate.product_id,
+            product_quantity: newQuantity,
+            cart_id: Number(product.id),
+            category_id: [Number(product.category_id)],
+            selected_attribute: product.selected_attribute,
+          }
+        );
+        const updatedProduct = response?.data?.cart_items[0];
+
+        const updatedCartData = cart.cart_items.map((item) => {
+          const isSameProduct = item.id === updatedProduct.id;
+
+          if (item.selected_attribute && updatedProduct.selected_attribute) {
+            const isSameAttribute =
+              JSON.stringify(item.selected_attribute) ===
+              JSON.stringify(updatedProduct.selected_attribute);
+            if (isSameProduct && isSameAttribute) {
+              return {
+                ...item,
+                product_quantity: updatedProduct.product_quantity,
+              };
+            } else if (isSameProduct) {
+              return {
+                ...item,
+                product_quantity: updatedProduct.product_quantity,
+              };
             }
-
-            // If product has no variations, just match by product_id
-            if (!item.selected_attribute && !product.selected_attribute) {
-                return isSameProduct;
+          } else if (
+            !item.selected_attribute &&
+            !updatedProduct.selected_attribute
+          ) {
+            if (isSameProduct) {
+              return {
+                ...item,
+                product_quantity: updatedProduct.product_quantity,
+              };
             }
-
-            return false; // In case of mismatch
+          }
+          return item; // All others remain unchanged
         });
 
-        if (!itemToUpdate) return;
-        
-        // Calculate new quantity
-        let newQuantity =
-            action === "PLUS"
-                ? Number(itemToUpdate.product_quantity) + 1
-                : Number(itemToUpdate.product_quantity) - 1;
-        
+        // Update local storage
+        sessionStorage.setItem(
+          "cart",
+          JSON.stringify({
+            cart_items: updatedCartData,
+            cart_total: response.data.cart_total,
+          })
+        );
 
-        if (newQuantity <= 0) return;
-
-        try {
-            const response = await axios.post("https://admin.bossdentindia.com/wp-json/custom/v1/cart/update", {
-                user_id: getUserData.user_id,
-                product_id: itemToUpdate.product_id,
-                product_quantity: newQuantity,
-                cart_id : Number(product.id),
-                category_id:[Number(product.category_id)],
-                selected_attribute: product.selected_attribute 
-                // selected_attribute: itemToUpdate.selected_attribute ? itemToUpdate.selected_attribute : {},
-            });
-           
-            const updatedProduct = response?.data?.cart_item[0];
-
-            // console.warn("itemTo----",itemToUpdate,'newQuality',newQuantity,"product",product,"updatedPro",updatedProduct)
-
-            const updatedCartData = cart.cart_items.map((item) => {
-              // console.log("item",item)
-                const isSameProduct = item.id === updatedProduct.id;
-                
-                if (item.selected_attribute && updatedProduct.selected_attribute) {
-                    const isSameAttribute = JSON.stringify(item.selected_attribute) === JSON.stringify(updatedProduct.selected_attribute);
-                    if (isSameProduct && isSameAttribute) {
-                        return { ...item, product_quantity: updatedProduct.product_quantity };
-                    }else if(isSameProduct){
-                      return { ...item, product_quantity: updatedProduct.product_quantity };
-                    }
-                } else if (!item.selected_attribute && !updatedProduct.selected_attribute) {
-                    if (isSameProduct) {
-                        return { ...item, product_quantity: updatedProduct.product_quantity };
-                    }
-                }
-                return item; // All others remain unchanged
-            });
-
-            // Update local storage
-            sessionStorage.setItem(
-                "cart",
-                JSON.stringify({
-                    cart_items: updatedCartData,
-                    cart_total: response.data.cart_total,
-                })
-            );
-
-            // Update frontend state
-            AdddeliveryCharge(response.data.cart_total, response.data.cart_items);
-            setCartData({ cart_items: updatedCartData });
-            setCartgetTotal(response.data.cart_total);
-        } catch (err) {
-            console.log("Error while updating quantity:", err);
-        }
+        // Update frontend state
+        AdddeliveryCharge(response.data.cart_total, response.data.cart_items);
+        setCartData({ cart_items: updatedCartData });
+        setCartgetTotal(response.data.cart_total);
+      } catch (err) {
+        console.log("Error while updating quantity:", err);
+      }
     };
 
     const confirmDelete = () => {
@@ -498,127 +396,44 @@ const CartListItem = React.memo(
             >
               <h3>{product?.product_title}</h3>
             </Link>
+
             {productVariations.length !== 0 && (
               <div className="cart-item-attributes">
-                {Object.keys(productVariations[0].attributes).map(
-                  (attribute) => {
-                    return (
-                      <div
-                        key={attribute}
-                        className={`${
-                          !canCheckout
-                            ? "cart-variation-main variation-cart-main"
-                            : "variation-cart-main"
-                        }`}
-                      >
-                        <div className="d-flex align-items-center">
-                          <h4>{attribute.replace(/pa_|attribute_/, "")}:</h4>
-                          {attribute === "color" ? (
-                            <>
-                              <div style={{ display: "flex" }}>
-                                {/* {console.log("selectr",Object.values(product.selected_attribute)[0])} */}
-                                <div className={`color-option ${Object.values(product.selected_attribute)[0]}`}></div>
-                                {/* {productVariations?.map((variation, index) => {
-                                  // console.log("produt",variation,Object.values(variation.attributes)[0],Object.values(product.selected_attribute)[0])
-                                  return (
-                                    <div
-                                    //  className={`color-option ${
-                                    //     Object.values(variation?.attributes)[0]
-                                    //   }${Object.values(selectedAttributes)[0]
-                                    //       ? " selected"
-                                    //       : ""
-                                    //   }`}
-                                      className={`color-option ${
-                                        Object.values(product.selected_attribute)[0] ? "selected": ""
-                                      }
-                                      ${
-                                        Object.values(
-                                          variation?.attributes
-                                        )[0] === Object.values(product.selected_attribute)[0]
-                                          ? " selected"
-                                          : ""
-                                      }
-                                      `
-                                    }
-                                      key={index}
-                                      // onClick={() =>
-                                      //   handleAttributeSelect(
-                                      //     product,
-                                      //     attribute,
-                                      //     variation.attributes[attribute]
-                                      //   )
-                                      // }
-                                    ></div>
-                                  );
-                                })} */}
-                              </div>
-                            </>
-                          ) : (
-                            <>
-                            {console.log("product",Object.values(product.selected_attribute))}
-                             <div className={`variation-button ${Object.values(product.selected_attribute)[0]}`}>{Object.values(product.selected_attribute)[0]}</div>
-                              {/* <div className="variation-buttons">
-                                {productVariations?.map((variation, index) => {
-                                  return (
-                                    <button
-                                      key={index}
-                                      className={`variation-button ${
-                                        product.selected_attribute &&
-                                        Object.values(product.selected_attribute)[0] ===
-                                          variation.attributes[attribute]
-                                          ? "selected"
-                                          : ""
-                                      }`}
-                                      // onClick={() =>
-                                      //   handleAttributeSelect(
-                                      //     product,
-                                      //     attribute,
-                                      //     variation.attributes[attribute]
-                                      //   )
-                                      // }
-                                    >
-                                      
-                                      {typeof variation.attributes[
-                                        attribute
-                                      ] === "string"
-                                        ? variation.attributes[attribute]
-                                        : JSON.stringify(
-                                            variation.attributes[attribute]
-                                          )}
-                                    </button>
-                                  );
-                                })}
-                              </div> */}
-                            </>
-                          )}
-                        </div>
-                        {/* {!canCheckout &&
-                          !product.selected_attribute?.[attribute] && (
-                            <p className="checkout-warning">
-                              * Please select above attribute values to proceed
-                              to checkout.
-                            </p>
-                        )} */}
+                {Object.entries(product.selected_attribute).map(
+                  ([attribute, value]) => (
+                    <div key={attribute} className="variation-cart-main">
+                      <div className="d-flex align-items-center">
+                        <h4 className="me-2">
+                          {attribute.charAt(0).toUpperCase() +
+                            attribute.slice(1)}
+                          :
+                        </h4>
+                        <div className="variation-button selected">{value}</div>
                       </div>
-                    );
-                  }
+                    </div>
+                  )
                 )}
               </div>
             )}
           </div>
-          <div className="cart-item-quantity">
-            <button onClick={(e) => handleUpdateQty(e, product, "MINUS")}>
-              -
-            </button>
-            <span>
-              {product?.product_quantity && product?.product_quantity}
-            </span>
-            <button onClick={(e) => handleUpdateQty(e, product, "PLUS")}>
-              +
-            </button>
-          </div>
+          {product?.category_name !== "Gloves" ? (
+            <div className="cart-item-quantity">
+              <button onClick={(e) => handleUpdateQty(e, product, "MINUS")}>
+                -
+              </button>
+              <span>
+                {product?.product_quantity && product?.product_quantity}
+              </span>
+              <button onClick={(e) => handleUpdateQty(e, product, "PLUS")}>
+                +
+              </button>
+            </div>
+          ) : null}
+
           <div className="cart-price">
-            <p className="cart-item-price mb-0">₹{Number(product.product_price).toFixed(2)}</p>
+            <p className="cart-item-price mb-0">
+              ₹{Number(product.product_price).toFixed(2)}
+            </p>
             <p className="cart-item-total mb-0">
               ₹
               {product.product_quantity !== undefined
@@ -627,10 +442,7 @@ const CartListItem = React.memo(
               .00
             </p>
           </div>
-          <button
-            className="cart-item-remove"
-            onClick={confirmDelete}
-          >
+          <button className="cart-item-remove" onClick={confirmDelete}>
             <FaTrashAlt />
           </button>
         </div>

@@ -121,9 +121,8 @@ const SingleProduct = () => {
         maxSalePrice = parseFloat(response.data.price) || minSalePrice;
       }
 
-      // console.log("maxSalePrice",maxSalePrice)
       setSalePrice(minSalePrice);
-      setRegularPrice(maxSalePrice);
+      setRegularPrice(0);
 
       // Fetch related products
       if (response.data.categories && response.data.categories.length > 0) {
@@ -183,48 +182,57 @@ const SingleProduct = () => {
     salePrice,
     RegularPrice
   ) => {
-    // console.log("attribute",attribute,value,keys,salePrice,RegularPrice)
+
     if (attribute && value) {
       const newSelectedAttributes = {
         ...selectedAttributes,
         [attribute]: value,
       };
+
       setError("");
       setSelectedAttributes(newSelectedAttributes);
+      setSelectedColor(value);
 
       const selectedVariation = variations.find((variation) => {
-        // console.log("va", Object.keys(variation.attributes));
         return Object.keys(variation.attributes).every((key) => {
-          // console.log("select", newSelectedAttributes[key], variation.attributes[key]);
           return newSelectedAttributes[key] === variation.attributes[key];
         });
       });
-      setProduct({ ...product, price: selectedVariation.price });
-      // console.log("selesct",selectedVariation)
-      if (selectedVariation) {
-        setSalePrice(selectedVariation.price);
-        setRegularPrice(null);
+      const isGloves = product.categories?.some(
+        (cat) =>
+          cat.name.toLowerCase().includes("gloves") ||
+          cat.slug.toLowerCase().includes("gloves")
+      );
+
+      if (isGloves) {
+        if (attribute === "size" && !newSelectedAttributes.pack) {
+          newSelectedAttributes.pack = "1 Box";
+        }
+        if (attribute === "pack" && !newSelectedAttributes.size) {
+          newSelectedAttributes.size = "small";
+        }
+      }
+
+      if (selectedVariation !== undefined) {
+        setProduct({
+          ...product,
+          price: selectedVariation.price || selectedVariation.sale_price,
+        });
+        setSalePrice(selectedVariation.price || selectedVariation.sale_price);
+
+        setRegularPrice(
+          selectedVariation.regular_price || selectedVariation.price
+        );
+
       } else {
         setSalePrice(salePrice);
         setRegularPrice(RegularPrice);
       }
     } else {
       setSelectedAttributes(value);
+      setError("");
+      setSelectedColor(value);
     }
-    setSelectedColor(value);
-    // console.log("v++++++",value)
-
-    // console.log("attr",attribute,value,salePrice,RegularPrice)
-
-    // sessionStorage.setItem('selectAttributes',JSON.stringify(newSelectedAttributes))
-    // console.log("variations", selectedVariation)
-
-    // discount code
-    // const ProductDiscountPrice = (
-    //   ((RegularPrice - salePrice) / RegularPrice) *
-    //   100
-    // ).toFixed(0);
-    // setDiscountProductPrice(Number(ProductDiscountPrice));
   };
 
   // watchlist delete api integrate
@@ -249,15 +257,6 @@ const SingleProduct = () => {
       } else {
         const productTitle = product?.name || "Default Title";
         const productImage = product.yoast_head_json?.og_image?.[0]?.url || "";
-        // let ProductPrice = selectedAttributes === undefined ? product.variations.map((price)=>price.price) : product.price
-        // console.log("select",product,selectedAttributes)
-        // if(selectedAttributes === undefined){
-        //   // console.log("pro",product.variations.Object.values())
-        //     ProductPrice =
-        // }else{
-        //   ProductPrice = ;
-        // }
-        // console.log("ProductPrice",ProductPrice)
         await axios
           .post(
             "https://admin.bossdentindia.com/wp-json/custom/v1/wishlist/add",
@@ -287,8 +286,9 @@ const SingleProduct = () => {
     }
   };
   // Addtocart product and related product api integrate
-  const handleAddToCart = async (e, relatedProduct) => {
+  const handleAddToCart = async (e, relatedProduct, title) => {
     e.preventDefault();
+
     if (isLoggedIn) {
       if (stockStatus === "instock") {
         const userData = JSON.parse(sessionStorage.getItem("UserData"));
@@ -307,6 +307,7 @@ const SingleProduct = () => {
               filterCartProduct = response.data.cart_items.filter(
                 (item) => Number(item.product_id) === product.id
               );
+
               // RelatedCartProduct
               relatedProduct ? (
                 <>
@@ -316,10 +317,18 @@ const SingleProduct = () => {
                         if (variations.length > 0) {
                           if (selectedAttributes !== undefined) {
                             setError("");
-                            return (
-                              Object.values(item.selected_attribute)[0] ===
-                              Object.values(selectedAttributes)[0]
-                            );
+                            if (title === "relatedProduct") {
+                              return (
+                                Object.values(item.selected_attribute)[0] ===
+                                  Object.values(selectedAttributes)[0] &&
+                                item.id === Number(relatedProduct.id)
+                              );
+                            } else {
+                              return (
+                                Object.values(item.selected_attribute)[0] ===
+                                Object.values(selectedAttributes)[0]
+                              );
+                            }
                           } else {
                             setError("Please select variations");
                           }
@@ -335,25 +344,60 @@ const SingleProduct = () => {
               );
             })
             .catch((error) => console.log("error-cart", error));
-          if (filterCartProduct.length === 0 && relatedProduct === undefined) {
-            handleAddToCartApi(product, userData);
-          } else if (relatedProduct === undefined) {
-            console.warn("update");
-            handleUpdateCartApi(filterCartProduct, product, GetCartProduct);
-          }
+
           if (relatedProduct !== undefined) {
             if (RelatedCartProduct.length === 0) {
               if (relatedProduct.variations !== null) {
-                if (selectedAttributes) {
+                if (title === "relatedProduct") {
+                  navigate(
+                    `/products/${encodeURIComponent(relatedProduct.slug)}`
+                  );
+                } else {
+                  if (selectedAttributes) {
+                    axios
+                      .post(
+                        `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
+                        {
+                          user_id: userData.user_id,
+                          product_id: relatedProduct.id,
+                          category_id: [relatedProduct.product_cat[0]],
+                          product_quantity: quantity,
+                          product_title: relatedProduct.name,
+                          product_image:
+                            relatedProduct.yoast_head_json.og_image[0].url,
+                          product_attributes: relatedProduct.variations,
+                          product_weight: relatedProduct.weight,
+                          product_price: relatedProduct.price,
+                          selected_attribute: selectedAttributes,
+                        }
+                      )
+                      .then((res) => {
+                        toast.success("Product added to cart successfully!");
+                        addToCartListProduct(
+                          res.data.cart_id,
+                          selectedAttributes,
+                          getUserData
+                        );
+                      })
+                      .catch((err) => console.log("err", err));
+                  } else {
+                    setError(`please select variations`);
+                  }
+                }
+              } else {
+                if (
+                  relatedProduct.variations.length === 0 ||
+                  relatedProduct.variations === null
+                ) {
                   axios
                     .post(
                       `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
                       {
                         user_id: userData.user_id,
                         product_id: relatedProduct.id,
-                        category_id: [relatedProduct.categories[0].id],
+                        category_id: [relatedProduct.product_cat[0]],
                         product_quantity: quantity,
-                        product_title: relatedProduct.name,
+                        product_title: relatedProduct.title.rendered,
                         product_image:
                           relatedProduct.yoast_head_json.og_image[0].url,
                         product_attributes: relatedProduct.variations,
@@ -372,35 +416,10 @@ const SingleProduct = () => {
                     })
                     .catch((err) => console.log("err", err));
                 } else {
-                  setError(`please select variations`);
+                  navigate(
+                    `/products/${encodeURIComponent(relatedProduct.slug)}`
+                  );
                 }
-              } else {
-                axios
-                  .post(
-                    `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
-                    {
-                      user_id: userData.user_id,
-                      product_id: relatedProduct.id,
-                      category_id: [relatedProduct.categories[0].id],
-                      product_quantity: quantity,
-                      product_title: relatedProduct.name,
-                      product_image:
-                        relatedProduct.yoast_head_json.og_image[0].url,
-                      product_attributes: relatedProduct.variations,
-                      product_weight: relatedProduct.weight,
-                      product_price: relatedProduct.price,
-                      selected_attribute: selectedAttributes,
-                    }
-                  )
-                  .then((res) => {
-                    toast.success("Product added to cart successfully!");
-                    addToCartListProduct(
-                      res.data.cart_id,
-                      selectedAttributes,
-                      getUserData
-                    );
-                  })
-                  .catch((err) => console.log("err", err));
               }
             } else {
               const UpdatedProduct = RelatedCartProduct[0].product_quantity;
@@ -408,16 +427,15 @@ const SingleProduct = () => {
                 .post(
                   `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
                   {
-                     user_id: getUserData.user_id,
-                      category_id: [relatedProduct.categories[0].id],
-                      product_id: relatedProduct.id,
-                      product_quantity: Number(UpdatedProduct) + 1,
-                      selected_attribute: selectedAttributes,
-                      cart_id:RelatedCartProduct[0].id
+                    user_id: getUserData.user_id,
+                    category_id: [relatedProduct.product_cat[0]],
+                    product_id: relatedProduct.id,
+                    product_quantity: Number(UpdatedProduct) + 1,
+                    selected_attribute: selectedAttributes,
+                    cart_id: RelatedCartProduct[0].id,
                   }
                 )
                 .then((res) => {
-                  // console.log("resUpdate", res, relatedProduct);
                   addToCartListProduct(
                     res.data.cart_id,
                     selectedAttributes,
@@ -441,45 +459,18 @@ const SingleProduct = () => {
       }, 2000);
     }
   };
-  // product addtocart api  integrate
-  const handleAddToCartApi = async (product, userData) => {
-    axios
-      .post(`https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`, {
-        user_id: userData.user_id,
-        // product_id: product.id,
-        // category_id:product.categories[0].id,
-        product_quantity: quantity,
-        product_title: product.title.rendered,
-        product_image: product.yoast_head_json.og_image[0].url,
-        product_attributes: product.variations,
-        product_weight: weight,
-        product_price: product.price,
-        selected_attribute: selectedAttributes,
-      })
-      .then((res) => {
-        toast.success("product added to cart successfully!");
-        addToCartListProduct(res.data.cart_id, selectedAttributes, getUserData);
-      })
-      .catch((err) => console.log("err", err));
-  };
-  // product updatetocart api integarte
-  const handleUpdateCartApi = async (filter, product) => {
-    const UpdatedProduct = filter[0].product_quantity;
-    await axios
-      .post(`https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`, {
-        user_id: getUserData.user_id,
-        product_id: product.id,
-        category_id: product.categories[0].id,
-        product_quantity: Number(UpdatedProduct) + quantity,
-        selected_attribute: selectedAttributes,
-        cart_id: UpdatedProduct.id,
-      })
-      .then((res) => {
-        addToCartListProduct(res.data.cart_id, selectedAttributes, getUserData);
-        toast.success("Product update to cart successfully!");
-      })
-      .catch((err) => console.log("err", err));
-  };
+
+  const [selectedSize, setSelectedSize] = useState([]);
+  const [selectedPack, setSelectedPack] = useState([]);
+
+  useEffect(() => {
+    const sizes = [...new Set(variations.map((v) => v.attributes.size))];
+    setSelectedSize(sizes[0]);
+    const packs = variations.filter(
+      (v) => v.attributes.size === "small" && v.attributes.pack
+    );
+    setSelectedPack(packs[0]?.attributes.pack);
+  }, [variations]);
 
   return (
     <>
@@ -513,25 +504,6 @@ const SingleProduct = () => {
           <div className="single-product-main">
             <div className="single-product-img">
               {/* <Zoom> */}
-              {/* <div className="image-container">
-                  {discountProductPrice > 0 && (
-                    <div className="discount-badge">
-                      {`${discountProductPrice}% off`}
-                    </div>
-                  )}
-                </div> */}
-              {/* <img
-                  id={`product-image-${location.state.productId}`}
-                  className={`single-product-img ${
-                    isImageLoaded ? "loaded" : ""
-                  }`}
-                  src={product.yoast_head_json.og_image[0].url}
-                  src={imageUrl.replace("https://", "https://admin.")}
-                  alt={product.name}
-                  onLoad={() => setIsImageLoaded(true)}
-                />
-              </Zoom> */}
-
               {largeImageLoaded ? (
                 <ReactImageMagnify
                   {...{
@@ -567,16 +539,16 @@ const SingleProduct = () => {
             <div className="single-product-details">
               <h2 className="single-product-title">{product?.name}</h2>
               <h3 className="single-product-price align-item-center justify-contents-center">
-                {/* {console.log("variat", variations,selectedAttributes)} */}
                 {variations.length > 0 ? (
                   <>
-                    <span className="sale-price">
-                      ₹{salePrice}
-                      {selectedAttributes === undefined ? (
-                        <>- ₹{regularPrice}</>
-                      ) : (
-                        <></>
+                    <span className="sale-price d-flex align-items-center ">
+                      {
+                        selectedAttributes === undefined ?<p className="mb-0" style={{fontSize:"17px"}}>Starting Price from:&nbsp;</p> : <p className="mb-0" style={{fontSize:"18px"}}>Price:&nbsp;</p>
+                      }
+                      {salePrice !== regularPrice && regularPrice > 0 && (
+                        <p className="regular-price mb-0 text-decoration-lin-through">₹{Number(regularPrice).toFixed(2)}</p>
                       )}
+                      ₹{Number(salePrice).toFixed(2)}
                     </span>
                   </>
                 ) : (
@@ -600,7 +572,6 @@ const SingleProduct = () => {
                   </>
                 )}
               </h3>
-
               {product.acf?.prese && <h4>Prese: {product.acf.preset}</h4>}
               <h4 className="single-product-cat">
                 Category: <span>{category}</span>
@@ -611,109 +582,193 @@ const SingleProduct = () => {
                   {stockStatus === "instock" ? "In Stock" : "Out of Stock"}
                 </span>
               </h4>
-              {/* {console.log("variations",variations)} */}
               {variations.length > 0 &&
                 Object.keys(variations[0]?.attributes || {}).map(
                   (attribute, index) => {
-                    return (
-                      <div
-                        key={attribute}
-                        className="variation-main align-items-center"
-                      >
-                        <h4 className="mb-0">
-                          {attribute.replace(/pa_|attribute_/, "")}:
-                        </h4>
+                    if (attribute)
+                      return (
+                        <div
+                          key={attribute}
+                          className="variation-main align-items-center"
+                        >
+                          <h4 className="mb-0">
+                            {attribute.replace(/pa_|attribute_/, "")}:&nbsp;
+                          </h4>
 
-                        {/* color theme */}
-                        {attribute === "pa_color" || attribute === "color" ? (
-                          <div style={{ display: "flex" }}>
-                            {variations.map((color, index) => {
-                              // {console.log("value",color,selectedAttributes)}
-                              return (
-                                <div
-                                  className={`color-option ${
-                                    Object.values(color.attributes)[0]
-                                  } ${
-                                    selectedColor ===
-                                    Object.values(color.attributes)[0]
-                                      ? "selected"
-                                      : ""
-                                  }`}
-                                  key={index}
-                                  onClick={() =>
+                          {/* color theme */}
+                          {attribute === "pa_color" || attribute === "color" ? (
+                            <div style={{ display: "flex" }}>
+                              <select
+                                className="form-select"
+                                name="color"
+                                value={
+                                  (selectedAttributes !== undefined &&
+                                    Object.values(selectedAttributes)[0]) ||
+                                  ""
+                                }
+                                onChange={(e) => {
+                                  const selectedValue = e.target.value;
+                                  const attrKey = attribute
+                                    .replace(/^pa_|^attribute_/, "")
+                                    .toLowerCase();
+                                  const variation = variations.find(
+                                    (v) =>
+                                      v.attributes?.[attrKey] === selectedValue
+                                  );
+                                  if (variation) {
                                     handleAttributeSelect(
                                       attribute,
-                                      Object.values(color.attributes)[0],
-                                      Object.keys(color.attributes)[0],
-                                      color.sale_price,
-                                      color.regular_price
-                                    )
+                                      selectedValue,
+                                      attrKey,
+                                      variation.sale_price,
+                                      variation.regular_price
+                                    );
                                   }
-                                ></div>
+                                }}
+                              >
+                                <option value="">Select color</option>
+                                {variations.map((color, index) => {
+                                  return (
+                                    <option
+                                      key={index}
+                                      value={Object.values(color.attributes)[0]}
+                                      onClick={() =>
+                                        handleAttributeSelect(
+                                          attribute,
+                                          Object.values(color.attributes)[0],
+                                          Object.keys(color.attributes)[0],
+                                          color.sale_price,
+                                          color.regular_price
+                                        )
+                                      }
+                                    >
+                                      {Object.values(color.attributes)[0]}
+                                    </option>
+                                  );
+                                })}
+                              </select>
+                            </div>
+                          ) : selectedSize.length !== 0 ? (
+                            (() => {
+                              const attrKey = attribute
+                                .replace(/^pa_|^attribute_/, "")
+                                .toLowerCase();
+                              const sizes = [
+                                ...new Set(
+                                  variations.map((v) => v.attributes.size)
+                                ),
+                              ];
+                              const packs = variations.filter(
+                                (v) =>
+                                  v.attributes.size === sizes[0] &&
+                                  v.attributes.pack
                               );
-                            })}
-                          </div>
-                        ) : (
-                          <div className="variation-buttons">
-                            {variations.map((value, index) => {
-                              // console.log("value---",selectedAttributes,Object.values(value.attributes)[0])
                               return (
-                                <button
-                                  key={index}
-                                  className={`variation-button ${
-                                    Object.values(value.attributes)[0]
-                                  }
-                                  ${
-                                    selectedAttributes !== undefined &&
-                                    selectedAttributes !== null
-                                      ? Object.values(selectedAttributes)[0] ===
-                                        Object.values(value.attributes)[0]
-                                        ? "selected"
-                                        : ""
-                                      : ""
-                                  }`}
-                                  onClick={() =>
-                                    handleAttributeSelect(
-                                      attribute,
-                                      Object.values(value.attributes)[0],
-                                      Object.keys(value.attributes)[0],
-                                      value.sale_price,
-                                      value.regular_price
-                                    )
-                                  }
-                                >
-                                  {Object.values(value.attributes)[0]}
-                                </button>
+                                <>
+                                  {attribute === "size" ? (
+                                    <div className="variation-buttons">
+                                      {sizes.map((button, index) => {
+                                        return (
+                                          <button
+                                            key={index}
+                                            className={`variation-button ${button} ${
+                                              selectedAttributes !==
+                                                undefined &&
+                                              selectedAttributes !== null
+                                                ? selectedAttributes?.[
+                                                    attrKey
+                                                  ] === button
+                                                  ? "selected"
+                                                  : ""
+                                                : ""
+                                            }`}
+                                            onClick={() => {
+                                              const variation = variations.find(
+                                                (v) =>
+                                                  v.attributes?.[attrKey] ===
+                                                  button
+                                              );
+                                
+                                              if (variation) {
+                                                handleAttributeSelect(
+                                                  attribute,
+                                                  button,
+                                                  attribute,
+                                                  variation.price,
+                                                  variation.regular_price
+                                                );
+                                              }
+                                            }}
+                                          >
+                                            {button}
+                                          </button>
+                                        );
+                                      })}
+                                    </div>
+                                  ) : (
+                                    <div className="pack-button d-flex align-items-center gap-2">
+                                      {packs.map((pack, index) => {
+                                        return (
+                                          <React.Fragment
+                                            className="form-check"
+                                            key={index}
+                                          >
+                                            <input
+                                              className="form-check-input"
+                                              type="radio"
+                                              name="pack-value"
+                                              value={pack.attributes.pack || ""}
+                                              onChange={() => {
+                                                handleAttributeSelect(
+                                                  // "pack",
+                                                  attribute,
+                                                  pack.attributes.pack,
+                                                  pack.sale_price,
+                                                  pack.regular_price
+                                                );
+                                              }}
+                                              checked={
+                                                selectedAttributes?.pack ===
+                                                pack.attributes.pack
+                                              }
+                                            ></input>
+                                            <label className="form-check-label">
+                                              {pack.attributes.pack}
+                                            </label>
+                                          </React.Fragment>
+                                        );
+                                      })}
+                                    </div>
+                                  )}
+                                </>
                               );
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    );
+                            })()
+                          ) : (
+                            <>pack</>
+                          )}
+                        </div>
+                      );
                   }
                 )}
               {error !== null && <span className="text-danger">{error}</span>}
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: product.short_description,
-                }}
-                className="single-product-pcs"
-              />
-              <div className="quantity-controls">
-                <button
-                  onClick={(e) => handleUpdateqty(e, "MINUS")}
-                  className="ind-btn"
-                >
-                  -
-                </button>
-                <span className="quantity">{quantity}</span>
-                <button
-                  onClick={(e) => handleUpdateqty(e, "PLUS")}
-                  className="ind-btn"
-                >
-                  +
-                </button>
-              </div>
+              {product?.categories &&
+              product?.categories[0].name !== "Gloves" ? (
+                <div className="quantity-controls">
+                  <button
+                    onClick={(e) => handleUpdateqty(e, "MINUS")}
+                    className="ind-btn"
+                  >
+                    -
+                  </button>
+                  <span className="quantity">{quantity}</span>
+                  <button
+                    onClick={(e) => handleUpdateqty(e, "PLUS")}
+                    className="ind-btn"
+                  >
+                    +
+                  </button>
+                </div>
+              ) : null}
               <div className="btn-icon-main">
                 <div>
                   <button

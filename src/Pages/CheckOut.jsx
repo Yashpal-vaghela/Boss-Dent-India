@@ -83,7 +83,9 @@ const CheckOut = () => {
   const [HandleSubmit, setHandleSubmit] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [orderId, setOrderId] = useState("");
-  const [getUserData] = useState(JSON.parse(sessionStorage.getItem("UserData")));
+  const [getUserData] = useState(
+    JSON.parse(sessionStorage.getItem("UserData"))
+  );
   const excludedCategories = ["gloves"];
   const [checksubTotal, setCheckSubTotal] = useState(null);
 
@@ -101,6 +103,7 @@ const CheckOut = () => {
       });
   };
 
+  // console.log("cartData", getCartData);
   useEffect(() => {
     setStates(Indian_states_cities_list?.STATES_OBJECT);
     getCoupon();
@@ -215,13 +218,12 @@ const CheckOut = () => {
       didOpen: () => {
         const container = Swal.getHtmlContainer();
         const buttons = container.querySelectorAll(".apply-btn");
-       
+
         buttons.forEach((btn) => {
           const code = btn.getAttribute("data-code");
           btn.addEventListener("click", (e) => {
-            const offerCard = btn.closest(".offer-card"); 
+            const offerCard = btn.closest(".offer-card");
 
-    
             if (offerCard.classList.contains("disable")) {
               // console.log("Offer is disabled, skipping apply.");
               return; // prevent calling handleApplyCouponCode
@@ -384,7 +386,12 @@ const CheckOut = () => {
               paymentData.data.instrumentResponse.redirectInfo.url
             ) {
               getCartData.cart_items?.map((item) =>
-                removeFromCartListProduct(item.product_id, getUserData)
+                removeFromCartListProduct(
+                  item.id,
+                  item.product_id,
+                  getUserData,
+                  item.selected_attribute
+                )
               );
               setLoading(false);
               const paymentUrl =
@@ -668,11 +675,18 @@ const CheckOut = () => {
                                   {product?.selected_attribute ? (
                                     <>
                                       <div className="d-flex align-items-center justify-content-center">
-                                        {Object.keys(
+                                        {Object.entries(product.selected_attribute).map(([attribute, value]) => {
+                                          return(
+                                            <h6 key={value} className="mx-auto">
+                                              {attribute}:&nbsp; <b>{value}</b>  
+                                            </h6>
+                                          )
+                                        })}
+                                        {/* {Object.keys(
                                           product?.selected_attribute
                                         ).map((attribute, index) => {
                                           return (
-                                            <h6 key={index}>
+                                            <h6 key={index} className="mx-auto">
                                               {attribute.replace(
                                                 /attribute_pa_|attribute_/,
                                                 ""
@@ -687,17 +701,20 @@ const CheckOut = () => {
                                               </b>
                                             </h6>
                                           );
-                                        })}
+                                        })} */}
                                       </div>
                                     </>
                                   ) : null}
                                 </div>
-                                <div className="col-lg-1 col-md-1 col-1 cart-item-qty">
-                                  <p className="mb-0">
-                                    <i className="fa-solid fa-xmark"></i>&nbsp;
-                                    {product?.product_quantity}
-                                  </p>
-                                </div>
+                                {product?.category_name !== "Gloves" ? (
+                                  <div className="col-lg-1 col-md-1 col-1 cart-item-qty">
+                                    <p className="mb-0">
+                                      <i className="fa-solid fa-xmark"></i>
+                                      &nbsp;
+                                      {product?.product_quantity}
+                                    </p>
+                                  </div>
+                                ) : <div className="col-lg-1 col-md-1 col-1"></div>}
                                 <div className="col-lg-2 col-md-2 col-2 cart-remove-item">
                                   <p className="mb-0">
                                     {product?.product_price}

@@ -12,6 +12,8 @@ const RelatedProducts = ({
     handleWatchlistToggle,
     handleAddToCart
 }) => {
+    const slides = [relatedProducts];
+    const slidesPerView = 3;
     return (
         <div className="related-products">
             <h3 className="related-title">Related Products</h3>
@@ -25,7 +27,9 @@ const RelatedProducts = ({
                     disableOnInteraction: false, // Continue autoplay after user interactions
                 }}
                 // centeredSlides="false"
-                loop={true}
+                // loop={true}
+                loop={slides.length > slidesPerView}
+                loopFillGroupWithBlank={true}
                 breakpoints={{
                     640: {
                         slidesPerView: 2,
@@ -40,7 +44,7 @@ const RelatedProducts = ({
             >
                 {relatedProducts.map((relatedProduct) => {
                     return (
-                        <SwiperSlide key={relatedProduct.id}>
+                        <SwiperSlide key={relatedProduct.id} >
                             <div className="related-product-card">
                                 <Link
                                     to={`/products/${encodeURIComponent(
@@ -110,7 +114,7 @@ const RelatedProducts = ({
                                     </span>
                                     <span
                                         className="add-to-cart-icon"
-                                        onClick={(e) => handleAddToCart(e, relatedProduct)}
+                                        onClick={(e) => handleAddToCart(e, relatedProduct,"relatedProduct")}
                                     >
                                         <FaCartPlus />
                                     </span>

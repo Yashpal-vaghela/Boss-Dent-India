@@ -48,9 +48,8 @@ export const WatchlistProvider = ({ children }) => {
   };
 
   const addToWatchlist = (id) => {
-    // console.log("id",id)
     if (!ensureAuthenticated()) return;
-    // Only add the product ID to the watchlist if it doesn't already exist
+
     setWatchlist((prevWatchlist) => {
       if (!prevWatchlist.includes(id)) {
         const updatedWatchlist = [...prevWatchlist, id];
@@ -73,25 +72,14 @@ export const WatchlistProvider = ({ children }) => {
   };
 
   const addToCartList = (id) => {
-    // console.log("addToCartList",id)
     if (!ensureAuthenticated()) return;
-    // console.warn("addWatchlist",id)
     // Only add the product ID to the watchlist if it doesn't already exist
-    // console.log("updateWatchList",updateCartList)
     setCartList((prevCartlist) => {
-      // console.log("preCartList",prevCartlist)
       if (!prevCartlist.includes(id)) {
         const updateCartList = [...prevCartlist, Number(id)];
-        // console.log("updateList",Number(updateCartList))
-        // sessionStorage.setItem(
-        //   "cart_productId",
-        //   JSON.stringify(updateCartList)
-        // );
-        console.log("update",updateCartList)
         if(updateCartList){
            sessionStorage.setItem("cart_productId",  JSON.stringify(updateCartList));
         }
-       
         return (updateCartList);
       }
       return prevCartlist;
@@ -125,41 +113,37 @@ export const WatchlistProvider = ({ children }) => {
       .catch((err) => console.log("err", err));
   };
   const removeFromCartList = (id) => {
-    console.log("id", id);
+    const fetchCartId = JSON.parse(sessionStorage.getItem("cart_productId"));
     if (!ensureAuthenticated()) return;
-    setCartList((prevCartlist) => {
-      const updateCartList = prevCartlist.filter(
-        (itemId) => itemId !== Number(id)
-      );
+    setCartList(()=>{
+      const  updateCartList = fetchCartId.filter((item)=>item !== Number(id));
       sessionStorage.setItem("cart_productId", JSON.stringify(updateCartList));
       return updateCartList;
-    });
+    })
   };
-  const removeFromCartListProduct = async (product_id, userdata) => {
+  const removeFromCartListProduct = async (id,product_id, userdata,selectAttribute) => {
     const payload = {
       user_id: userdata.user_id,
+      cart_id:id,
       product_id: product_id,
+      selected_attribute:selectAttribute
     };
     await axios
       .delete(`https://admin.bossdentindia.com/wp-json/custom/v1/cart/delete`, {
         data: payload,
       })
       .then((response) => {
-        setCartList((prevCartlist) => {
-          const updateCartList = prevCartlist.filter(
-            (itemId) => itemId !== Number(product_id)
-          );
-          sessionStorage.setItem(
-            "cart_productId",
-            JSON.stringify(updateCartList)
-          );
+        const fetchCartId = JSON.parse(sessionStorage.getItem("cart_productId"));
+        setCartList(()=>{
+          const  updateCartList = fetchCartId.filter((item)=>item !== Number(id));
+          sessionStorage.setItem("cart_productId", JSON.stringify(updateCartList));
           return updateCartList;
-        });
+        })
+    
         sessionStorage.setItem(
           "cart",
           JSON.stringify({ cart_items: [], cart_total: {} })
         );
-        // console.log("delete", response.data);
       })
       .catch((error) => console.log("error", error));
   };

@@ -16,6 +16,7 @@ const HomeBanner = () => {
     "https://new-product-banner.s3.ap-south-1.amazonaws.com/Reactors-banner.webp",
     "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient-bibs-banner.webp",
     "https://new-product-banner.s3.ap-south-1.amazonaws.com/Discount-banner.webp",
+    "https://product-banner.s3.ap-south-1.amazonaws.com/Pepar-Point-offer.webp"
   ];
 
   useEffect(() => {
@@ -107,7 +108,7 @@ const HomeBanner = () => {
             }}
           >
             <div className="banneer-img-main">
-              <img src={bannerImages[1]} alt="banner3" className="banner-img" />
+              <img src={bannerImages[1]} alt="banner1" className="banner-img" />
             </div>
           </Link>
         </SwiperSlide>
@@ -121,7 +122,7 @@ const HomeBanner = () => {
             onTouchEnd={handleHoldEnd}
           >
             <div className="banneer-img-main">
-              <img src={bannerImages[2]} alt="banner4" className="banner-img" />
+              <img src={bannerImages[2]} alt="banner2" className="banner-img" />
             </div>
           </Link>
         </SwiperSlide>
@@ -135,7 +136,7 @@ const HomeBanner = () => {
             onTouchEnd={handleHoldEnd}
           >
             <div className="banneer-img-main">
-              <img src={bannerImages[3]} alt="banner2" className="banner-img" />
+              <img src={bannerImages[3]} alt="banner3" className="banner-img" />
             </div>
           </Link>
         </SwiperSlide>
@@ -149,7 +150,7 @@ const HomeBanner = () => {
             onTouchEnd={handleHoldEnd}
           >
             <div className="banneer-img-main">
-              <img src={bannerImages[4]} alt="banner2" className="banner-img" />
+              <img src={bannerImages[4]} alt="banner4" className="banner-img" />
             </div>
           </Link>
           {/* <div className="banneer-img-main">
@@ -170,6 +171,21 @@ const HomeBanner = () => {
               ></area>
             </map>
           </div> */}
+        </SwiperSlide>
+        <SwiperSlide>
+          <Link
+            to="/products/paper-point"
+            className="banner-2-main"
+            onMouseDown={handleHoldStart}
+            onMouseUp={handleHoldEnd}
+            onTouchStart={handleHoldStart}
+            onTouchEnd={handleHoldEnd}
+          >
+            <div className="banneer-img-main">
+              <img src={bannerImages[5]} alt="banner5" className="banner-img" />
+            </div>
+          </Link>
+    
         </SwiperSlide>
       </Swiper>
 
