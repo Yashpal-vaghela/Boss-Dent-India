@@ -386,9 +386,11 @@ const SingleProduct = () => {
                 }
               } else {
                 if (
-                  relatedProduct.variations.length === 0 ||
+                  relatedProduct.variations !== null ||
                   relatedProduct.variations === null
                 ) {
+
+                  console.log("relatedProduct",relatedProduct)
                   axios
                     .post(
                       `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
@@ -397,9 +399,8 @@ const SingleProduct = () => {
                         product_id: relatedProduct.id,
                         category_id: [relatedProduct.product_cat[0]],
                         product_quantity: quantity,
-                        product_title: relatedProduct.title.rendered,
-                        product_image:
-                          relatedProduct.yoast_head_json.og_image[0].url,
+                        product_title: relatedProduct.name,
+                        product_image: relatedProduct.yoast_head_json.og_image[0].url,
                         product_attributes: relatedProduct.variations,
                         product_weight: relatedProduct.weight,
                         product_price: relatedProduct.price,
@@ -420,7 +421,7 @@ const SingleProduct = () => {
                     `/products/${encodeURIComponent(relatedProduct.slug)}`
                   );
                 }
-              }
+              } 
             } else {
               const UpdatedProduct = RelatedCartProduct[0].product_quantity;
               axios
@@ -596,7 +597,7 @@ const SingleProduct = () => {
                           </h4>
 
                           {/* color theme */}
-                          {attribute === "pa_color" || attribute === "color" ? (
+                          {/* {attribute === "pa_color" || attribute === "color" ? (
                             <div style={{ display: "flex" }}>
                               <select
                                 className="form-select"
@@ -746,7 +747,43 @@ const SingleProduct = () => {
                             })()
                           ) : (
                             <>pack</>
-                          )}
+                          )} */}
+                          <div style={{ display: "flex" }}>
+                            <select
+                              className="form-select"
+                              name={attribute}
+                              value={
+                                selectedAttributes?.[attribute.replace(/^pa_|^attribute_/, "").toLowerCase()] || ""
+                              }
+                              onChange={(e) => {
+                                const selectedValue = e.target.value;
+                                const attrKey = attribute.replace(/^pa_|^attribute_/, "").toLowerCase();
+
+                                const variation = variations.find(
+                                  (v) => v.attributes?.[attrKey] === selectedValue
+                                );
+
+                                if (variation) {
+                                  handleAttributeSelect(
+                                    attribute,
+                                    selectedValue,
+                                    attrKey,
+                                    variation.sale_price,
+                                    variation.regular_price
+                                  );
+                                }
+                              }}
+                            >
+                              <option value="">Select {attribute.replace(/pa_|attribute_/, "")}</option>
+                              {[...new Set(variations.map((v) => v.attributes?.[attribute.replace(/^pa_|^attribute_/, "").toLowerCase()]))]
+                                .filter((v) => v) // Remove undefined/null
+                                .map((val, index) => (
+                                  <option key={index} value={val}>
+                                    {val.charAt(0).toUpperCase() + val.slice(1)}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
                         </div>
                       );
                   }
