@@ -16,7 +16,6 @@ const HomeBanner = () => {
     "https://new-product-banner.s3.ap-south-1.amazonaws.com/Cheek-Reatractors.webp",
     "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient-bibs-banner.webp",
     "https://new-product-banner.s3.ap-south-1.amazonaws.com/Discount-banner.webp",
-    "https://product-banner.s3.ap-south-1.amazonaws.com/Pepar-Point-offer.webp"
   ];
 
   useEffect(() => {
@@ -172,7 +171,7 @@ const HomeBanner = () => {
             </map>
           </div> */}
         </SwiperSlide>
-        <SwiperSlide>
+        {/* <SwiperSlide>
           <Link
             to="/products/paper-point"
             className="banner-2-main"
@@ -186,7 +185,7 @@ const HomeBanner = () => {
             </div>
           </Link>
     
-        </SwiperSlide>
+        </SwiperSlide> */}
       </Swiper>
 
       <button onClick={toggleAutoplay} className="homebanner_pause_btn">

@@ -390,7 +390,7 @@ const SingleProduct = () => {
                   relatedProduct.variations === null
                 ) {
 
-                  console.log("relatedProduct",relatedProduct)
+                  // console.log("relatedProduct",relatedProduct)
                   axios
                     .post(
                       `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
