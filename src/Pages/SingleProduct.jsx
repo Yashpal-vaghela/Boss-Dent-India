@@ -44,7 +44,6 @@ const SingleProduct = () => {
     JSON.parse(sessionStorage.getItem("UserData"))
   );
   const [error, setError] = useState(null);
-
   useEffect(() => {
     const userLoggedIn = !!sessionStorage.getItem("token");
     setIsLoggedIn(userLoggedIn);
@@ -176,64 +175,48 @@ const SingleProduct = () => {
   };
 
   const handleAttributeSelect = async (
-    attribute,
-    value,
-    keys,
-    salePrice,
-    RegularPrice
-  ) => {
+  attribute,
+  value,
+  keys,
+  salePrice,
+  RegularPrice
+) => {
+  if (attribute && value) {
+    const newSelectedAttributes = {
+      ...selectedAttributes,
+      [attribute]: value,
+    };
 
-    if (attribute && value) {
-      const newSelectedAttributes = {
-        ...selectedAttributes,
-        [attribute]: value,
-      };
+    setError("");
+    setSelectedAttributes(newSelectedAttributes);
+    setSelectedColor(value);
 
-      setError("");
-      setSelectedAttributes(newSelectedAttributes);
-      setSelectedColor(value);
-
-      const selectedVariation = variations.find((variation) => {
-        return Object.keys(variation.attributes).every((key) => {
-          return newSelectedAttributes[key] === variation.attributes[key];
-        });
+    const selectedVariation = variations.find((variation) => {
+      return Object.keys(variation.attributes).every((key) => {
+        return newSelectedAttributes[key] === variation.attributes[key];
       });
-      const isGloves = product.categories?.some(
-        (cat) =>
-          cat.name.toLowerCase().includes("gloves") ||
-          cat.slug.toLowerCase().includes("gloves")
+    });
+
+    if (selectedVariation !== undefined) {
+      setProduct({
+        ...product,
+        price: selectedVariation.price || selectedVariation.sale_price,
+      });
+      setSalePrice(selectedVariation.price || selectedVariation.sale_price);
+      setRegularPrice(
+        selectedVariation.regular_price || selectedVariation.price
       );
-
-      if (isGloves) {
-        if (attribute === "size" && !newSelectedAttributes.pack) {
-          newSelectedAttributes.pack = "1 Box";
-        }
-        if (attribute === "pack" && !newSelectedAttributes.size) {
-          newSelectedAttributes.size = "small";
-        }
-      }
-
-      if (selectedVariation !== undefined) {
-        setProduct({
-          ...product,
-          price: selectedVariation.price || selectedVariation.sale_price,
-        });
-        setSalePrice(selectedVariation.price || selectedVariation.sale_price);
-
-        setRegularPrice(
-          selectedVariation.regular_price || selectedVariation.price
-        );
-
-      } else {
-        setSalePrice(salePrice);
-        setRegularPrice(RegularPrice);
-      }
     } else {
-      setSelectedAttributes(value);
-      setError("");
-      setSelectedColor(value);
+      setSalePrice(salePrice);
+      setRegularPrice(RegularPrice);
     }
-  };
+  } else {
+    setSelectedAttributes(value);
+    setError("");
+    setSelectedColor(value);
+  }
+};
+
 
   // watchlist delete api integrate
   const handleWatchlistToggle = async (product) => {
@@ -460,18 +443,11 @@ const SingleProduct = () => {
       }, 2000);
     }
   };
-
-  const [selectedSize, setSelectedSize] = useState([]);
-  const [selectedPack, setSelectedPack] = useState([]);
-
-  useEffect(() => {
-    const sizes = [...new Set(variations.map((v) => v.attributes.size))];
-    setSelectedSize(sizes[0]);
-    const packs = variations.filter(
-      (v) => v.attributes.size === "small" && v.attributes.pack
-    );
-    setSelectedPack(packs[0]?.attributes.pack);
-  }, [variations]);
+  const startingRegularPrice = Math.min(
+  ...variations
+    .map((v) => Number(v.regular_price))
+    .filter((price) => price > 0)
+);
 
   return (
     <>
@@ -542,14 +518,39 @@ const SingleProduct = () => {
               <h3 className="single-product-price align-item-center justify-contents-center">
                 {variations.length > 0 ? (
                   <>
-                    <span className="sale-price d-flex align-items-center ">
+                    <span className="sale-price d-flex align-items-center">
                       {
-                        selectedAttributes === undefined ?<p className="mb-0" style={{fontSize:"17px"}}>Starting Price from:&nbsp;</p> : <p className="mb-0" style={{fontSize:"18px"}}>Price:&nbsp;</p>
+                        variations.length > 0 &&
+                        Object.keys(variations[0]?.attributes || {}).every(
+                          (attr) => selectedAttributes?.[attr]
+                        ) ? (
+                          <p className="mb-0" style={{ fontSize: "18px" }}>
+                            Price:&nbsp;
+                          </p>
+                        ) : (
+                          <p className="mb-0" style={{ fontSize: "17px" }}>
+                            Starting Price from:&nbsp;
+                          </p>
+                        )
                       }
-                      {salePrice !== regularPrice && regularPrice > 0 && (
-                        <p className="regular-price mb-0 text-decoration-lin-through">₹{Number(regularPrice).toFixed(2)}</p>
-                      )}
-                      ₹{Number(salePrice).toFixed(2)}
+                       {
+                        Object.keys(variations[0]?.attributes || {}).every(
+                          (attr) => selectedAttributes?.[attr]
+                        ) ? (
+                          <>
+                            {salePrice !== regularPrice && regularPrice > 0 && (
+                              <p className="regular-price mb-0 text-decoration-line-through">
+                                ₹{Number(regularPrice).toFixed(2)}
+                              </p>
+                            )}
+                            ₹{Number(salePrice).toFixed(2)}
+                          </>
+                        ) : (
+                          <>
+                            ₹{Number(startingRegularPrice).toFixed(2)}
+                          </>
+                        )
+                      }
                     </span>
                   </>
                 ) : (
@@ -558,9 +559,7 @@ const SingleProduct = () => {
                       <>
                         {salePrice !== regularPrice ? (
                           <>
-                            <span className="regular-price">
-                              ₹{regularPrice}
-                            </span>
+                            <span className="regular-price">₹{regularPrice}</span>
                             <span className="sale-price">₹{salePrice}</span>
                           </>
                         ) : (
@@ -812,7 +811,7 @@ const SingleProduct = () => {
                   <button
                     className={`add-to-cart-btn ${
                       stockStatus === "outofstock" ? "disable-button" : ""
-                    }`}
+                    } `}
                     disabled={stockStatus !== "instock"}
                     onClick={(e) => handleAddToCart(e, product)}
                   >
