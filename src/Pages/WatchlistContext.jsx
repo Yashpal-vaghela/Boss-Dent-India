@@ -96,7 +96,7 @@ export const WatchlistProvider = ({ children }) => {
         `https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${fetchuserdata.user_id}`
       )
       .then((res) => {
-        // sessionStorage.setItem("cart", JSON.stringify(res.data));
+        sessionStorage.setItem("cart", JSON.stringify(res.data));
         setCartList((prevCartlist) => {
           
           if (!prevCartlist.includes(id)) {

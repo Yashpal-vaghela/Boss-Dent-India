@@ -79,7 +79,7 @@ const NewCart = () => {
     const payload = {
       cart_id: Number(product.id),
       user_id: getUserData.user_id,
-      product_id: itemToUpdate.product_id,
+      product_id: Number(itemToUpdate.product_id),
       selected_attribute: itemToUpdate.selected_attribute,
     };
 
@@ -416,7 +416,7 @@ const CartListItem = React.memo(
               </div>
             )}
           </div>
-          {product?.category_name !== "Gloves" ? (
+          {product?.product_slug !== "paper-point" ? (
             <div className="cart-item-quantity">
               <button onClick={(e) => handleUpdateQty(e, product, "MINUS")}>
                 -

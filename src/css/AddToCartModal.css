@@ -1,0 +1,350 @@
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+}
+
+/* Modal Container - Compact */
+.modal-container {
+  background: #fff;
+  width: 100%;
+  max-width: 360px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 14px;
+  padding: 30px 16px 16px ;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  animation: slideIn 0.3s ease;
+}
+
+/* Slide Animation */
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Close Button - Fixed */
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  /* padding: 6px; */
+  padding: 0px 6px;
+  background: #000;
+  border: none;
+  color:#c89c31;
+  cursor: pointer;
+  z-index: 10;
+  transition: color 0.2s ease;
+  border-radius: 50px;
+}
+.modal-close:hover {
+  color: #c89c31;
+}
+
+/* Layout */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Product Image (absolute, to right of category) */
+.modal-image {
+  position: absolute;
+  top: 60px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-image img {
+  width: 90px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Details */
+.modal-details {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Title */
+.modal-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+}
+
+/* Category */
+.modal-category {
+  font-size: 0.9rem;
+  color: #666;
+  margin-right: 100px;
+}
+
+/* Stock */
+.modal-stock {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: -2px;
+}
+.modal-stock.instock {
+  color: #28a745;
+}
+.modal-stock.outstock {
+  color: #dc3545;
+}
+
+/* Price */
+.modal-price {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 1rem;
+  margin-top: -2px;
+}
+.strike {
+  text-decoration: line-through;
+  color: #999;
+}
+.sale {
+  color: #000;
+  font-weight: 700;
+}
+
+/* Variation Selection */
+.variation-wrapper {
+  margin-top: 4px;
+  margin-bottom: 10px;
+  padding: 3px 3px;
+}
+.variation-wrapper label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  color: #000;
+  font-weight: 600;
+}
+.variation-wrapper select {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease;
+}
+.variation-wrapper select:focus {
+  outline: none;
+  border: 2px solid #c89c31;
+  /* border-color: #007bff; */
+  box-shadow: none;
+}
+.variation-wrapper select option:hover,
+.variation-wrapper select option:focus {
+  background-color: #c89c31 !important;
+}
+/* Quantity Control */
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+.quantity-control button {
+  padding: 6px 12px;
+  font-size: 14px;
+  background: #bf8e22;
+  border: 1px solid  #bf8e22;
+  color: #000;
+  font-weight: 900;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.quantity-control button:hover {
+  background-color: #d69b1a;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+.quantity-control span {
+  font-size: 1rem;
+  min-width: 26px;
+  text-align: center;
+  color: #000;
+}
+
+/* CTA Button */
+.add-to-cart-btn {
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  font-family: sans-serif;
+  margin: 20px 0;
+  width: fit-content;
+  border: 0;
+  background-color: #222;
+  padding: 10px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 0 #c89c31;
+  transition: ease-out 0.4s;
+  display: flex;
+}
+.add-to-cart-btn:hover {
+  box-shadow: inset 400px 0 0 0 #c89c31;
+}
+/* .add-to-cart-btn:hover {
+  background-color: #0056b3;
+} */
+.add-to-cart-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Shake Animation */
+.shake-animation {
+  animation: shake 0.4s;
+}
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+.modal-category-row {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* spacing between category and badge */
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.modal-category {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.modal-price {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.label-text {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+}
+
+.price-sale {
+  font-weight: 700;
+  font-size: 18px;
+  color: #c89c31;
+}
+.price-strike {
+  font-size: 16px;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.price-regular {
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+}
+.price-regular b{
+  font-weight: 600;
+  color: #c89c31;
+}
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .modal-container {
+    padding: 14px;
+    max-width: 95%;
+  }
+
+  .modal-content {
+    flex-direction: column;
+  }
+
+  .modal-image {
+    position: static;
+    margin: 12px auto;
+  }
+
+  .modal-image img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .modal-category {
+    margin-right: 0;
+    text-align: center;
+  }
+
+  .add-to-cart-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+.discount-modal-badge {
+  display: inline-block;
+  /* background-color: #ff4d4f; */
+  color: #28a745;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0px 2px;
+  border-radius: 4px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+@keyframes popFade {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

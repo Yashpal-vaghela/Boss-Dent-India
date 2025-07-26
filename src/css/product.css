@@ -90,11 +90,34 @@
   box-shadow: 0 0px 5px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease-in-out;
 }
+.product-card.out-of-stock{
+  opacity: 0.7;
+}
+.product-actions.out-of-stock{
+  display: none !important;
+}
+.out-of-stock-label{
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: red;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    z-index: 20;
+    text-transform: uppercase;
+    pointer-events: none;
+    text-align: center;
+    white-space: nowrap;
+}
 .discount-badge {
   position: absolute;
   top: 5px;
   right: 5px;
-  background-color: #ff6347;
+  background-color: green;
   color: white;
   padding: 5px 10px;
   border-radius: 5px;

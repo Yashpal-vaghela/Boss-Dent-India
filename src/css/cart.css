@@ -116,6 +116,7 @@
 .cart-price {
   display: flex;
   gap: 10px;
+  width:30%;
 }
 .cart-item-price,
 .cart-item-total {
@@ -128,7 +129,7 @@
 .cart-item-remove {
   background: none;
   border: none;
-  color: #c39428;
+  color: #d11a2a;
   cursor: pointer;
   font-size: 20px;
 }
@@ -270,6 +271,9 @@
     font-size: 16px;
     text-align: left;
   }
+  .cart-price {
+    width:25%;
+  }
   .cart-item-attributes {
     /* margin-top: 5px; */
     margin: 8px 0px;
@@ -323,6 +327,10 @@
     text-align: left;
     font-size: 16px;
   }
+ 
+  .cart-price {
+    width:25%;
+  }
   /* .variation-cart-main {
     justify-content: flex-start;
   } */
@@ -347,6 +355,10 @@
   }
   .cart-page-empty .btn a {
     font-size: 14px;
+  }
+  .cart-item-link h3{
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   /* .cart-content {
     flex-direction: column;
@@ -375,9 +387,11 @@
     align-items: center;
   }
   .cart-item-quantity {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 0px;
+    padding-bottom: 0px;
     margin-right: 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   .cart-item-quantity span {
     font-size: 17px;
@@ -399,11 +413,13 @@
     flex-direction: row;
     gap: 10px;
     margin: 5px auto;
+    width:100%;
   }
   .cart-item-price,
   .cart-item-total {
-    text-align: left;
+    text-align: center;
     font-size: 15px;
+    
   }
   .cart-summary {
     margin-top: 20px;

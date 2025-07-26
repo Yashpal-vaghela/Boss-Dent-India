@@ -103,16 +103,14 @@ const CheckOut = () => {
       });
   };
 
-  // console.log("cartData", getCartData);
+
   useEffect(() => {
     setStates(Indian_states_cities_list?.STATES_OBJECT);
     getCoupon();
   }, []);
 
   const handleApplyCouponCode = (code, classList, apply) => {
-    // console.log("sub", checksubTotal);
-    // console.log("apply", apply, classList,coupon);
-    // if(coupon )
+
     if (checksubTotal >= 2500) {
       if (apply !== undefined) {
         const filtercoupon = getCouponData.filter(
@@ -158,10 +156,7 @@ const CheckOut = () => {
         );
         setSelectCouponAmount(maxValue);
         if (discountAmount !== 0) {
-          // let finalTotal1 = getCartData?.cart_total.total_price;
-          // console.log("checkTotal", checksubTotal);
           let finalTotal1 = checksubTotal;
-          // console.log("finalTotal", finalTotal1, discountAmount);
           const discount = finalTotal1 - (finalTotal1 * maxValue) / 100;
           const finaldiscount = finalTotal1 - discount;
           setDiscountAmount(finaldiscount.toFixed(2));
@@ -225,7 +220,6 @@ const CheckOut = () => {
             const offerCard = btn.closest(".offer-card");
 
             if (offerCard.classList.contains("disable")) {
-              // console.log("Offer is disabled, skipping apply.");
               return; // prevent calling handleApplyCouponCode
             }
 
@@ -243,16 +237,16 @@ const CheckOut = () => {
     setFinalTotal(
       getCartData?.cart_total.total_price + Number(deliveryChargData)
     );
+    // const eligibleTotal = "";
     const eligibleTotal = getCartData.cart_items
       .filter(
-        (item) => !excludedCategories.includes(item.category_name.toLowerCase())
+        (item) => item.category_name !== null && !excludedCategories.includes(item.category_name.toLowerCase())
       )
       .reduce(
         (sum, item) => sum + item.product_price * item.product_quantity,
         0
       );
     setCheckSubTotal(eligibleTotal);
-    // console.log("eli",eligibleTotal)
     if (eligibleTotal >= 2500) {
       const filterdata = getCouponData.filter(
         (item) => Number(item.minimum_spend) <= eligibleTotal
@@ -261,7 +255,6 @@ const CheckOut = () => {
       if (filterdata.length !== 0) {
         const maxValue = Math.max(
           ...filterdata.map((item) => {
-            // console.log("item", item);
             return Number(item.coupon_amount);
           })
         );
@@ -288,11 +281,6 @@ const CheckOut = () => {
         // setDiscountAmount(finaldiscount.toFixed(2));
       }
     }
-    // console.log("a", getCartData, a);
-    // setSelectCoupon(filterdata);
-    // if (coupon) {
-    //   handleApplyCouponCode();
-    // }
   }, [cartTotal, deliveryChargData, getCouponData]);
 
   // const handlePaymentSelect = (method) => {
@@ -706,7 +694,7 @@ const CheckOut = () => {
                                     </>
                                   ) : null}
                                 </div>
-                                {product?.category_name !== "Gloves" ? (
+                                {product?.product_slug !== "paper-point" ? (
                                   <div className="col-lg-1 col-md-1 col-1 cart-item-qty">
                                     <p className="mb-0">
                                       <i className="fa-solid fa-xmark"></i>
