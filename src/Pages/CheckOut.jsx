@@ -103,79 +103,115 @@ const CheckOut = () => {
       });
   };
 
-
   useEffect(() => {
     setStates(Indian_states_cities_list?.STATES_OBJECT);
     getCoupon();
   }, []);
 
-  const handleApplyCouponCode = (code, classList, apply) => {
+  // const handleApplyCouponCode = (code, classList, apply) => {
+  //     console.log("checksub",checksubTotal,"classList",classList,"code",code)
+  //   if (checksubTotal >= 2500) {
+  //     if (apply !== undefined) {
+  //       const filtercoupon = getCouponData.filter(
+  //         (item) => item.post_title == code
+  //       );
+  //       console.log("filterCoupon",filtercoupon);
+  //       if (filtercoupon.length !== 0) {
+  //         if (
+  //           Number(filtercoupon[0].minimum_spend) <=
+  //           getCartData?.cart_total.total_price
+  //         ) {
+  //           console.log("filter",filtercoupon[0].minimum_spend , getCartData?.cart_total?.total_price)
+  //           const ApplyCoupon = filtercoupon.map(
+  //             (item) =>
+  //               checksubTotal -
+  //               (checksubTotal * Number(item.coupon_amount)) / 100
+  //           );
+  //           const discount = checksubTotal - ApplyCoupon[0];
+  //           setDiscountAmount(discount.toFixed(2));
+  //           setApplyCouponCode(coupon);
+  //           setCoupon(coupon);
+  //           setFinalTotal(ApplyCoupon[0]);
+  //           setCouponError(null);
+  //           setSelectCouponAmount(Number(filtercoupon[0].coupon_amount));
+  //         } else {
+  //           // setDiscountAmount(0);
+  //           // setApplyCouponCode("");
+  //           // setFinalTotal(getCartData?.cart_total.total_price)
+  //           setCouponError(
+  //             `${coupon} discount code apply on only more than ₹${filtercoupon[0].minimum_spend} price.`
+  //           );
+  //         }
+  //       } else {
+  //         setCouponError(`${coupon} discount code not valid.`);
+  //       }
+  //     } else {
+  //       setApplyCouponCode(code);
+  //       setCoupon(code);
+  //       const filterdata = getCouponData.filter(
+  //         (item) => Number(item.minimum_spend) <= checksubTotal
+  //       );
+  //       const s = filterdata.filter((item) => item.post_title == code);
+  //       const maxValue = Math.max(
+  //         ...s.map((item) => Number(item.coupon_amount))
+  //       );
+  //       setSelectCouponAmount(maxValue);
+  //       if (discountAmount !== 0) {
+  //         let finalTotal1 = checksubTotal;
+  //         const discount = finalTotal1 - (finalTotal1 * maxValue) / 100;
+  //         const finaldiscount = finalTotal1 - discount;
+  //         setDiscountAmount(finaldiscount.toFixed(2));
+  //         setFinalTotal(discount);
+  //       } else {
+  //         const discount = checksubTotal - (checksubTotal * maxValue) / 100;
+  //         const finaldiscount = checksubTotal - discount;
+  //         setFinalTotal(discount);
+  //         setDiscountAmount(finaldiscount.toFixed(2));
+  //       }
+  //       setCouponError("");
+  //       Swal.close();
+  //     }
+  //   } else {
+  //     setCouponError(
+  //       `Gloves product price not considered in discount coupon code.`
+  //     );
+  //   }
+  // };
 
+  const handleApplyCouponCode = (code, classList, apply) => {
     if (checksubTotal >= 2500) {
-      if (apply !== undefined) {
-        const filtercoupon = getCouponData.filter(
-          (item) => item.post_title == code
-        );
-        if (filtercoupon.length !== 0) {
-          if (
-            Number(filtercoupon[0].minimum_spend) <=
-            getCartData?.cart_total.total_price
-          ) {
-            const ApplyCoupon = filtercoupon.map(
-              (item) =>
-                checksubTotal -
-                (checksubTotal * Number(item.coupon_amount)) / 100
-            );
-            const discount = checksubTotal - ApplyCoupon[0];
-            setDiscountAmount(discount.toFixed(2));
-            setApplyCouponCode(coupon);
-            setCoupon(coupon);
-            setFinalTotal(ApplyCoupon[0]);
-            setCouponError(null);
-            setSelectCouponAmount(Number(filtercoupon[0].coupon_amount));
-          } else {
-            // setDiscountAmount(0);
-            // setApplyCouponCode("");
-            // setFinalTotal(getCartData?.cart_total.total_price)
-            setCouponError(
-              `${coupon} discount code apply on only more than ₹${filtercoupon[0].minimum_spend} price.`
-            );
-          }
+      const filtercoupon = getCouponData.filter(
+        (item) => item.post_title === code
+      );
+
+      if (filtercoupon.length !== 0) {
+        if (Number(filtercoupon[0].minimum_spend) <= checksubTotal) {
+          const discountPercent = Number(filtercoupon[0].coupon_amount);
+          const discounted =
+            checksubTotal - (checksubTotal * discountPercent) / 100;
+          const discountValue = checksubTotal - discounted;
+
+          setDiscountAmount(discountValue.toFixed(2));
+          setApplyCouponCode(code);
+          setCoupon(code);
+          setFinalTotal(discounted + Number(deliveryChargData));
+          setCouponError(null);
+          setSelectCouponAmount(discountPercent);
         } else {
-          setCouponError(`${coupon} discount code not valid.`);
+          setCouponError(
+            `${code} discount code applies only on purchases over ₹${filtercoupon[0].minimum_spend}.`
+          );
         }
       } else {
-        setApplyCouponCode(code);
-        setCoupon(code);
-        const filterdata = getCouponData.filter(
-          (item) => Number(item.minimum_spend) <= checksubTotal
-        );
-        const s = filterdata.filter((item) => item.post_title == code);
-        const maxValue = Math.max(
-          ...s.map((item) => Number(item.coupon_amount))
-        );
-        setSelectCouponAmount(maxValue);
-        if (discountAmount !== 0) {
-          let finalTotal1 = checksubTotal;
-          const discount = finalTotal1 - (finalTotal1 * maxValue) / 100;
-          const finaldiscount = finalTotal1 - discount;
-          setDiscountAmount(finaldiscount.toFixed(2));
-          setFinalTotal(discount);
-        } else {
-          const discount = checksubTotal - (checksubTotal * maxValue) / 100;
-          const finaldiscount = checksubTotal - discount;
-          setFinalTotal(discount);
-          setDiscountAmount(finaldiscount.toFixed(2));
-        }
-        setCouponError("");
-        Swal.close();
+        setCouponError(`${code} discount code is not valid.`);
       }
     } else {
       setCouponError(
-        `Gloves product price not considered in discount coupon code.`
+        `Gloves product price is not considered for discount coupons.`
       );
     }
   };
+  
   const handleModal = () => {
     const html = `
       <div class="offer-container">
@@ -224,6 +260,9 @@ const CheckOut = () => {
             }
 
             handleApplyCouponCode(code);
+            setTimeout(() => {
+              Swal.close();
+            }, 300); 
           });
           // btn.addEventListener("click", () => handleApplyCouponCode(code,offerCard));
         });
@@ -240,18 +279,21 @@ const CheckOut = () => {
     // const eligibleTotal = "";
     const eligibleTotal = getCartData.cart_items
       .filter(
-        (item) => item.category_name !== null && !excludedCategories.includes(item.category_name.toLowerCase())
+        (item) =>
+          item.category_name &&
+          !excludedCategories.includes(item.category_name.toLowerCase())
       )
       .reduce(
         (sum, item) => sum + item.product_price * item.product_quantity,
         0
       );
+    console.log("eli", eligibleTotal);
     setCheckSubTotal(eligibleTotal);
     if (eligibleTotal >= 2500) {
       const filterdata = getCouponData.filter(
         (item) => Number(item.minimum_spend) <= eligibleTotal
       );
-
+      console.log("filterdata", filterdata);
       if (filterdata.length !== 0) {
         const maxValue = Math.max(
           ...filterdata.map((item) => {
@@ -663,12 +705,14 @@ const CheckOut = () => {
                                   {product?.selected_attribute ? (
                                     <>
                                       <div className="d-flex align-items-center justify-content-center">
-                                        {Object.entries(product.selected_attribute).map(([attribute, value]) => {
-                                          return(
+                                        {Object.entries(
+                                          product.selected_attribute
+                                        ).map(([attribute, value]) => {
+                                          return (
                                             <h6 key={value} className="mx-auto">
-                                              {attribute}:&nbsp; <b>{value}</b>  
+                                              {attribute}:&nbsp; <b>{value}</b>
                                             </h6>
-                                          )
+                                          );
                                         })}
                                         {/* {Object.keys(
                                           product?.selected_attribute
@@ -702,7 +746,9 @@ const CheckOut = () => {
                                       {product?.product_quantity}
                                     </p>
                                   </div>
-                                ) : <div className="col-lg-1 col-md-1 col-1"></div>}
+                                ) : (
+                                  <div className="col-lg-1 col-md-1 col-1"></div>
+                                )}
                                 <div className="col-lg-2 col-md-2 col-2 cart-remove-item">
                                   <p className="mb-0">
                                     {product?.product_price}

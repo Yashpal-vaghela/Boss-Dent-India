@@ -52,6 +52,7 @@
   z-index: 10;
   transition: color 0.2s ease;
   border-radius: 50px;
+  font-weight: 500;
 }
 .modal-close:hover {
   color: #c89c31;

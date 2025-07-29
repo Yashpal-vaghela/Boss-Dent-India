@@ -49,6 +49,8 @@ const Product = () => {
   const [getUserData] = useState(
     JSON.parse(sessionStorage.getItem("UserData"))
   );
+
+
   const [qty] = useState(1);
   const [getcartProductData, setgetcartProductData] = useState(
     JSON.parse(sessionStorage.getItem("cart"))
@@ -59,7 +61,7 @@ const Product = () => {
   const [cartProductId, setCartProductId] = useState([]);
   const [showVariationModal, setShowVariationModal] = useState(false);
   const [selectedProductForModal, setSelectedProductForModal] = useState(null);
-
+  const [isAddingToCart,setIsAddingToCart] = useState(false);
   // fetch product data
   const fetchProducts = useCallback(
     async (currentPage1) => {
@@ -72,6 +74,7 @@ const Product = () => {
         }
         window.scrollTo(0, 0);
         const response = await axios.get(apiUrl);
+        // console.log("products--------", response);
         const newProducts = response.data;
         setTotalProducts(parseInt(response.headers["x-wp-total"], 10));
         setProducts(newProducts);
@@ -109,7 +112,7 @@ const Product = () => {
       );
       const updatedCart = res.data;
       // console.log("updated cart data is", res.data);
-
+      
       sessionStorage.setItem("cart", JSON.stringify(updatedCart));
       sessionStorage.setItem(
         "cart_productId",
@@ -184,9 +187,13 @@ const Product = () => {
     // console.log("product data ", product);
     e.preventDefault();
 
+    if(isAddingToCart) return;
+    setIsAddingToCart(true);
+
     if (product.variations && product.variations.length > 0) {
       setSelectedProductForModal(product);
       setShowVariationModal(true);
+      setIsAddingToCart(false);
       return;
     }
 
@@ -195,6 +202,7 @@ const Product = () => {
       setTimeout(() => {
         navigate("/my-account", { state: { from: location.pathname } });
       }, 2000);
+      setIsAddingToCart(false);
       return;
     }
 
@@ -203,68 +211,95 @@ const Product = () => {
       toast.error(
         "This product is out of stock and cannot be added to the cart."
       );
-      return;
-    }
-
-    if (!isLoggedIn) {
-      toast.error("Please log in! Thank you!");
-      setTimeout(() => {
-        navigate("/my-account", { state: { from: location.pathname } });
-      }, 2000);
+      setIsAddingToCart(false);
       return;
     }
 
     try {
       const userData = JSON.parse(sessionStorage.getItem("UserData"));
-      if (!userData) return;
+      if (!userData) {
+        setIsAddingToCart(false);
+        return;
+      }
 
       const existingCartItem = getcartProductData?.cart_items?.find(
         (item) => Number(item.product_id) === product.id
       );
-      // console.log("existing cart item is:", existingCartItem);
+      // console.log(
+      //   "existing cart item is:",
+      //   existingCartItem,
+      //   getcartProductData
+      // );
+      const categoryId = product.product_cat;
 
-      const isAlreadyInCart = cartProductId.includes(product.id);
+      if (categoryId) {
+        const categorydata = await axios
+          .get(
+            `https://admin.bossdentindia.com/wp-json/custom/v1/product/${product.slug}`
+          )
+          .then((res) => res.data)
+          .catch((err) => console.log("error", err));
+          
+        if (existingCartItem === undefined) {
+          const res = await axios.post(
+            `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
+            {
+              user_id: userData.user_id,
+              product_id: product.id,
+              product_quantity: qty,
+              category_id: product?.product_cat[0]
+                ? [product?.product_cat[0]]
+                : "null",
+              category_name: categorydata.length !== 0 ? categorydata?.categories[0].name :"null",
+              product_title: product.title.rendered,
+              product_image: product.yoast_head_json?.og_image?.[0]?.url || "",
+              product_attributes: product.variations != null ? product.variations : {},
+              product_price: product.price,
+              selected_attribute: {},
+            }
+          );
+          await fetchCartData();
+          // console.log("res",res.data)
+          addToCartListProduct(res.data.cart_id, {}, userData);
+          toast.success("Product added to cart!");
+        } else {
+          const updatedQty = existingCartItem?.product_quantity
+            ? Number(existingCartItem.product_quantity) + 1
+            : 2;
 
-      if (!isAlreadyInCart) {
-        const res = await axios.post(
-          `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
-          {
-            user_id: userData.user_id,
-            product_id: product.id,
-            product_quantity: qty,
-            category_id: product.product_cat?.[0],
-            product_title: product.title.rendered,
-            product_image: product.yoast_head_json?.og_image?.[0]?.url || "",
-            product_attributes: product.variations,
-            product_price: product.price,
-            selected_attribute: {},
-          }
-        );
-        await fetchCartData();
-        addToCartListProduct(res.data.cart_id, {}, userData);
-        toast.success("Product added to cart!");
-      } else {
-        const updatedQty = existingCartItem?.product_quantity
-          ? Number(existingCartItem.product_quantity) + 1
-          : 2;
-
-        const res = await axios.post(
-          `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
-          {
-            user_id: userData.user_id,
-            category_id: product.product_cat?.[0],
-            product_id: product.id,
-            product_quantity: updatedQty,
-            cart_id: existingCartItem?.id,
-          }
-        );
-        await fetchCartData();
-        addToCartListProduct(res.data.cart_id, {}, userData);
-        toast.success("Product updated in cart!");
+          const res = await axios.post(
+            `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
+            {
+              user_id: userData.user_id,
+              category_id: product.product_cat[0],
+              product_id: product.id,
+              product_quantity: updatedQty,
+              cart_id: existingCartItem?.id,
+            }
+          );
+          await fetchCartData();
+          addToCartListProduct(res.data.cart_id, {}, userData);
+          toast.success("Product updated in cart!");
+        }
       }
+      // console.log("category", category);
+      // const isAlreadyInCart = cartProductId.includes(product.id);
+      // console.log(
+      //   "isAlreadyInCart",
+      //   !isAlreadyInCart,
+      //   "cartIs",
+      //   cartProductId,
+      //   product,
+      //   "categoryName",
+      //   categoryName,
+      //   "variations",
+      //   product.variations
+      // );
     } catch (error) {
       console.error("Error in handleAddToCart:", error);
       toast.error("An error occurred. Please try again.");
+    } finally{
+      setIsAddingToCart(false);
     }
   };
 
@@ -343,30 +378,6 @@ const Product = () => {
     variation = null
   ) => {
     const userData = JSON.parse(sessionStorage.getItem("UserData"));
-    let cartItems = [];
-    try {
-      const res = await axios.get(
-        `https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${userData.user_id}`
-      );
-      cartItems = res.data.cart_items;
-      sessionStorage.setItem("cart", JSON.stringify(res.data));
-      sessionStorage.setItem("cart_length", res.data.cart_items?.length || 0);
-    } catch (err) {
-      console.warn("Failed to fetch latest cart from server:", err);
-    }
-
-    const isGlovesCategory =
-      (Array.isArray(product?.product_cat) &&
-        product.product_cat.includes(116)) ||
-      Number(product?.product_cat) === 116;
-    const existingItem =
-      !isGlovesCategory &&
-      cartItems.find(
-        (item) =>
-          Number(item.product_id) === Number(product.id) &&
-          JSON.stringify(item.selected_attribute || {}) ===
-            JSON.stringify(selectedAttributes || {})
-      );
 
     if (!userData) {
       toast.error("Please login to add product to cart!");
@@ -378,6 +389,49 @@ const Product = () => {
       return;
     }
 
+    let cartItems = [];
+    try {
+      const res = await axios.get(
+        `https://admin.bossdentindia.com/wp-json/custom/v1/cart-items?user_id=${userData.user_id}`
+      );
+      cartItems = res.data.cart_items || [];
+      sessionStorage.setItem("cart", JSON.stringify(res.data));
+      sessionStorage.setItem("cart_length", res.data.cart_items?.length || 0);
+    } catch (err) {
+      console.warn("Failed to fetch latest cart from server:", err);
+      const storedCart = sessionStorage.getItem("cart");
+      if (storedCart) {
+        try {
+          const parsed = JSON.parse(storedCart);
+          cartItems = parsed.cart_items || [];
+        } catch (e) {
+          console.warn("Error parsing session cart:", e);
+        }
+      }
+    }
+
+    //  Normalize selected attributes for consistent comparison
+    const normalizeAttributes = (attrs) => {
+      if (!attrs || typeof attrs !== "object") return {};
+      return Object.keys(attrs)
+        .sort()
+        .reduce((acc, key) => {
+          acc[key] = attrs[key];
+          return acc;
+        }, {});
+    };
+
+    const normalizedSelected = normalizeAttributes(selectedAttributes);
+
+    const existingItem = cartItems.find(
+      (item) =>
+        Number(item.product_id) === Number(product.id) &&
+        JSON.stringify(normalizeAttributes(item.selected_attribute)) ===
+          JSON.stringify(normalizedSelected)
+    );
+
+    // console.log("Matching cart item:", existingItem);
+
     const effectivePrice =
       variation?.sale_price ||
       variation?.price ||
@@ -387,7 +441,7 @@ const Product = () => {
 
     try {
       if (!existingItem) {
-        // ✅ Add product
+        //  Add product
         const res = await axios.post(
           `https://admin.bossdentindia.com/wp-json/custom/v1/add-to-cart`,
           {
@@ -417,9 +471,10 @@ const Product = () => {
         addToCartListProduct(updatedCart.cart_id, selectedAttributes, userData);
         toast.success("Product added to cart successfully!");
       } else {
-        // ✅ Update quantity
+        // Update quantity
         const updatedQuantity =
           Number(existingItem.product_quantity) + Number(quantity);
+
         const res = await axios.post(
           `https://admin.bossdentindia.com/wp-json/custom/v1/cart/update`,
           {
@@ -469,24 +524,6 @@ const Product = () => {
             onAddToCart={handleAddToCartFromModal}
             variations={selectedProductForModal?.variations}
           ></AddToCartModal>
-
-          {/* <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  ...
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Understood</button>
-                </div>
-              </div>
-            </div>
-          </div> */}
 
           <div className="shop-container">
             <div className="header" data-aos="fade-up">
@@ -629,6 +666,7 @@ const Product = () => {
                               data-placement="top"
                               title=""
                               data-original-title="Quick add"
+                              disabled={isAddingToCart}
                               // disabled={stockStatuses[product.id] !== "instock"}
                               onClick={(e) => handleAddToCart(e, product)}
                             >
