@@ -92,6 +92,7 @@ const SingleProduct = () => {
       const response = await axios.get(
         `https://admin.bossdentindia.com/wp-json/custom/v1/product/${id}`
       );
+
       setQuantity(1);
       setSelectedAttributes([]);
 
@@ -190,9 +191,7 @@ const SingleProduct = () => {
           () => 0.5 - Math.random()
         );
 
-
         const productWithDiscount = shuffledProducts.map((product) => {
-
           const regularPrice = parseFloat(product.regular_price);
           const salePrice = parseFloat(product.price);
           let discount = 0;
@@ -1076,6 +1075,19 @@ const SingleProduct = () => {
                   }
                 )}
               {error !== null && <span className="text-danger">{error}</span>}
+              {product?.short_description && (
+                <h4 className="single-product-pack-size d-flex">
+                  Pack size:&nbsp;
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: product?.short_description.replace(
+                        "<p>",
+                        '<p class="mb-0">'
+                      ),
+                    }}
+                  ></div>
+                </h4>
+              )}
               {product?.categories && product?.slug !== "paper-point" ? (
                 <div className="quantity-controls">
                   <button
