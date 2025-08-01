@@ -108,6 +108,15 @@
   color: #111111;
   margin-top: 10px;
 }
+.single-product-pack-size{
+  margin-top: 0 !important;
+}
+.custom-pack-desc {
+  margin-bottom: 0 !important;
+  color: #646464;
+}
+
+
 .single-product-cat span,
 .single-product-stock-status span {
   color: #646464;
