@@ -109,19 +109,30 @@ const CheckOut = () => {
   }, []);
 
   // const handleApplyCouponCode = (code, classList, apply) => {
-  //     console.log("checksub",checksubTotal,"classList",classList,"code",code)
+  //   console.log(
+  //     "checksub",
+  //     checksubTotal,
+  //     "classList",
+  //     classList,
+  //     "code",
+  //     code
+  //   );
   //   if (checksubTotal >= 2500) {
   //     if (apply !== undefined) {
   //       const filtercoupon = getCouponData.filter(
   //         (item) => item.post_title == code
   //       );
-  //       console.log("filterCoupon",filtercoupon);
+  //       console.log("filterCoupon", filtercoupon);
   //       if (filtercoupon.length !== 0) {
   //         if (
   //           Number(filtercoupon[0].minimum_spend) <=
   //           getCartData?.cart_total.total_price
   //         ) {
-  //           console.log("filter",filtercoupon[0].minimum_spend , getCartData?.cart_total?.total_price)
+  //           console.log(
+  //             "filter",
+  //             filtercoupon[0].minimum_spend,
+  //             getCartData?.cart_total?.total_price
+  //           );
   //           const ApplyCoupon = filtercoupon.map(
   //             (item) =>
   //               checksubTotal -
@@ -165,7 +176,8 @@ const CheckOut = () => {
   //       } else {
   //         const discount = checksubTotal - (checksubTotal * maxValue) / 100;
   //         const finaldiscount = checksubTotal - discount;
-  //         setFinalTotal(discount);
+  //         const finalDiscount1 = getCartData?.cart_total?.total_price - (checksubTotal * maxValue) / 100;
+  //         setFinalTotal(finalDiscount1);
   //         setDiscountAmount(finaldiscount.toFixed(2));
   //       }
   //       setCouponError("");
@@ -190,11 +202,13 @@ const CheckOut = () => {
           const discounted =
             checksubTotal - (checksubTotal * discountPercent) / 100;
           const discountValue = checksubTotal - discounted;
-
+          const finalDiscount = getCartData?.cart_total?.total_price - (checksubTotal * discountPercent) / 100;
+          // console.warn("discountValue",discountValue,"discountPercent",discountPercent,"discounted",discounted,"final",finalDiscount)
           setDiscountAmount(discountValue.toFixed(2));
           setApplyCouponCode(code);
           setCoupon(code);
-          setFinalTotal(discounted + Number(deliveryChargData));
+          setFinalTotal(finalDiscount);
+          // setFinalTotal(discounted + Number(deliveryChargData));
           setCouponError(null);
           setSelectCouponAmount(discountPercent);
         } else {
@@ -211,7 +225,7 @@ const CheckOut = () => {
       );
     }
   };
-  
+
   const handleModal = () => {
     const html = `
       <div class="offer-container">
@@ -262,7 +276,7 @@ const CheckOut = () => {
             handleApplyCouponCode(code);
             setTimeout(() => {
               Swal.close();
-            }, 300); 
+            }, 300);
           });
           // btn.addEventListener("click", () => handleApplyCouponCode(code,offerCard));
         });
