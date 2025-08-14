@@ -199,16 +199,16 @@ const CheckOut = () => {
       if (filtercoupon.length !== 0) {
         if (Number(filtercoupon[0].minimum_spend) <= checksubTotal) {
           const discountPercent = Number(filtercoupon[0].coupon_amount);
+          const Total = getCartData?.cart_total.total_price;  
           const discounted =
-            checksubTotal - (checksubTotal * discountPercent) / 100;
-          const discountValue = checksubTotal - discounted;
-          const finalDiscount = getCartData?.cart_total?.total_price - (checksubTotal * discountPercent) / 100;
-          // console.warn("discountValue",discountValue,"discountPercent",discountPercent,"discounted",discounted,"final",finalDiscount)
+            Total - (checksubTotal * discountPercent) / 100;
+
+          const discountValue = Total - discounted;
           setDiscountAmount(discountValue.toFixed(2));
           setApplyCouponCode(code);
           setCoupon(code);
-          setFinalTotal(finalDiscount);
-          // setFinalTotal(discounted + Number(deliveryChargData));
+          
+          setFinalTotal(discounted + Number(deliveryChargData));
           setCouponError(null);
           setSelectCouponAmount(discountPercent);
         } else {
@@ -301,13 +301,13 @@ const CheckOut = () => {
         (sum, item) => sum + item.product_price * item.product_quantity,
         0
       );
-    console.log("eli", eligibleTotal);
+    // console.log("eli", eligibleTotal,getCartData.cart_items);
     setCheckSubTotal(eligibleTotal);
     if (eligibleTotal >= 2500) {
       const filterdata = getCouponData.filter(
         (item) => Number(item.minimum_spend) <= eligibleTotal
       );
-      console.log("filterdata", filterdata);
+      // console.log("filterdata", filterdata);
       if (filterdata.length !== 0) {
         const maxValue = Math.max(
           ...filterdata.map((item) => {

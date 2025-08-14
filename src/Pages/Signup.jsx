@@ -16,7 +16,7 @@ const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [phone, setPhone] = useState([]);
   const [error, setError] = useState("");
-  const  [passwordError, setPasswordError] = useState('')
+  const [passwordError, setPasswordError] = useState("");
   const [otp, setOTP] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   // const [singupalertMessage,setSingupAlertMessage] = useState("");
@@ -28,32 +28,31 @@ const Signup = () => {
     const errors = [];
 
     if (value.length < 8) {
-        errors.push("at least 8 characters");
+      errors.push("at least 8 characters");
     }
 
     if (!/[A-Z]/.test(value)) {
-        errors.push("an uppercase letter");
+      errors.push("an uppercase letter");
     }
 
     if (!/[a-z]/.test(value)) {
-        errors.push("a lowercase letter");
+      errors.push("a lowercase letter");
     }
 
     if (!/\d/.test(value)) {
-        errors.push("a number");
+      errors.push("a number");
     }
 
     if (!/[@$!%*?&]/.test(value)) {
-        errors.push("a special character (@$!%*?&)");
+      errors.push("a special character (@$!%*?&)");
     }
 
     if (errors.length > 0) {
-        setPasswordError(`Password must contain ${errors.join(", ")}.`);
+      setPasswordError(`Password must contain ${errors.join(", ")}.`);
     } else {
-        setPasswordError('');
+      setPasswordError("");
     }
-};
-
+  };
 
   const handlePasswordChange = (e) => {
     const value = e.target.value;
@@ -72,8 +71,8 @@ const Signup = () => {
 
   const handlePhoneChange = (e) => {
     const value = e.target.value;
-    if(value.length <= 10){
-      setPhone(value)
+    if (value.length <= 10) {
+      setPhone(value);
     }
     // if (phone.length !== 10) {
     //   setPhone(e.target.value);
@@ -102,7 +101,7 @@ const Signup = () => {
           username,
           email,
           password,
-          "phone_number": phone
+          phone_number: phone,
         }
       );
 
@@ -117,7 +116,7 @@ const Signup = () => {
       setLoading(false);
       // setError(error.response.data.message);
       // toast.error(error.response.data.message);
-      console.log("error",error);
+      console.log("error", error);
       let errorMessage = "Registration failed.";
       if (error.response && error.response.data) {
         const serverError = error.response.data;
@@ -137,10 +136,11 @@ const Signup = () => {
       });
     }
   };
-  const handleLogin = async () =>{
+  const handleLogin = async () => {
     try {
-      const loginResponse = await axios.post (
-        "https://admin.bossdentindia.com/wp-json/jwt-auth/v1/token",{
+      const loginResponse = await axios.post(
+        "https://admin.bossdentindia.com/wp-json/jwt-auth/v1/token",
+        {
           username,
           password,
         }
@@ -154,7 +154,7 @@ const Signup = () => {
           user_id: loginResponse.data.user_id,
         };
         sessionStorage.setItem("UserData", JSON.stringify(ObjectUserData));
-        sessionStorage.setItem("username",username);
+        sessionStorage.setItem("username", username);
         sessionStorage.setItem("password", password);
         Swal.fire({
           icon: "success",
@@ -165,7 +165,7 @@ const Signup = () => {
         });
         navigate("/");
       }
-    }catch (error) {
+    } catch (error) {
       console.error("Error logging in:", error);
       Swal.fire({
         icon: "error",
@@ -192,12 +192,12 @@ const Signup = () => {
       if (response.status === 200) {
         setLoading(false);
         Swal.fire({
-          icon:"success",
+          icon: "success",
           title: "Verified!",
           text: "Your OTP has been successfully verified. Logging you in...",
           showConfirmButton: false,
           timer: 2000,
-        })
+        });
         await handleLogin();
       }
     } catch (error) {
@@ -242,9 +242,10 @@ const Signup = () => {
     setShowPassword(!showPassword);
   };
 
-  useEffect(()=>{
-    console.log("e",window)
-  },[])
+  useEffect(() => {
+    setPhone("8849435097")
+    console.log("e", window);
+  }, []);
   return (
     <div className="container">
       <div className="signup-container" data-aos="fade">
@@ -253,10 +254,11 @@ const Signup = () => {
         ) : (
           <>
             <h2 className="signup-title">Sign Up</h2>
-            {alertMessage && (
+            {/* {alertMessage && (
               <AlertSuccess message="Otp has been sent to your WhatsApp! Please check and verify." />
-            )}
+            )} */}
             {step === 1 ? (
+              <> 
               <form className="signup-form" onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label className="form-label" htmlFor="username">
@@ -307,7 +309,7 @@ const Signup = () => {
                   <label className="form-label" htmlFor="password">
                     Create Your Password
                   </label>
-                  <div className="d-flex " style={{width:'106%'}}>
+                  <div className="d-flex " style={{ width: "106%" }}>
                     <input
                       type={showPassword ? "text" : "password"}
                       id="password"
@@ -338,9 +340,9 @@ const Signup = () => {
                   <label className="form-label" htmlFor="confirm-password">
                     Confirm Your Password
                   </label>
-                  <div className="d-flex " style={{width:'106%'}}>
-                    <input 
-                      type={showPassword ? 'text' : "password"}
+                  <div className="d-flex " style={{ width: "106%" }}>
+                    <input
+                      type={showPassword ? "text" : "password"}
                       id="confirm-password"
                       placeholder="Confirm Your Password"
                       className="form-input"
@@ -352,13 +354,13 @@ const Signup = () => {
                       className="signup-password-toggle-icon"
                       onClick={togglePasswordVisibility}
                     >
-                      {showPassword ? <FaEye/> : <FaEyeSlash />}
+                      {showPassword ? <FaEye /> : <FaEyeSlash />}
                     </span>
                   </div>
                   {passwordError && (
                     <p
                       style={{ color: "red" }}
-                      className={`${passwordError? "error" : ""} `}
+                      className={`${passwordError ? "error" : ""} `}
                     >
                       {passwordError}
                     </p>
@@ -368,22 +370,55 @@ const Signup = () => {
                   Sign Up
                 </button>
                 <p className="login-text">
-                  I already have an account? <Link to="/my-account">Log in</Link>
+                  I already have an account?{" "}
+                  <Link to="/my-account">Log in</Link>
                 </p>
               </form>
+               <form className="otp-form" onSubmit={handleVerifyOTP}>
+                {/* {singupalertMessage && (
+                  <AlertSuccess message="You are signup successfully." />
+                )} */}
+                <div className="form-group">
+                  <small className="form-text">
+                    We have sent <b>6 digit</b> verification code on WhatsApp to this Number{" "}
+                    <span className="from-txt-otp">+91-XXXX-XX{phone.slice(-4)}</span>. 
+                    Enter the code below to continue.
+                  </small>
+                  <input
+                    type="text"
+                    id="otp"
+                    placeholder="Enter OTP"
+                    className="form-input"
+                    value={otp}
+                    onChange={(e) => setOTP(e.target.value)}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="resend-otp-button"
+                    onClick={handleResendOTP}
+                  >
+                    Valid for 5 minutes only?{" "}
+                    <span className="resend-txt">Resend OTP</span>
+                  </button>
+                </div>
+                <button type="submit" className="verify-otp-button">
+                  Verify OTP
+                </button>
+              </form>
+              </>
+             
+              
             ) : (
               <form className="otp-form" onSubmit={handleVerifyOTP}>
                 {/* {singupalertMessage && (
                   <AlertSuccess message="You are signup successfully." />
                 )} */}
                 <div className="form-group">
-                  <label className="form-label" htmlFor="otp">
-                    Enter OTP
-                  </label>
                   <small className="form-text">
-                    A one-time password (OTP) has been sent to{" "}
-                    <span className="from-txt-otp">{phone}</span> Number. Please enter
-                    it above to complete your registration.
+                    We have sent <b>6 digit</b> verification code on WhatsApp to this Number{" "}
+                    <span className="from-txt-otp">+91-XXXX-XX{phone.slice(-4)}</span>. 
+                    Enter the code below to continue.
                   </small>
                   <input
                     type="text"
