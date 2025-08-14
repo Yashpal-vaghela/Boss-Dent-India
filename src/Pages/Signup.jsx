@@ -242,10 +242,6 @@ const Signup = () => {
     setShowPassword(!showPassword);
   };
 
-  useEffect(() => {
-    setPhone("8849435097")
-    console.log("e", window);
-  }, []);
   return (
     <div className="container">
       <div className="signup-container" data-aos="fade">
@@ -374,41 +370,7 @@ const Signup = () => {
                   <Link to="/my-account">Log in</Link>
                 </p>
               </form>
-               <form className="otp-form" onSubmit={handleVerifyOTP}>
-                {/* {singupalertMessage && (
-                  <AlertSuccess message="You are signup successfully." />
-                )} */}
-                <div className="form-group">
-                  <small className="form-text">
-                    We have sent <b>6 digit</b> verification code on WhatsApp to this Number{" "}
-                    <span className="from-txt-otp">+91-XXXX-XX{phone.slice(-4)}</span>. 
-                    Enter the code below to continue.
-                  </small>
-                  <input
-                    type="text"
-                    id="otp"
-                    placeholder="Enter OTP"
-                    className="form-input"
-                    value={otp}
-                    onChange={(e) => setOTP(e.target.value)}
-                    required
-                  />
-                  <button
-                    type="button"
-                    className="resend-otp-button"
-                    onClick={handleResendOTP}
-                  >
-                    Valid for 5 minutes only?{" "}
-                    <span className="resend-txt">Resend OTP</span>
-                  </button>
-                </div>
-                <button type="submit" className="verify-otp-button">
-                  Verify OTP
-                </button>
-              </form>
               </>
-             
-              
             ) : (
               <form className="otp-form" onSubmit={handleVerifyOTP}>
                 {/* {singupalertMessage && (
