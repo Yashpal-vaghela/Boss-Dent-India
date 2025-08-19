@@ -10,13 +10,20 @@ const HomeBanner = () => {
   const [isAutoplay, setIsAutoplay] = useState(true);
   const swiperRef = useRef(null);
 
+  // const bannerImages = [
+  //   "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient-Drape-premuim.webp",
+  //   "https://new-product-banner.s3.ap-south-1.amazonaws.com/Mask-banner.webp",
+  //   "https://new-product-banner.s3.ap-south-1.amazonaws.com/Cheek-Reatractors.webp",
+  //   "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient-bibs-banner.webp",
+  //   "https://new-product-banner.s3.ap-south-1.amazonaws.com/Discount-banner.webp",
+  // ];
   const bannerImages = [
-    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient-Drape-premuim.webp",
-    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Mask-banner.webp",
-    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Cheek-Reatractors.webp",
-    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Patient-bibs-banner.webp",
-    "https://new-product-banner.s3.ap-south-1.amazonaws.com/Discount-banner.webp",
-  ];
+    "/asset/images/Patient-Drape-premuim.webp",
+    "/asset/images/Mask-banner.webp",
+    "/asset/images/Cheek-Reatractors.webp",
+    "/asset/images/Patient-bibs-banner.webp",
+    "/asset/images/Discount-banner.webp"
+  ]
 
   useEffect(() => {
     // Preload each image

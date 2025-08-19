@@ -6,7 +6,8 @@ const OtherBanner = () => {
   const BannerImageData = [
     {
       id: 1,
-      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Comp-Polishing-kit.webp",
+      src:"/asset/images/Comp-Polishing-kit.webp",
+      // src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Comp-Polishing-kit.webp",
       slug: "products?category=120",
       alt: "Prophy-cups-and-brushes",
       width: 300,
@@ -14,7 +15,8 @@ const OtherBanner = () => {
     },
     {
       id: 2,
-      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Suction-Tips-banner.webp",
+      src:"/asset/images/Suction-Tips_.jpg",
+      // src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Suction-Tips-banner.webp",
       slug: "products?category=123",
       alt: "Suction-tips",
       width: 300,
@@ -22,7 +24,8 @@ const OtherBanner = () => {
     },
     {
       id: 3,
-      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Prophy-cups-and-brushes.webp",
+      src:"/asset/images/Prophy-cups-and-brushes.jpg",
+      // src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Prophy-cups-and-brushes.webp",
       slug: "products?category=117",
       alt: "Comp-Polishing-kit-and-wheel",
       width: 300,
@@ -30,7 +33,8 @@ const OtherBanner = () => {
     },
     {
       id: 4,
-      src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Veneer-Box-and-Veneer-Glue-Stick.webp",
+      src:"/asset/images/Veneer-Box-and-Veneer-Glue-Stick.jpg",
+      // src: "https://new-product-banner.s3.ap-south-1.amazonaws.com/Veneer-Box-and-Veneer-Glue-Stick.webp",
       slug: "products?category=75",
       alt: "Venner-box-and-veneer-glue-stick",
       width: 300,
