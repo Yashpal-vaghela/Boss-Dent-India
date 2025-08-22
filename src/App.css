@@ -96,6 +96,9 @@ body {
   width: 60px;
   height: 60px;
   animation: spin 1s linear infinite;
+  display: flex;
+  margin: auto;
+  justify-content: center;
 }
 .loader-message {
   font-family: Arial, sans-serif;
@@ -407,4 +410,15 @@ a {
   .content ul {
     margin-left: 20px;
   }
+}
+/* toast */
+.login-toast{
+  background:#c39428 !important;
+  color:#fff !important;
+}
+.login-toast-body .Toastify__toast-icon svg{
+  fill:#fff !important;
+}
+.login-toast .Toastify__progress-bar--wrp   .Toastify__progress-bar--success{
+  background: #fff !important;
 }
