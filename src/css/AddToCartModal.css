@@ -112,6 +112,7 @@
   font-weight: 600;
   margin-top: -2px;
 }
+
 .modal-stock.instock {
   color: #28a745;
 }
@@ -325,6 +326,9 @@
   .add-to-cart-btn {
     width: 100%;
     margin-top: 10px;
+  }
+  .modal-stock{
+    margin-bottom: 0px !important;
   }
 }
 .discount-modal-badge {

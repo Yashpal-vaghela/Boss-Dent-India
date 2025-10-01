@@ -188,8 +188,12 @@
   border: 2px solid #fff;
   box-shadow: 0px 0px 0px 2px #000;
 }
-.color-option.blue {
+.color-option.blue,
+.color-option.Blue{
   background-color: #3385fc;
+}
+.color-option.white{
+  background-color: #fff;
 }
 .color-option.green {
   background-color: #22edf7;
@@ -197,7 +201,8 @@
 .color-option.orange {
   background-color: #f66006;
 }
-.color-option.pink-meltblown {
+.color-option.pink-meltblown,
+.color-option.pink {
   background-color: #ff3c76;
 }
 .color-option.purple-meltblown {

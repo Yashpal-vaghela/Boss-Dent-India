@@ -203,8 +203,3 @@ const HomeBanner = () => {
 };
 
 export default HomeBanner;
-// solve xampp software error,
-// create blog edit form design layout in ace-scan admin panel,
-// create blog fetch data according to slug in blog get api,
-// discount banner resizer and add in bossdent hero section,
-// try to apply link on grab now button inside discount banner image.

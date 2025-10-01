@@ -404,9 +404,9 @@ const CartListItem = React.memo(
                     <div key={attribute} className="variation-cart-main">
                       <div className="d-flex align-items-center">
                         <h4 className="me-2">
-                          {attribute.charAt(0).toUpperCase() +
-                            attribute.slice(1)}
-                          :
+                          {attribute.replace(/pa_|attribute_pa_/, "")}:
+                          {/* {attribute.charAt(0).toUpperCase() +
+                            attribute.slice(1)} */}
                         </h4>
                         <div className="variation-button selected">{value}</div>
                       </div>

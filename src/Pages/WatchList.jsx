@@ -55,12 +55,19 @@ const WatchList = () => {
             });
           });
           const minMaxByProductId = response.data.reduce((acc, item) => {
-            const prices = item.product_variations.map(
-              (variation) => variation.price
-            );
-            acc[item.product_id] = [Math.min(...prices), Math.max(...prices)];
+         
+            if(item.product_variations.length !== 0 ){
+              const prices = item.product_variations.map(
+                (variation) => variation.price
+              );
+                 console.log("acc",acc,item,prices);
+              acc[item.product_id] = [Math.min(...prices), Math.max(...prices)];
+            }else{
+              acc[item.product_id] = [Number(item.product_price)];
+            }
             return acc;
           }, {});
+          console.log("minMax",minMaxByProductId);
           setSalePrice(minMaxByProductId);
           Object.entries(minMaxByProductId).map(([productId, [min, max]]) => {
             maxValue.push(max);
@@ -347,9 +354,9 @@ const WatchlistItem = React.memo(
             return updatedAttributes[key] === variation.attributes[key];
           });
         });
-        console.log("sele",selectedVariation)
+        // console.log("sele",selectedVariation)
         const a = {...product,product_price:selectedVariation.price}
-        console.log("a",a)
+        // console.log("a",a)
         // setWatchListData({...WatchListData,product_price:selectedVariation.price})
         if (selectedVariation) {
           setMinvalue(selectedVariation.price);
@@ -403,44 +410,32 @@ const WatchlistItem = React.memo(
                 </Link>
                 <p className="watchlist-item-price mb-0">
                   {/* {console.log("product",salePrice,regularPrice)} */}
-                  {console.log(
-                    "salePrice",
+                  {/* {console.log(
+                    "salePrice+++",
                     salePrice,
                     productVariations,
-
-                    // minValue,
-                    // maxValue,
+                    minValue,
+                    maxValue,
                     Object.entries(salePrice)
-                  )}
-                  {salePrice !== null
+                  )} */}
+                  {salePrice != null || salePrice.length !== 0
                     ? Object.entries(salePrice).map(
                         ([productId, [min, max]]) => {
                           const selectedKey = Object.keys(selectedAttributes)[0]; 
                           const matchedVariation = product.product_variations?.find(variation => {
                             return variation.attributes[selectedKey] === selectedAttributes[selectedKey];
                           });
-                          console.log("selectAttributes",selectedAttributes,min,max, matchedVariation?.price);
+                          console.log("selectAttributes",selectedAttributes,min,"max",max, matchedVariation?.price);
                           return productId === product.product_id ? (
                             <span className="sale-price" key={productId}>
+                            {/* {console.log("sel",product.product_variations)} */}
+                            {
+                              max !== undefined ? <>
                               Price: ₹{selectedAttributes[selectedKey]  ? matchedVariation?.price : `${min} - ₹${max}`}
-                              {/* Price: ₹{product.product_price}
-                              {
-                                selectedAttributes !== undefined ? (
-                                  <>Price: ₹{min} - ₹{max}</>
-                                ) : (
-                                  <></>
-                                )
-                              } */}
-                              {/* {
-                                product.product_variations?.map((variation)=>{
-                                  console.log("variations",variation)
-                                  return selectedAttributes !== undefined ? (
-                                    <>Price: ₹{min} - ₹{max}</>
-                                  ) : (
-                                    <></>
-                                  )
-                                })
-                              } */}
+                              </>: <>
+                              Price: ₹{selectedAttributes[selectedKey]  ? matchedVariation?.price : `${min}`}
+                              </>
+                            }
                             </span>
                           ) : ( 
                             <></>
@@ -487,17 +482,18 @@ const WatchlistItem = React.memo(
                               )}
                               :{""}
                             </h4>
-                            {/* {console.log("min", minValue, "max", maxValue)} */}
+                            {console.log("attribute",attribute)}
                             {attribute === "attribute_pa_color" ||
+                            attribute === "attribute_color" ||
                             attribute === "color" ? (
                               <div style={{ display: "flex" }}>
                                 {productVariations.map((variation, index) => {
-                                   {console.log(attribute)}
+                                   {console.log("++",attribute,selectedAttributes,Object.values(variation?.attributes)[0])}
                                   return (
                                     <div
                                       key={index}
                                       className={`color-option ${
-                                        Object.values(variation?.attributes)[0]
+                                        Object.values(variation?.attributes)[0]?.toLowerCase()
                                       } ${
                                         selectedAttributes[attribute] ===
                                         variation.attributes[attribute]
