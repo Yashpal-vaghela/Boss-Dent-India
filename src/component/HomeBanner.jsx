@@ -22,7 +22,7 @@ const HomeBanner = () => {
     "/asset/images/Mask-banner.webp",
     "/asset/images/Cheek-Reatractors.webp",
     "/asset/images/Patient-bibs-banner.webp",
-    "/asset/images/Discount-banner.webp"
+    // "/asset/images/Discount-banner.webp"
   ]
 
   useEffect(() => {
@@ -146,7 +146,7 @@ const HomeBanner = () => {
             </div>
           </Link>
         </SwiperSlide>
-        <SwiperSlide>
+        {/* <SwiperSlide>
           <Link
             to="/products"
             className="banner-2-main"
@@ -159,7 +159,7 @@ const HomeBanner = () => {
               <img src={bannerImages[4]} alt="banner4" className="banner-img" />
             </div>
           </Link>
-          {/* <div className="banneer-img-main">
+          <div className="banneer-img-main">
             <img
               src={bannerImages[4]}
               alt="banner5"
@@ -176,8 +176,8 @@ const HomeBanner = () => {
                 shape="rect"
               ></area>
             </map>
-          </div> */}
-        </SwiperSlide>
+          </div> 
+        </SwiperSlide> */}
         {/* <SwiperSlide>
           <Link
             to="/products/paper-point"
