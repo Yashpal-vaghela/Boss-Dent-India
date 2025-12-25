@@ -102,7 +102,14 @@ const Signup = () => {
           email,
           password,
           phone_number: phone,
-        }
+        },
+         {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization":
+            "Basic ODA3M2FiM2JjODo3ZTlmNTFlZDc5YjIxMTlmYTJmZA==",
+        },
+      }
       );
 
       if (response.status === 200) {
@@ -219,7 +226,13 @@ const Signup = () => {
         "https://admin.bossdentindia.com/wp-json/custom/v1/resend-otp",
         {
           phone_number: phone,
-        }
+        },
+        {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Basic ODA3M2FiM2JjODo3ZTlmNTFlZDc5YjIxMTlmYTJmZA==",
+        },
+      }
       );
 
       if (response.status === 200) {
